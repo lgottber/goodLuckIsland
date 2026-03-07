@@ -1144,3 +1144,141 @@ img {
     grid-template-columns: 1fr;
   }
 }
+
+/* ── MOBILE NAV HAMBURGER ── */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  margin-left: auto;
+}
+.nav-hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--navy);
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+.nav-hamburger.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.nav-hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+.nav-hamburger.open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+.nav-mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(12px);
+  z-index: 99;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.75rem;
+}
+.nav-mobile-menu.open {
+  display: flex;
+}
+.nav-mobile-menu a {
+  font-family: var(--sans);
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--navy);
+}
+.nav-mobile-menu .mobile-coral {
+  color: var(--coral);
+}
+.nav-mobile-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--navy);
+}
+
+@media (max-width: 900px) {
+  .nav-hamburger {
+    display: flex;
+  }
+  .nav-links {
+    display: none !important;
+  }
+  .profile-content {
+    grid-template-columns: 1fr;
+  }
+  .profile-sidebar {
+    min-width: unset;
+  }
+  .profile-cover {
+    height: 160px;
+  }
+  .profile-header {
+    padding: 0 1rem 1rem;
+  }
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+    top: -40px;
+  }
+  .profile-name {
+    font-size: 1.4rem;
+  }
+}
+@media (max-width: 640px) {
+  .nav {
+    padding: 0.75rem 1.25rem;
+  }
+  .tab-bar {
+    overflow-x: auto;
+    gap: 0.25rem;
+    padding-bottom: 0.25rem;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+    font-size: 0.75rem;
+    padding: 0.45rem 0.85rem;
+  }
+  .saved-grid {
+    grid-template-columns: 1fr;
+  }
+  .backpack-section-card {
+    flex-wrap: wrap;
+  }
+  .challenge-card {
+    padding: 1.25rem;
+  }
+  .challenge-question {
+    font-size: 1.2rem;
+  }
+  .challenge-reflection-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .edit-modal-content {
+    padding: 1.25rem;
+  }
+  .modal-tabs-edit {
+    gap: 0;
+  }
+  .modal-tab-btn {
+    padding: 0.6rem 0.5rem;
+    font-size: 0.65rem;
+  }
+}

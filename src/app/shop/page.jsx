@@ -11,6 +11,7 @@ export default function ShopPage() {
   const [donationAmount, setDonationAmount] = useState("$25");
   const [customAmount, setCustomAmount] = useState("");
   const [frequency, setFrequency] = useState("one-time");
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [_donated, _setDonated] = useState(false);
 
   const formats = [
@@ -44,14 +45,51 @@ export default function ShopPage() {
           </div>
           <div className="nav-auth">
             <Link href="/login">
-              <button type="button" className="nav-btn-ghost">Sign In</button>
+              <button type="button" className="nav-btn-ghost">
+                Sign In
+              </button>
             </Link>
             <Link href="/register">
-              <button type="button" className="nav-btn-solid">Join Free</button>
+              <button type="button" className="nav-btn-solid">
+                Join Free
+              </button>
             </Link>
           </div>
+          <button
+            type="button"
+            className={`nav-hamburger ${mobileOpen ? "open" : ""}`}
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
         </div>
       </nav>
+      <div className={`nav-mobile-menu ${mobileOpen ? "open" : ""}`}>
+        <button
+          type="button"
+          className="nav-mobile-close"
+          onClick={() => setMobileOpen(false)}
+        >
+          ✕
+        </button>
+        <Link href="/" onClick={() => setMobileOpen(false)}>Home</Link>
+        <Link href="/articles" onClick={() => setMobileOpen(false)}>
+          Freemium Content
+        </Link>
+        <Link href="/podcast" onClick={() => setMobileOpen(false)}>
+          Podcast
+        </Link>
+        <Link href="/about" onClick={() => setMobileOpen(false)}>About</Link>
+        <Link
+          href="/shop"
+          className="mobile-coral"
+          onClick={() => setMobileOpen(false)}
+        >
+          Book & Support
+        </Link>
+      </div>
 
       <div className="shop-page">
         {/* ── HERO ── */}
