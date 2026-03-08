@@ -668,3 +668,122 @@ img {
     grid-template-columns: 1fr;
   }
 }
+
+/* ── MOBILE NAV HAMBURGER ── */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  margin-left: auto;
+}
+.nav-hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+.nav-hamburger.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.nav-hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+.nav-hamburger.open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+.nav-mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 16, 30, 0.98);
+  backdrop-filter: blur(16px);
+  z-index: 99;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.75rem;
+}
+.nav-mobile-menu.open {
+  display: flex;
+}
+.nav-mobile-menu a {
+  font-family: var(--sans);
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #fff;
+}
+.nav-mobile-menu .mobile-coral {
+  color: var(--coral);
+}
+.nav-mobile-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 960px) {
+  .nav-hamburger {
+    display: flex;
+  }
+  .nav-links {
+    display: none !important;
+  }
+  .featured-episode {
+    grid-template-columns: 1fr;
+  }
+  .featured-video-side {
+    min-height: 240px;
+  }
+  .episodes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .podcast-content {
+    padding: 2.5rem 1.25rem 4rem;
+  }
+  .podcast-header {
+    padding: 3rem 1.25rem 0;
+  }
+  .podcast-subscribe-row {
+    gap: 0.5rem;
+  }
+  .podcast-sub-btn {
+    font-size: 0.72rem;
+    padding: 0.45rem 0.85rem;
+  }
+}
+@media (max-width: 600px) {
+  .episodes-grid {
+    grid-template-columns: 1fr;
+  }
+  .featured-info {
+    padding: 1.5rem;
+  }
+  .featured-title {
+    font-size: 1.3rem;
+  }
+  .featured-actions {
+    flex-direction: column;
+  }
+  .video-modal {
+    border-radius: 12px;
+  }
+  .video-modal-footer {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+}

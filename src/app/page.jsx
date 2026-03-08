@@ -89,9 +89,9 @@ function AuthModal({ mode, onClose }) {
 
         <div className="modal-logo">
           <img
-            src="/goodLuckIslandLogoFull.png"
+            src="/goodLuckIslandLogoSmall.png"
             alt="Good Luck Island Collective"
-            style={{ height: 150, width: "auto", objectFit: "contain" }}
+            style={{ height: 45, width: "auto", objectFit: "contain" }}
           />
         </div>
         <p className="modal-brand">Good Luck Island Collective</p>
@@ -241,6 +241,7 @@ function VideoCard({ video }) {
 export default function HomePage() {
   const [authModal, setAuthModal] = useState(null);
   const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const heroRef = useRef(null);
 
   useEffect(() => {
@@ -263,17 +264,25 @@ export default function HomePage() {
         <div className="nav-inner">
           <a href="/" className="nav-logo">
             <img
-              src="/goodLuckIslandLogoFull.png"
+              src="/goodLuckIslandLogoSmall.png"
               alt="Good Luck Island Collective"
-              style={{ height: 150, width: "auto", objectFit: "contain" }}
+              style={{ height: 45, width: "auto", objectFit: "contain" }}
             />
           </a>
           <div className="nav-links">
-            <a href="/" className="active">Home</a>
             <a href="/articles">Freemium Content</a>
             <a href="/podcast">Podcast</a>
             <a href="/about">About</a>
-            <a href="/shop">Book & Support</a>
+            <a
+              href="/shop"
+              style={{
+                color: "var(--coral, #e8673a)",
+                fontWeight: 600,
+                opacity: 1,
+              }}
+            >
+              Book & Support
+            </a>
           </div>
           <div className="nav-auth">
             <button
@@ -291,8 +300,62 @@ export default function HomePage() {
               Join
             </button>
           </div>
+          <button
+            type="button"
+            className={`nav-hamburger ${mobileOpen ? "open" : ""}`}
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
         </div>
       </nav>
+
+      {/* Mobile Menu */}
+      <div className={`nav-mobile-menu ${mobileOpen ? "open" : ""}`}>
+        <button
+          type="button"
+          className="nav-mobile-close"
+          onClick={() => setMobileOpen(false)}
+        >
+          ✕
+        </button>
+        <a href="/articles" onClick={() => setMobileOpen(false)}>
+          Freemium Content
+        </a>
+        <a href="/podcast" onClick={() => setMobileOpen(false)}>Podcast</a>
+        <a href="/about" onClick={() => setMobileOpen(false)}>About</a>
+        <a
+          href="/shop"
+          className="mobile-coral"
+          onClick={() => setMobileOpen(false)}
+        >
+          Book & Support
+        </a>
+        <div className="nav-mobile-auth">
+          <button
+            type="button"
+            className="ghost"
+            onClick={() => {
+              setMobileOpen(false);
+              setAuthModal("login");
+            }}
+          >
+            Sign In
+          </button>
+          <button
+            type="button"
+            className="solid"
+            onClick={() => {
+              setMobileOpen(false);
+              setAuthModal("register");
+            }}
+          >
+            Join Free
+          </button>
+        </div>
+      </div>
 
       <main>
         {/* ── HERO ── */}
@@ -450,12 +513,7 @@ export default function HomePage() {
             <img
               src="/goodLuckIslandLogoFull.png"
               alt="Good Luck Island Collective"
-              style={{
-                height: 150,
-                width: "auto",
-                objectFit: "contain",
-                marginBottom: "0.5rem",
-              }}
+              style={{ height: 150, width: "auto", objectFit: "contain" }}
             />
             <h2>Ready to join the island life?</h2>
             <p>
@@ -478,14 +536,9 @@ export default function HomePage() {
           <div className="footer-inner">
             <div className="footer-brand">
               <img
-                src="/goodLuckIslandLogoFull.png"
+                src="/goodLuckIslandLogoSmall.png"
                 alt="Good Luck Island Collective"
-                style={{
-                  height: 100,
-                  width: "auto",
-                  objectFit: "contain",
-                  marginBottom: "0.5rem",
-                }}
+                style={{ height: 45, width: "auto", objectFit: "contain" }}
               />
               <span>Curating calm clarity for the next chapter of life.</span>
             </div>
@@ -493,7 +546,8 @@ export default function HomePage() {
               <div>
                 <strong>Explore</strong>
                 <a href="/articles">Freemium Content</a>
-                <a href="/podcast">Podcast</a>
+                <a href="#">Podcast</a>
+                <a href="#">Videos</a>
               </div>
               <div>
                 <strong>Community</strong>

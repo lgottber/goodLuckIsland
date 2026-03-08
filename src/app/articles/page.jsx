@@ -96,6 +96,7 @@ const CATEGORIES = [
 
 export default function ArticlesPage() {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const featured = ALL_ARTICLES.find((a) => a.featured);
   const filtered = ALL_ARTICLES.filter((a) => {
@@ -121,18 +122,55 @@ export default function ArticlesPage() {
             <Link href="/articles" className="active">Freemium Content</Link>
             <Link href="/podcast">Podcast</Link>
             <Link href="/about">About</Link>
-            <Link href="/shop">Book & Support</Link>
+            <Link href="/shop" className="coral">Book & Support</Link>
           </div>
           <div className="nav-auth">
             <Link href="/login">
-              <button type="button" className="nav-btn-ghost">Sign In</button>
+              <button type="button" className="nav-btn-ghost">
+                Sign In
+              </button>
             </Link>
             <Link href="/register">
-              <button type="button" className="nav-btn-solid">Join Free</button>
+              <button type="button" className="nav-btn-solid">
+                Join Free
+              </button>
             </Link>
           </div>
+          <button
+            type="button"
+            className={`nav-hamburger ${mobileOpen ? "open" : ""}`}
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
         </div>
       </nav>
+      <div className={`nav-mobile-menu ${mobileOpen ? "open" : ""}`}>
+        <button
+          type="button"
+          className="nav-mobile-close"
+          onClick={() => setMobileOpen(false)}
+        >
+          ✕
+        </button>
+        <Link href="/" onClick={() => setMobileOpen(false)}>Home</Link>
+        <Link href="/articles" onClick={() => setMobileOpen(false)}>
+          Freemium Content
+        </Link>
+        <Link href="/podcast" onClick={() => setMobileOpen(false)}>
+          Podcast
+        </Link>
+        <Link href="/about" onClick={() => setMobileOpen(false)}>About</Link>
+        <Link
+          href="/shop"
+          className="mobile-coral"
+          onClick={() => setMobileOpen(false)}
+        >
+          Book & Support
+        </Link>
+      </div>
 
       <div className="articles-page">
         {/* ── HEADER with arch image ── */}

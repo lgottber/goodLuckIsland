@@ -728,7 +728,11 @@ const Icon = ({ name, size = 16 }) => {
         <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
       </>
     ),
-    bookmark: <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />,
+    bookmark: (
+      <>
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+      </>
+    ),
     x: (
       <>
         <line x1="18" y1="6" x2="6" y2="18" />
@@ -1211,6 +1215,7 @@ export default function ProfilePage() {
   const [pickingAvatar, setPickingAvatar] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
   const [saved, setSaved] = useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [activeBackpackSection, setActiveBackpackSection] = useState(null);
   const [reflection, setReflection] = useState("");
   const [reflectionSaved, setReflectionSaved] = useState(false);
@@ -1263,7 +1268,12 @@ export default function ProfilePage() {
             <Link href="/articles">Freemium Content</Link>
             <Link href="/podcast">Podcast</Link>
             <Link href="/about">About</Link>
-            <Link href="/shop">Book & Support</Link>
+            <Link
+              href="/shop"
+              style={{ color: "var(--coral)", fontWeight: 600, opacity: 1 }}
+            >
+              Book & Support
+            </Link>
           </div>
           <div className="nav-auth">
             <div
@@ -1281,8 +1291,41 @@ export default function ProfilePage() {
               />
             </div>
           </div>
+          <button
+            type="button"
+            className={`nav-hamburger ${mobileOpen ? "open" : ""}`}
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
         </div>
       </nav>
+      <div className={`nav-mobile-menu ${mobileOpen ? "open" : ""}`}>
+        <button
+          type="button"
+          className="nav-mobile-close"
+          onClick={() => setMobileOpen(false)}
+        >
+          ✕
+        </button>
+        <Link href="/" onClick={() => setMobileOpen(false)}>Home</Link>
+        <Link href="/articles" onClick={() => setMobileOpen(false)}>
+          Freemium Content
+        </Link>
+        <Link href="/podcast" onClick={() => setMobileOpen(false)}>
+          Podcast
+        </Link>
+        <Link href="/about" onClick={() => setMobileOpen(false)}>About</Link>
+        <Link
+          href="/shop"
+          className="mobile-coral"
+          onClick={() => setMobileOpen(false)}
+        >
+          Book & Support
+        </Link>
+      </div>
 
       <div className="profile-page">
         {/* ── BANNER ── */}
@@ -1444,12 +1487,12 @@ export default function ProfilePage() {
             <div className="tab-bar">
               {[
                 { id: "overview", label: "Overview" },
-                { id: "backpack", label: "🎒 My Backpack" },
                 { id: "saved", label: "Saved" },
+                { id: "backpack", label: "🎒 My Backpack" },
               ].map((tab) => (
                 <button
-                  key={tab.id}
                   type="button"
+                  key={tab.id}
                   className={`tab-btn ${activeTab === tab.id ? "active" : ""}`}
                   onClick={() => {
                     setActiveTab(tab.id);
@@ -1485,6 +1528,31 @@ export default function ProfilePage() {
                       </button>
                     </p>
                   )}
+              </div>
+            )}
+
+            {/* Saved Tab */}
+            {activeTab === "saved" && (
+              <div className="profile-card">
+                <p
+                  className="section-label-sm"
+                  style={{ marginBottom: "1rem" }}
+                >
+                  Saved Articles &amp; Episodes
+                </p>
+                <div className="saved-grid">
+                  {SAVED_ARTICLES.map((item) => (
+                    <div key={item.id} className="saved-card">
+                      <div className="saved-card-img">
+                        <img src={item.image} alt={item.title} />
+                      </div>
+                      <div className="saved-card-body">
+                        <div className="saved-card-tag">{item.tag}</div>
+                        <h4>{item.title}</h4>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -1540,31 +1608,6 @@ export default function ProfilePage() {
                         )
                         : <span className="backpack-section-arrow">→</span>}
                     </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Saved Tab */}
-            {activeTab === "saved" && (
-              <div className="profile-card">
-                <p
-                  className="section-label-sm"
-                  style={{ marginBottom: "1rem" }}
-                >
-                  Saved &amp; Episodes
-                </p>
-                <div className="saved-grid">
-                  {SAVED_ARTICLES.map((item) => (
-                    <div key={item.id} className="saved-card">
-                      <div className="saved-card-img">
-                        <img src={item.image} alt={item.title} />
-                      </div>
-                      <div className="saved-card-body">
-                        <div className="saved-card-tag">{item.tag}</div>
-                        <h4>{item.title}</h4>
-                      </div>
-                    </div>
                   ))}
                 </div>
               </div>
