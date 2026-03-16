@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useUser as useAuth0User } from "@auth0/nextjs-auth0/client";
 import "./profile.css";
 
 // ─── Mock user data — replace with your real auth/db calls ───────────────────
@@ -1210,7 +1211,23 @@ function EditModal({ user, onSave, onClose }) {
 
 // ─── Main Profile Page ────────────────────────────────────────────────────────
 export default function ProfilePage() {
+  const { user: auth0User } = useAuth0User();
   const [user, setUser] = useState(INITIAL_USER);
+
+  useEffect(() => {
+    if (auth0User) {
+      setUser((prev) => ({
+        ...prev,
+        firstName: auth0User.given_name ?? auth0User.name?.split(" ")[0] ??
+          prev.firstName,
+        lastName: auth0User.family_name ??
+          auth0User.name?.split(" ").slice(1).join(" ") ?? prev.lastName,
+        email: auth0User.email ?? prev.email,
+        avatarUrl: auth0User.picture ?? prev.avatarUrl,
+        handle: auth0User.nickname ? `@${auth0User.nickname}` : prev.handle,
+      }));
+    }
+  }, [auth0User]);
   const [editing, setEditing] = useState(false);
   const [pickingAvatar, setPickingAvatar] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
@@ -1290,6 +1307,7 @@ export default function ProfilePage() {
                 borderColor="var(--teal)"
               />
             </div>
+            <a href="/auth/logout" className="nav-btn-ghost">Sign Out</a>
           </div>
           <button
             type="button"
