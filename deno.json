@@ -2,8 +2,7 @@
   "export": "out",
   "nodeModulesDir": "auto",
   "unstable": [
-    "unsafe-proto",
-    "sloppy-imports"
+    "unsafe-proto"
   ],
   "imports": {
     "next": "npm:next@16.0.8",
