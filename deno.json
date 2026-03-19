@@ -2,8 +2,7 @@
   "export": "out",
   "nodeModulesDir": "auto",
   "unstable": [
-    "unsafe-proto",
-    "sloppy-imports"
+    "unsafe-proto"
   ],
   "imports": {
     "next": "npm:next@16.0.8",
@@ -21,6 +20,7 @@
   "tasks": {
     "dev": "deno run -A --unstable-detect-cjs npm:next@16.0.8 dev",
     "build": "deno run -A --unstable-detect-cjs npm:next@16.0.8 build",
-    "start": "deno run -A --unstable-detect-cjs npm:next@16.0.8 start"
+    "start": "deno run -A --unstable-detect-cjs npm:next@16.0.8 start",
+    "lint": "deno lint --fix && deno fmt --check"
   }
 }

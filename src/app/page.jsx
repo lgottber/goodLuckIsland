@@ -2,6 +2,7 @@
 
 import "./home.css";
 import { useEffect, useRef, useState } from "react";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 // ─── Mock Data ────────────────────────────────────────────────────────────────
 
@@ -65,130 +66,6 @@ const FEATURED_VIDEOS = [
   },
 ];
 
-// ─── Auth Modal ───────────────────────────────────────────────────────────────
-
-function AuthModal({ mode, onClose }) {
-  const [tab, setTab] = useState(mode);
-  const [form, setForm] = useState({ email: "", password: "", name: "" });
-
-  useEffect(() => {
-    const handleKey = (e) => e.key === "Escape" && onClose();
-    globalThis.addEventListener("keydown", handleKey);
-    return () => globalThis.removeEventListener("keydown", handleKey);
-  }, [onClose]);
-
-  return (
-    <div
-      className="modal-backdrop"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
-    >
-      <div className="modal-card">
-        <button type="button" className="modal-close" onClick={onClose}>
-          ✕
-        </button>
-
-        <div className="modal-logo">
-          <img
-            src="/goodLuckIslandLogoSmall.png"
-            alt="Good Luck Island Collective"
-            style={{ height: 45, width: "auto", objectFit: "contain" }}
-          />
-        </div>
-        <p className="modal-brand">Good Luck Island Collective</p>
-
-        <div className="modal-tabs">
-          <button
-            type="button"
-            className={`modal-tab ${tab === "login" ? "active" : ""}`}
-            onClick={() => setTab("login")}
-          >
-            Sign In
-          </button>
-          <button
-            type="button"
-            className={`modal-tab ${tab === "register" ? "active" : ""}`}
-            onClick={() => setTab("register")}
-          >
-            Join
-          </button>
-        </div>
-
-        <div className="modal-form">
-          {tab === "register" && (
-            <div className="form-field">
-              <label>Full Name</label>
-              <input
-                type="text"
-                placeholder="Your name"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-              />
-            </div>
-          )}
-          <div className="form-field">
-            <label>Email</label>
-            <input
-              type="email"
-              placeholder="you@example.com"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-            />
-          </div>
-          <div className="form-field">
-            <label>Password</label>
-            <input
-              type="password"
-              placeholder="••••••••"
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-            />
-          </div>
-
-          <button type="button" className="btn-primary full-width">
-            {tab === "login" ? "Sign In" : "Create Account"}
-          </button>
-
-          {tab === "login" && (
-            <p className="modal-hint">
-              <a href="#">Forgot your password?</a>
-            </p>
-          )}
-          <div className="modal-divider">
-            <span>or continue with</span>
-          </div>
-          <button type="button" className="btn-ghost full-width">
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 18 18"
-              fill="none"
-              style={{ marginRight: 8 }}
-            >
-              <path
-                d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"
-                fill="#4285F4"
-              />
-              <path
-                d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"
-                fill="#34A853"
-              />
-              <path
-                d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"
-                fill="#FBBC05"
-              />
-              <path
-                d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"
-                fill="#EA4335"
-              />
-            </svg>
-            Google
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // ─── Video Card ───────────────────────────────────────────────────────────────
 
 function VideoCard({ video }) {
@@ -239,7 +116,7 @@ function VideoCard({ video }) {
 // ─── Home Page ────────────────────────────────────────────────────────────────
 
 export default function HomePage() {
-  const [authModal, setAuthModal] = useState(null);
+  const { user } = useUser();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const heroRef = useRef(null);
@@ -252,13 +129,6 @@ export default function HomePage() {
 
   return (
     <>
-      {authModal && (
-        <AuthModal
-          mode={authModal}
-          onClose={() => setAuthModal(null)}
-        />
-      )}
-
       {/* ── NAV ── */}
       <nav className={`nav ${scrolled ? "nav-scrolled" : ""}`}>
         <div className="nav-inner">
@@ -285,20 +155,24 @@ export default function HomePage() {
             </a>
           </div>
           <div className="nav-auth">
-            <button
-              type="button"
-              className="nav-btn-ghost"
-              onClick={() => setAuthModal("login")}
-            >
-              Sign In
-            </button>
-            <button
-              type="button"
-              className="nav-btn-solid"
-              onClick={() => setAuthModal("register")}
-            >
-              Join
-            </button>
+            {user
+              ? (
+                <>
+                  <a href="/profile" className="nav-btn-ghost">My Profile</a>
+                  <a href="/auth/logout" className="nav-btn-solid">Sign Out</a>
+                </>
+              )
+              : (
+                <>
+                  <a href="/auth/login" className="nav-btn-ghost">Sign In</a>
+                  <a
+                    href="/auth/login?screen_hint=signup"
+                    className="nav-btn-solid"
+                  >
+                    Join
+                  </a>
+                </>
+              )}
           </div>
           <button
             type="button"
@@ -334,26 +208,43 @@ export default function HomePage() {
           Book & Support
         </a>
         <div className="nav-mobile-auth">
-          <button
-            type="button"
-            className="ghost"
-            onClick={() => {
-              setMobileOpen(false);
-              setAuthModal("login");
-            }}
-          >
-            Sign In
-          </button>
-          <button
-            type="button"
-            className="solid"
-            onClick={() => {
-              setMobileOpen(false);
-              setAuthModal("register");
-            }}
-          >
-            Join Free
-          </button>
+          {user
+            ? (
+              <>
+                <a
+                  href="/profile"
+                  className="ghost"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  My Profile
+                </a>
+                <a
+                  href="/auth/logout"
+                  className="solid"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Sign Out
+                </a>
+              </>
+            )
+            : (
+              <>
+                <a
+                  href="/auth/login"
+                  className="ghost"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Sign In
+                </a>
+                <a
+                  href="/auth/login?screen_hint=signup"
+                  className="solid"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Join Free
+                </a>
+              </>
+            )}
         </div>
       </div>
 
@@ -374,20 +265,24 @@ export default function HomePage() {
               and intentional choices.
             </p>
             <div className="hero-cta">
-              <button
-                type="button"
-                className="cta-primary"
-                onClick={() => setAuthModal("register")}
-              >
-                Join the Collective
-              </button>
-              <button
-                type="button"
-                className="cta-ghost"
-                onClick={() => setAuthModal("login")}
-              >
-                Sign In
-              </button>
+              {user
+                ? (
+                  <>
+                    <a href="/profile" className="cta-primary">My Profile</a>
+                    <a href="/auth/logout" className="cta-ghost">Sign Out</a>
+                  </>
+                )
+                : (
+                  <>
+                    <a
+                      href="/auth/login?screen_hint=signup"
+                      className="cta-primary"
+                    >
+                      Join the Collective
+                    </a>
+                    <a href="/auth/login" className="cta-ghost">Sign In</a>
+                  </>
+                )}
             </div>
           </div>
           <div className="hero-scroll">
@@ -521,13 +416,20 @@ export default function HomePage() {
               episodes, and a community of Gen X professionals building a better
               next chapter.
             </p>
-            <button
-              type="button"
-              className="cta-primary dark"
-              onClick={() => setAuthModal("register")}
-            >
-              Create Free Account
-            </button>
+            {user
+              ? (
+                <a href="/profile" className="cta-primary dark">
+                  Go to My Profile
+                </a>
+              )
+              : (
+                <a
+                  href="/auth/login?screen_hint=signup"
+                  className="cta-primary dark"
+                >
+                  Create Free Account
+                </a>
+              )}
           </div>
         </section>
 
@@ -557,24 +459,19 @@ export default function HomePage() {
               </div>
               <div>
                 <strong>Account</strong>
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setAuthModal("login");
-                  }}
-                >
-                  Sign In
-                </a>
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setAuthModal("register");
-                  }}
-                >
-                  Register
-                </a>
+                {user
+                  ? (
+                    <>
+                      <a href="/profile">My Profile</a>
+                      <a href="/auth/logout">Sign Out</a>
+                    </>
+                  )
+                  : (
+                    <>
+                      <a href="/auth/login">Sign In</a>
+                      <a href="/auth/login?screen_hint=signup">Register</a>
+                    </>
+                  )}
               </div>
             </div>
           </div>

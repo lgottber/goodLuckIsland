@@ -144,16 +144,10 @@ export default function PodcastPage() {
             <Link href="/shop" className="coral">Book & Support</Link>
           </div>
           <div className="nav-auth">
-            <Link href="/login">
-              <button type="button" className="nav-btn-ghost">
-                Sign In
-              </button>
-            </Link>
-            <Link href="/register">
-              <button type="button" className="nav-btn-solid">
-                Join Free
-              </button>
-            </Link>
+            <a href="/auth/login" className="nav-btn-ghost">Sign In</a>
+            <a href="/auth/login?screen_hint=signup" className="nav-btn-solid">
+              Join Free
+            </a>
           </div>
           <button
             type="button"
