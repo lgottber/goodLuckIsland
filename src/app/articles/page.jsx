@@ -149,7 +149,9 @@ export default function ArticlesPage() {
         </button>
         <Link href="/" onClick={() => setMobileOpen(false)}>Home</Link>
         <Link href="/about" onClick={() => setMobileOpen(false)}>About</Link>
-        <Link href="/shop"onClick={() => setMobileOpen(false)}>Book & Support</Link>
+        <Link href="/shop" onClick={() => setMobileOpen(false)}>
+          Book & Support
+        </Link>
       </div>
 
       <div className="articles-page">

@@ -133,7 +133,7 @@ export default function PodcastPage() {
             <img
               src="/goodLuckIslandLogoSmall.png"
               alt="Good Luck Island Collective"
-              style={{ height: 45, width: "auto", objectFit: "contain" }}
+              style={{ height: 75, width: "auto", objectFit: "contain" }}
             />
           </Link>
           <div className="nav-links">
@@ -168,7 +168,9 @@ export default function PodcastPage() {
         </button>
         <Link href="/" onClick={() => setMobileOpen(false)}>Home</Link>
         <Link href="/about" onClick={() => setMobileOpen(false)}>About</Link>
-        <Link href="/shop"onClick={() => setMobileOpen(false)}>Book & Support</Link>
+        <Link href="/shop" onClick={() => setMobileOpen(false)}>
+          Book & Support
+        </Link>
       </div>
 
       <div className="podcast-page">

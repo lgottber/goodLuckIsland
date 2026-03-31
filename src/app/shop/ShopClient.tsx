@@ -65,12 +65,11 @@ export default function ShopClient({ variants }: Props) {
             <img
               src="/goodLuckIslandLogoSmall.png"
               alt="Good Luck Island Collective"
-              style={{ height: 65, width: "auto", objectFit: "contain" }}
+              style={{ height: 75, width: "auto", objectFit: "contain" }}
             />
           </Link>
           <div className="nav-links">
             <Link href="/">Home</Link>
-            <Link href="/podcast">Podcast</Link>
             <Link href="/about">About</Link>
             <Link href="/shop" className="active">Book & Support</Link>
           </div>
@@ -101,7 +100,9 @@ export default function ShopClient({ variants }: Props) {
         </button>
         <Link href="/" onClick={() => setMobileOpen(false)}>Home</Link>
         <Link href="/about" onClick={() => setMobileOpen(false)}>About</Link>
-        <Link href="/shop" onClick={() => setMobileOpen(false)}>Book & Support</Link>
+        <Link href="/shop" onClick={() => setMobileOpen(false)}>
+          Book & Support
+        </Link>
       </div>
 
       <div className="shop-page">
