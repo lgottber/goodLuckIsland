@@ -57,13 +57,11 @@ export default function AboutPage() {
             <img
               src="/goodLuckIslandLogoSmall.png"
               alt="Good Luck Island Collective"
-              style={{ height: 45, width: "auto", objectFit: "contain" }}
+              style={{ height: 75, width: "auto", objectFit: "contain" }}
             />
           </Link>
           <div className="nav-links">
             <Link href="/">Home</Link>
-            <Link href="/articles">Freemium Content</Link>
-            <Link href="/podcast">Podcast</Link>
             <Link href="/about" className="active">About</Link>
             <Link href="/shop" className="coral">Book & Support</Link>
           </div>
@@ -93,20 +91,8 @@ export default function AboutPage() {
           ✕
         </button>
         <Link href="/" onClick={() => setMobileOpen(false)}>Home</Link>
-        <Link href="/articles" onClick={() => setMobileOpen(false)}>
-          Freemium Content
-        </Link>
-        <Link href="/podcast" onClick={() => setMobileOpen(false)}>
-          Podcast
-        </Link>
         <Link href="/about" onClick={() => setMobileOpen(false)}>About</Link>
-        <Link
-          href="/shop"
-          className="mobile-coral"
-          onClick={() => setMobileOpen(false)}
-        >
-          Book & Support
-        </Link>
+        <Link href="/shop" onClick={() => setMobileOpen(false)}>Book & Support</Link>
       </div>
 
       <div className="about-page">

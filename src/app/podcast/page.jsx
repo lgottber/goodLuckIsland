@@ -138,10 +138,8 @@ export default function PodcastPage() {
           </Link>
           <div className="nav-links">
             <Link href="/">Home</Link>
-            <Link href="/articles">Freemium Content</Link>
-            <Link href="/podcast" className="active">Podcast</Link>
             <Link href="/about">About</Link>
-            <Link href="/shop" className="coral">Book & Support</Link>
+            <Link href="/shop">Book & Support</Link>
           </div>
           <div className="nav-auth">
             <a href="/auth/login" className="nav-btn-ghost">Sign In</a>
@@ -169,20 +167,8 @@ export default function PodcastPage() {
           ✕
         </button>
         <Link href="/" onClick={() => setMobileOpen(false)}>Home</Link>
-        <Link href="/articles" onClick={() => setMobileOpen(false)}>
-          Freemium Content
-        </Link>
-        <Link href="/podcast" onClick={() => setMobileOpen(false)}>
-          Podcast
-        </Link>
         <Link href="/about" onClick={() => setMobileOpen(false)}>About</Link>
-        <Link
-          href="/shop"
-          className="mobile-coral"
-          onClick={() => setMobileOpen(false)}
-        >
-          Book & Support
-        </Link>
+        <Link href="/shop"onClick={() => setMobileOpen(false)}>Book & Support</Link>
       </div>
 
       <div className="podcast-page">

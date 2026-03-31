@@ -9,14 +9,14 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 const BLOG_POSTS = [
   {
     id: 1,
-    tag: "Getting Ready for Retirement",
+    tag: "Fun",
     title: "Popular Advice Isn't Always Helpful Advice",
     excerpt:
       "Loud guidance pushes urgency. Calm education builds confidence. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus.",
     date: "March 1, 2026",
     readTime: "5 min read",
     image:
-      "https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?w=800&q=80",
+      "/excitement.png",
   },
   {
     id: 2,
@@ -27,7 +27,7 @@ const BLOG_POSTS = [
     date: "February 22, 2026",
     readTime: "4 min read",
     image:
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+      "/yoga.png",
   },
   {
     id: 3,
@@ -38,7 +38,7 @@ const BLOG_POSTS = [
     date: "February 14, 2026",
     readTime: "6 min read",
     image:
-      "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80",
+      "/man.png",
   },
 ];
 
@@ -135,24 +135,14 @@ export default function HomePage() {
           <a href="/" className="nav-logo">
             <img
               src="/goodLuckIslandLogoSmall.png"
-              alt="Good Luck Island Collective"
-              style={{ height: 45, width: "auto", objectFit: "contain" }}
+              alt="Good Luck Island Collective Logo"
+              style={{ height: 75, width: "auto", objectFit: "contain" }}
             />
           </a>
           <div className="nav-links">
-            <a href="/articles">Freemium Content</a>
-            <a href="/podcast">Podcast</a>
+            <a href="/">Home</a>
             <a href="/about">About</a>
-            <a
-              href="/shop"
-              style={{
-                color: "var(--coral, #e8673a)",
-                fontWeight: 600,
-                opacity: 1,
-              }}
-            >
-              Book & Support
-            </a>
+            <a href="/shop">Book & Support</a>
           </div>
           <div className="nav-auth">
             {user
@@ -195,18 +185,9 @@ export default function HomePage() {
         >
           ✕
         </button>
-        <a href="/articles" onClick={() => setMobileOpen(false)}>
-          Freemium Content
-        </a>
-        <a href="/podcast" onClick={() => setMobileOpen(false)}>Podcast</a>
+        <a href="/" onClick={() => setMobileOpen(false)}>Home</a>
         <a href="/about" onClick={() => setMobileOpen(false)}>About</a>
-        <a
-          href="/shop"
-          className="mobile-coral"
-          onClick={() => setMobileOpen(false)}
-        >
-          Book & Support
-        </a>
+        <a href="/shop" onClick={() => setMobileOpen(false)}>Book & Support</a>
         <div className="nav-mobile-auth">
           {user
             ? (
@@ -340,17 +321,35 @@ export default function HomePage() {
             <div className="intro-images">
               <div className="intro-img-main">
                 <img
-                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&q=80"
-                  alt="Professional relaxing"
+                  src="/boardWalk.png"
+                  alt="couple on a boardwalk looking at the ocean"
                 />
               </div>
               <div className="intro-img-secondary">
                 <img
-                  src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80"
-                  alt="Ocean waves"
+                  src="/basketball.png"
+                  alt="Laughing basketball team"
                 />
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* ── VIDEOS ── */}
+        <section className="section section-dark">
+          <div className="section-header">
+            <div>
+              <p className="section-label" style={{ color: "#9eb8a8" }}>
+                Watch &amp; Listen
+              </p>
+              <h2 style={{ color: "#fff" }}>Featured Episodes</h2>
+            </div>
+            <a href="#" className="view-all" style={{ color: "#9eb8a8" }}>
+              View all →
+            </a>
+          </div>
+          <div className="video-grid">
+            {FEATURED_VIDEOS.map((v) => <VideoCard key={v.id} video={v} />)}
           </div>
         </section>
 
@@ -359,7 +358,7 @@ export default function HomePage() {
           <div className="section-header">
             <div>
               <p className="section-label">Latest Stories</p>
-              <h2>From the blog</h2>
+              <h2>Recent Articles</h2>
             </div>
             <a href="#" className="view-all">View all stories →</a>
           </div>
@@ -384,31 +383,13 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── VIDEOS ── */}
-        <section className="section section-dark">
-          <div className="section-header">
-            <div>
-              <p className="section-label" style={{ color: "#9eb8a8" }}>
-                Watch &amp; Listen
-              </p>
-              <h2 style={{ color: "#fff" }}>Featured Episodes</h2>
-            </div>
-            <a href="#" className="view-all" style={{ color: "#9eb8a8" }}>
-              View all →
-            </a>
-          </div>
-          <div className="video-grid">
-            {FEATURED_VIDEOS.map((v) => <VideoCard key={v.id} video={v} />)}
-          </div>
-        </section>
-
         {/* ── CTA BAND ── */}
         <section className="cta-band">
           <div className="cta-band-inner">
             <img
               src="/goodLuckIslandLogoFull.png"
               alt="Good Luck Island Collective"
-              style={{ height: 150, width: "auto", objectFit: "contain" }}
+              style={{ height: 350, width: "auto", objectFit: "contain" }}
             />
             <h2>Ready to join the island life?</h2>
             <p>
@@ -440,23 +421,11 @@ export default function HomePage() {
               <img
                 src="/goodLuckIslandLogoSmall.png"
                 alt="Good Luck Island Collective"
-                style={{ height: 45, width: "auto", objectFit: "contain" }}
+                style={{ height: 100, width: "auto", objectFit: "contain" }}
               />
               <span>Curating calm clarity for the next chapter of life.</span>
             </div>
             <div className="footer-links">
-              <div>
-                <strong>Explore</strong>
-                <a href="/articles">Freemium Content</a>
-                <a href="#">Podcast</a>
-                <a href="#">Videos</a>
-              </div>
-              <div>
-                <strong>Community</strong>
-                <a href="/about">About</a>
-                <a href="#">Newsletter</a>
-                <a href="#">Contact</a>
-              </div>
               <div>
                 <strong>Account</strong>
                 {user
