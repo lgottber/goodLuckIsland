@@ -1,3 +1,7 @@
+html {
+  font-size: 162.5%; /* 26px base — scales all rem values site-wide */
+}
+
 a.btn-primary {
   display: inline-block;
   margin: 0.5rem;
