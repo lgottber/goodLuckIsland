@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import NavBar from "../../components/NavBar";
 import "./about.css";
 
 const TESTIMONIALS = [
@@ -39,7 +40,6 @@ export default function AboutPage() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleSubmit = () => {
     if (!formData.email || !formData.message) return;
@@ -50,52 +50,7 @@ export default function AboutPage() {
 
   return (
     <>
-      {/* ── NAV ── */}
-      <nav className="nav">
-        <div className="nav-inner">
-          <Link href="/" className="nav-logo">
-            <img
-              src="/goodLuckIslandLogoSmall.png"
-              alt="Good Luck Island Collective"
-              style={{ height: 75, width: "auto", objectFit: "contain" }}
-            />
-          </Link>
-          <div className="nav-links">
-            <Link href="/">Home</Link>
-            <Link href="/about" className="active">About</Link>
-            <Link href="/shop" className="coral">Book & Support</Link>
-          </div>
-          <div className="nav-auth">
-            <a href="/auth/login" className="nav-btn-ghost">Sign In</a>
-            <a href="/auth/login?screen_hint=signup" className="nav-btn-solid">
-              Join Free
-            </a>
-          </div>
-          <button
-            type="button"
-            className={`nav-hamburger ${mobileOpen ? "open" : ""}`}
-            onClick={() => setMobileOpen(!mobileOpen)}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
-        </div>
-      </nav>
-      <div className={`nav-mobile-menu ${mobileOpen ? "open" : ""}`}>
-        <button
-          type="button"
-          className="nav-mobile-close"
-          onClick={() => setMobileOpen(false)}
-        >
-          ✕
-        </button>
-        <Link href="/" onClick={() => setMobileOpen(false)}>Home</Link>
-        <Link href="/about" onClick={() => setMobileOpen(false)}>About</Link>
-        <Link href="/shop" onClick={() => setMobileOpen(false)}>
-          Book & Support
-        </Link>
-      </div>
+      <NavBar activePage="about" />
 
       <div className="about-page">
         {/* ── HERO SPLIT — Canva style ── */}
@@ -196,11 +151,11 @@ export default function AboutPage() {
         {/* ── NICHOLAS ── */}
         <div className="nicholas-section">
           <div className="nicholas-photo-wrap">
-            {/* Replace with real photo: <img className="nicholas-photo" src="/nicholas.png" alt="Nicholas Livecchi" /> */}
-            <div className="nicholas-photo-placeholder">
-              <span>📷</span>
-              <p>Add your photo here</p>
-            </div>
+            <img
+              className="nicholas-photo"
+              src="/nicholas.png"
+              alt="Nicholas Livecchi"
+            />
             <div className="nicholas-cred-badge">CFP® · CRP® · CPRC®</div>
           </div>
 
@@ -386,14 +341,6 @@ export default function AboutPage() {
         </div>
 
         {/* ── FOOTER BAND — Canva style ── */}
-        <div className="about-footer-band">
-          <img
-            src="/goodLuckIslandLogoSmall.png"
-            alt="Good Luck Island Collective"
-            style={{ height: 45, width: "auto", objectFit: "contain" }}
-          />
-          <span className="about-footer-url">goodluckislandcollective.com</span>
-        </div>
       </div>
     </>
   );

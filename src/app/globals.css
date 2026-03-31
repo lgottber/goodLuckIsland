@@ -1,3 +1,16 @@
+:root {
+  --navy: #1e2d5a;
+  --teal: #2e8b7a;
+  --coral: #e8673a;
+  --coral-dk: #d45a2e;
+  --cream: #f0ebe0;
+  --cream-dk: #e6dfd2;
+  --cream-md: #ede7d9;
+  --muted: #6b7280;
+  --serif: "Cormorant Garamond", Georgia, serif;
+  --sans: "DM Sans", system-ui, sans-serif;
+}
+
 html {
   font-size: 162.5%; /* 26px base — scales all rem values site-wide */
 }

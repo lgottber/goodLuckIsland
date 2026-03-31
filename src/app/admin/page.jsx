@@ -344,7 +344,7 @@ export default function AdminPage() {
           <img
             src="/goodLuckIslandLogoSmall.png"
             alt="Good Luck Island Collective"
-            style={{ height: 45, width: "auto", objectFit: "contain" }}
+            style={{ height: 90, width: "auto", objectFit: "contain" }}
           />
           <div
             style={{

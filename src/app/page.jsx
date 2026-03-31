@@ -1,129 +1,41 @@
 "use client";
 import "./home.css";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import NavBar from "../components/NavBar";
 
 export default function HomePage() {
   const { user } = useUser();
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const heroRef = useRef(null);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(globalThis.scrollY > 60);
-    globalThis.addEventListener("scroll", onScroll, { passive: true });
-    return () => globalThis.removeEventListener("scroll", onScroll);
-  }, []);
 
   return (
     <>
-      {/* ── NAV ── */}
-      <nav className={`nav ${scrolled ? "nav-scrolled" : ""}`}>
-        <div className="nav-inner">
-          <a href="/" className="nav-logo">
-            <img
-              src="/goodLuckIslandLogoSmall.png"
-              alt="Good Luck Island Collective Logo"
-              style={{ height: 75, width: "auto", objectFit: "contain" }}
-            />
-          </a>
-          <div className="nav-links">
-            <a href="/">Home</a>
-            <a href="/about">About</a>
-            <a href="/shop">Book &amp; Support</a>
-          </div>
-          <div className="nav-auth">
-            {user
-              ? (
-                <>
-                  <a href="/profile" className="nav-btn-ghost">
-                    Explore The Island
-                  </a>
-                  <a href="/auth/logout" className="nav-btn-solid">Sign Out</a>
-                </>
-              )
-              : (
-                <>
-                  <a href="/auth/login" className="nav-btn-ghost">Sign In</a>
-                  <a
-                    href="/auth/login?screen_hint=signup"
-                    className="nav-btn-solid"
-                  >
-                    Start Your Lifestyle Discovery
-                  </a>
-                </>
-              )}
-          </div>
-          <button
-            type="button"
-            className={`nav-hamburger ${mobileOpen ? "open" : ""}`}
-            onClick={() => setMobileOpen(!mobileOpen)}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile Menu */}
-      <div className={`nav-mobile-menu ${mobileOpen ? "open" : ""}`}>
-        <button
-          type="button"
-          className="nav-mobile-close"
-          onClick={() => setMobileOpen(false)}
-        >
-          ✕
-        </button>
-        <a href="/" onClick={() => setMobileOpen(false)}>Home</a>
-        <a href="/about" onClick={() => setMobileOpen(false)}>About</a>
-        <a href="/shop" onClick={() => setMobileOpen(false)}>
-          Book &amp; Support
-        </a>
-        <div className="nav-mobile-auth">
-          {user
-            ? (
-              <>
-                <a
-                  href="/profile"
-                  className="ghost"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  Explore The Island
-                </a>
-                <a
-                  href="/auth/logout"
-                  className="solid"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  Sign Out
-                </a>
-              </>
-            )
-            : (
-              <>
-                <a
-                  href="/auth/login"
-                  className="ghost"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  Sign In
-                </a>
-                <a
-                  href="/auth/login?screen_hint=signup"
-                  className="solid"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  Start Your Lifestyle Discovery
-                </a>
-              </>
-            )}
-        </div>
-      </div>
+      <NavBar
+        activePage="home"
+        authSection={user
+          ? (
+            <>
+              <a href="/profile" className="nav-btn-ghost">
+                Explore The Island
+              </a>
+              <a href="/auth/logout" className="nav-btn-solid">Sign Out</a>
+            </>
+          )
+          : (
+            <>
+              <a href="/auth/login" className="nav-btn-ghost">Sign In</a>
+              <a
+                href="/auth/login?screen_hint=signup"
+                className="nav-btn-solid"
+              >
+                Start Your Lifestyle Discovery
+              </a>
+            </>
+          )}
+      />
 
       <main>
         {/* ── SECTION 1: HERO ── */}
-        <section className="hero" ref={heroRef}>
+        <section className="hero">
           <div className="hero-bg" />
           <div className="hero-overlay" />
           <div className="hero-content">

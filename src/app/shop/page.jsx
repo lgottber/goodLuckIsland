@@ -33,7 +33,7 @@ export default function ShopPage() {
             <img
               src="/goodLuckIslandLogoSmall.png"
               alt="Good Luck Island Collective"
-              style={{ height: 75, width: "auto", objectFit: "contain" }}
+              style={{ height: 90, width: "auto", objectFit: "contain" }}
             />
           </Link>
           <div className="nav-links">
@@ -42,9 +42,9 @@ export default function ShopPage() {
             <Link href="/shop" className="active">Book & Support</Link>
           </div>
           <div className="nav-auth">
-            <a href="/auth/login" className="nav-btn-ghost">Sign In</a>
+            <a href="/auth/login" className="nav-btn-ghost">Explore The Island</a>
             <a href="/auth/login?screen_hint=signup" className="nav-btn-solid">
-              Join Free
+              Start Your Lifestyle Discovery
             </a>
           </div>
           <button

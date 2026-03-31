@@ -37,80 +37,9 @@ img {
   display: block;
 }
 
-/* ── NAV ── */
-.nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  padding: 1rem 2rem;
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 1px 20px rgba(0, 0, 0, 0.08);
-}
-.nav-inner {
-  max-width: 1280px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-}
-.nav-logo img {
-  height: 44px;
-  width: auto;
-  object-fit: contain;
-}
-.nav-links {
-  display: flex;
-  gap: 2rem;
-  margin-left: auto;
-}
-.nav-links a {
-  color: var(--navy);
-  font-size: 0.875rem;
-  font-weight: 500;
-  opacity: 0.65;
-  transition: opacity 0.2s;
-}
-.nav-links a:hover, .nav-links a.active {
-  opacity: 1;
-}
-.nav-auth {
-  display: flex;
-  gap: 0.75rem;
-  margin-left: 1.5rem;
-}
-.nav-btn-ghost {
-  background: transparent;
-  border: 1.5px solid var(--navy);
-  color: var(--navy);
-  padding: 0.4rem 1rem;
-  border-radius: 50px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  transition: all 0.2s;
-}
-.nav-btn-ghost:hover {
-  background: rgba(30, 45, 90, 0.06);
-}
-.nav-btn-solid {
-  background: var(--coral);
-  color: #fff;
-  border: none;
-  padding: 0.4rem 1.1rem;
-  border-radius: 50px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  transition: background 0.2s;
-}
-.nav-btn-solid:hover {
-  background: var(--coral-dk);
-}
-
 /* ── PAGE ── */
 .shop-page {
-  padding-top: 72px;
+  padding-top: 110px;
 }
 
 /* ── HERO BAND ── */

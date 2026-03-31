@@ -38,89 +38,9 @@ img {
   display: block;
 }
 
-/* ── NAV ── */
-.nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  padding: 1rem 2rem;
-  background: rgba(240, 235, 224, 0.95);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--cream-dk);
-}
-.nav-inner {
-  max-width: 1280px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-}
-.nav-logo img {
-  height: 44px;
-  width: auto;
-  object-fit: contain;
-}
-.nav-links {
-  display: flex;
-  gap: 2rem;
-  margin-left: auto;
-}
-.nav-links a {
-  color: var(--navy);
-  font-size: 0.875rem;
-  font-weight: 500;
-  opacity: 0.55;
-  transition: opacity 0.2s;
-}
-.nav-links a:hover {
-  opacity: 1;
-}
-.nav-links a.active {
-  opacity: 1;
-  font-weight: 600;
-}
-.nav-links a.coral {
-  color: var(--coral);
-  font-weight: 600;
-  opacity: 1;
-}
-.nav-auth {
-  display: flex;
-  gap: 0.75rem;
-  margin-left: 1.5rem;
-}
-.nav-btn-ghost {
-  background: transparent;
-  border: 1.5px solid var(--navy);
-  color: var(--navy);
-  padding: 0.4rem 1rem;
-  border-radius: 50px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  transition: all 0.2s;
-}
-.nav-btn-ghost:hover {
-  background: rgba(30, 45, 90, 0.06);
-}
-.nav-btn-solid {
-  background: var(--coral);
-  color: #fff;
-  border: none;
-  padding: 0.4rem 1.1rem;
-  border-radius: 50px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  transition: background 0.2s;
-}
-.nav-btn-solid:hover {
-  background: var(--coral-dk);
-}
-
 /* ── PAGE ── */
 .about-page {
-  padding-top: 72px;
+  padding-top: 110px;
 }
 
 /* ── HERO SPLIT — Canva style: text left, photo stack right ── */
