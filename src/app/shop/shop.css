@@ -1,10 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap");
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
 :root {
   --navy: #1e2d5a;
   --teal: #2e8b7a;
@@ -16,23 +19,28 @@
   --serif: "Cormorant Garamond", Georgia, serif;
   --sans: "DM Sans", system-ui, sans-serif;
 }
+
 html {
   scroll-behavior: smooth;
 }
+
 body {
   font-family: var(--sans);
   color: var(--navy);
   background: var(--cream);
   margin: 0;
 }
+
 a {
   text-decoration: none;
   color: inherit;
 }
+
 button {
   font-family: var(--sans);
   cursor: pointer;
 }
+
 img {
   display: block;
 }
@@ -49,6 +57,7 @@ img {
   backdrop-filter: blur(12px);
   box-shadow: 0 1px 20px rgba(0, 0, 0, 0.08);
 }
+
 .nav-inner {
   max-width: 1280px;
   margin: 0 auto;
@@ -56,16 +65,19 @@ img {
   align-items: center;
   gap: 2rem;
 }
+
 .nav-logo img {
   height: 44px;
   width: auto;
   object-fit: contain;
 }
+
 .nav-links {
   display: flex;
   gap: 2rem;
   margin-left: auto;
 }
+
 .nav-links a {
   color: var(--navy);
   font-size: 0.875rem;
@@ -73,14 +85,18 @@ img {
   opacity: 0.65;
   transition: opacity 0.2s;
 }
-.nav-links a:hover, .nav-links a.active {
+
+.nav-links a:hover,
+.nav-links a.active {
   opacity: 1;
 }
+
 .nav-auth {
   display: flex;
   gap: 0.75rem;
   margin-left: 1.5rem;
 }
+
 .nav-btn-ghost {
   background: transparent;
   border: 1.5px solid var(--navy);
@@ -91,9 +107,11 @@ img {
   font-weight: 500;
   transition: all 0.2s;
 }
+
 .nav-btn-ghost:hover {
   background: rgba(30, 45, 90, 0.06);
 }
+
 .nav-btn-solid {
   background: var(--coral);
   color: #fff;
@@ -104,6 +122,7 @@ img {
   font-weight: 600;
   transition: background 0.2s;
 }
+
 .nav-btn-solid:hover {
   background: var(--coral-dk);
 }
@@ -111,6 +130,14 @@ img {
 /* ── PAGE ── */
 .shop-page {
   padding-top: 72px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.shop-page>#collection-component-1774915840099 {
+  flex: 1;
+  margin-top: 5rem;
 }
 
 /* ── HERO BAND ── */
@@ -121,6 +148,7 @@ img {
   position: relative;
   overflow: hidden;
 }
+
 .shop-hero::before {
   content: "";
   position: absolute;
@@ -130,12 +158,14 @@ img {
   background-position: center;
   opacity: 0.12;
 }
+
 .shop-hero-inner {
   position: relative;
   z-index: 1;
   max-width: 640px;
   margin: 0 auto;
 }
+
 .shop-hero-eyebrow {
   font-size: 0.68rem;
   font-weight: 700;
@@ -144,6 +174,7 @@ img {
   color: var(--teal);
   margin-bottom: 1rem;
 }
+
 .shop-hero h1 {
   font-family: var(--serif);
   font-size: clamp(2.5rem, 5vw, 4rem);
@@ -152,10 +183,12 @@ img {
   line-height: 1.1;
   margin-bottom: 1.25rem;
 }
+
 .shop-hero h1 em {
   font-style: italic;
   color: var(--coral);
 }
+
 .shop-hero p {
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.7);
@@ -178,11 +211,13 @@ img {
   align-items: center;
   gap: 1rem;
 }
+
 .shop-divider-line {
   flex: 1;
   height: 1px;
   background: var(--cream-dk);
 }
+
 .shop-divider-label {
   font-size: 0.62rem;
   font-weight: 700;
@@ -203,6 +238,7 @@ img {
 .book-cover-wrap {
   position: relative;
 }
+
 .book-cover-real {
   position: relative;
   border-radius: 6px 14px 14px 6px;
@@ -211,12 +247,14 @@ img {
     -6px 6px 0 rgba(0, 0, 0, 0.06),
     0 24px 60px rgba(30, 45, 90, 0.22);
 }
+
 .book-cover-real img {
   width: 100%;
   height: auto;
   display: block;
   border-radius: 6px 14px 14px 6px;
 }
+
 .book-cover-shadow {
   position: absolute;
   left: 0;
@@ -233,6 +271,7 @@ img {
   flex-direction: column;
   gap: 1.5rem;
 }
+
 .book-eyebrow {
   font-size: 0.68rem;
   font-weight: 700;
@@ -240,6 +279,7 @@ img {
   text-transform: uppercase;
   color: var(--teal);
 }
+
 .book-title {
   font-family: var(--serif);
   font-size: clamp(2rem, 3.5vw, 3rem);
@@ -247,14 +287,17 @@ img {
   color: var(--navy);
   line-height: 1.15;
 }
+
 .book-title em {
   font-style: italic;
 }
+
 .book-subtitle {
   font-size: 1rem;
   color: var(--muted);
   line-height: 1.7;
 }
+
 .book-description {
   font-size: 0.9rem;
   color: var(--muted);
@@ -266,6 +309,7 @@ img {
   flex-direction: column;
   gap: 0.75rem;
 }
+
 .book-format-label {
   font-size: 0.65rem;
   font-weight: 700;
@@ -273,11 +317,13 @@ img {
   text-transform: uppercase;
   color: var(--navy);
 }
+
 .book-format-options {
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
 }
+
 .format-btn {
   display: flex;
   flex-direction: column;
@@ -291,22 +337,28 @@ img {
   transition: all 0.2s;
   min-width: 90px;
 }
-.format-btn:hover, .format-btn.active {
+
+.format-btn:hover,
+.format-btn.active {
   border-color: var(--navy);
   background: var(--cream);
 }
+
 .format-btn.active {
   border-color: var(--coral);
   background: rgba(232, 103, 58, 0.05);
 }
+
 .format-btn-icon {
   font-size: 1.25rem;
 }
+
 .format-btn-label {
   font-size: 0.7rem;
   font-weight: 700;
   color: var(--navy);
 }
+
 .format-btn-price {
   font-size: 0.7rem;
   color: var(--muted);
@@ -318,6 +370,7 @@ img {
   gap: 1rem;
   flex-wrap: wrap;
 }
+
 .btn-buy {
   background: var(--coral);
   color: #fff;
@@ -330,11 +383,13 @@ img {
   text-transform: uppercase;
   transition: all 0.2s;
 }
+
 .btn-buy:hover {
   background: var(--coral-dk);
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(232, 103, 58, 0.3);
 }
+
 .btn-preview {
   background: transparent;
   color: var(--navy);
@@ -345,6 +400,7 @@ img {
   font-weight: 600;
   transition: border-color 0.2s;
 }
+
 .btn-preview:hover {
   border-color: var(--navy);
 }
@@ -355,23 +411,27 @@ img {
   gap: 1rem;
   padding-top: 0.5rem;
 }
+
 .book-review {
   background: #fff;
   border-radius: 14px;
   padding: 1.25rem;
   border-left: 3px solid var(--teal);
 }
+
 .book-review-stars {
   color: #f0b429;
   font-size: 0.8rem;
   margin-bottom: 0.4rem;
 }
+
 .book-review-text {
   font-size: 0.85rem;
   color: var(--navy);
   line-height: 1.7;
   font-style: italic;
 }
+
 .book-review-author {
   font-size: 0.72rem;
   font-weight: 600;
@@ -392,6 +452,7 @@ img {
   flex-direction: column;
   gap: 1.25rem;
 }
+
 .donate-eyebrow {
   font-size: 0.68rem;
   font-weight: 700;
@@ -399,6 +460,7 @@ img {
   text-transform: uppercase;
   color: var(--coral);
 }
+
 .donate-title {
   font-family: var(--serif);
   font-size: clamp(1.75rem, 3vw, 2.75rem);
@@ -406,24 +468,29 @@ img {
   color: var(--navy);
   line-height: 1.15;
 }
+
 .donate-title em {
   font-style: italic;
 }
+
 .donate-description {
   font-size: 0.9rem;
   color: var(--muted);
   line-height: 1.8;
 }
+
 .donate-uses {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
+
 .donate-use-item {
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
 }
+
 .donate-use-icon {
   width: 28px;
   height: 28px;
@@ -436,11 +503,13 @@ img {
   flex-shrink: 0;
   margin-top: 1px;
 }
+
 .donate-use-text {
   font-size: 0.85rem;
   color: var(--navy);
   line-height: 1.6;
 }
+
 .donate-use-text strong {
   display: block;
   font-weight: 600;
@@ -455,6 +524,7 @@ img {
   flex-direction: column;
   gap: 1.5rem;
 }
+
 .donate-card-label {
   font-size: 0.68rem;
   font-weight: 700;
@@ -468,6 +538,7 @@ img {
   grid-template-columns: repeat(3, 1fr);
   gap: 0.6rem;
 }
+
 .donate-amt-btn {
   padding: 0.75rem 0.5rem;
   border-radius: 12px;
@@ -480,19 +551,23 @@ img {
   transition: all 0.2s;
   text-align: center;
 }
+
 .donate-amt-btn:hover {
   border-color: var(--coral);
 }
+
 .donate-amt-btn.active {
   border-color: var(--coral);
   background: rgba(232, 103, 58, 0.07);
   color: var(--coral);
 }
+
 .donate-amt-btn.custom {
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--muted);
 }
+
 .donate-amt-btn.custom.active {
   color: var(--coral);
 }
@@ -508,6 +583,7 @@ img {
   outline: none;
   transition: border-color 0.2s;
 }
+
 .donate-custom-input:focus {
   border-color: var(--navy);
 }
@@ -516,6 +592,7 @@ img {
   display: flex;
   gap: 0.5rem;
 }
+
 .freq-btn {
   flex: 1;
   padding: 0.55rem;
@@ -528,10 +605,12 @@ img {
   color: var(--muted);
   transition: all 0.2s;
 }
+
 .freq-btn:hover {
   border-color: var(--navy);
   color: var(--navy);
 }
+
 .freq-btn.active {
   background: var(--navy);
   border-color: var(--navy);
@@ -543,6 +622,7 @@ img {
   flex-direction: column;
   gap: 0.6rem;
 }
+
 .donate-platform-btn {
   display: flex;
   align-items: center;
@@ -557,30 +637,36 @@ img {
   transition: all 0.2s;
   width: 100%;
 }
+
 .donate-platform-btn.paypal {
   background: #003087;
   color: #fff;
 }
+
 .donate-platform-btn.paypal:hover {
   background: #002268;
   transform: translateY(-1px);
   box-shadow: 0 4px 14px rgba(0, 48, 135, 0.3);
 }
+
 .donate-platform-btn.venmo {
   background: #008cff;
   color: #fff;
 }
+
 .donate-platform-btn.venmo:hover {
   background: #0070cc;
   transform: translateY(-1px);
   box-shadow: 0 4px 14px rgba(0, 140, 255, 0.3);
 }
+
 .donate-platform-label {
   font-size: 0.65rem;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.75);
   display: block;
 }
+
 .donate-privacy {
   font-size: 0.72rem;
   color: var(--muted);
@@ -595,6 +681,7 @@ img {
   padding: 3rem 2.5rem;
   text-align: center;
 }
+
 .thankyou-banner h2 {
   font-family: var(--serif);
   font-size: clamp(1.75rem, 3vw, 2.5rem);
@@ -602,10 +689,12 @@ img {
   color: #fff;
   margin-bottom: 0.75rem;
 }
+
 .thankyou-banner h2 em {
   font-style: italic;
   color: var(--coral);
 }
+
 .thankyou-banner p {
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.65);
@@ -618,17 +707,21 @@ img {
   .book-section {
     grid-template-columns: 1fr;
   }
+
   .book-cover-wrap {
     max-width: 280px;
     margin: 0 auto;
   }
+
   .donate-section {
     grid-template-columns: 1fr;
   }
+
   .nav-links {
     display: none;
   }
 }
+
 @media (max-width: 640px) {
   .donate-amounts {
     grid-template-columns: repeat(2, 1fr);
@@ -646,6 +739,7 @@ img {
   padding: 4px;
   margin-left: auto;
 }
+
 .nav-hamburger span {
   display: block;
   width: 24px;
@@ -654,15 +748,19 @@ img {
   border-radius: 2px;
   transition: all 0.3s;
 }
+
 .nav-hamburger.open span:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
 }
+
 .nav-hamburger.open span:nth-child(2) {
   opacity: 0;
 }
+
 .nav-hamburger.open span:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
 }
+
 .nav-mobile-menu {
   display: none;
   position: fixed;
@@ -678,18 +776,22 @@ img {
   justify-content: center;
   gap: 1.75rem;
 }
+
 .nav-mobile-menu.open {
   display: flex;
 }
+
 .nav-mobile-menu a {
   font-family: var(--sans);
   font-size: 1.4rem;
   font-weight: 600;
   color: var(--navy);
 }
+
 .nav-mobile-menu .mobile-coral {
   color: var(--coral);
 }
+
 .nav-mobile-close {
   position: absolute;
   top: 1.5rem;
@@ -705,42 +807,53 @@ img {
   .nav-hamburger {
     display: flex;
   }
+
   .nav-links {
     display: none !important;
   }
+
   .book-section {
     grid-template-columns: 1fr;
   }
+
   .book-cover-wrap {
     max-width: 280px;
     margin: 0 auto;
   }
+
   .donate-section {
     grid-template-columns: 1fr;
   }
+
   .shop-hero {
     padding: 3rem 1.25rem 4rem;
   }
+
   .shop-content {
     padding: 3rem 1.25rem 4rem;
     gap: 3rem;
   }
 }
+
 @media (max-width: 640px) {
   .donate-amounts {
     grid-template-columns: repeat(2, 1fr);
   }
+
   .book-cta-row {
     flex-direction: column;
     align-items: flex-start;
   }
+
   .book-format-options {
     gap: 0.5rem;
   }
+
   .format-btn {
     min-width: 80px;
     padding: 0.6rem 0.9rem;
   }
+
   .thankyou-banner {
     padding: 2rem 1.25rem;
   }

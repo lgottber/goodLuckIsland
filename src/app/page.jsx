@@ -151,7 +151,7 @@ export default function HomePage() {
                 opacity: 1,
               }}
             >
-              Book & Support
+              Shop
             </a>
           </div>
           <div className="nav-auth">
@@ -205,7 +205,7 @@ export default function HomePage() {
           className="mobile-coral"
           onClick={() => setMobileOpen(false)}
         >
-          Book & Support
+          Shop
         </a>
         <div className="nav-mobile-auth">
           {user
