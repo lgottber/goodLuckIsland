@@ -23,12 +23,14 @@ body {
 /* ── HERO BANNER ── */
 .profile-banner {
   position: relative;
-  height: 220px;
-  overflow: hidden;
+  height: 260px;
+  overflow: visible;
   background: linear-gradient(135deg, #151f3e 0%, var(--navy) 50%, #1a3a50 100%);
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 0 0 60% 60% / 0 0 44px 44px;
+  z-index: 0;
 }
 .profile-banner-wordart {
   position: absolute;
@@ -104,7 +106,7 @@ body {
 .profile-avatar-wrap {
   position: relative;
   flex-shrink: 0;
-  margin-top: -60px;
+  margin-top: -70px;
 }
 .avatar-edit-btn {
   position: absolute;
@@ -214,12 +216,31 @@ body {
 .btn-secondary:hover {
   opacity: 1;
 }
+.btn-cta-outline {
+  background: transparent;
+  color: var(--coral);
+  border: 1.5px solid var(--coral);
+  border-radius: 50px;
+  padding: 0.55rem 1.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--sans);
+}
+.btn-cta-outline:hover {
+  background: var(--coral);
+  color: #fff;
+}
 
 /* ── STATS STRIP ── */
 .profile-stats-wrap {
+  background: #fff;
   border-top: 1px solid var(--cream-dk);
   border-bottom: 1px solid var(--cream-dk);
-  background: #fff;
+  margin-top: 1.25rem;
 }
 .profile-stats-row {
   max-width: 1280px;
@@ -230,18 +251,30 @@ body {
 }
 .profile-stat {
   flex: 1;
-  padding: 1.25rem 2rem;
+  padding: 1.5rem 2rem;
   text-align: center;
   border-right: 1px solid var(--cream-dk);
+  position: relative;
+}
+.profile-stat::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 3px;
+  background: var(--teal);
+  border-radius: 0 0 3px 3px;
 }
 .profile-stat:last-child {
   border-right: none;
 }
 .profile-stat-num {
   font-family: var(--serif);
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 600;
-  color: var(--navy);
+  color: var(--teal);
   line-height: 1;
 }
 .profile-stat-label {
@@ -296,13 +329,32 @@ body {
   margin-bottom: 0.5rem;
 }
 
+.profile-card--bio {
+  position: relative;
+}
+.bio-quote {
+  display: block;
+  font-family: var(--serif);
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--teal);
+  opacity: 0.25;
+  line-height: 0.6;
+  margin-bottom: 0.25rem;
+  user-select: none;
+}
 .bio-text {
-  font-size: 0.95rem;
-  color: var(--muted);
-  line-height: 1.8;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--navy);
+  line-height: 1.75;
 }
 .bio-text.empty {
+  font-family: var(--sans);
   font-style: italic;
+  font-size: 0.95rem;
+  color: var(--muted);
 }
 
 .inline-link {
@@ -359,12 +411,24 @@ body {
   gap: 0.5rem;
 }
 .tag {
-  background: var(--cream);
-  color: var(--navy);
   font-size: 0.72rem;
   font-weight: 600;
-  padding: 0.3rem 0.75rem;
+  padding: 0.35rem 0.85rem;
   border-radius: 50px;
+  font-family: var(--sans);
+}
+.tag-teal {
+  background: var(--teal);
+  color: #fff;
+}
+.tag-navy {
+  background: var(--navy);
+  color: #fff;
+}
+.tag-outline {
+  background: transparent;
+  color: var(--navy);
+  border: 1.5px solid rgba(30, 45, 90, 0.3);
 }
 
 /* ── EDIT MODAL ── */

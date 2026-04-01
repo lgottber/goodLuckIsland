@@ -1135,12 +1135,10 @@ export default function ProfilePage() {
             </div>
 
             <div className="profile-header-actions">
-              {!saved && (
-                <span className="saved-flash">✓ Saved!</span>
-              )}
+              {!saved && <span className="saved-flash">✓ Saved!</span>}
               <button
                 type="button"
-                className="btn-secondary"
+                className="btn-cta-outline"
                 onClick={() => setEditing(true)}
               >
                 Edit Profile
@@ -1149,13 +1147,40 @@ export default function ProfilePage() {
           </div>
         </div>
 
+        {/* ── STATS STRIP ── */}
+        <div className="profile-stats-wrap">
+          <div className="profile-stats-row">
+            <div className="profile-stat">
+              <div className="profile-stat-num">{user.stats.articlesRead}</div>
+              <div className="profile-stat-label">Articles Read</div>
+            </div>
+            <div className="profile-stat">
+              <div className="profile-stat-num">{user.stats.podcastsListened}</div>
+              <div className="profile-stat-label">Podcasts</div>
+            </div>
+            <div className="profile-stat">
+              <div className="profile-stat-num">{user.stats.savedItems}</div>
+              <div className="profile-stat-label">Saved Items</div>
+            </div>
+            <div className="profile-stat">
+              <div className="profile-stat-num">{user.stats.daysActive}</div>
+              <div className="profile-stat-label">Days Active</div>
+            </div>
+          </div>
+        </div>
+
         {/* ── CONTENT ── */}
         <div className="profile-content">
           {/* Bio card */}
-          <div className="profile-card">
+          <div className="profile-card profile-card--bio">
             <p className="section-label-sm">About Me</p>
             {user.bio
-              ? <p className="bio-text">{user.bio}</p>
+              ? (
+                <>
+                  <span className="bio-quote">&ldquo;</span>
+                  <p className="bio-text">{user.bio}</p>
+                </>
+              )
               : (
                 <p className="bio-text empty">
                   No bio yet.{" "}
@@ -1229,8 +1254,13 @@ export default function ProfilePage() {
               {user.interests.length > 0
                 ? (
                   <div className="tag-list">
-                    {user.interests.map((tag) => (
-                      <span key={tag} className="tag">{tag}</span>
+                    {user.interests.map((tag, i) => (
+                      <span
+                        key={tag}
+                        className={`tag ${["tag-teal", "tag-navy", "tag-outline"][i % 3]}`}
+                      >
+                        {tag}
+                      </span>
                     ))}
                   </div>
                 )
