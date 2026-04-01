@@ -1,5 +1,5 @@
-import { fetchProduct } from "../../lib/shopify";
-import ShopClient from "./ShopClient";
+import { fetchProduct } from "../../lib/shopify.ts";
+import ShopClient from "./ShopClient.tsx";
 import process from "node:process";
 
 // export const revalidate = 3600; // re-fetch from Shopify at most once per hour

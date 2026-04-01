@@ -33,20 +33,20 @@ export default function ShopPage() {
             <img
               src="/goodLuckIslandLogoSmall.png"
               alt="Good Luck Island Collective"
-              style={{ height: 45, width: "auto", objectFit: "contain" }}
+              style={{ height: 90, width: "auto", objectFit: "contain" }}
             />
           </Link>
           <div className="nav-links">
             <Link href="/">Home</Link>
-            <Link href="/articles">Freemium Content</Link>
-            <Link href="/podcast">Podcast</Link>
             <Link href="/about">About</Link>
             <Link href="/shop" className="active">Book & Support</Link>
           </div>
           <div className="nav-auth">
-            <a href="/auth/login" className="nav-btn-ghost">Sign In</a>
+            <a href="/auth/login" className="nav-btn-ghost">
+              Explore The Island
+            </a>
             <a href="/auth/login?screen_hint=signup" className="nav-btn-solid">
-              Join Free
+              Start Your Lifestyle Discovery
             </a>
           </div>
           <button
@@ -69,18 +69,8 @@ export default function ShopPage() {
           ✕
         </button>
         <Link href="/" onClick={() => setMobileOpen(false)}>Home</Link>
-        <Link href="/articles" onClick={() => setMobileOpen(false)}>
-          Freemium Content
-        </Link>
-        <Link href="/podcast" onClick={() => setMobileOpen(false)}>
-          Podcast
-        </Link>
         <Link href="/about" onClick={() => setMobileOpen(false)}>About</Link>
-        <Link
-          href="/shop"
-          className="mobile-coral"
-          onClick={() => setMobileOpen(false)}
-        >
+        <Link href="/shop" onClick={() => setMobileOpen(false)}>
           Book & Support
         </Link>
       </div>

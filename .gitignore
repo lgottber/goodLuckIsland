@@ -196,3 +196,6 @@ dist
 .claude/
 memory/
 CLAUDE.md
+
+.history/
+

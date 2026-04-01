@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useUser as useAuth0User } from "@auth0/nextjs-auth0/client";
+import NavBar from "../../components/NavBar.jsx";
 import "./profile.css";
 
 // ─── Mock user data — replace with your real auth/db calls ───────────────────
@@ -18,6 +18,7 @@ const INITIAL_USER = {
   avatarId: "",
   bio:
     "Gen X professional navigating the next chapter with intention. Passionate about financial independence, whole-life wellness, and making the most of what comes next.",
+  mantra: "Purpose doesn't retire when you do.",
   memberSince: "January 2026",
   interests: [
     "Retirement Planning",
@@ -49,190 +50,6 @@ const INITIAL_USER = {
   workingIncome: "",
   netWorth: "",
 };
-
-const SAVED_ARTICLES = [
-  {
-    id: 1,
-    tag: "Retirement",
-    title: "Popular Advice Isn't Always Helpful Advice",
-    image:
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80",
-  },
-  {
-    id: 2,
-    tag: "Wellness",
-    title: "A Calm Place to Think About What Comes Next",
-    image:
-      "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400&q=80",
-  },
-  {
-    id: 3,
-    tag: "Clear Thinking",
-    title: "Rethinking Retirement, One Choice at a Time",
-    image:
-      "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=400&q=80",
-  },
-  {
-    id: 4,
-    tag: "Wellness",
-    title: "Whole-Life Wellness: What It Really Means After 50",
-    image:
-      "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&q=80",
-  },
-];
-
-// ─── My Backpack Sections ─────────────────────────────────────────────────────
-const BACKPACK_SECTIONS = [
-  {
-    id: "challenge",
-    label: "The 1 Question Retirement Challenge",
-    emoji: "❓",
-    color: "#e8673a",
-    tagline: "One question. One week. A lifetime of clarity.",
-    description:
-      "Each week a single powerful question helps you think more clearly about what retirement really means to you. No right answers — just honest reflection.",
-    type: "challenge",
-  },
-  {
-    id: "pinwhirl",
-    label: "The Pinwhirl Tool",
-    emoji: "🌀",
-    color: "#2e8b7a",
-    tagline: "Spin your priorities into focus.",
-    description:
-      "A guided self-assessment that helps you visualize the different dimensions of your retirement life — financial, social, physical, purposeful — and where you stand today.",
-    type: "coming-soon",
-  },
-  {
-    id: "values",
-    label: "Values & Beliefs",
-    emoji: "🧭",
-    color: "#1e2d5a",
-    tagline: "Know what you stand for before you stand down.",
-    description:
-      "Retirement is a chance to live more aligned with what you truly value. This section helps you identify, articulate, and commit to the values that will guide your next chapter.",
-    type: "coming-soon",
-  },
-  {
-    id: "purpose",
-    label: "Finding Your Purpose",
-    emoji: "🔦",
-    color: "#7a5a9a",
-    tagline: "What gets you out of bed when work doesn't?",
-    description:
-      "Purpose doesn't retire when you do. This section guides you through exercises to discover what gives your life meaning beyond your career identity.",
-    type: "coming-soon",
-  },
-  {
-    id: "skills",
-    label: "New Skills",
-    emoji: "🛠️",
-    color: "#5a8a6a",
-    tagline: "Life skills for the chapter ahead.",
-    description:
-      "From cooking to budgeting to technology to health management — retirement comes with a new set of everyday skills worth developing. Explore what's worth learning next.",
-    type: "coming-soon",
-  },
-  {
-    id: "refinement",
-    label: "Refinement",
-    emoji: "✨",
-    color: "#c87840",
-    tagline: "Bringing it all together.",
-    description:
-      "You've reflected, you've explored, you've grown. This section helps you synthesize everything into a clear, personal retirement vision you can actually live.",
-    type: "coming-soon",
-  },
-  {
-    id: "giveback",
-    label: "Giveback & Share",
-    emoji: "🤲",
-    color: "#3a6a9a",
-    tagline: "Share your story. Give back. Pay it forward.",
-    description:
-      "Your journey matters. This section invites you to share your experiences with the collective, mentor others just starting out, and find ways to contribute beyond yourself.",
-    type: "coming-soon",
-  },
-];
-
-// ─── Weekly Retirement Questions ──────────────────────────────────────────────
-const WEEKLY_QUESTIONS = [
-  {
-    question:
-      "If money were no object, how would you spend your first week of retirement?",
-    prompt:
-      "Close your eyes and really picture it. Where are you? Who's with you? What does a Tuesday feel like?",
-  },
-  {
-    question: "What does 'enough' mean to you financially?",
-    prompt:
-      "Not a number — a feeling. What would it feel like to know you have enough? What would change?",
-  },
-  {
-    question: "What are you most afraid of about retirement?",
-    prompt:
-      "Name it honestly. Loss of identity? Running out of money? Boredom? Fear named is fear tamed.",
-  },
-  {
-    question:
-      "What would you do differently in your career if you could start over?",
-    prompt:
-      "This isn't about regret — it's about understanding what truly matters to you as you look ahead.",
-  },
-  {
-    question:
-      "Who do you want to be in retirement — not what you want to do, but who?",
-    prompt:
-      "Think about your values, your relationships, and the kind of person you're still becoming.",
-  },
-  {
-    question:
-      "What is one thing you keep putting off that retirement would finally give you time for?",
-    prompt:
-      "That creative project. That place you've always wanted to visit. That relationship you want to rebuild.",
-  },
-  {
-    question: "How do you define a life well-lived?",
-    prompt:
-      "If you looked back at 85, what would make you feel proud? What would feel like a waste?",
-  },
-  {
-    question:
-      "What does your ideal Tuesday in retirement look like — in detail?",
-    prompt:
-      "Not vacation. Not a special day. Just a regular, ordinary, beautiful Tuesday.",
-  },
-  {
-    question:
-      "What role will work — or purpose-driven activity — play in your retirement?",
-    prompt:
-      "Some people can't imagine stopping. Others can't wait. Most are somewhere in between. Where are you?",
-  },
-  {
-    question:
-      "What conversation about money or retirement are you avoiding with someone you love?",
-    prompt:
-      "With a spouse? A parent? An adult child? What would it take to have it this week?",
-  },
-  {
-    question:
-      "If you retired tomorrow, what would you miss most about working?",
-    prompt:
-      "The people? The structure? The feeling of contributing? Knowing this helps you plan to replace it.",
-  },
-  {
-    question: "What does your health need from you in the next five years?",
-    prompt:
-      "Retirement dreams are built on a foundation of health. What's one thing your future self is asking you to start now?",
-  },
-];
-
-function getWeeklyQuestion() {
-  const now = new Date();
-  const start = new Date(now.getFullYear(), 0, 1);
-  const weekNum = Math.floor((now - start) / (7 * 24 * 60 * 60 * 1000));
-  return WEEKLY_QUESTIONS[weekNum % WEEKLY_QUESTIONS.length];
-}
 
 // ─── Avatar Characters ────────────────────────────────────────────────────────
 const AVATAR_ERAS = [
@@ -1230,18 +1047,7 @@ export default function ProfilePage() {
   }, [auth0User]);
   const [editing, setEditing] = useState(false);
   const [pickingAvatar, setPickingAvatar] = useState(false);
-  const [activeTab, setActiveTab] = useState("overview");
   const [saved, setSaved] = useState(true);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeBackpackSection, setActiveBackpackSection] = useState(null);
-  const [reflection, setReflection] = useState("");
-  const [reflectionSaved, setReflectionSaved] = useState(false);
-  const weeklyQ = getWeeklyQuestion();
-
-  const saveReflection = () => {
-    setReflectionSaved(true);
-    setTimeout(() => setReflectionSaved(false), 2500);
-  };
 
   const initials = `${user.firstName[0]}${user.lastName[0]}`;
 
@@ -1270,88 +1076,22 @@ export default function ProfilePage() {
         />
       )}
 
-      {/* ── NAV ── */}
-      <nav className="nav">
-        <div className="nav-inner">
-          <Link href="/" className="nav-logo">
-            <img
-              src="/goodLuckIslandLogoSmall.png"
-              alt="Good Luck Island Collective"
-              style={{ height: 45, width: "auto", objectFit: "contain" }}
-            />
-          </Link>
-          <div className="nav-links">
-            <Link href="/">Home</Link>
-            <Link href="/articles">Freemium Content</Link>
-            <Link href="/podcast">Podcast</Link>
-            <Link href="/about">About</Link>
-            <Link
-              href="/shop"
-              style={{ color: "var(--coral)", fontWeight: 600, opacity: 1 }}
-            >
-              Book & Support
-            </Link>
-          </div>
-          <div className="nav-auth">
-            <div
-              className="nav-avatar-placeholder"
-              title={`${user.firstName} ${user.lastName}`}
-              onClick={() => setPickingAvatar(true)}
-              style={{ cursor: "pointer" }}
-            >
-              <AvatarDisplay
-                avatarId={user.avatarId}
-                avatarUrl={user.avatarUrl}
-                initials={initials}
-                size={36}
-                borderColor="var(--teal)"
-              />
-            </div>
-            <a href="/auth/logout" className="nav-btn-ghost">Sign Out</a>
-          </div>
-          <button
-            type="button"
-            className={`nav-hamburger ${mobileOpen ? "open" : ""}`}
-            onClick={() => setMobileOpen(!mobileOpen)}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
-        </div>
-      </nav>
-      <div className={`nav-mobile-menu ${mobileOpen ? "open" : ""}`}>
-        <button
-          type="button"
-          className="nav-mobile-close"
-          onClick={() => setMobileOpen(false)}
-        >
-          ✕
-        </button>
-        <Link href="/" onClick={() => setMobileOpen(false)}>Home</Link>
-        <Link href="/articles" onClick={() => setMobileOpen(false)}>
-          Freemium Content
-        </Link>
-        <Link href="/podcast" onClick={() => setMobileOpen(false)}>
-          Podcast
-        </Link>
-        <Link href="/about" onClick={() => setMobileOpen(false)}>About</Link>
-        <Link
-          href="/shop"
-          className="mobile-coral"
-          onClick={() => setMobileOpen(false)}
-        >
-          Book & Support
-        </Link>
-      </div>
+      <NavBar activePage="profile" largeAvatar />
 
       <div className="profile-page">
         {/* ── BANNER ── */}
         <div className="profile-banner">
-          <div className="profile-banner-bg" />
-          <button type="button" className="profile-banner-edit">
-            Change Cover
-          </button>
+          <div className="profile-banner-wordart" aria-hidden="true">
+            <span className="banner-mantra-ghost">{user.mantra}</span>
+            <span className="banner-mantra-ghost banner-mantra-ghost--sm">
+              {user.mantra}
+            </span>
+          </div>
+          <div className="profile-banner-mantra">
+            <span className="banner-mantra-quote">&ldquo;</span>
+            <span className="banner-mantra-text">{user.mantra}</span>
+            <span className="banner-mantra-quote">&rdquo;</span>
+          </div>
         </div>
 
         {/* ── PROFILE HEADER ── */}
@@ -1362,7 +1102,7 @@ export default function ProfilePage() {
                 avatarId={user.avatarId}
                 avatarUrl={user.avatarUrl}
                 initials={initials}
-                size={104}
+                size={120}
               />
               <button
                 type="button"
@@ -1377,25 +1117,28 @@ export default function ProfilePage() {
             <div className="profile-header-info">
               <h1>{user.firstName} {user.lastName}</h1>
               <p className="profile-handle">{user.handle}</p>
-              <span className="profile-badge">🌴 Islander</span>
+              <div className="profile-meta-row">
+                <span className="profile-badge">🌴 Islander</span>
+                {user.occupation && (
+                  <span className="profile-occupation">
+                    <Icon name="briefcase" size={13} />
+                    {user.occupation}
+                  </span>
+                )}
+                {user.location && (
+                  <span className="profile-location">
+                    <Icon name="location" size={13} />
+                    {user.location}
+                  </span>
+                )}
+              </div>
             </div>
 
             <div className="profile-header-actions">
-              {!saved && (
-                <span
-                  style={{
-                    fontSize: "0.78rem",
-                    color: "var(--teal)",
-                    fontWeight: 600,
-                    alignSelf: "center",
-                  }}
-                >
-                  ✓ Saved!
-                </span>
-              )}
+              {!saved && <span className="saved-flash">✓ Saved!</span>}
               <button
                 type="button"
-                className="btn-secondary"
+                className="btn-cta-outline"
                 onClick={() => setEditing(true)}
               >
                 Edit Profile
@@ -1404,11 +1147,59 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* ── CONTENT GRID ── */}
+        {/* ── STATS STRIP ── */}
+        <div className="profile-stats-wrap">
+          <div className="profile-stats-row">
+            <div className="profile-stat">
+              <div className="profile-stat-num">{user.stats.articlesRead}</div>
+              <div className="profile-stat-label">Articles Read</div>
+            </div>
+            <div className="profile-stat">
+              <div className="profile-stat-num">
+                {user.stats.podcastsListened}
+              </div>
+              <div className="profile-stat-label">Podcasts</div>
+            </div>
+            <div className="profile-stat">
+              <div className="profile-stat-num">{user.stats.savedItems}</div>
+              <div className="profile-stat-label">Saved Items</div>
+            </div>
+            <div className="profile-stat">
+              <div className="profile-stat-num">{user.stats.daysActive}</div>
+              <div className="profile-stat-label">Days Active</div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── CONTENT ── */}
         <div className="profile-content">
-          {/* ── SIDEBAR ── */}
-          <aside className="profile-sidebar">
-            {/* Info */}
+          {/* Bio card */}
+          <div className="profile-card profile-card--bio">
+            <p className="section-label-sm">About Me</p>
+            {user.bio
+              ? (
+                <>
+                  <span className="bio-quote">&ldquo;</span>
+                  <p className="bio-text">{user.bio}</p>
+                </>
+              )
+              : (
+                <p className="bio-text empty">
+                  No bio yet.{" "}
+                  <button
+                    type="button"
+                    className="inline-link"
+                    onClick={() => setEditing(true)}
+                  >
+                    Add a bio →
+                  </button>
+                </p>
+              )}
+          </div>
+
+          {/* About & Interests row */}
+          <div className="overview-two-col">
+            {/* About */}
             <div className="profile-card">
               <h3>About</h3>
               {user.occupation && (
@@ -1453,14 +1244,8 @@ export default function ProfilePage() {
                   No details added yet.{" "}
                   <button
                     type="button"
+                    className="inline-link"
                     onClick={() => setEditing(true)}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      color: "var(--coral)",
-                      fontWeight: 600,
-                      cursor: "pointer",
-                    }}
                   >
                     Add info →
                   </button>
@@ -1474,8 +1259,15 @@ export default function ProfilePage() {
               {user.interests.length > 0
                 ? (
                   <div className="tag-list">
-                    {user.interests.map((tag) => (
-                      <span key={tag} className="tag">{tag}</span>
+                    {user.interests.map((tag, i) => (
+                      <span
+                        key={tag}
+                        className={`tag ${
+                          ["tag-teal", "tag-navy", "tag-outline"][i % 3]
+                        }`}
+                      >
+                        {tag}
+                      </span>
                     ))}
                   </div>
                 )
@@ -1484,218 +1276,14 @@ export default function ProfilePage() {
                     No interests added.{" "}
                     <button
                       type="button"
+                      className="inline-link"
                       onClick={() => setEditing(true)}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        color: "var(--coral)",
-                        fontWeight: 600,
-                        cursor: "pointer",
-                      }}
                     >
                       Add some →
                     </button>
                   </p>
                 )}
             </div>
-          </aside>
-
-          {/* ── MAIN PANEL ── */}
-          <div className="profile-main">
-            <div className="tab-bar">
-              {[
-                { id: "overview", label: "Overview" },
-                { id: "saved", label: "Saved" },
-                { id: "backpack", label: "🎒 My Backpack" },
-              ].map((tab) => (
-                <button
-                  type="button"
-                  key={tab.id}
-                  className={`tab-btn ${activeTab === tab.id ? "active" : ""}`}
-                  onClick={() => {
-                    setActiveTab(tab.id);
-                    setActiveBackpackSection(null);
-                  }}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Overview Tab */}
-            {activeTab === "overview" && (
-              <div className="profile-card">
-                <p className="section-label-sm">About Me</p>
-                {user.bio
-                  ? <p className="bio-text">{user.bio}</p>
-                  : (
-                    <p className="bio-text empty">
-                      No bio yet.{" "}
-                      <button
-                        type="button"
-                        onClick={() => setEditing(true)}
-                        style={{
-                          background: "none",
-                          border: "none",
-                          color: "var(--coral)",
-                          fontWeight: 600,
-                          cursor: "pointer",
-                        }}
-                      >
-                        Add a bio →
-                      </button>
-                    </p>
-                  )}
-              </div>
-            )}
-
-            {/* Saved Tab */}
-            {activeTab === "saved" && (
-              <div className="profile-card">
-                <p
-                  className="section-label-sm"
-                  style={{ marginBottom: "1rem" }}
-                >
-                  Saved Articles &amp; Episodes
-                </p>
-                <div className="saved-grid">
-                  {SAVED_ARTICLES.map((item) => (
-                    <div key={item.id} className="saved-card">
-                      <div className="saved-card-img">
-                        <img src={item.image} alt={item.title} />
-                      </div>
-                      <div className="saved-card-body">
-                        <div className="saved-card-tag">{item.tag}</div>
-                        <h4>{item.title}</h4>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* My Backpack Tab */}
-            {activeTab === "backpack" && !activeBackpackSection && (
-              <div className="profile-card">
-                <p className="section-label-sm">My Backpack</p>
-                <p
-                  style={{
-                    fontSize: "0.9rem",
-                    color: "var(--muted)",
-                    marginTop: "0.4rem",
-                    marginBottom: "1.75rem",
-                    lineHeight: 1.7,
-                  }}
-                >
-                  Your personal retirement toolkit. Work through each section at
-                  your own pace — every step brings your next chapter into
-                  clearer focus.
-                </p>
-                <div className="backpack-section-grid">
-                  {BACKPACK_SECTIONS.map((section, i) => (
-                    <button
-                      type="button"
-                      key={section.id}
-                      className={`backpack-section-card ${
-                        section.type === "coming-soon" ? "coming-soon" : ""
-                      }`}
-                      onClick={() =>
-                        section.type !== "coming-soon" &&
-                        setActiveBackpackSection(section.id)}
-                      style={{ "--section-color": section.color }}
-                    >
-                      <div className="backpack-section-num">
-                        {String(i + 1).padStart(2, "0")}
-                      </div>
-                      <div className="backpack-section-emoji">
-                        {section.emoji}
-                      </div>
-                      <div className="backpack-section-info">
-                        <h4 className="backpack-section-title">
-                          {section.label}
-                        </h4>
-                        <p className="backpack-section-tagline">
-                          {section.tagline}
-                        </p>
-                      </div>
-                      {section.type === "coming-soon"
-                        ? (
-                          <span className="backpack-coming-soon">
-                            Coming Soon
-                          </span>
-                        )
-                        : <span className="backpack-section-arrow">→</span>}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Backpack: 1 Question Challenge */}
-            {activeTab === "backpack" &&
-              activeBackpackSection === "challenge" && (
-              <div className="profile-card">
-                <div className="backpack-section-nav">
-                  <button
-                    type="button"
-                    className="backpack-back-btn"
-                    onClick={() => setActiveBackpackSection(null)}
-                  >
-                    ← Back to Backpack
-                  </button>
-                  <span className="backpack-section-breadcrumb">
-                    ❓ The 1 Question Retirement Challenge
-                  </span>
-                </div>
-
-                <div className="challenge-card">
-                  <div className="challenge-week-badge">
-                    Week of {new Date().toLocaleDateString("en-US", {
-                      month: "long",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </div>
-                  <h2 className="challenge-question">{weeklyQ.question}</h2>
-                  <p className="challenge-prompt">{weeklyQ.prompt}</p>
-                </div>
-
-                <div className="challenge-reflection">
-                  <label className="challenge-reflection-label">
-                    Your Reflection
-                  </label>
-                  <textarea
-                    className="challenge-textarea"
-                    value={reflection}
-                    onChange={(e) => setReflection(e.target.value)}
-                    placeholder="Take your time. There are no wrong answers here. Just write honestly..."
-                    rows={8}
-                  />
-                  <div className="challenge-reflection-footer">
-                    <span className="challenge-reflection-hint">
-                      🔒 Your reflection is private — only you can see it.
-                    </span>
-                    <button
-                      type="button"
-                      className="btn-save"
-                      onClick={saveReflection}
-                      disabled={!reflection.trim()}
-                      style={{ opacity: !reflection.trim() ? 0.5 : 1 }}
-                    >
-                      {reflectionSaved ? "✓ Saved!" : "Save Reflection"}
-                    </button>
-                  </div>
-                </div>
-
-                <div className="challenge-archive-note">
-                  <span>📅</span>
-                  <p>
-                    A new question appears every week. Your saved reflections
-                    will build into a personal retirement journal over time.
-                  </p>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>

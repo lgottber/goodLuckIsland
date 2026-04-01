@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./home.css";
-import { Providers } from "./providers";
+import { Providers } from "./providers.tsx";
 
 export const metadata: Metadata = {
   title: "Good Luck Island Collective",

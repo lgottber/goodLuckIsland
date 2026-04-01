@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { createCart, type ShopifyVariant } from "../../lib/shopify";
+import { createCart, type ShopifyVariant } from "../../lib/shopify.ts";
+import NavBar from "../../components/NavBar.jsx";
 import "./shop.css";
 
 const DONATION_AMOUNTS = ["$5", "$10", "$25", "$50", "$100", "Custom"];
@@ -32,7 +32,6 @@ export default function ShopClient({ variants }: Props) {
   const [donationAmount, setDonationAmount] = useState("$25");
   const [customAmount, setCustomAmount] = useState("");
   const [frequency, setFrequency] = useState("one-time");
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [buying, setBuying] = useState(false);
   const [buyError, setBuyError] = useState<string | null>(null);
 
@@ -58,64 +57,7 @@ export default function ShopClient({ variants }: Props) {
 
   return (
     <>
-      {/* ── NAV ── */}
-      <nav className="nav">
-        <div className="nav-inner">
-          <Link href="/" className="nav-logo">
-            <img
-              src="/goodLuckIslandLogoSmall.png"
-              alt="Good Luck Island Collective"
-              style={{ height: 65, width: "auto", objectFit: "contain" }}
-            />
-          </Link>
-          <div className="nav-links">
-            <Link href="/">Home</Link>
-            <Link href="/articles">Freemium Content</Link>
-            <Link href="/podcast">Podcast</Link>
-            <Link href="/about">About</Link>
-            <Link href="/shop" className="active">Book & Support</Link>
-          </div>
-          <div className="nav-auth">
-            <a href="/auth/login" className="nav-btn-ghost">Sign In</a>
-            <a href="/auth/login?screen_hint=signup" className="nav-btn-solid">
-              Join Free
-            </a>
-          </div>
-          <button
-            type="button"
-            className={`nav-hamburger ${mobileOpen ? "open" : ""}`}
-            onClick={() => setMobileOpen(!mobileOpen)}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
-        </div>
-      </nav>
-      <div className={`nav-mobile-menu ${mobileOpen ? "open" : ""}`}>
-        <button
-          type="button"
-          className="nav-mobile-close"
-          onClick={() => setMobileOpen(false)}
-        >
-          ✕
-        </button>
-        <Link href="/" onClick={() => setMobileOpen(false)}>Home</Link>
-        <Link href="/articles" onClick={() => setMobileOpen(false)}>
-          Freemium Content
-        </Link>
-        <Link href="/podcast" onClick={() => setMobileOpen(false)}>
-          Podcast
-        </Link>
-        <Link href="/about" onClick={() => setMobileOpen(false)}>About</Link>
-        <Link
-          href="/shop"
-          className="mobile-coral"
-          onClick={() => setMobileOpen(false)}
-        >
-          Book & Support
-        </Link>
-      </div>
+      <NavBar activePage="shop" />
 
       <div className="shop-page">
         {/* ── HERO ── */}
