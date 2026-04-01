@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import NavBar from "../../components/NavBar";
+import NavBar from "../../components/NavBar.jsx";
 import "./about.css";
 
 const TESTIMONIALS = [
@@ -50,7 +50,7 @@ export default function AboutPage() {
 
   return (
     <>
-      <NavBar activePage="about" />
+      <NavBar activePage="about" largeAvatar />
 
       <div className="about-page">
         {/* ── HERO SPLIT — Canva style ── */}
@@ -79,12 +79,6 @@ export default function AboutPage() {
                 clarity, confidence, and no regrets.
               </p>
             </div>
-            <div className="about-search-bar">
-              <span>Good Luck Island Collective</span>
-              <div className="about-search-bar-divider" />
-              <button type="button" className="about-search-btn">🔍</button>
-            </div>
-            <p className="about-url">goodluckislandcollective.com</p>
           </div>
 
           {/* Photo stack — right column, Canva style */}
@@ -150,67 +144,52 @@ export default function AboutPage() {
 
         {/* ── NICHOLAS ── */}
         <div className="nicholas-section">
-          <div className="nicholas-photo-wrap">
-            <img
-              className="nicholas-photo"
-              src="/nicholas.png"
-              alt="Nicholas Livecchi"
-            />
-            <div className="nicholas-cred-badge">CFP® · CRP® · CPRC®</div>
-          </div>
-
-          <div className="nicholas-info">
+          <div className="nicholas-heading">
             <p className="nicholas-eyebrow">Meet the Founder</p>
             <h2>Nicholas Livecchi</h2>
-            <p>
-              Nicholas Livecchi has spent his career helping Gen X professionals
-              navigate the gap between where they are and where they want to be
-              in retirement. As a Certified Financial Planner, Certified
-              Retirement Planner, and Certified Pre-Retirement Coach, he brings
-              a rare combination of financial expertise and human-centered
-              guidance to everything he creates.
-            </p>
-            <p>
-              But Good Luck Island Collective isn't just a financial education
-              platform. It's the project Nicholas always wished existed — a
-              calm, honest, whole-life companion for the retirement transition.
-              One that asks the hard questions, challenges the conventional
-              wisdom, and meets people exactly where they are.
-            </p>
-            <p>
-              His book,{" "}
-              <em>Don't Drink the Retirement Planning Cool Aid</em>, is the
-              foundation. The podcast, the tools, and this platform are what
-              comes next.
-            </p>
+          </div>
 
-            <div className="nicholas-credentials">
-              <p className="nicholas-cred-label">Credentials</p>
-              {[
-                "Certified Financial Planner (CFP®)",
-                "Certified Retirement Planner (CRP®)",
-                "Certified Pre-Retirement Coach (CPRC®)",
-                "Author — Don't Drink the Retirement Planning Cool Aid",
-                "Host — Good Luck Island Collective Podcast",
-              ].map((c) => (
-                <div key={c} className="cred-item">
-                  <div className="cred-dot" />
-                  {c}
-                </div>
-              ))}
+          <div className="nicholas-columns">
+            <div className="nicholas-photo-wrap">
+              <img
+                className="nicholas-photo"
+                src="/nicholas.png"
+                alt="Nicholas Livecchi"
+              />
+              <div className="nicholas-cred-badge">
+                CFP® · CRP® · CPRC® <br /> Author · Podcast Host
+              </div>
+              <div className="nicholas-links">
+                <Link href="/shop">
+                  <button type="button" className="btn-nicholas-primary">
+                    Get the Book
+                  </button>
+                </Link>
+                <Link href="/podcast">
+                  <button type="button" className="btn-nicholas-ghost">
+                    Listen to the Podcast →
+                  </button>
+                </Link>
+              </div>
             </div>
 
-            <div className="nicholas-links">
-              <Link href="/shop">
-                <button type="button" className="btn-nicholas-primary">
-                  Get the Book
-                </button>
-              </Link>
-              <Link href="/podcast">
-                <button type="button" className="btn-nicholas-ghost">
-                  Listen to the Podcast →
-                </button>
-              </Link>
+            <div className="nicholas-info">
+              <p>
+                Nicholas Livecchi has dedicated his career to helping Gen X
+                professionals bridge the gap between where they are and where
+                they want to be in retirement. As a Certified Financial Planner,
+                Certified Retirement Planner, and Certified Pre-Retirement
+                Coach, he combines deep financial expertise with a
+                human-centered approach, guiding people through both the
+                practical and emotional sides of this major life transition.
+                Good Luck Island Collective is more than a financial education
+                platform—it’s the resource Nicholas always wished existed: a
+                calm, honest, and holistic companion for retirement that
+                challenges conventional wisdom and encourages deeper reflection.
+                His book, Don’t Drink the Retirement Planning Cool Aid, lays the
+                foundation, while the podcast, tools, and platform build on that
+                vision to support people every step of the way.
+              </p>
             </div>
           </div>
         </div>

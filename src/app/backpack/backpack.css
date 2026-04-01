@@ -12,98 +12,197 @@ body {
   padding-top: 110px;
 }
 
-/* ── Header ── */
+/* ── Header banner (arch-bottom, matches profile/template style) ── */
 .backpack-header {
-  background: var(--navy);
+  background: url("/backpack.jpg") center 30% / cover no-repeat;
   color: #fff;
-  padding: 4.5rem 2rem 4rem;
+  padding: 4rem 2rem 5.5rem;
   text-align: center;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+  border-radius: 0 0 60% 60% / 0 0 44px 44px;
+  margin-bottom: 3rem;
 }
 .backpack-header::before {
-  content: "🎒";
+  content: "";
   position: absolute;
-  font-size: 18rem;
-  opacity: 0.04;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(30, 45, 90, 0.72) 0%,
+    rgba(30, 45, 90, 0.58) 100%
+  );
   pointer-events: none;
-  line-height: 1;
+  border-radius: inherit;
 }
 .backpack-eyebrow {
   font-size: 0.65rem;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--teal);
-  margin-bottom: 1rem;
+  margin-bottom: 0.85rem;
+  position: relative;
+  z-index: 1;
 }
 .backpack-header h1 {
   font-family: var(--serif);
-  font-size: clamp(2.2rem, 5vw, 3.5rem);
-  font-weight: 600;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 700;
   color: #fff;
   line-height: 1.1;
   margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
 }
 .backpack-header p {
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.6);
-  max-width: 520px;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 500px;
   margin: 0 auto;
-  line-height: 1.7;
+  line-height: 1.75;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Progress strip ── */
+.backpack-progress-strip {
+  max-width: 860px;
+  margin: -1.5rem auto 0;
+  background: #fff;
+  border-radius: 20px;
+  padding: 1.25rem 2rem;
+  box-shadow: 0 4px 24px rgba(30, 45, 90, 0.09);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 2;
+}
+.backpack-progress-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.5;
+  white-space: nowrap;
+}
+.backpack-progress-bar-wrap {
+  flex: 1;
+  min-width: 120px;
+  height: 7px;
+  background: var(--cream-dk, #e6dfd2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.backpack-progress-bar {
+  height: 100%;
+  width: 14%;
+  background: linear-gradient(90deg, var(--teal), #3aaa96);
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+.backpack-progress-pct {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--teal);
+  white-space: nowrap;
 }
 
 /* ── Content ── */
 .backpack-content {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 3.5rem 2rem 6rem;
+  padding: 2rem 2rem 6rem;
+}
+
+/* ── Photo trio ── */
+.backpack-photo-trio {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 200px;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  align-items: end;
+}
+.backpack-photo-item {
+  border-radius: 18px;
+  overflow: hidden;
+  height: 180px;
+}
+.backpack-photo-item--tall {
+  height: 220px;
+  align-self: center;
+}
+.backpack-photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.backpack-photo-item:hover img {
+  transform: scale(1.04);
 }
 
 /* ── Section grid ── */
 .backpack-section-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.4rem;
 }
 
 .backpack-section-card {
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.5rem;
-  border-radius: 18px;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  border-radius: 20px;
   background: #fff;
   border: none;
-  border-left: 4px solid var(--section-color, var(--navy));
-  box-shadow: 0 2px 14px rgba(30, 45, 90, 0.06);
+  box-shadow: 0 2px 16px rgba(30, 45, 90, 0.07);
   cursor: pointer;
   text-align: left;
   transition: transform 0.18s, box-shadow 0.18s;
   width: 100%;
+  overflow: hidden;
 }
 .backpack-section-card:hover:not(.coming-soon) {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 32px rgba(30, 45, 90, 0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 36px rgba(30, 45, 90, 0.13);
 }
 .backpack-section-card.coming-soon {
-  opacity: 0.5;
+  opacity: 0.55;
   cursor: default;
 }
 
+/* Color accent top bar */
+.backpack-card-accent {
+  height: 5px;
+  background: var(--section-color, var(--navy));
+  width: 100%;
+}
+
+.backpack-card-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.4rem 1.4rem 1.25rem;
+  flex: 1;
+}
 .backpack-section-num {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 700;
-  color: var(--muted);
-  letter-spacing: 0.06em;
+  color: rgba(30, 45, 90, 0.3);
+  letter-spacing: 0.08em;
   min-width: 22px;
   flex-shrink: 0;
+  padding-top: 0.2rem;
 }
 .backpack-section-emoji {
-  font-size: 1.75rem;
+  font-size: 1.6rem;
   line-height: 1;
   flex-shrink: 0;
 }
@@ -113,38 +212,51 @@ body {
 }
 .backpack-section-title {
   font-family: var(--serif);
-  font-size: 1.05rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
   color: var(--navy);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.3rem;
   line-height: 1.3;
 }
 .backpack-section-tagline {
-  font-size: 0.8rem;
-  color: var(--muted);
-  line-height: 1.5;
+  font-size: 0.78rem;
+  color: rgba(30, 45, 90, 0.55);
+  line-height: 1.55;
+  font-style: italic;
+}
+
+.backpack-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.4rem 1.1rem;
+  border-top: 1px solid rgba(30, 45, 90, 0.06);
 }
 .backpack-section-arrow {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   color: var(--section-color, var(--coral));
-  flex-shrink: 0;
-  opacity: 0.8;
+  font-weight: 700;
   transition: transform 0.15s;
 }
 .backpack-section-card:hover:not(.coming-soon) .backpack-section-arrow {
-  transform: translateX(3px);
+  transform: translateX(4px);
 }
 .backpack-coming-soon {
   font-size: 0.6rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--muted);
-  background: var(--cream-dk);
+  color: rgba(30, 45, 90, 0.45);
+  background: var(--cream, #f0ebe0);
   border-radius: 20px;
-  padding: 0.25rem 0.65rem;
-  flex-shrink: 0;
+  padding: 0.25rem 0.7rem;
   white-space: nowrap;
+}
+.backpack-card-cta {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--section-color, var(--coral));
+  letter-spacing: 0.03em;
 }
 
 /* ── Detail card ── */
@@ -183,9 +295,9 @@ body {
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--navy);
-  opacity: 0.5;
+  opacity: 0.45;
   padding-left: 0.75rem;
-  border-left: 1.5px solid var(--cream-dk);
+  border-left: 1.5px solid var(--cream-dk, #e6dfd2);
 }
 
 /* ── Challenge card ── */
@@ -193,18 +305,22 @@ body {
   background: var(--navy);
   color: #fff;
   border-radius: 20px;
-  padding: 2.25rem 2.5rem;
+  padding: 2.5rem;
   position: relative;
   overflow: hidden;
 }
-.challenge-card::before {
-  content: "❓";
+.challenge-card::after {
+  content: "";
   position: absolute;
-  font-size: 12rem;
-  opacity: 0.05;
-  bottom: -2rem;
-  right: -1rem;
-  line-height: 1;
+  bottom: 0;
+  right: 0;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(
+    circle at bottom right,
+    rgba(46, 139, 122, 0.22),
+    transparent 70%
+  );
   pointer-events: none;
 }
 .challenge-week-badge {
@@ -213,28 +329,44 @@ body {
   gap: 0.4rem;
   font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--teal);
   background: rgba(46, 139, 122, 0.15);
   border-radius: 20px;
-  padding: 0.3rem 0.85rem;
+  padding: 0.3rem 0.9rem;
   margin-bottom: 1.5rem;
 }
 .challenge-question {
   font-family: var(--serif);
-  font-size: clamp(1.35rem, 3vw, 1.85rem);
-  font-weight: 600;
+  font-size: clamp(1.4rem, 3vw, 1.95rem);
+  font-weight: 700;
   font-style: italic;
   line-height: 1.35;
   margin-bottom: 1rem;
   position: relative;
+  z-index: 1;
 }
 .challenge-prompt {
   font-size: 0.88rem;
   color: rgba(255, 255, 255, 0.6);
-  line-height: 1.7;
+  line-height: 1.75;
   position: relative;
+  z-index: 1;
+}
+
+/* ── Challenge photo banner ── */
+.challenge-photo-banner {
+  border-radius: 16px;
+  overflow: hidden;
+  height: 200px;
+}
+.challenge-photo-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  display: block;
 }
 
 /* ── Reflection ── */
@@ -244,15 +376,15 @@ body {
   gap: 0.85rem;
 }
 .challenge-reflection-label {
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: var(--navy);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 .challenge-textarea {
   width: 100%;
-  border: 1.5px solid var(--cream-dk);
+  border: 1.5px solid var(--cream-dk, #e6dfd2);
   border-radius: 14px;
   padding: 1.1rem 1.25rem;
   font-family: var(--sans);
@@ -262,7 +394,8 @@ body {
   resize: vertical;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
-  line-height: 1.7;
+  line-height: 1.75;
+  box-sizing: border-box;
 }
 .challenge-textarea:focus {
   border-color: var(--teal);
@@ -277,25 +410,26 @@ body {
 }
 .challenge-reflection-hint {
   font-size: 0.76rem;
-  color: var(--muted);
+  color: rgba(30, 45, 90, 0.45);
 }
 .btn-save {
-  background: var(--teal);
+  background: var(--coral, #e8673a);
   color: #fff;
   border: none;
   border-radius: 50px;
-  padding: 0.65rem 1.5rem;
+  padding: 0.65rem 1.6rem;
   font-size: 0.82rem;
   font-weight: 700;
   cursor: pointer;
   transition: opacity 0.2s, transform 0.15s;
+  letter-spacing: 0.02em;
 }
 .btn-save:hover:not(:disabled) {
   opacity: 0.88;
   transform: translateY(-1px);
 }
 .btn-save:disabled {
-  opacity: 0.4;
+  opacity: 0.35;
   cursor: not-allowed;
 }
 
@@ -308,21 +442,38 @@ body {
   border-radius: 14px;
   padding: 1.1rem 1.4rem;
   font-size: 0.83rem;
-  color: var(--muted);
+  color: rgba(30, 45, 90, 0.55);
   line-height: 1.65;
-  border: 1.5px solid var(--cream-dk);
+  border: 1.5px solid var(--cream-dk, #e6dfd2);
 }
 
 /* ── Responsive ── */
 @media (max-width: 960px) {
+  .backpack-photo-item--tall {
+    height: 180px;
+  }
   .backpack-section-grid {
     grid-template-columns: repeat(2, 1fr);
   }
   .backpack-detail-card {
     padding: 1.75rem;
   }
+  .backpack-progress-strip {
+    margin: -1rem 1.5rem 0;
+  }
 }
 @media (max-width: 640px) {
+  .backpack-photo-trio {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+  }
+  .backpack-photo-item:last-child {
+    display: none;
+  }
+  .backpack-photo-item,
+  .backpack-photo-item--tall {
+    height: 140px;
+  }
   .backpack-section-grid {
     grid-template-columns: 1fr;
   }
@@ -331,5 +482,9 @@ body {
   }
   .challenge-card {
     padding: 1.5rem;
+  }
+  .backpack-progress-strip {
+    margin: -1rem 1rem 0;
+    padding: 1rem 1.25rem;
   }
 }

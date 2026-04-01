@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import NavBar from "../../components/NavBar";
+import NavBar from "../../components/NavBar.jsx";
 import "./articles.css";
 
 // ─── Mock Articles — replace with your real CMS / database ───────────────────
@@ -221,7 +221,7 @@ export default function ArticlesPage() {
 
   return (
     <>
-      <NavBar activePage="articles" />
+      <NavBar activePage="articles" largeAvatar />
 
       <div className="articles-page">
         {/* ── HEADER ── */}
@@ -239,7 +239,9 @@ export default function ArticlesPage() {
         <div className="content-tabs">
           <button
             type="button"
-            className={`content-tab ${activeTab === "articles" ? "active" : ""}`}
+            className={`content-tab ${
+              activeTab === "articles" ? "active" : ""
+            }`}
             onClick={() => setActiveTab("articles")}
           >
             📖 Articles

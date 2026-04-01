@@ -8,8 +8,8 @@
   border-radius: 50%;
   padding: 0;
   cursor: pointer;
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -22,8 +22,8 @@
   transform: scale(1.05);
 }
 .nav-avatar-btn--lg {
-  width: 100px;
-  height: 100px;
+  width: 52px;
+  height: 52px;
 }
 .nav-avatar-img {
   width: 100%;

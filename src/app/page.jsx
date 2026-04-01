@@ -1,37 +1,14 @@
 "use client";
 import "./home.css";
-import { useState } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/NavBar.jsx";
 
 export default function HomePage() {
   const { user } = useUser();
 
   return (
     <>
-      <NavBar
-        activePage="home"
-        authSection={user
-          ? (
-            <>
-              <a href="/profile" className="nav-btn-ghost">
-                Explore The Island
-              </a>
-              <a href="/auth/logout" className="nav-btn-solid">Sign Out</a>
-            </>
-          )
-          : (
-            <>
-              <a href="/auth/login" className="nav-btn-ghost">Sign In</a>
-              <a
-                href="/auth/login?screen_hint=signup"
-                className="nav-btn-solid"
-              >
-                Start Your Lifestyle Discovery
-              </a>
-            </>
-          )}
-      />
+      <NavBar activePage="home" largeAvatar />
 
       <main>
         {/* ── SECTION 1: HERO ── */}
@@ -49,12 +26,9 @@ export default function HomePage() {
             <div className="hero-cta">
               {user
                 ? (
-                  <>
-                    <a href="/profile" className="cta-primary">
-                      Explore The Island
-                    </a>
-                    <a href="/auth/logout" className="cta-ghost">Sign Out</a>
-                  </>
+                  <a href="/profile" className="cta-primary">
+                    Explore The Island
+                  </a>
                 )
                 : (
                   <>
@@ -121,7 +95,7 @@ export default function HomePage() {
               </blockquote>
             </div>
             <div className="problem-image">
-              <img src="/boardWalk.png" alt="couple on a boardwalk" />
+              <img src="/fallingbike.gif" alt="falling off a bike" />
             </div>
           </div>
         </section>

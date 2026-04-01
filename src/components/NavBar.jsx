@@ -8,7 +8,7 @@ import "./NavBar.css";
 export default function NavBar({
   activePage = "",
   authSection = null,
-  logoHeight = 90,
+  logoHeight = 64,
   largeAvatar = false,
 }) {
   const { user } = useUser();
@@ -52,7 +52,9 @@ export default function NavBar({
       <div className="nav-user-menu" ref={dropdownRef}>
         <button
           type="button"
-          className={`nav-avatar-btn${largeAvatar ? " nav-avatar-btn--lg" : ""}`}
+          className={`nav-avatar-btn${
+            largeAvatar ? " nav-avatar-btn--lg" : ""
+          }`}
           onClick={() => setDropdownOpen(!dropdownOpen)}
           aria-label="User menu"
         >
@@ -64,9 +66,7 @@ export default function NavBar({
                 className="nav-avatar-img"
               />
             )
-            : (
-              <div className="nav-avatar-initials">{initials}</div>
-            )}
+            : <div className="nav-avatar-initials">{initials}</div>}
         </button>
         {dropdownOpen && (
           <div className="nav-dropdown">
@@ -88,9 +88,16 @@ export default function NavBar({
               href="/backpack"
               className="nav-dropdown-item"
               onClick={() => setDropdownOpen(false)}
-            ><span className="nav-dropdown-icon"></span> My Backpack</a>
+            >
+              <span className="nav-dropdown-icon"></span> My Backpack
+            </a>
             <div className="nav-dropdown-divider" />
-            <a href="/auth/logout" className="nav-dropdown-item nav-dropdown-logout"><span className="nav-dropdown-icon"></span> Logout</a>
+            <a
+              href="/auth/logout"
+              className="nav-dropdown-item nav-dropdown-logout"
+            >
+              <span className="nav-dropdown-icon"></span> Logout
+            </a>
           </div>
         )}
       </div>
@@ -106,13 +113,21 @@ export default function NavBar({
 
   return (
     <>
-      <nav className={`nav${activePage === "home" ? " nav-hero" : ""}${scrolled ? " nav-scrolled" : ""}`}>
+      <nav
+        className={`nav${activePage === "home" ? " nav-hero" : ""}${
+          scrolled ? " nav-scrolled" : ""
+        }`}
+      >
         <div className="nav-inner">
           <Link href="/" className="nav-logo">
             <img
               src="/goodLuckIslandLogoSmall.png"
               alt="Good Luck Island Collective"
-              style={{ height: logoHeight, width: "auto", objectFit: "contain" }}
+              style={{
+                height: logoHeight,
+                width: "auto",
+                objectFit: "contain",
+              }}
             />
           </Link>
           <div className="nav-links">
@@ -224,8 +239,8 @@ export default function NavBar({
             <div className="nav-gate-icon">🔒</div>
             <h3 className="nav-gate-title">Member Content</h3>
             <p className="nav-gate-desc">
-              Articles and podcast episodes are free to access — just sign in
-              or create your free account to get in.
+              Articles and podcast episodes are free to access — just sign in or
+              create your free account to get in.
             </p>
             <div className="nav-gate-actions">
               <a href="/auth/login" className="nav-gate-btn-solid">Sign In</a>

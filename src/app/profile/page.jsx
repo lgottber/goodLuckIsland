@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useUser as useAuth0User } from "@auth0/nextjs-auth0/client";
-import NavBar from "../../components/NavBar";
+import NavBar from "../../components/NavBar.jsx";
 import "./profile.css";
 
 // ─── Mock user data — replace with your real auth/db calls ───────────────────
@@ -1076,7 +1076,7 @@ export default function ProfilePage() {
         />
       )}
 
-      <NavBar activePage="profile" logoHeight={100} largeAvatar />
+      <NavBar activePage="profile" largeAvatar />
 
       <div className="profile-page">
         {/* ── BANNER ── */}
@@ -1155,7 +1155,9 @@ export default function ProfilePage() {
               <div className="profile-stat-label">Articles Read</div>
             </div>
             <div className="profile-stat">
-              <div className="profile-stat-num">{user.stats.podcastsListened}</div>
+              <div className="profile-stat-num">
+                {user.stats.podcastsListened}
+              </div>
               <div className="profile-stat-label">Podcasts</div>
             </div>
             <div className="profile-stat">
@@ -1235,7 +1237,10 @@ export default function ProfilePage() {
                 </div>
               </div>
               {!user.occupation && !user.location && (
-                <p className="info-row-value empty" style={{ padding: "0.5rem 0" }}>
+                <p
+                  className="info-row-value empty"
+                  style={{ padding: "0.5rem 0" }}
+                >
                   No details added yet.{" "}
                   <button
                     type="button"
@@ -1257,7 +1262,9 @@ export default function ProfilePage() {
                     {user.interests.map((tag, i) => (
                       <span
                         key={tag}
-                        className={`tag ${["tag-teal", "tag-navy", "tag-outline"][i % 3]}`}
+                        className={`tag ${
+                          ["tag-teal", "tag-navy", "tag-outline"][i % 3]
+                        }`}
                       >
                         {tag}
                       </span>

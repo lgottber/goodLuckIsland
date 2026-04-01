@@ -136,7 +136,8 @@ const WEEKLY_QUESTIONS = [
       "With a spouse? A parent? An adult child? What would it take to have it this week?",
   },
   {
-    question: "If you retired tomorrow, what would you miss most about working?",
+    question:
+      "If you retired tomorrow, what would you miss most about working?",
     prompt:
       "The people? The structure? The feeling of contributing? Knowing this helps you plan to replace it.",
   },
@@ -173,14 +174,38 @@ export default function BackpackPage() {
         {/* ── HEADER ── */}
         <div className="backpack-header">
           <p className="backpack-eyebrow">Good Luck Island Collective</p>
-          <h1>🎒 My Backpack</h1>
+          <h1>My Backpack</h1>
           <p>
             Your personal retirement toolkit. Work through each section at your
             own pace — every step brings your next chapter into clearer focus.
           </p>
         </div>
 
+        {/* ── PROGRESS STRIP ── */}
+        <div className="backpack-progress-strip">
+          <span className="backpack-progress-label">Your Progress</span>
+          <div className="backpack-progress-bar-wrap">
+            <div className="backpack-progress-bar" />
+          </div>
+          <span className="backpack-progress-pct">1 of 7 started</span>
+        </div>
+
         <div className="backpack-content">
+          {/* ── PHOTO TRIO ── */}
+          {!activeSection && (
+            <div className="backpack-photo-trio">
+              <div className="backpack-photo-item">
+                <img src="/hikingCouple.png" alt="Hiking adventure" />
+              </div>
+              <div className="backpack-photo-item backpack-photo-item--tall">
+                <img src="/tools.gif" alt="We have the tools" />
+              </div>
+              <div className="backpack-photo-item">
+                <img src="/soloHiking.jpg" alt="Solo Hiking" />
+              </div>
+            </div>
+          )}
+
           {/* ── SECTION GRID ── */}
           {!activeSection && (
             <div className="backpack-section-grid">
@@ -196,19 +221,37 @@ export default function BackpackPage() {
                     setActiveSection(section.id)}
                   style={{ "--section-color": section.color }}
                 >
-                  <div className="backpack-section-num">
-                    {String(i + 1).padStart(2, "0")}
+                  <div className="backpack-card-accent" />
+                  <div className="backpack-card-body">
+                    <div className="backpack-section-num">
+                      {String(i + 1).padStart(2, "0")}
+                    </div>
+                    <div className="backpack-section-emoji">
+                      {section.emoji}
+                    </div>
+                    <div className="backpack-section-info">
+                      <h4 className="backpack-section-title">
+                        {section.label}
+                      </h4>
+                      <p className="backpack-section-tagline">
+                        {section.tagline}
+                      </p>
+                    </div>
                   </div>
-                  <div className="backpack-section-emoji">{section.emoji}</div>
-                  <div className="backpack-section-info">
-                    <h4 className="backpack-section-title">{section.label}</h4>
-                    <p className="backpack-section-tagline">{section.tagline}</p>
+                  <div className="backpack-card-footer">
+                    {section.type === "coming-soon"
+                      ? (
+                        <span className="backpack-coming-soon">
+                          Coming Soon
+                        </span>
+                      )
+                      : (
+                        <>
+                          <span className="backpack-card-cta">Begin →</span>
+                          <span className="backpack-section-arrow">→</span>
+                        </>
+                      )}
                   </div>
-                  {section.type === "coming-soon"
-                    ? (
-                      <span className="backpack-coming-soon">Coming Soon</span>
-                    )
-                    : <span className="backpack-section-arrow">→</span>}
                 </button>
               ))}
             </div>
@@ -232,8 +275,7 @@ export default function BackpackPage() {
 
               <div className="challenge-card">
                 <div className="challenge-week-badge">
-                  Week of{" "}
-                  {new Date().toLocaleDateString("en-US", {
+                  Week of {new Date().toLocaleDateString("en-US", {
                     month: "long",
                     day: "numeric",
                     year: "numeric",
@@ -241,6 +283,10 @@ export default function BackpackPage() {
                 </div>
                 <h2 className="challenge-question">{weeklyQ.question}</h2>
                 <p className="challenge-prompt">{weeklyQ.prompt}</p>
+              </div>
+
+              <div className="challenge-photo-banner">
+                <img src="/bench.png" alt="A quiet moment of reflection" />
               </div>
 
               <div className="challenge-reflection">

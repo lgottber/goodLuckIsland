@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { createCart, type ShopifyVariant } from "../../lib/shopify";
-import NavBar from "../../components/NavBar";
+import { createCart, type ShopifyVariant } from "../../lib/shopify.ts";
+import NavBar from "../../components/NavBar.jsx";
 import "./shop.css";
 
 const DONATION_AMOUNTS = ["$5", "$10", "$25", "$50", "$100", "Custom"];

@@ -42,7 +42,9 @@ export default function ShopPage() {
             <Link href="/shop" className="active">Book & Support</Link>
           </div>
           <div className="nav-auth">
-            <a href="/auth/login" className="nav-btn-ghost">Explore The Island</a>
+            <a href="/auth/login" className="nav-btn-ghost">
+              Explore The Island
+            </a>
             <a href="/auth/login?screen_hint=signup" className="nav-btn-solid">
               Start Your Lifestyle Discovery
             </a>
