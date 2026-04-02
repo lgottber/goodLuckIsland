@@ -2,7 +2,6 @@
 
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import process from "node:process";
 
 // @auth0/auth0-spa-js contains browser-only module chunks that webpack cannot
 // load during Next.js prerendering. Loading with ssr: false prevents the

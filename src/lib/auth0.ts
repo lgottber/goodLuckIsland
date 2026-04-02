@@ -1,5 +1,4 @@
 import { Auth0Client } from "@auth0/auth0-spa-js";
-import process from "node:process";
 
 export const auth0 = typeof window !== "undefined"
   ? new Auth0Client({
