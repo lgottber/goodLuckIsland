@@ -1,12 +1,23 @@
 "use client";
 
-import dynamic from "next/dynamic";
-
-const Auth0Provider = dynamic(
-  () => import("@auth0/nextjs-auth0/client").then((mod) => mod.Auth0Provider),
-  { ssr: false },
-);
+import { useRouter } from "next/navigation";
+import { Auth0Provider } from "@auth0/auth0-react";
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  return <Auth0Provider>{children}</Auth0Provider>;
+  const router = useRouter();
+
+  return (
+    <Auth0Provider
+      domain={process.env.NEXT_PUBLIC_AUTH0_DOMAIN!}
+      clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID!}
+      authorizationParams={{
+        redirect_uri: process.env.NEXT_PUBLIC_AUTH0_CALLBACK_URL,
+      }}
+      onRedirectCallback={(appState) => {
+        router.replace(appState?.returnTo ?? "/");
+      }}
+    >
+      {children}
+    </Auth0Provider>
+  );
 }

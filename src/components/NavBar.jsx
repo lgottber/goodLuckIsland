@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { useAuth0 } from "@auth0/auth0-react";
 import "./NavBar.css";
 
 export default function NavBar({
@@ -11,7 +11,7 @@ export default function NavBar({
   logoHeight = 64,
   largeAvatar = false,
 }) {
-  const { user } = useUser();
+  const { user } = useAuth0();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showGate, setShowGate] = useState(false);
