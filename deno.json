@@ -5,8 +5,8 @@
     "unsafe-proto"
   ],
   "imports": {
-    "next": "npm:next@16.0.8",
-    "next/": "npm:next@16.0.8/"
+    "next": "npm:next@16.2.2",
+    "next/": "npm:next@16.2.2/"
   },
   "compilerOptions": {
     "lib": [
@@ -23,9 +23,9 @@
     }
   },
   "tasks": {
-    "dev": "deno run -A --unstable-detect-cjs npm:next@16.0.8 dev",
-    "build": "deno run -A --unstable-detect-cjs npm:next@16.0.8 build",
-    "start": "deno run -A --unstable-detect-cjs npm:next@16.0.8 start",
+    "dev": "deno run -A --unstable-detect-cjs npm:next@16.2.2 dev",
+    "build": "deno run -A --unstable-detect-cjs npm:next@16.2.2 build",
+    "start": "deno run -A --unstable-detect-cjs npm:next@16.2.2 start",
     "lint": "deno lint --fix && deno fmt --check"
   }
 }
