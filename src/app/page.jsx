@@ -1,10 +1,14 @@
 "use client";
 import "./home.css";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import NavBar from "../components/NavBar.jsx";
+import { useAuth0 } from "@auth0/auth0-react";
+import dynamic from "next/dynamic";
+
+const NavBar = dynamic(() => import("../components/NavBar.jsx"), {
+  ssr: false,
+});
 
 export default function HomePage() {
-  const { user } = useUser();
+  const { user } = useAuth0();
 
   return (
     <>

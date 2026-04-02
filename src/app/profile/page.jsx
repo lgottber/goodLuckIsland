@@ -1,8 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useUser as useAuth0User } from "@auth0/nextjs-auth0/client";
-import NavBar from "../../components/NavBar.jsx";
+import { useAuth0 as useAuth0User } from "@auth0/auth0-react";
+import dynamic from "next/dynamic";
+
+const NavBar = dynamic(() => import("../../components/NavBar.jsx"), {
+  ssr: false,
+});
+import { supabase } from "../../lib/supabase.ts";
 import "./profile.css";
 
 // ─── Mock user data — replace with your real auth/db calls ───────────────────
@@ -1030,6 +1035,15 @@ function EditModal({ user, onSave, onClose }) {
 export default function ProfilePage() {
   const { user: auth0User } = useAuth0User();
   const [user, setUser] = useState(INITIAL_USER);
+
+  useEffect(() => {
+    if (auth0User) {
+      supabase.from("users").select("*").then(({ data, error }) => {
+        if (error) console.error("Supabase error:", error);
+        else console.log("Supabase user row:", data);
+      });
+    }
+  }, [auth0User]);
 
   useEffect(() => {
     if (auth0User) {

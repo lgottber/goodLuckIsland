@@ -1,8 +1,12 @@
 "use client";
 
-import NavBar from "../../components/NavBar.jsx";
+import dynamic from "next/dynamic";
 import ShopifyCollection from "../../components/ShopifyCollection.tsx";
 import "./shop.css";
+
+const NavBar = dynamic(() => import("../../components/NavBar.jsx"), {
+  ssr: false,
+});
 
 export default function ShopClient() {
   return (
