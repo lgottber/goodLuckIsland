@@ -1,8 +1,16 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { Auth0Provider } from "@auth0/auth0-react";
 import process from "node:process";
+
+// @auth0/auth0-spa-js contains browser-only module chunks that webpack cannot
+// load during Next.js prerendering. Loading with ssr: false prevents the
+// "module factory not available" prerender error.
+const Auth0Provider = dynamic(
+  () => import("@auth0/auth0-react").then((mod) => mod.Auth0Provider),
+  { ssr: false },
+);
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const router = useRouter();
