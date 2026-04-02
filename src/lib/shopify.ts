@@ -1,4 +1,3 @@
-import process from "node:process";
 export type ShopifyVariant = {
   id: string;
   title: string;

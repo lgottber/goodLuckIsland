@@ -19,7 +19,7 @@
   },
   "lint": {
     "rules": {
-      "exclude": ["no-process-globals"]
+      "exclude": ["no-process-global"]
     }
   },
   "tasks": {
