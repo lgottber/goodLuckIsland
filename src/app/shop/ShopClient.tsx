@@ -1,9 +1,11 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { createCart, type ShopifyVariant } from "../../lib/shopify.ts";
-import NavBar from "../../components/NavBar.jsx";
 import "./shop.css";
+
+const NavBar = dynamic(() => import("../../components/NavBar.jsx"), { ssr: false });
 
 const DONATION_AMOUNTS = ["$5", "$10", "$25", "$50", "$100", "Custom"];
 

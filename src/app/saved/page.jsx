@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import NavBar from "../../components/NavBar.jsx";
+import dynamic from "next/dynamic";
+
+const NavBar = dynamic(() => import("../../components/NavBar.jsx"), { ssr: false });
 import "./saved.css";
 
 const SAVED_ITEMS = [
