@@ -3,6 +3,23 @@
 import { useEffect, useRef } from "react";
 import Script from "next/script";
 
+declare global {
+  interface Window {
+    ShopifyBuy: {
+      buildClient: (
+        config: { domain: string; storefrontAccessToken: string },
+      ) => unknown;
+      UI: {
+        onReady: (
+          client: unknown,
+        ) => Promise<
+          { createComponent: (type: string, options: unknown) => void }
+        >;
+      };
+    };
+  }
+}
+
 export default function ShopifyCollection() {
   const abortedRef = useRef(false);
   const initializedRef = useRef(false);
@@ -11,12 +28,12 @@ export default function ShopifyCollection() {
     if (abortedRef.current || initializedRef.current) return;
     initializedRef.current = true;
 
-    const client = (window as any).ShopifyBuy.buildClient({
+    const client = globalThis.ShopifyBuy.buildClient({
       domain: "n5kpfa-tu.myshopify.com",
       storefrontAccessToken: "50ac27e18ca1f106ab3e772e39209f09",
     });
 
-    (window as any).ShopifyBuy.UI.onReady(client).then(function (ui: any) {
+    globalThis.ShopifyBuy.UI.onReady(client).then(function (ui) {
       if (abortedRef.current) return;
       ui.createComponent("collection", {
         id: "500395049263",
@@ -208,8 +225,14 @@ export default function ShopifyCollection() {
               discount: { color: "#f0ebe0" },
               discountIcon: { fill: "#f0ebe0" },
               quantity: { color: "#f0ebe0" },
-              quantityIncrement: { color: "#f0ebe0", "border-color": "#f0ebe0" },
-              quantityDecrement: { color: "#f0ebe0", "border-color": "#f0ebe0" },
+              quantityIncrement: {
+                color: "#f0ebe0",
+                "border-color": "#f0ebe0",
+              },
+              quantityDecrement: {
+                color: "#f0ebe0",
+                "border-color": "#f0ebe0",
+              },
               quantityInput: { color: "#f0ebe0", "border-color": "#f0ebe0" },
             },
           },
@@ -222,7 +245,7 @@ export default function ShopifyCollection() {
     abortedRef.current = false;
 
     // Handles navigation-back case where the script is already loaded
-    if ((window as any).ShopifyBuy?.UI) {
+    if (globalThis.ShopifyBuy?.UI) {
       ShopifyBuyInit();
     }
 
