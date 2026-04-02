@@ -17,6 +17,11 @@
     "strict": true,
     "jsx": "preserve"
   },
+  "lint": {
+    "rules": {
+      "exclude": ["no-process-globals"]
+    }
+  },
   "tasks": {
     "dev": "deno run -A --unstable-detect-cjs npm:next@16.0.8 dev",
     "build": "deno run -A --unstable-detect-cjs npm:next@16.0.8 build",
