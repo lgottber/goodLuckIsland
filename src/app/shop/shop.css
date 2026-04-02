@@ -5,6 +5,7 @@
   margin: 0;
   padding: 0;
 }
+
 :root {
   --navy: #1e2d5a;
   --teal: #2e8b7a;
@@ -16,23 +17,28 @@
   --serif: "Cormorant Garamond", Georgia, serif;
   --sans: "DM Sans", system-ui, sans-serif;
 }
+
 html {
   scroll-behavior: smooth;
 }
+
 body {
   font-family: var(--sans);
   color: var(--navy);
   background: var(--cream);
   margin: 0;
 }
+
 a {
   text-decoration: none;
   color: inherit;
 }
+
 button {
   font-family: var(--sans);
   cursor: pointer;
 }
+
 img {
   display: block;
 }
@@ -42,529 +48,13 @@ img {
   padding-top: 110px;
 }
 
-/* ── HERO BAND ── */
-.shop-hero {
-  background: var(--navy);
-  padding: 4rem 2rem 5rem;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-.shop-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: url("https://images.unsplash.com/photo-1512820790803-83ca734da794?w=1400&q=70");
-  background-size: cover;
-  background-position: center;
-  opacity: 0.12;
-}
-.shop-hero-inner {
-  position: relative;
-  z-index: 1;
-  max-width: 640px;
-  margin: 0 auto;
-}
-.shop-hero-eyebrow {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--teal);
-  margin-bottom: 1rem;
-}
-.shop-hero h1 {
-  font-family: var(--serif);
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 600;
-  color: #fff;
-  line-height: 1.1;
-  margin-bottom: 1.25rem;
-}
-.shop-hero h1 em {
-  font-style: italic;
-  color: var(--coral);
-}
-.shop-hero p {
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.75;
-}
-
-/* ── MAIN CONTENT ── */
 .shop-content {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 5rem 2rem 6rem;
-  display: flex;
-  flex-direction: column;
-  gap: 5rem;
-}
-
-/* ── SECTION DIVIDER ── */
-.shop-divider {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-.shop-divider-line {
-  flex: 1;
-  height: 1px;
-  background: var(--cream-dk);
-}
-.shop-divider-label {
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--muted);
-  white-space: nowrap;
-}
-
-/* ── BOOK SECTION ── */
-.book-section {
-  display: grid;
-  grid-template-columns: 340px 1fr;
-  gap: 5rem;
-  align-items: center;
-}
-
-.book-cover-wrap {
-  position: relative;
-}
-.book-cover-real {
-  position: relative;
-  border-radius: 6px 14px 14px 6px;
-  overflow: hidden;
-  box-shadow:
-    -6px 6px 0 rgba(0, 0, 0, 0.06),
-    0 24px 60px rgba(30, 45, 90, 0.22);
-}
-.book-cover-real img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 6px 14px 14px 6px;
-}
-.book-cover-shadow {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 14px;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.18), transparent);
-  border-radius: 6px 0 0 6px;
-  pointer-events: none;
-}
-
-.book-info {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-.book-eyebrow {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--teal);
-}
-.book-title {
-  font-family: var(--serif);
-  font-size: clamp(2rem, 3.5vw, 3rem);
-  font-weight: 600;
-  color: var(--navy);
-  line-height: 1.15;
-}
-.book-title em {
-  font-style: italic;
-}
-.book-subtitle {
-  font-size: 1rem;
-  color: var(--muted);
-  line-height: 1.7;
-}
-.book-description {
-  font-size: 0.9rem;
-  color: var(--muted);
-  line-height: 1.8;
-}
-
-.book-formats {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-.book-format-label {
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--navy);
-}
-.book-format-options {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-.format-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.2rem;
-  padding: 0.75rem 1.25rem;
-  border: 1.5px solid var(--cream-dk);
-  border-radius: 12px;
-  background: #fff;
-  cursor: pointer;
-  transition: all 0.2s;
-  min-width: 90px;
-}
-.format-btn:hover, .format-btn.active {
-  border-color: var(--navy);
-  background: var(--cream);
-}
-.format-btn.active {
-  border-color: var(--coral);
-  background: rgba(232, 103, 58, 0.05);
-}
-.format-btn-icon {
-  font-size: 1.25rem;
-}
-.format-btn-label {
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: var(--navy);
-}
-.format-btn-price {
-  font-size: 0.7rem;
-  color: var(--muted);
-}
-
-.book-cta-row {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-.btn-buy {
-  background: var(--coral);
-  color: #fff;
-  border: none;
-  border-radius: 50px;
-  padding: 0.9rem 2rem;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  transition: all 0.2s;
-}
-.btn-buy:hover {
-  background: var(--coral-dk);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(232, 103, 58, 0.3);
-}
-.btn-preview {
-  background: transparent;
-  color: var(--navy);
-  border: 1.5px solid var(--cream-dk);
-  border-radius: 50px;
-  padding: 0.9rem 1.5rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  transition: border-color 0.2s;
-}
-.btn-preview:hover {
-  border-color: var(--navy);
-}
-
-.book-reviews {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding-top: 0.5rem;
-}
-.book-review {
-  background: #fff;
-  border-radius: 14px;
-  padding: 1.25rem;
-  border-left: 3px solid var(--teal);
-}
-.book-review-stars {
-  color: #f0b429;
-  font-size: 0.8rem;
-  margin-bottom: 0.4rem;
-}
-.book-review-text {
-  font-size: 0.85rem;
-  color: var(--navy);
-  line-height: 1.7;
-  font-style: italic;
-}
-.book-review-author {
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--muted);
-  margin-top: 0.5rem;
-}
-
-/* ── DONATE SECTION ── */
-.donate-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: start;
-}
-
-.donate-info {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-.donate-eyebrow {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--coral);
-}
-.donate-title {
-  font-family: var(--serif);
-  font-size: clamp(1.75rem, 3vw, 2.75rem);
-  font-weight: 600;
-  color: var(--navy);
-  line-height: 1.15;
-}
-.donate-title em {
-  font-style: italic;
-}
-.donate-description {
-  font-size: 0.9rem;
-  color: var(--muted);
-  line-height: 1.8;
-}
-.donate-uses {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-.donate-use-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-}
-.donate-use-icon {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: rgba(46, 139, 122, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-.donate-use-text {
-  font-size: 0.85rem;
-  color: var(--navy);
-  line-height: 1.6;
-}
-.donate-use-text strong {
-  display: block;
-  font-weight: 600;
-}
-
-.donate-card {
-  background: #fff;
-  border-radius: 20px;
   padding: 2rem;
-  box-shadow: 0 4px 30px rgba(30, 45, 90, 0.08);
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-.donate-card-label {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--navy);
 }
 
-.donate-amounts {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.6rem;
-}
-.donate-amt-btn {
-  padding: 0.75rem 0.5rem;
-  border-radius: 12px;
-  border: 1.5px solid var(--cream-dk);
-  background: var(--cream);
-  font-family: var(--sans);
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--navy);
-  transition: all 0.2s;
-  text-align: center;
-}
-.donate-amt-btn:hover {
-  border-color: var(--coral);
-}
-.donate-amt-btn.active {
-  border-color: var(--coral);
-  background: rgba(232, 103, 58, 0.07);
-  color: var(--coral);
-}
-.donate-amt-btn.custom {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--muted);
-}
-.donate-amt-btn.custom.active {
-  color: var(--coral);
-}
-
-.donate-custom-input {
-  width: 100%;
-  padding: 0.8rem 1rem;
-  border: 1.5px solid var(--cream-dk);
-  border-radius: 12px;
-  font-size: 1rem;
-  font-family: var(--sans);
-  color: var(--navy);
-  outline: none;
-  transition: border-color 0.2s;
-}
-.donate-custom-input:focus {
-  border-color: var(--navy);
-}
-
-.donate-frequency {
-  display: flex;
-  gap: 0.5rem;
-}
-.freq-btn {
-  flex: 1;
-  padding: 0.55rem;
-  border-radius: 50px;
-  border: 1.5px solid var(--cream-dk);
-  background: var(--cream);
-  font-family: var(--sans);
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--muted);
-  transition: all 0.2s;
-}
-.freq-btn:hover {
-  border-color: var(--navy);
-  color: var(--navy);
-}
-.freq-btn.active {
-  background: var(--navy);
-  border-color: var(--navy);
-  color: #fff;
-}
-
-.donate-platforms {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-.donate-platform-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  padding: 0.9rem;
-  border-radius: 12px;
-  border: none;
-  font-family: var(--sans);
-  font-size: 0.875rem;
-  font-weight: 700;
-  transition: all 0.2s;
-  width: 100%;
-}
-.donate-platform-btn.paypal {
-  background: #003087;
-  color: #fff;
-}
-.donate-platform-btn.paypal:hover {
-  background: #002268;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(0, 48, 135, 0.3);
-}
-.donate-platform-btn.venmo {
-  background: #008cff;
-  color: #fff;
-}
-.donate-platform-btn.venmo:hover {
-  background: #0070cc;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(0, 140, 255, 0.3);
-}
-.donate-platform-label {
-  font-size: 0.65rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.75);
-  display: block;
-}
-.donate-privacy {
-  font-size: 0.72rem;
-  color: var(--muted);
-  text-align: center;
-  line-height: 1.6;
-}
-
-/* ── THANK YOU BANNER ── */
-.thankyou-banner {
-  background: var(--navy);
-  border-radius: 20px;
-  padding: 3rem 2.5rem;
-  text-align: center;
-}
-.thankyou-banner h2 {
-  font-family: var(--serif);
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  font-weight: 600;
-  color: #fff;
-  margin-bottom: 0.75rem;
-}
-.thankyou-banner h2 em {
-  font-style: italic;
-  color: var(--coral);
-}
-.thankyou-banner p {
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.65);
-  line-height: 1.8;
-  max-width: 520px;
-  margin: 0 auto;
-}
-
-@media (max-width: 960px) {
-  .book-section {
-    grid-template-columns: 1fr;
-  }
-  .book-cover-wrap {
-    max-width: 280px;
-    margin: 0 auto;
-  }
-  .donate-section {
-    grid-template-columns: 1fr;
-  }
-  .nav-links {
-    display: none;
-  }
-}
-@media (max-width: 640px) {
-  .donate-amounts {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* ── MOBILE NAV HAMBURGER ── */
+/* ── MOBILE NAV ── */
 .nav-hamburger {
   display: none;
   flex-direction: column;
@@ -575,6 +65,7 @@ img {
   padding: 4px;
   margin-left: auto;
 }
+
 .nav-hamburger span {
   display: block;
   width: 24px;
@@ -583,6 +74,7 @@ img {
   border-radius: 2px;
   transition: all 0.3s;
 }
+
 .nav-hamburger.open span:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
 }
@@ -592,13 +84,11 @@ img {
 .nav-hamburger.open span:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
 }
+
 .nav-mobile-menu {
   display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(12px);
   z-index: 99;
@@ -607,18 +97,22 @@ img {
   justify-content: center;
   gap: 1.75rem;
 }
+
 .nav-mobile-menu.open {
   display: flex;
 }
+
 .nav-mobile-menu a {
   font-family: var(--sans);
   font-size: 1.4rem;
   font-weight: 600;
   color: var(--navy);
 }
+
 .nav-mobile-menu .mobile-coral {
   color: var(--coral);
 }
+
 .nav-mobile-close {
   position: absolute;
   top: 1.5rem;
@@ -634,43 +128,12 @@ img {
   .nav-hamburger {
     display: flex;
   }
+
   .nav-links {
     display: none !important;
   }
-  .book-section {
-    grid-template-columns: 1fr;
-  }
-  .book-cover-wrap {
-    max-width: 280px;
-    margin: 0 auto;
-  }
-  .donate-section {
-    grid-template-columns: 1fr;
-  }
-  .shop-hero {
-    padding: 3rem 1.25rem 4rem;
-  }
+
   .shop-content {
-    padding: 3rem 1.25rem 4rem;
-    gap: 3rem;
-  }
-}
-@media (max-width: 640px) {
-  .donate-amounts {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .book-cta-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .book-format-options {
-    gap: 0.5rem;
-  }
-  .format-btn {
-    min-width: 80px;
-    padding: 0.6rem 0.9rem;
-  }
-  .thankyou-banner {
-    padding: 2rem 1.25rem;
+    padding: 1.25rem;
   }
 }
