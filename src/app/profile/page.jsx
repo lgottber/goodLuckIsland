@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { useAuth0 as useAuth0User } from "@auth0/auth0-react";
 import dynamic from "next/dynamic";
 
-const NavBar = dynamic(() => import("../../components/NavBar.jsx"), { ssr: false });
+const NavBar = dynamic(() => import("../../components/NavBar.jsx"), {
+  ssr: false,
+});
 import { supabase } from "../../lib/supabase.ts";
 import "./profile.css";
 

@@ -4,7 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
-const NavBar = dynamic(() => import("../../components/NavBar.jsx"), { ssr: false });
+const NavBar = dynamic(() => import("../../components/NavBar.jsx"), {
+  ssr: false,
+});
 import "./articles.css";
 
 // ─── Mock Articles — replace with your real CMS / database ───────────────────

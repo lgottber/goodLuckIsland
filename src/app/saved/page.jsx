@@ -3,7 +3,9 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 
-const NavBar = dynamic(() => import("../../components/NavBar.jsx"), { ssr: false });
+const NavBar = dynamic(() => import("../../components/NavBar.jsx"), {
+  ssr: false,
+});
 import "./saved.css";
 
 const SAVED_ITEMS = [
