@@ -9,7 +9,7 @@ export default function LogoutPage() {
   useEffect(() => {
     logout({
       logoutParams: {
-        returnTo: window.location.origin,
+        returnTo: globalThis.location.origin,
       },
     });
   }, []);

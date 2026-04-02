@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Auth0Provider } from "@auth0/auth0-react";
+import process from "node:process";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const router = useRouter();

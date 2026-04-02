@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useSearchParams } from "next/navigation";
 
-export default function LoginPage() {
+function LoginContent() {
   const { loginWithRedirect } = useAuth0();
   const searchParams = useSearchParams();
 
@@ -16,4 +16,12 @@ export default function LoginPage() {
   }, []);
 
   return null;
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginContent />
+    </Suspense>
+  );
 }
