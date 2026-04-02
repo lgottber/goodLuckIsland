@@ -141,7 +141,7 @@ export default function NavBar({
               href="/shop"
               className={activePage === "shop" ? "active" : ""}
             >
-              Book &amp; Support
+              Shop
             </Link>
             <Link
               href="/articles"
@@ -183,7 +183,7 @@ export default function NavBar({
         </button>
         <Link href="/about" onClick={() => setMobileOpen(false)}>About</Link>
         <Link href="/shop" onClick={() => setMobileOpen(false)}>
-          Book &amp; Support
+          Shop
         </Link>
         {user
           ? (
