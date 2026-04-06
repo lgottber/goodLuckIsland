@@ -1,6 +1,7 @@
 "use client";
 import "./home.css";
 import { useAuth0 } from "@auth0/auth0-react";
+import Link from "next/link";
 import NavBar from "../components/NavBarDynamic";
 import { YoutubeIcon, InstagramIcon, FacebookIcon } from "../components/Icons";
 
@@ -27,9 +28,9 @@ export default function HomePage() {
             <div className="hero-cta">
               {user
                 ? (
-                  <a href="/profile" className="cta-primary">
+                  <Link href="/profile" className="cta-primary">
                     Explore The Island
-                  </a>
+                  </Link>
                 )
                 : (
                   <>
@@ -39,9 +40,9 @@ export default function HomePage() {
                     >
                       Start Your Lifestyle Discovery
                     </a>
-                    <a href="/profile" className="cta-ghost">
+                    <Link href="/profile" className="cta-ghost">
                       Explore the Island
-                    </a>
+                    </Link>
                   </>
                 )}
             </div>
@@ -239,12 +240,12 @@ export default function HomePage() {
               actually want. Take the challenge. Start the conversation.
             </p>
             <div className="discovery-ctas">
-              <a href="/profile" className="cta-primary">
+              <Link href="/profile" className="cta-primary">
                 Take the One Question Retirement Challenge
-              </a>
-              <a href="/profile" className="cta-navy-ghost">
+              </Link>
+              <Link href="/profile" className="cta-navy-ghost">
                 Explore the Lifestyle Pillars Map
-              </a>
+              </Link>
             </div>
           </div>
         </section>
@@ -275,7 +276,7 @@ export default function HomePage() {
             </div>
           </div>
           <nav className="footer-nav-row" aria-label="Footer navigation">
-            <a href="/about">About</a>
+            <Link href="/about">About</Link>
             <a href="#">Resources</a>
             <a href="#">Contact</a>
             <a href="#">Privacy</a>

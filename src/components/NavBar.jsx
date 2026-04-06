@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useAuth0 } from "@auth0/auth0-react";
 import Modal from "./Modal";
+import UserMenu from "./UserMenu";
+import GuestAuthButtons from "./GuestAuthButtons";
 import { useClickOutside } from "../hooks/useClickOutside";
 import "./NavBar.css";
 
@@ -41,67 +43,16 @@ export default function NavBar({
 
   const avatarAuthSection = user
     ? (
-      <div className="nav-user-menu" ref={dropdownRef}>
-        <button
-          type="button"
-          className={`nav-avatar-btn${
-            largeAvatar ? " nav-avatar-btn--lg" : ""
-          }`}
-          onClick={() => setDropdownOpen(!dropdownOpen)}
-          aria-label="User menu"
-        >
-          {user.picture
-            ? (
-              <img
-                src={user.picture}
-                alt={user.name ?? "User"}
-                className="nav-avatar-img"
-              />
-            )
-            : <div className="nav-avatar-initials">{initials}</div>}
-        </button>
-        {dropdownOpen && (
-          <div className="nav-dropdown">
-            <a
-              href="/profile"
-              className="nav-dropdown-item"
-              onClick={() => setDropdownOpen(false)}
-            >
-              <span className="nav-dropdown-icon"></span> My Profile
-            </a>
-            <a
-              href="/saved"
-              className="nav-dropdown-item"
-              onClick={() => setDropdownOpen(false)}
-            >
-              <span className="nav-dropdown-icon"></span> Saved Content
-            </a>
-            <a
-              href="/backpack"
-              className="nav-dropdown-item"
-              onClick={() => setDropdownOpen(false)}
-            >
-              <span className="nav-dropdown-icon"></span> My Backpack
-            </a>
-            <div className="nav-dropdown-divider" />
-            <a
-              href="/auth/logout"
-              className="nav-dropdown-item nav-dropdown-logout"
-            >
-              <span className="nav-dropdown-icon"></span> Logout
-            </a>
-          </div>
-        )}
-      </div>
+      <UserMenu
+        user={user}
+        initials={initials}
+        largeAvatar={largeAvatar}
+        dropdownOpen={dropdownOpen}
+        setDropdownOpen={setDropdownOpen}
+        dropdownRef={dropdownRef}
+      />
     )
-    : (
-      <>
-        <a href="/auth/login" className="nav-btn-ghost">Sign In</a>
-        <a href="/auth/login?screen_hint=signup" className="nav-btn-solid">
-          Join Free
-        </a>
-      </>
-    );
+    : <GuestAuthButtons />;
 
   return (
     <>
@@ -195,20 +146,29 @@ export default function NavBar({
               Podcasts &amp; Articles
             </button>
           )}
-        {user && (
+        {user ? (
           <>
             <div className="nav-mobile-divider" />
-            <a href="/profile" onClick={() => setMobileOpen(false)}>
+            <Link href="/profile" onClick={() => setMobileOpen(false)}>
               👤 My Profile
-            </a>
-            <a href="/saved" onClick={() => setMobileOpen(false)}>
+            </Link>
+            <Link href="/saved" onClick={() => setMobileOpen(false)}>
               🔖 Saved Content
-            </a>
-            <a href="/backpack" onClick={() => setMobileOpen(false)}>
+            </Link>
+            <Link href="/backpack" onClick={() => setMobileOpen(false)}>
               🎒 My Backpack
-            </a>
+            </Link>
             <a href="/auth/logout">↩ Logout</a>
           </>
+        ) : (
+          <div className="nav-mobile-auth">
+            <a href="/auth/login?screen_hint=signup" className="nav-btn-solid" onClick={() => setMobileOpen(false)}>
+              Join Free
+            </a>
+            <a href="/auth/login" className="nav-btn-ghost" onClick={() => setMobileOpen(false)}>
+              Sign In
+            </a>
+          </div>
         )}
       </div>
 

@@ -48,7 +48,7 @@ export default function ShopifyCollection() {
     globalThis.ShopifyBuy.UI.onReady(client).then(function (ui) {
       if (abortedRef.current) return;
       ui.createComponent("collection", {
-        id: "500395049263",
+        id: process.env.NEXT_PUBLIC_SHOPIFY_COLLECTION_ID!,
         node: document.getElementById("collection-component-1775146534337"),
         moneyFormat: "%24%7B%7Bamount%7D%7D",
         options: {

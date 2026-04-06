@@ -3,6 +3,7 @@
 import { useState } from "react";
 import NavBar from "../../components/NavBarDynamic";
 import FilterTabs from "../../components/FilterTabs";
+import SavedList from "./SavedList";
 import "./saved.css";
 
 const SAVED_ITEMS = [
@@ -70,13 +71,6 @@ const SAVED_ITEMS = [
 
 const FILTERS = ["All", "Articles", "Podcasts"];
 
-const TAG_COLORS = {
-  "Retirement": "teal",
-  "Wellness": "navy",
-  "Clear Thinking": "coral",
-  "Financial Independence": "teal",
-};
-
 export default function SavedPage() {
   const [activeFilter, setActiveFilter] = useState("All");
 
@@ -88,7 +82,7 @@ export default function SavedPage() {
   });
 
   const articleCount = SAVED_ITEMS.filter((i) => i.type === "article").length;
-  const podcastCount = SAVED_ITEMS.filter((i) => i.type === "podcast").length;
+  const podcastCount = SAVED_ITEMS.length - articleCount;
 
   return (
     <>
@@ -131,61 +125,7 @@ export default function SavedPage() {
           />
 
           {/* ── LIST ── */}
-          {filtered.length > 0
-            ? (
-              <div className="saved-list">
-                {filtered.map((item) => (
-                  <div key={item.id} className="saved-item">
-                    <div className="saved-item-img">
-                      <img src={item.image} alt={item.title} />
-                      <span
-                        className={`saved-item-type saved-item-type--${item.type}`}
-                      >
-                        {item.type === "podcast" ? "🎙 Podcast" : "📄 Article"}
-                      </span>
-                    </div>
-                    <div className="saved-item-body">
-                      <div className="saved-item-meta">
-                        <span
-                          className={`saved-tag saved-tag--${
-                            TAG_COLORS[item.tag] ?? "teal"
-                          }`}
-                        >
-                          {item.tag}
-                        </span>
-                        <span className="saved-item-date">{item.date}</span>
-                        <span className="saved-item-dot">·</span>
-                        <span className="saved-item-time">{item.readTime}</span>
-                      </div>
-                      <h3 className="saved-item-title">{item.title}</h3>
-                      <p className="saved-item-excerpt">{item.excerpt}</p>
-                      <div className="saved-item-footer">
-                        <a href="/articles" className="saved-item-cta">
-                          {item.type === "podcast"
-                            ? "Listen Now →"
-                            : "Read Now →"}
-                        </a>
-                        <button type="button" className="saved-item-remove">
-                          Remove
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )
-            : (
-              <div className="saved-empty">
-                <div className="saved-empty-icon">🔖</div>
-                <h3>Nothing saved yet</h3>
-                <p>
-                  Bookmark articles and podcast episodes to find them here.
-                </p>
-                <a href="/articles" className="saved-empty-cta">
-                  Browse Podcasts &amp; Articles →
-                </a>
-              </div>
-            )}
+          <SavedList items={filtered} />
         </div>
       </div>
     </>

@@ -6,6 +6,8 @@ import NavBar from "../../components/NavBarDynamic";
 import Modal from "../../components/Modal";
 import FilterTabs from "../../components/FilterTabs";
 import { PlayIcon, YoutubeIcon, ClockIcon } from "../../components/Icons";
+import ArticleGrid from "./ArticleGrid";
+import FeaturedVideoPlayer from "./FeaturedVideoPlayer";
 import "./articles.css";
 
 // ─── Mock Articles — replace with your real CMS / database ───────────────────
@@ -174,7 +176,6 @@ const EPISODES = [
   },
 ];
 
-
 export default function ArticlesPage() {
   const [activeTab, setActiveTab] = useState("articles");
   const [activeCategory, setActiveCategory] = useState("All");
@@ -298,52 +299,7 @@ export default function ArticlesPage() {
               )}
 
               {/* Article Grid */}
-              {filtered.length > 0
-                ? (
-                  <div className="articles-grid">
-                    {filtered.map((article) => (
-                      <div key={article.id} className="article-card">
-                        <div className="article-card-img">
-                          <img src={article.image} alt={article.title} />
-                          <span className="article-card-tag">
-                            {article.category}
-                          </span>
-                        </div>
-                        <div className="article-card-body">
-                          <div className="article-card-meta">
-                            <span>{article.date}</span>
-                            <span className="article-card-meta-dot" />
-                            <span>{article.readTime}</span>
-                          </div>
-                          <h3 className="article-card-title">
-                            {article.title}
-                          </h3>
-                          <p className="article-card-excerpt">
-                            {article.excerpt}
-                          </p>
-                          <button
-                            type="button"
-                            className="article-card-read"
-                          >
-                            Read More{" "}
-                            <span className="article-card-read-arrow">→</span>
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )
-                : (
-                  <p
-                    style={{
-                      color: "var(--muted)",
-                      textAlign: "center",
-                      padding: "2rem 0",
-                    }}
-                  >
-                    No articles in this category yet — check back soon.
-                  </p>
-                )}
+              <ArticleGrid articles={filtered} />
 
               {/* Newsletter Strip */}
               <div className="newsletter-strip">
@@ -399,38 +355,11 @@ export default function ArticlesPage() {
                 <p className="podcast-featured-label">🎬 Latest Episode</p>
                 <div className="featured-episode">
                   <div className="featured-video-side">
-                    {featuredPlaying
-                      ? (
-                        <iframe
-                          src={`https://www.youtube.com/embed/${podcastFeatured.youtubeId}?autoplay=1`}
-                          title={podcastFeatured.title}
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                        />
-                      )
-                      : (
-                        <>
-                          <img
-                            className="featured-thumbnail"
-                            src={podcastFeatured.thumbnail}
-                            alt={podcastFeatured.title}
-                          />
-                          <div
-                            className="featured-play-overlay"
-                            onClick={() => setFeaturedPlaying(true)}
-                          >
-                            <button
-                              type="button"
-                              className="featured-play-btn"
-                            >
-                              <PlayIcon size={26} />
-                            </button>
-                            <span className="featured-play-label">
-                              Watch Now
-                            </span>
-                          </div>
-                        </>
-                      )}
+                    <FeaturedVideoPlayer
+                      episode={podcastFeatured}
+                      playing={featuredPlaying}
+                      onPlay={() => setFeaturedPlaying(true)}
+                    />
                   </div>
 
                   <div className="featured-info">

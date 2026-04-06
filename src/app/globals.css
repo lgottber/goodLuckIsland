@@ -15,6 +15,12 @@ html {
   font-size: 162.5%; /* 26px base — scales all rem values site-wide */
 }
 
+@media (max-width: 640px) {
+  html {
+    font-size: 100%; /* 16px base on mobile to prevent oversized layout */
+  }
+}
+
 a.btn-primary {
   display: inline-block;
   margin: 0.5rem;
