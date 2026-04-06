@@ -12,7 +12,7 @@ export default function CallbackPage() {
     if (!isLoading && !error) {
       router.replace("/");
     }
-  }, [isLoading, error]);
+  }, [isLoading, error, router]);
 
   if (error) {
     return <p>Authentication error: {error.message}</p>;

@@ -1,11 +1,7 @@
 "use client";
 import "./home.css";
 import { useAuth0 } from "@auth0/auth0-react";
-import dynamic from "next/dynamic";
-
-const NavBar = dynamic(() => import("../components/NavBar.jsx"), {
-  ssr: false,
-});
+import NavBar from "../components/NavBarDynamic";
 
 export default function HomePage() {
   const { user } = useAuth0();
@@ -73,8 +69,8 @@ export default function HomePage() {
               "Next Chapter",
               "Financial Clarity",
               "Life After Work",
-            ].map((d, i) => (
-              <span key={i} className="marquee-item">
+            ].map((d) => (
+              <span key={d} className="marquee-item">
                 <span className="marquee-dot">◈</span> {d}
               </span>
             ))}

@@ -20,6 +20,18 @@ declare global {
   }
 }
 
+const BUTTON_STYLES = {
+  "font-family": "Gill Sans, sans-serif",
+  "font-size": "16px",
+  "padding-top": "16px",
+  "padding-bottom": "16px",
+  color: "#f0ebe0",
+  ":hover": { color: "#f0ebe0", "background-color": "#334d99" },
+  "background-color": "#1e2d5a",
+  ":focus": { "background-color": "#334d99" },
+  "border-radius": "8px",
+};
+
 export default function ShopifyCollection() {
   const abortedRef = useRef(false);
   const initializedRef = useRef(false);
@@ -29,8 +41,8 @@ export default function ShopifyCollection() {
     initializedRef.current = true;
 
     const client = globalThis.ShopifyBuy.buildClient({
-      domain: "n5kpfa-tu.myshopify.com",
-      storefrontAccessToken: "50ac27e18ca1f106ab3e772e39209f09",
+      domain: process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN!,
+      storefrontAccessToken: process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN!,
     });
 
     globalThis.ShopifyBuy.UI.onReady(client).then(function (ui) {
@@ -68,17 +80,7 @@ export default function ShopifyCollection() {
                 "font-size": "20px",
                 color: "#1e2d5a",
               },
-              button: {
-                "font-family": "Gill Sans, sans-serif",
-                "font-size": "16px",
-                "padding-top": "16px",
-                "padding-bottom": "16px",
-                color: "#f0ebe0",
-                ":hover": { color: "#f0ebe0", "background-color": "#334d99" },
-                "background-color": "#1e2d5a",
-                ":focus": { "background-color": "#334d99" },
-                "border-radius": "8px",
-              },
+              button: BUTTON_STYLES,
               quantityInput: {
                 "font-size": "16px",
                 "padding-top": "16px",
@@ -124,17 +126,7 @@ export default function ShopifyCollection() {
                   "margin-bottom": "0px",
                 },
               },
-              button: {
-                "font-family": "Gill Sans, sans-serif",
-                "font-size": "16px",
-                "padding-top": "16px",
-                "padding-bottom": "16px",
-                color: "#f0ebe0",
-                ":hover": { color: "#f0ebe0", "background-color": "#334d99" },
-                "background-color": "#1e2d5a",
-                ":focus": { "background-color": "#334d99" },
-                "border-radius": "8px",
-              },
+              button: BUTTON_STYLES,
               quantityInput: {
                 "font-size": "16px",
                 "padding-top": "16px",
@@ -170,17 +162,7 @@ export default function ShopifyCollection() {
           option: {},
           cart: {
             styles: {
-              button: {
-                "font-family": "Gill Sans, sans-serif",
-                "font-size": "16px",
-                "padding-top": "16px",
-                "padding-bottom": "16px",
-                color: "#f0ebe0",
-                ":hover": { color: "#f0ebe0", "background-color": "#334d99" },
-                "background-color": "#1e2d5a",
-                ":focus": { "background-color": "#334d99" },
-                "border-radius": "8px",
-              },
+              button: BUTTON_STYLES,
               title: { color: "#f0ebe0" },
               header: { color: "#f0ebe0" },
               lineItems: { color: "#f0ebe0" },

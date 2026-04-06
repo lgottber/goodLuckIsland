@@ -1,13 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
+import NavBar from "../../components/NavBarDynamic";
 import "./about.css";
-
-const NavBar = dynamic(() => import("../../components/NavBar.jsx"), {
-  ssr: false,
-});
 
 const TESTIMONIALS = [
   {

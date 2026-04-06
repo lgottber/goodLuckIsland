@@ -13,7 +13,7 @@ function LoginContent() {
     loginWithRedirect({
       appState: { returnTo },
     });
-  }, []);
+  }, [loginWithRedirect, searchParams]);
 
   return null;
 }

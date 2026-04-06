@@ -2,11 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAuth0 as useAuth0User } from "@auth0/auth0-react";
-import dynamic from "next/dynamic";
-
-const NavBar = dynamic(() => import("../../components/NavBar.jsx"), {
-  ssr: false,
-});
+import NavBar from "../../components/NavBarDynamic";
 import { supabase } from "../../lib/supabase.ts";
 import "./profile.css";
 
@@ -1038,9 +1034,8 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (auth0User) {
-      supabase.from("users").select("*").then(({ data, error }) => {
+      supabase.from("users").select("*").then(({ error }) => {
         if (error) console.error("Supabase error:", error);
-        else console.log("Supabase user row:", data);
       });
     }
   }, [auth0User]);
@@ -1063,7 +1058,7 @@ export default function ProfilePage() {
   const [pickingAvatar, setPickingAvatar] = useState(false);
   const [saved, setSaved] = useState(true);
 
-  const initials = `${user.firstName[0]}${user.lastName[0]}`;
+  const initials = `${user.firstName?.[0] ?? "?"}${user.lastName?.[0] ?? "?"}`.toUpperCase();
 
   const handleSave = (updated) => {
     setUser(updated);
