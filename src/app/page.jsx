@@ -70,8 +70,8 @@ export default function HomePage() {
               "Next Chapter",
               "Financial Clarity",
               "Life After Work",
-            ].map((d) => (
-              <span key={d} className="marquee-item">
+            ].map((d, i) => (
+              <span key={`${d}-${i}`} className="marquee-item">
                 <span className="marquee-dot">◈</span> {d}
               </span>
             ))}
