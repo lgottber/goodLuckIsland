@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuth0 as useAuth0User } from "@auth0/auth0-react";
 import NavBar from "../../components/NavBarDynamic";
+import Modal from "../../components/Modal";
 import { supabase } from "../../lib/supabase.ts";
 import "./profile.css";
 
@@ -342,11 +343,11 @@ function AvatarPickerModal({ currentAvatar, onSelect, onClose }) {
   const era = AVATAR_ERAS.find((e) => e.era === selectedEra);
 
   return (
-    <div
-      className="edit-modal-backdrop"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
+    <Modal
+      backdropClassName="edit-modal-backdrop"
+      contentClassName="edit-modal avatar-picker-modal"
+      onClose={onClose}
     >
-      <div className="edit-modal avatar-picker-modal">
         <div className="edit-modal-header">
           <div>
             <h2>Choose Your Islander Avatar</h2>
@@ -425,8 +426,7 @@ function AvatarPickerModal({ currentAvatar, onSelect, onClose }) {
             Done
           </button>
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }
 
@@ -628,11 +628,7 @@ function EditModal({ user, onSave, onClose }) {
     set("interests", form.interests.filter((t) => t !== tag));
 
   return (
-    <div
-      className="edit-modal-backdrop"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
-    >
-      <div className="edit-modal">
+    <Modal backdropClassName="edit-modal-backdrop" contentClassName="edit-modal" onClose={onClose}>
         {/* Header */}
         <div className="edit-modal-header">
           <h2>Edit Islander Profile</h2>
@@ -1022,8 +1018,7 @@ function EditModal({ user, onSave, onClose }) {
               )}
           </div>
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }
 

@@ -3,6 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import NavBar from "../../components/NavBarDynamic";
+import Modal from "../../components/Modal";
+import FilterTabs from "../../components/FilterTabs";
+import { PlayIcon, YoutubeIcon, ClockIcon } from "../../components/Icons";
 import "./articles.css";
 
 // ─── Mock Articles — replace with your real CMS / database ───────────────────
@@ -171,37 +174,6 @@ const EPISODES = [
   },
 ];
 
-function PlayIcon({ size = 20 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-      <polygon points="5,3 19,12 5,21" />
-    </svg>
-  );
-}
-
-function YoutubeIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.75 15.5V8.5l6.25 3.5-6.25 3.5z" />
-    </svg>
-  );
-}
-
-function ClockIcon() {
-  return (
-    <svg
-      width="13"
-      height="13"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <polyline points="12 6 12 12 16 14" />
-    </svg>
-  );
-}
 
 export default function ArticlesPage() {
   const [activeTab, setActiveTab] = useState("articles");
@@ -236,24 +208,16 @@ export default function ArticlesPage() {
         </div>
 
         {/* ── TAB SWITCHER ── */}
-        <div className="content-tabs">
-          <button
-            type="button"
-            className={`content-tab ${
-              activeTab === "articles" ? "active" : ""
-            }`}
-            onClick={() => setActiveTab("articles")}
-          >
-            📖 Articles
-          </button>
-          <button
-            type="button"
-            className={`content-tab ${activeTab === "podcast" ? "active" : ""}`}
-            onClick={() => setActiveTab("podcast")}
-          >
-            🎬 Podcast
-          </button>
-        </div>
+        <FilterTabs
+          containerClass="content-tabs"
+          buttonClass="content-tab"
+          items={[
+            { label: "📖 Articles", value: "articles" },
+            { label: "🎬 Podcast", value: "podcast" },
+          ]}
+          active={activeTab}
+          onChange={setActiveTab}
+        />
 
         {/* ── ARTICLES TAB ── */}
         {activeTab === "articles" && (
@@ -286,20 +250,13 @@ export default function ArticlesPage() {
 
             <div className="articles-content">
               {/* Filter Bar */}
-              <div className="filter-bar">
-                {CATEGORIES.map((cat) => (
-                  <button
-                    type="button"
-                    key={cat}
-                    className={`filter-btn ${
-                      activeCategory === cat ? "active" : ""
-                    }`}
-                    onClick={() => setActiveCategory(cat)}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
+              <FilterTabs
+                containerClass="filter-bar"
+                buttonClass="filter-btn"
+                items={CATEGORIES}
+                active={activeCategory}
+                onChange={setActiveCategory}
+              />
 
               {/* Featured Article */}
               {activeCategory === "All" && featured && (
@@ -556,49 +513,45 @@ export default function ArticlesPage() {
 
       {/* ── VIDEO MODAL ── */}
       {modalEpisode && (
-        <div
-          className="video-modal-backdrop"
-          onClick={() => setModalEpisode(null)}
+        <Modal
+          backdropClassName="video-modal-backdrop"
+          contentClassName="video-modal"
+          onClose={() => setModalEpisode(null)}
         >
-          <div
-            className="video-modal"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="video-modal-header">
-              <h3 className="video-modal-title">{modalEpisode.title}</h3>
-              <button
-                type="button"
-                className="video-modal-close"
-                onClick={() => setModalEpisode(null)}
-              >
-                ✕
-              </button>
-            </div>
-            <div className="video-modal-embed">
-              <iframe
-                src={`https://www.youtube.com/embed/${modalEpisode.youtubeId}?autoplay=1`}
-                title={modalEpisode.title}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-            <div className="video-modal-footer">
-              <span className="video-modal-meta">
-                {modalEpisode.num} · {modalEpisode.date} ·{" "}
-                {modalEpisode.duration}
-              </span>
-              <a
-                href={`https://www.youtube.com/watch?v=${modalEpisode.youtubeId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <button type="button" className="video-modal-yt">
-                  <YoutubeIcon /> Open on YouTube
-                </button>
-              </a>
-            </div>
+          <div className="video-modal-header">
+            <h3 className="video-modal-title">{modalEpisode.title}</h3>
+            <button
+              type="button"
+              className="video-modal-close"
+              onClick={() => setModalEpisode(null)}
+            >
+              ✕
+            </button>
           </div>
-        </div>
+          <div className="video-modal-embed">
+            <iframe
+              src={`https://www.youtube.com/embed/${modalEpisode.youtubeId}?autoplay=1`}
+              title={modalEpisode.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+          <div className="video-modal-footer">
+            <span className="video-modal-meta">
+              {modalEpisode.num} · {modalEpisode.date} ·{" "}
+              {modalEpisode.duration}
+            </span>
+            <a
+              href={`https://www.youtube.com/watch?v=${modalEpisode.youtubeId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button type="button" className="video-modal-yt">
+                <YoutubeIcon /> Open on YouTube
+              </button>
+            </a>
+          </div>
+        </Modal>
       )}
     </>
   );

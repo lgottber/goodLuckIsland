@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import NavBar from "../../components/NavBarDynamic";
+import { useSubmitFeedback } from "../../hooks/useSubmitFeedback";
 import "./backpack.css";
 
 const BACKPACK_SECTIONS = [
@@ -158,13 +159,8 @@ function getWeeklyQuestion() {
 export default function BackpackPage() {
   const [activeSection, setActiveSection] = useState(null);
   const [reflection, setReflection] = useState("");
-  const [reflectionSaved, setReflectionSaved] = useState(false);
+  const [reflectionSaved, triggerReflectionSaved] = useSubmitFeedback(2500);
   const weeklyQ = getWeeklyQuestion();
-
-  const saveReflection = () => {
-    setReflectionSaved(true);
-    setTimeout(() => setReflectionSaved(false), 2500);
-  };
 
   return (
     <>
@@ -307,7 +303,7 @@ export default function BackpackPage() {
                   <button
                     type="button"
                     className="btn-save"
-                    onClick={saveReflection}
+                    onClick={triggerReflectionSaved}
                     disabled={!reflection.trim()}
                     style={{ opacity: !reflection.trim() ? 0.5 : 1 }}
                   >

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import NavBar from "../../components/NavBarDynamic";
+import FilterTabs from "../../components/FilterTabs";
 import "./saved.css";
 
 const SAVED_ITEMS = [
@@ -121,20 +122,13 @@ export default function SavedPage() {
 
         <div className="saved-content">
           {/* ── FILTER TABS ── */}
-          <div className="saved-filters">
-            {FILTERS.map((f) => (
-              <button
-                key={f}
-                type="button"
-                className={`saved-filter-btn${
-                  activeFilter === f ? " active" : ""
-                }`}
-                onClick={() => setActiveFilter(f)}
-              >
-                {f}
-              </button>
-            ))}
-          </div>
+          <FilterTabs
+            containerClass="saved-filters"
+            buttonClass="saved-filter-btn"
+            items={FILTERS}
+            active={activeFilter}
+            onChange={setActiveFilter}
+          />
 
           {/* ── LIST ── */}
           {filtered.length > 0

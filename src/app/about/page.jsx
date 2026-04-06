@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import NavBar from "../../components/NavBarDynamic";
+import { useSubmitFeedback } from "../../hooks/useSubmitFeedback";
 import "./about.css";
 
 const TESTIMONIALS = [
@@ -39,12 +40,11 @@ export default function AboutPage() {
     email: "",
     message: "",
   });
-  const [submitted, setSubmitted] = useState(false);
+  const [submitted, triggerSubmitted] = useSubmitFeedback(3500);
 
   const handleSubmit = () => {
     if (!formData.email || !formData.message) return;
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3500);
+    triggerSubmitted();
     setFormData({ firstName: "", lastName: "", email: "", message: "" });
   };
 

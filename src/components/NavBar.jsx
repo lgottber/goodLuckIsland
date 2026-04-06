@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useAuth0 } from "@auth0/auth0-react";
+import Modal from "./Modal";
+import { useClickOutside } from "../hooks/useClickOutside";
 import "./NavBar.css";
 
 export default function NavBar({
@@ -24,17 +26,7 @@ export default function NavBar({
     return () => globalThis.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
-    function handleClickOutside(e) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setDropdownOpen(false);
-      }
-    }
-    if (dropdownOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [dropdownOpen]);
+  useClickOutside(dropdownRef, () => setDropdownOpen(false), dropdownOpen);
 
   function handleGatedClick(e) {
     if (!user) {
@@ -221,38 +213,34 @@ export default function NavBar({
       </div>
 
       {showGate && (
-        <div
-          className="nav-gate-backdrop"
-          onClick={() => setShowGate(false)}
+        <Modal
+          backdropClassName="nav-gate-backdrop"
+          contentClassName="nav-gate-modal"
+          onClose={() => setShowGate(false)}
         >
-          <div
-            className="nav-gate-modal"
-            onClick={(e) => e.stopPropagation()}
+          <button
+            type="button"
+            className="nav-gate-close"
+            onClick={() => setShowGate(false)}
           >
-            <button
-              type="button"
-              className="nav-gate-close"
-              onClick={() => setShowGate(false)}
+            ✕
+          </button>
+          <div className="nav-gate-icon">🔒</div>
+          <h3 className="nav-gate-title">Member Content</h3>
+          <p className="nav-gate-desc">
+            Articles and podcast episodes are free to access — just sign in or
+            create your free account to get in.
+          </p>
+          <div className="nav-gate-actions">
+            <a href="/auth/login" className="nav-gate-btn-solid">Sign In</a>
+            <a
+              href="/auth/login?screen_hint=signup"
+              className="nav-gate-btn-ghost"
             >
-              ✕
-            </button>
-            <div className="nav-gate-icon">🔒</div>
-            <h3 className="nav-gate-title">Member Content</h3>
-            <p className="nav-gate-desc">
-              Articles and podcast episodes are free to access — just sign in or
-              create your free account to get in.
-            </p>
-            <div className="nav-gate-actions">
-              <a href="/auth/login" className="nav-gate-btn-solid">Sign In</a>
-              <a
-                href="/auth/login?screen_hint=signup"
-                className="nav-gate-btn-ghost"
-              >
-                Join Free →
-              </a>
-            </div>
+              Join Free →
+            </a>
           </div>
-        </div>
+        </Modal>
       )}
     </>
   );
