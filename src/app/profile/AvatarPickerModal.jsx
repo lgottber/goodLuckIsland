@@ -3,7 +3,9 @@ import Modal from "../../components/Modal";
 import Icon from "./Icon";
 import { AVATAR_ERAS } from "./AvatarDisplay";
 
-export default function AvatarPickerModal({ currentAvatar, onSelect, onClose }) {
+export default function AvatarPickerModal(
+  { currentAvatar, onSelect, onClose },
+) {
   const [selectedEra, setSelectedEra] = useState("80s");
   const era = AVATAR_ERAS.find((e) => e.era === selectedEra);
 
@@ -36,7 +38,9 @@ export default function AvatarPickerModal({ currentAvatar, onSelect, onClose }) 
           <button
             type="button"
             key={e.era}
-            className={`avatar-era-tab ${selectedEra === e.era ? "active" : ""}`}
+            className={`avatar-era-tab ${
+              selectedEra === e.era ? "active" : ""
+            }`}
             onClick={() => setSelectedEra(e.era)}
           >
             <span className="era-decade">{e.era}</span>
@@ -53,7 +57,9 @@ export default function AvatarPickerModal({ currentAvatar, onSelect, onClose }) 
               <button
                 type="button"
                 key={char.id}
-                className={`avatar-character-btn ${isSelected ? "selected" : ""}`}
+                className={`avatar-character-btn ${
+                  isSelected ? "selected" : ""
+                }`}
                 onClick={() => {
                   onSelect(char.id);
                   onClose();
@@ -64,9 +70,7 @@ export default function AvatarPickerModal({ currentAvatar, onSelect, onClose }) 
                   style={{ background: char.bg }}
                 >
                   <span className="avatar-emoji">{char.emoji}</span>
-                  {isSelected && (
-                    <div className="avatar-selected-check">✓</div>
-                  )}
+                  {isSelected && <div className="avatar-selected-check">✓</div>}
                 </div>
                 <span className="avatar-character-name">{char.name}</span>
                 <span className="avatar-character-show">{char.desc}</span>

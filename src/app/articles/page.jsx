@@ -5,7 +5,7 @@ import Link from "next/link";
 import NavBar from "../../components/NavBarDynamic";
 import Modal from "../../components/Modal";
 import FilterTabs from "../../components/FilterTabs";
-import { PlayIcon, YoutubeIcon, ClockIcon } from "../../components/Icons";
+import { ClockIcon, PlayIcon, YoutubeIcon } from "../../components/Icons";
 import ArticleGrid from "./ArticleGrid";
 import FeaturedVideoPlayer from "./FeaturedVideoPlayer";
 import "./articles.css";
@@ -467,8 +467,7 @@ export default function ArticlesPage() {
           </div>
           <div className="video-modal-footer">
             <span className="video-modal-meta">
-              {modalEpisode.num} · {modalEpisode.date} ·{" "}
-              {modalEpisode.duration}
+              {modalEpisode.num} · {modalEpisode.date} · {modalEpisode.duration}
             </span>
             <a
               href={`https://www.youtube.com/watch?v=${modalEpisode.youtubeId}`}

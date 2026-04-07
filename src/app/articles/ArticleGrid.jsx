@@ -38,8 +38,7 @@ export default function ArticleGrid({ articles }) {
               type="button"
               className="article-card-read"
             >
-              Read More{" "}
-              <span className="article-card-read-arrow">→</span>
+              Read More <span className="article-card-read-arrow">→</span>
             </button>
           </div>
         </div>

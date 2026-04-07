@@ -108,7 +108,8 @@ export default function BasicInfoTab({
                 <button
                   type="button"
                   className="tag-remove-btn"
-                  onClick={() => removeInterest(tag)}
+                  onClick={() =>
+                    removeInterest(tag)}
                 >
                   ✕
                 </button>

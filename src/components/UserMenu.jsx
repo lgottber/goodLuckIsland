@@ -41,7 +41,10 @@ export default function UserMenu({
             </a>
           ))}
           <div className="nav-dropdown-divider" />
-          <a href="/auth/logout" className="nav-dropdown-item nav-dropdown-logout">
+          <a
+            href="/auth/logout"
+            className="nav-dropdown-item nav-dropdown-logout"
+          >
             <span className="nav-dropdown-icon"></span> Logout
           </a>
         </div>

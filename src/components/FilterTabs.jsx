@@ -2,7 +2,9 @@
  * Reusable filter/tab button group.
  * items: string[] | { label: string, value: string }[]
  */
-export default function FilterTabs({ items, active, onChange, containerClass, buttonClass }) {
+export default function FilterTabs(
+  { items, active, onChange, containerClass, buttonClass },
+) {
   return (
     <div className={containerClass}>
       {items.map((item) => {

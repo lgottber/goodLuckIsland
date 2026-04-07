@@ -23,16 +23,12 @@ export default function RetirementTab({ form, set }) {
 
       {form.isRetired && (
         <Field
-          label={
-            form.isRetired === RETIRED
-              ? "When did you retire?"
-              : "When do you plan to retire?"
-          }
-          hint={
-            form.isRetired === RETIRED
-              ? "Month and year you retired"
-              : "Your target retirement date"
-          }
+          label={form.isRetired === RETIRED
+            ? "When did you retire?"
+            : "When do you plan to retire?"}
+          hint={form.isRetired === RETIRED
+            ? "Month and year you retired"
+            : "Your target retirement date"}
         >
           <input
             type="month"

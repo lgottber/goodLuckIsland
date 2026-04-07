@@ -134,7 +134,12 @@ export default function NavBar({
         </Link>
         {user
           ? <MobileArticlesLink setMobileOpen={setMobileOpen} />
-          : <MobileArticlesGatedButton setMobileOpen={setMobileOpen} setShowGate={setShowGate} />}
+          : (
+            <MobileArticlesGatedButton
+              setMobileOpen={setMobileOpen}
+              setShowGate={setShowGate}
+            />
+          )}
         {user
           ? <MobileUserSection setMobileOpen={setMobileOpen} />
           : <MobileGuestAuth setMobileOpen={setMobileOpen} />}

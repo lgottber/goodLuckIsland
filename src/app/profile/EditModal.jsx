@@ -32,7 +32,11 @@ export default function EditModal({ user, onSave, onClose }) {
   const tabIdx = MODAL_TABS.indexOf(activeTab);
 
   return (
-    <Modal backdropClassName="edit-modal-backdrop" contentClassName="edit-modal" onClose={onClose}>
+    <Modal
+      backdropClassName="edit-modal-backdrop"
+      contentClassName="edit-modal"
+      onClose={onClose}
+    >
       {/* Header */}
       <div className="edit-modal-header">
         <h2>Edit Islander Profile</h2>
@@ -65,15 +69,9 @@ export default function EditModal({ user, onSave, onClose }) {
           removeInterest={removeInterest}
         />
       )}
-      {activeTab === "Life & Career" && (
-        <LifeCareerTab form={form} set={set} />
-      )}
-      {activeTab === "Retirement" && (
-        <RetirementTab form={form} set={set} />
-      )}
-      {activeTab === "Finances" && (
-        <FinancesTab form={form} set={set} />
-      )}
+      {activeTab === "Life & Career" && <LifeCareerTab form={form} set={set} />}
+      {activeTab === "Retirement" && <RetirementTab form={form} set={set} />}
+      {activeTab === "Finances" && <FinancesTab form={form} set={set} />}
 
       {/* Footer */}
       <div className="edit-modal-footer">
@@ -93,7 +91,11 @@ export default function EditModal({ user, onSave, onClose }) {
             Cancel
           </button>
           {tabIdx < MODAL_TABS.length - 1
-            ? <ModalNextButton onNext={() => setActiveTab(MODAL_TABS[tabIdx + 1])} />
+            ? (
+              <ModalNextButton
+                onNext={() => setActiveTab(MODAL_TABS[tabIdx + 1])}
+              />
+            )
             : <ModalSaveButton onSave={() => onSave(form)} />}
         </div>
       </div>

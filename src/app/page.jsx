@@ -3,7 +3,7 @@ import "./home.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import Link from "next/link";
 import NavBar from "../components/NavBarDynamic";
-import { YoutubeIcon, InstagramIcon, FacebookIcon } from "../components/Icons";
+import { FacebookIcon, InstagramIcon, YoutubeIcon } from "../components/Icons";
 import HeroCtaUser from "./HeroCtaUser";
 import HeroCtaGuest from "./HeroCtaGuest";
 

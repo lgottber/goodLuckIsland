@@ -93,7 +93,8 @@ export default function ProfilePage() {
   const [pickingAvatar, setPickingAvatar] = useState(false);
   const [saved, setSaved] = useState(true);
 
-  const initials = `${user.firstName?.[0] ?? "?"}${user.lastName?.[0] ?? "?"}`.toUpperCase();
+  const initials = `${user.firstName?.[0] ?? "?"}${user.lastName?.[0] ?? "?"}`
+    .toUpperCase();
 
   const handleSave = (updated) => {
     setUser(updated);

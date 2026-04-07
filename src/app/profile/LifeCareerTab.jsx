@@ -73,7 +73,10 @@ export default function LifeCareerTab({ form, set }) {
       </div>
 
       <Field label="Home paid off?">
-        <YesNo value={form.homePaidOff} onChange={(v) => set("homePaidOff", v)} />
+        <YesNo
+          value={form.homePaidOff}
+          onChange={(v) => set("homePaidOff", v)}
+        />
       </Field>
     </div>
   );
