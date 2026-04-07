@@ -5,7 +5,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useRouter } from "next/navigation";
 
 export default function CallbackPage() {
-  const { isLoading, error } = useAuth0();
+  const authContext = useAuth0();
+  const { isLoading, error } = authContext;
   const router = useRouter();
 
   useEffect(() => {

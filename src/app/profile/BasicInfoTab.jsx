@@ -33,8 +33,8 @@ export default function BasicInfoTab({
         <Field label="Username">
           <input
             type="text"
-            value={form.handle}
-            onChange={(e) => set("handle", e.target.value)}
+            value={form.username}
+            onChange={(e) => set("username", e.target.value)}
             placeholder="@username"
           />
         </Field>

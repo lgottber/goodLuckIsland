@@ -1,7 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useEffect } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 import { useRouter } from "next/navigation";
+import { setSupabaseTokenGetter } from "../lib/supabase";
 
 // @auth0/auth0-spa-js contains browser-only module chunks that webpack cannot
 // load during Next.js prerendering. Loading with ssr: false prevents the
@@ -11,6 +14,21 @@ const Auth0Provider = dynamic(
   { ssr: false },
 );
 
+function SupabaseAuthSync() {
+  const { getIdTokenClaims } = useAuth0();
+
+  const getToken = async () => {
+    const claims = await getIdTokenClaims();
+    return claims?.__raw ?? null;
+  };
+
+  useEffect(() => {
+    setSupabaseTokenGetter(getToken);
+  }, [getIdTokenClaims]);
+
+  return null;
+}
+
 export function Providers({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
@@ -18,6 +36,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <Auth0Provider
       domain={process.env.NEXT_PUBLIC_AUTH0_DOMAIN!}
       clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID!}
+      cacheLocation="localstorage"
       authorizationParams={{
         redirect_uri: process.env.NEXT_PUBLIC_AUTH0_CALLBACK_URL,
       }}
@@ -25,6 +44,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         router.replace(appState?.returnTo ?? "/");
       }}
     >
+      <SupabaseAuthSync />
       {children}
     </Auth0Provider>
   );
