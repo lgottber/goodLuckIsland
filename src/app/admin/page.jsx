@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import StatCard from "../../components/StatCard";
+import HBar from "../../components/HBar";
+import SectionCard from "../../components/SectionCard";
 
 // ─── Mock Data — replace with real API/DB calls ───────────────────────────────
 const STATS = {
@@ -126,137 +129,6 @@ const BACKPACK_DATA = [
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 const maxSignup = Math.max(...SIGNUP_DATA.map((d) => d.count));
-
-function StatCard({ label, value, sub, accent }) {
-  return (
-    <div
-      style={{
-        background: "#131c38",
-        borderRadius: 16,
-        padding: "1.5rem",
-        display: "flex",
-        flexDirection: "column",
-        gap: "0.5rem",
-        border: `1px solid rgba(255,255,255,0.06)`,
-      }}
-    >
-      <span
-        style={{
-          fontSize: "0.62rem",
-          fontWeight: 700,
-          letterSpacing: "0.16em",
-          textTransform: "uppercase",
-          color: accent || "#2e8b7a",
-        }}
-      >
-        {label}
-      </span>
-      <span
-        style={{
-          fontFamily: "'Cormorant Garamond', Georgia, serif",
-          fontSize: "2.75rem",
-          fontWeight: 600,
-          color: "#fff",
-          lineHeight: 1,
-        }}
-      >
-        {value}
-      </span>
-      {sub && (
-        <span style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.4)" }}>
-          {sub}
-        </span>
-      )}
-    </div>
-  );
-}
-
-function HBar({ label, pct, color = "#2e8b7a", total }) {
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-      <span
-        style={{
-          fontSize: "0.75rem",
-          color: "rgba(255,255,255,0.55)",
-          width: 110,
-          flexShrink: 0,
-          textAlign: "right",
-        }}
-      >
-        {label}
-      </span>
-      <div
-        style={{
-          flex: 1,
-          height: 8,
-          background: "rgba(255,255,255,0.07)",
-          borderRadius: 4,
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            height: "100%",
-            width: `${pct}%`,
-            background: color,
-            borderRadius: 4,
-            transition: "width 0.6s ease",
-          }}
-        />
-      </div>
-      <span
-        style={{
-          fontSize: "0.72rem",
-          color: "rgba(255,255,255,0.4)",
-          width: 32,
-          textAlign: "right",
-        }}
-      >
-        {pct}%
-      </span>
-      {total && (
-        <span
-          style={{
-            fontSize: "0.7rem",
-            color: "rgba(255,255,255,0.25)",
-            width: 36,
-            textAlign: "right",
-          }}
-        >
-          {Math.round(total * pct / 100)}
-        </span>
-      )}
-    </div>
-  );
-}
-
-function SectionCard({ title, children, span }) {
-  return (
-    <div
-      style={{
-        background: "#131c38",
-        borderRadius: 16,
-        padding: "1.5rem",
-        border: "1px solid rgba(255,255,255,0.06)",
-        gridColumn: span ? `span ${span}` : undefined,
-      }}
-    >
-      <p
-        style={{
-          fontSize: "0.62rem",
-          fontWeight: 700,
-          letterSpacing: "0.16em",
-          textTransform: "uppercase",
-          color: "rgba(255,255,255,0.35)",
-          marginBottom: "1.25rem",
-        }}
-      >
-        {title}
-      </p>
-      {children}
-    </div>
-  );
-}
 
 // ─── Component ───────────────────────────────────────────────────────────────
 export default function AdminPage() {

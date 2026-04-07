@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import dynamic from "next/dynamic";
-
-const NavBar = dynamic(() => import("../../components/NavBar.jsx"), {
-  ssr: false,
-});
+import NavBar from "../../components/NavBarDynamic";
+import Modal from "../../components/Modal";
+import FilterTabs from "../../components/FilterTabs";
+import { ClockIcon, PlayIcon, YoutubeIcon } from "../../components/Icons";
+import ArticleGrid from "./ArticleGrid";
+import FeaturedVideoPlayer from "./FeaturedVideoPlayer";
 import "./articles.css";
 
 // ─── Mock Articles — replace with your real CMS / database ───────────────────
@@ -175,38 +176,6 @@ const EPISODES = [
   },
 ];
 
-function PlayIcon({ size = 20 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-      <polygon points="5,3 19,12 5,21" />
-    </svg>
-  );
-}
-
-function YoutubeIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.75 15.5V8.5l6.25 3.5-6.25 3.5z" />
-    </svg>
-  );
-}
-
-function ClockIcon() {
-  return (
-    <svg
-      width="13"
-      height="13"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <polyline points="12 6 12 12 16 14" />
-    </svg>
-  );
-}
-
 export default function ArticlesPage() {
   const [activeTab, setActiveTab] = useState("articles");
   const [activeCategory, setActiveCategory] = useState("All");
@@ -240,24 +209,16 @@ export default function ArticlesPage() {
         </div>
 
         {/* ── TAB SWITCHER ── */}
-        <div className="content-tabs">
-          <button
-            type="button"
-            className={`content-tab ${
-              activeTab === "articles" ? "active" : ""
-            }`}
-            onClick={() => setActiveTab("articles")}
-          >
-            📖 Articles
-          </button>
-          <button
-            type="button"
-            className={`content-tab ${activeTab === "podcast" ? "active" : ""}`}
-            onClick={() => setActiveTab("podcast")}
-          >
-            🎬 Podcast
-          </button>
-        </div>
+        <FilterTabs
+          containerClass="content-tabs"
+          buttonClass="content-tab"
+          items={[
+            { label: "📖 Articles", value: "articles" },
+            { label: "🎬 Podcast", value: "podcast" },
+          ]}
+          active={activeTab}
+          onChange={setActiveTab}
+        />
 
         {/* ── ARTICLES TAB ── */}
         {activeTab === "articles" && (
@@ -290,20 +251,13 @@ export default function ArticlesPage() {
 
             <div className="articles-content">
               {/* Filter Bar */}
-              <div className="filter-bar">
-                {CATEGORIES.map((cat) => (
-                  <button
-                    type="button"
-                    key={cat}
-                    className={`filter-btn ${
-                      activeCategory === cat ? "active" : ""
-                    }`}
-                    onClick={() => setActiveCategory(cat)}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
+              <FilterTabs
+                containerClass="filter-bar"
+                buttonClass="filter-btn"
+                items={CATEGORIES}
+                active={activeCategory}
+                onChange={setActiveCategory}
+              />
 
               {/* Featured Article */}
               {activeCategory === "All" && featured && (
@@ -345,52 +299,7 @@ export default function ArticlesPage() {
               )}
 
               {/* Article Grid */}
-              {filtered.length > 0
-                ? (
-                  <div className="articles-grid">
-                    {filtered.map((article) => (
-                      <div key={article.id} className="article-card">
-                        <div className="article-card-img">
-                          <img src={article.image} alt={article.title} />
-                          <span className="article-card-tag">
-                            {article.category}
-                          </span>
-                        </div>
-                        <div className="article-card-body">
-                          <div className="article-card-meta">
-                            <span>{article.date}</span>
-                            <span className="article-card-meta-dot" />
-                            <span>{article.readTime}</span>
-                          </div>
-                          <h3 className="article-card-title">
-                            {article.title}
-                          </h3>
-                          <p className="article-card-excerpt">
-                            {article.excerpt}
-                          </p>
-                          <button
-                            type="button"
-                            className="article-card-read"
-                          >
-                            Read More{" "}
-                            <span className="article-card-read-arrow">→</span>
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )
-                : (
-                  <p
-                    style={{
-                      color: "var(--muted)",
-                      textAlign: "center",
-                      padding: "2rem 0",
-                    }}
-                  >
-                    No articles in this category yet — check back soon.
-                  </p>
-                )}
+              <ArticleGrid articles={filtered} />
 
               {/* Newsletter Strip */}
               <div className="newsletter-strip">
@@ -446,38 +355,11 @@ export default function ArticlesPage() {
                 <p className="podcast-featured-label">🎬 Latest Episode</p>
                 <div className="featured-episode">
                   <div className="featured-video-side">
-                    {featuredPlaying
-                      ? (
-                        <iframe
-                          src={`https://www.youtube.com/embed/${podcastFeatured.youtubeId}?autoplay=1`}
-                          title={podcastFeatured.title}
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                        />
-                      )
-                      : (
-                        <>
-                          <img
-                            className="featured-thumbnail"
-                            src={podcastFeatured.thumbnail}
-                            alt={podcastFeatured.title}
-                          />
-                          <div
-                            className="featured-play-overlay"
-                            onClick={() => setFeaturedPlaying(true)}
-                          >
-                            <button
-                              type="button"
-                              className="featured-play-btn"
-                            >
-                              <PlayIcon size={26} />
-                            </button>
-                            <span className="featured-play-label">
-                              Watch Now
-                            </span>
-                          </div>
-                        </>
-                      )}
+                    <FeaturedVideoPlayer
+                      episode={podcastFeatured}
+                      playing={featuredPlaying}
+                      onPlay={() => setFeaturedPlaying(true)}
+                    />
                   </div>
 
                   <div className="featured-info">
@@ -560,49 +442,44 @@ export default function ArticlesPage() {
 
       {/* ── VIDEO MODAL ── */}
       {modalEpisode && (
-        <div
-          className="video-modal-backdrop"
-          onClick={() => setModalEpisode(null)}
+        <Modal
+          backdropClassName="video-modal-backdrop"
+          contentClassName="video-modal"
+          onClose={() => setModalEpisode(null)}
         >
-          <div
-            className="video-modal"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="video-modal-header">
-              <h3 className="video-modal-title">{modalEpisode.title}</h3>
-              <button
-                type="button"
-                className="video-modal-close"
-                onClick={() => setModalEpisode(null)}
-              >
-                ✕
-              </button>
-            </div>
-            <div className="video-modal-embed">
-              <iframe
-                src={`https://www.youtube.com/embed/${modalEpisode.youtubeId}?autoplay=1`}
-                title={modalEpisode.title}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-            <div className="video-modal-footer">
-              <span className="video-modal-meta">
-                {modalEpisode.num} · {modalEpisode.date} ·{" "}
-                {modalEpisode.duration}
-              </span>
-              <a
-                href={`https://www.youtube.com/watch?v=${modalEpisode.youtubeId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <button type="button" className="video-modal-yt">
-                  <YoutubeIcon /> Open on YouTube
-                </button>
-              </a>
-            </div>
+          <div className="video-modal-header">
+            <h3 className="video-modal-title">{modalEpisode.title}</h3>
+            <button
+              type="button"
+              className="video-modal-close"
+              onClick={() => setModalEpisode(null)}
+            >
+              ✕
+            </button>
           </div>
-        </div>
+          <div className="video-modal-embed">
+            <iframe
+              src={`https://www.youtube.com/embed/${modalEpisode.youtubeId}?autoplay=1`}
+              title={modalEpisode.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+          <div className="video-modal-footer">
+            <span className="video-modal-meta">
+              {modalEpisode.num} · {modalEpisode.date} · {modalEpisode.duration}
+            </span>
+            <a
+              href={`https://www.youtube.com/watch?v=${modalEpisode.youtubeId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button type="button" className="video-modal-yt">
+                <YoutubeIcon /> Open on YouTube
+              </button>
+            </a>
+          </div>
+        </Modal>
       )}
     </>
   );

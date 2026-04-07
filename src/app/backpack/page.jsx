@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import dynamic from "next/dynamic";
-
-const NavBar = dynamic(() => import("../../components/NavBar.jsx"), {
-  ssr: false,
-});
+import NavBar from "../../components/NavBarDynamic";
+import { useSubmitFeedback } from "../../hooks/useSubmitFeedback";
+import BackpackPhotoTrio from "./BackpackPhotoTrio";
+import BackpackSectionGrid from "./BackpackSectionGrid";
+import ChallengeDetail from "./ChallengeDetail";
 import "./backpack.css";
 
 const BACKPACK_SECTIONS = [
@@ -162,13 +162,8 @@ function getWeeklyQuestion() {
 export default function BackpackPage() {
   const [activeSection, setActiveSection] = useState(null);
   const [reflection, setReflection] = useState("");
-  const [reflectionSaved, setReflectionSaved] = useState(false);
+  const [reflectionSaved, triggerReflectionSaved] = useSubmitFeedback(2500);
   const weeklyQ = getWeeklyQuestion();
-
-  const saveReflection = () => {
-    setReflectionSaved(true);
-    setTimeout(() => setReflectionSaved(false), 2500);
-  };
 
   return (
     <>
@@ -195,139 +190,22 @@ export default function BackpackPage() {
         </div>
 
         <div className="backpack-content">
-          {/* ── PHOTO TRIO ── */}
+          {!activeSection && <BackpackPhotoTrio />}
           {!activeSection && (
-            <div className="backpack-photo-trio">
-              <div className="backpack-photo-item">
-                <img src="/hikingCouple.png" alt="Hiking adventure" />
-              </div>
-              <div className="backpack-photo-item backpack-photo-item--tall">
-                <img src="/tools.gif" alt="We have the tools" />
-              </div>
-              <div className="backpack-photo-item">
-                <img src="/soloHiking.jpg" alt="Solo Hiking" />
-              </div>
-            </div>
+            <BackpackSectionGrid
+              sections={BACKPACK_SECTIONS}
+              onSectionSelect={setActiveSection}
+            />
           )}
-
-          {/* ── SECTION GRID ── */}
-          {!activeSection && (
-            <div className="backpack-section-grid">
-              {BACKPACK_SECTIONS.map((section, i) => (
-                <button
-                  type="button"
-                  key={section.id}
-                  className={`backpack-section-card ${
-                    section.type === "coming-soon" ? "coming-soon" : ""
-                  }`}
-                  onClick={() =>
-                    section.type !== "coming-soon" &&
-                    setActiveSection(section.id)}
-                  style={{ "--section-color": section.color }}
-                >
-                  <div className="backpack-card-accent" />
-                  <div className="backpack-card-body">
-                    <div className="backpack-section-num">
-                      {String(i + 1).padStart(2, "0")}
-                    </div>
-                    <div className="backpack-section-emoji">
-                      {section.emoji}
-                    </div>
-                    <div className="backpack-section-info">
-                      <h4 className="backpack-section-title">
-                        {section.label}
-                      </h4>
-                      <p className="backpack-section-tagline">
-                        {section.tagline}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="backpack-card-footer">
-                    {section.type === "coming-soon"
-                      ? (
-                        <span className="backpack-coming-soon">
-                          Coming Soon
-                        </span>
-                      )
-                      : (
-                        <>
-                          <span className="backpack-card-cta">Begin →</span>
-                          <span className="backpack-section-arrow">→</span>
-                        </>
-                      )}
-                  </div>
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* ── CHALLENGE DETAIL ── */}
           {activeSection === "challenge" && (
-            <div className="backpack-detail-card">
-              <div className="backpack-section-nav">
-                <button
-                  type="button"
-                  className="backpack-back-btn"
-                  onClick={() => setActiveSection(null)}
-                >
-                  ← Back to Backpack
-                </button>
-                <span className="backpack-section-breadcrumb">
-                  ❓ The 1 Question Retirement Challenge
-                </span>
-              </div>
-
-              <div className="challenge-card">
-                <div className="challenge-week-badge">
-                  Week of {new Date().toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-                </div>
-                <h2 className="challenge-question">{weeklyQ.question}</h2>
-                <p className="challenge-prompt">{weeklyQ.prompt}</p>
-              </div>
-
-              <div className="challenge-photo-banner">
-                <img src="/bench.png" alt="A quiet moment of reflection" />
-              </div>
-
-              <div className="challenge-reflection">
-                <label className="challenge-reflection-label">
-                  Your Reflection
-                </label>
-                <textarea
-                  className="challenge-textarea"
-                  value={reflection}
-                  onChange={(e) => setReflection(e.target.value)}
-                  placeholder="Take your time. There are no wrong answers here. Just write honestly..."
-                  rows={8}
-                />
-                <div className="challenge-reflection-footer">
-                  <span className="challenge-reflection-hint">
-                    🔒 Your reflection is private — only you can see it.
-                  </span>
-                  <button
-                    type="button"
-                    className="btn-save"
-                    onClick={saveReflection}
-                    disabled={!reflection.trim()}
-                    style={{ opacity: !reflection.trim() ? 0.5 : 1 }}
-                  >
-                    {reflectionSaved ? "✓ Saved!" : "Save Reflection"}
-                  </button>
-                </div>
-              </div>
-
-              <div className="challenge-archive-note">
-                <span>📅</span>
-                <p>
-                  A new question appears every week. Your saved reflections will
-                  build into a personal retirement journal over time.
-                </p>
-              </div>
-            </div>
+            <ChallengeDetail
+              weeklyQ={weeklyQ}
+              reflection={reflection}
+              setReflection={setReflection}
+              reflectionSaved={reflectionSaved}
+              triggerReflectionSaved={triggerReflectionSaved}
+              onBack={() => setActiveSection(null)}
+            />
           )}
         </div>
       </div>
