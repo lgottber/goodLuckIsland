@@ -678,6 +678,10 @@ body {
     width: calc(50% - 0.5rem);
     height: 150px;
   }
+  .about-hero-left {
+    align-items: center;
+    text-align: center;
+  }
   .nicholas-section {
     padding: 3rem 1.25rem;
     gap: 2rem;
@@ -688,10 +692,18 @@ body {
   }
   .nicholas-photo-wrap {
     max-width: 280px;
+    margin: 0 auto;
   }
   .contact-section {
     grid-template-columns: 1fr;
     padding: 3rem 1.25rem;
+  }
+  .contact-info {
+    align-items: center;
+    text-align: center;
+  }
+  .contact-details {
+    align-items: flex-start;
   }
   .mission-section {
     padding: 4rem 1.25rem;
@@ -716,6 +728,9 @@ body {
   }
   .contact-form-row {
     grid-template-columns: 1fr;
+  }
+  .contact-submit {
+    align-self: center;
   }
   .about-search-bar {
     max-width: 100%;
