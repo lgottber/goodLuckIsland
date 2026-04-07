@@ -7,6 +7,10 @@ import AvatarDisplay from "./AvatarDisplay";
 import AvatarPickerModal from "./AvatarPickerModal";
 import EditModal from "./EditModal";
 import Icon from "./Icon";
+import BioDisplay from "./BioDisplay";
+import BioEmpty from "./BioEmpty";
+import InterestsList from "./InterestsList";
+import InterestsEmpty from "./InterestsEmpty";
 import { supabase } from "../../lib/supabase.ts";
 import "./profile.css";
 
@@ -217,24 +221,8 @@ export default function ProfilePage() {
           <div className="profile-card profile-card--bio">
             <p className="section-label-sm">About Me</p>
             {user.bio
-              ? (
-                <>
-                  <span className="bio-quote">&ldquo;</span>
-                  <p className="bio-text">{user.bio}</p>
-                </>
-              )
-              : (
-                <p className="bio-text empty">
-                  No bio yet.{" "}
-                  <button
-                    type="button"
-                    className="inline-link"
-                    onClick={() => setEditing(true)}
-                  >
-                    Add a bio →
-                  </button>
-                </p>
-              )}
+              ? <BioDisplay bio={user.bio} />
+              : <BioEmpty onEditClick={() => setEditing(true)} />}
           </div>
 
           {/* About & Interests row */}
@@ -277,10 +265,7 @@ export default function ProfilePage() {
                 </div>
               </div>
               {!user.occupation && !user.location && (
-                <p
-                  className="info-row-value empty"
-                  style={{ padding: "0.5rem 0" }}
-                >
+                <p className="info-row-value empty">
                   No details added yet.{" "}
                   <button
                     type="button"
@@ -297,32 +282,8 @@ export default function ProfilePage() {
             <div className="profile-card">
               <h3>Interests</h3>
               {user.interests.length > 0
-                ? (
-                  <div className="tag-list">
-                    {user.interests.map((tag, i) => (
-                      <span
-                        key={tag}
-                        className={`tag ${
-                          ["tag-teal", "tag-navy", "tag-outline"][i % 3]
-                        }`}
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )
-                : (
-                  <p className="info-row-value empty">
-                    No interests added.{" "}
-                    <button
-                      type="button"
-                      className="inline-link"
-                      onClick={() => setEditing(true)}
-                    >
-                      Add some →
-                    </button>
-                  </p>
-                )}
+                ? <InterestsList interests={user.interests} />
+                : <InterestsEmpty onEditClick={() => setEditing(true)} />}
             </div>
           </div>
         </div>

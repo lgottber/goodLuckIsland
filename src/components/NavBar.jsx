@@ -6,6 +6,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Modal from "./Modal";
 import UserMenu from "./UserMenu";
 import GuestAuthButtons from "./GuestAuthButtons";
+import MobileArticlesLink from "./MobileArticlesLink";
+import MobileArticlesGatedButton from "./MobileArticlesGatedButton";
+import MobileUserSection from "./MobileUserSection";
+import MobileGuestAuth from "./MobileGuestAuth";
 import { useClickOutside } from "../hooks/useClickOutside";
 import "./NavBar.css";
 
@@ -129,47 +133,11 @@ export default function NavBar({
           Shop
         </Link>
         {user
-          ? (
-            <Link href="/articles" onClick={() => setMobileOpen(false)}>
-              Podcasts &amp; Articles
-            </Link>
-          )
-          : (
-            <button
-              type="button"
-              className="nav-mobile-gated"
-              onClick={() => {
-                setMobileOpen(false);
-                setShowGate(true);
-              }}
-            >
-              Podcasts &amp; Articles
-            </button>
-          )}
-        {user ? (
-          <>
-            <div className="nav-mobile-divider" />
-            <Link href="/profile" onClick={() => setMobileOpen(false)}>
-              👤 My Profile
-            </Link>
-            <Link href="/saved" onClick={() => setMobileOpen(false)}>
-              🔖 Saved Content
-            </Link>
-            <Link href="/backpack" onClick={() => setMobileOpen(false)}>
-              🎒 My Backpack
-            </Link>
-            <a href="/auth/logout">↩ Logout</a>
-          </>
-        ) : (
-          <div className="nav-mobile-auth">
-            <a href="/auth/login?screen_hint=signup" className="nav-btn-solid" onClick={() => setMobileOpen(false)}>
-              Join Free
-            </a>
-            <a href="/auth/login" className="nav-btn-ghost" onClick={() => setMobileOpen(false)}>
-              Sign In
-            </a>
-          </div>
-        )}
+          ? <MobileArticlesLink setMobileOpen={setMobileOpen} />
+          : <MobileArticlesGatedButton setMobileOpen={setMobileOpen} setShowGate={setShowGate} />}
+        {user
+          ? <MobileUserSection setMobileOpen={setMobileOpen} />
+          : <MobileGuestAuth setMobileOpen={setMobileOpen} />}
       </div>
 
       {showGate && (

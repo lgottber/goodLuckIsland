@@ -4,6 +4,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Link from "next/link";
 import NavBar from "../components/NavBarDynamic";
 import { YoutubeIcon, InstagramIcon, FacebookIcon } from "../components/Icons";
+import HeroCtaUser from "./HeroCtaUser";
+import HeroCtaGuest from "./HeroCtaGuest";
 
 export default function HomePage() {
   const { user } = useAuth0();
@@ -26,25 +28,7 @@ export default function HomePage() {
               like.
             </p>
             <div className="hero-cta">
-              {user
-                ? (
-                  <Link href="/profile" className="cta-primary">
-                    Explore The Island
-                  </Link>
-                )
-                : (
-                  <>
-                    <a
-                      href="/auth/login?screen_hint=signup"
-                      className="cta-primary"
-                    >
-                      Start Your Lifestyle Discovery
-                    </a>
-                    <Link href="/profile" className="cta-ghost">
-                      Explore the Island
-                    </Link>
-                  </>
-                )}
+              {user ? <HeroCtaUser /> : <HeroCtaGuest />}
             </div>
           </div>
           <div className="hero-scroll">
