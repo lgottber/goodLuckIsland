@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap");
+
 :root {
   --navy: #1e2d5a;
   --teal: #2e8b7a;
@@ -18,6 +20,122 @@ html {
 @media (max-width: 640px) {
   html {
     font-size: 100%; /* 16px base on mobile to prevent oversized layout */
+  }
+}
+
+/* ── VIDEO MODAL (shared by articles and podcast pages) ── */
+.video-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 15, 35, 0.92);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.video-modal {
+  background: #0d1630;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 900px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+  animation: scaleIn 0.25s ease;
+}
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.video-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.video-modal-title {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+}
+.video-modal-close {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.video-modal-close:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+.video-modal-embed {
+  aspect-ratio: 16/9;
+  background: #000;
+}
+.video-modal-embed iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+.video-modal-footer {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.video-modal-meta {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+.video-modal-yt {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: background 0.2s;
+}
+.video-modal-yt:hover {
+  background: #cc0000;
+}
+@media (max-width: 600px) {
+  .video-modal {
+    border-radius: 12px;
+  }
+  .video-modal-footer {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
   }
 }
 
