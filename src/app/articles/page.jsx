@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { supabase } from "../../lib/supabase.ts";
 import NavBar from "../../components/NavBarDynamic";
 import Modal from "../../components/Modal";
 import FilterTabs from "../../components/FilterTabs";
@@ -181,16 +182,49 @@ export default function ArticlesPage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [featuredPlaying, setFeaturedPlaying] = useState(false);
   const [modalEpisode, setModalEpisode] = useState(null);
+  const [episodes, setEpisodes] = useState(EPISODES);
+  const [allArticles, setAllArticles] = useState(ALL_ARTICLES);
 
-  const featured = ALL_ARTICLES.find((a) => a.featured);
-  const filtered = ALL_ARTICLES.filter((a) => {
+  useEffect(() => {
+    supabase.from("episodes").select("*").order("sort_order").then(({ data }) => {
+      if (data?.length) {
+        setEpisodes(data.map((ep) => ({
+          id: ep.id,
+          num: ep.num,
+          title: ep.title,
+          desc: ep.description,
+          date: ep.date,
+          duration: ep.duration,
+          youtubeId: ep.youtube_id,
+          thumbnail: ep.thumbnail,
+        })));
+      }
+    });
+    supabase.from("articles").select("*").order("sort_order").then(({ data }) => {
+      if (data?.length) {
+        setAllArticles(data.map((a) => ({
+          id: a.id,
+          category: a.category,
+          title: a.title,
+          excerpt: a.excerpt,
+          date: a.date,
+          readTime: a.read_time,
+          image: a.image,
+          featured: a.featured,
+        })));
+      }
+    });
+  }, []);
+
+  const featured = allArticles.find((a) => a.featured);
+  const filtered = allArticles.filter((a) => {
     if (a.featured) return false;
     if (activeCategory === "All") return true;
     return a.category === activeCategory;
   });
 
-  const podcastFeatured = EPISODES[0];
-  const podcastRest = EPISODES.slice(1);
+  const podcastFeatured = episodes[0];
+  const podcastRest = episodes.slice(1);
 
   return (
     <>

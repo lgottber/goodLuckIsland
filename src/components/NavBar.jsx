@@ -11,6 +11,7 @@ import MobileArticlesGatedButton from "./MobileArticlesGatedButton";
 import MobileUserSection from "./MobileUserSection";
 import MobileGuestAuth from "./MobileGuestAuth";
 import { useClickOutside } from "../hooks/useClickOutside";
+import { supabase } from "../lib/supabase";
 import "./NavBar.css";
 
 export default function NavBar({
@@ -24,7 +25,15 @@ export default function NavBar({
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showGate, setShowGate] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    if (!user) return;
+    supabase.rpc("is_admin", { user_id: user.sub }).then(({ data }) => {
+      setIsAdmin(!!data);
+    });
+  }, [user]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(globalThis.scrollY > 40);
@@ -54,6 +63,7 @@ export default function NavBar({
         dropdownOpen={dropdownOpen}
         setDropdownOpen={setDropdownOpen}
         dropdownRef={dropdownRef}
+        isAdmin={isAdmin}
       />
     )
     : <GuestAuthButtons />;
@@ -141,7 +151,7 @@ export default function NavBar({
             />
           )}
         {user
-          ? <MobileUserSection setMobileOpen={setMobileOpen} />
+          ? <MobileUserSection setMobileOpen={setMobileOpen} isAdmin={isAdmin} />
           : <MobileGuestAuth setMobileOpen={setMobileOpen} />}
       </div>
 

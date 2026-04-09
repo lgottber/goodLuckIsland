@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NavBar from "../../components/NavBarDynamic";
-import { useSubmitFeedback } from "../../hooks/useSubmitFeedback";
 import BackpackPhotoTrio from "./BackpackPhotoTrio";
 import BackpackSectionGrid from "./BackpackSectionGrid";
-import ChallengeDetail from "./ChallengeDetail";
+import { supabase } from "../../lib/supabase";
 import "./backpack.css";
 
 const BACKPACK_SECTIONS = [
@@ -17,7 +16,7 @@ const BACKPACK_SECTIONS = [
     tagline: "One question. One week. A lifetime of clarity.",
     description:
       "Each week a single powerful question helps you think more clearly about what retirement really means to you. No right answers — just honest reflection.",
-    type: "challenge",
+    type: "coming-soon",
   },
   {
     id: "pinwhirl",
@@ -81,89 +80,30 @@ const BACKPACK_SECTIONS = [
   },
 ];
 
-const WEEKLY_QUESTIONS = [
-  {
-    question:
-      "If money were no object, how would you spend your first week of retirement?",
-    prompt:
-      "Close your eyes and really picture it. Where are you? Who's with you? What does a Tuesday feel like?",
-  },
-  {
-    question: "What does 'enough' mean to you financially?",
-    prompt:
-      "Not a number — a feeling. What would it feel like to know you have enough? What would change?",
-  },
-  {
-    question: "What are you most afraid of about retirement?",
-    prompt:
-      "Name it honestly. Loss of identity? Running out of money? Boredom? Fear named is fear tamed.",
-  },
-  {
-    question:
-      "What would you do differently in your career if you could start over?",
-    prompt:
-      "This isn't about regret — it's about understanding what truly matters to you as you look ahead.",
-  },
-  {
-    question:
-      "Who do you want to be in retirement — not what you want to do, but who?",
-    prompt:
-      "Think about your values, your relationships, and the kind of person you're still becoming.",
-  },
-  {
-    question:
-      "What is one thing you keep putting off that retirement would finally give you time for?",
-    prompt:
-      "That creative project. That place you've always wanted to visit. That relationship you want to rebuild.",
-  },
-  {
-    question: "How do you define a life well-lived?",
-    prompt:
-      "If you looked back at 85, what would make you feel proud? What would feel like a waste?",
-  },
-  {
-    question:
-      "What does your ideal Tuesday in retirement look like — in detail?",
-    prompt:
-      "Not vacation. Not a special day. Just a regular, ordinary, beautiful Tuesday.",
-  },
-  {
-    question:
-      "What role will work — or purpose-driven activity — play in your retirement?",
-    prompt:
-      "Some people can't imagine stopping. Others can't wait. Most are somewhere in between. Where are you?",
-  },
-  {
-    question:
-      "What conversation about money or retirement are you avoiding with someone you love?",
-    prompt:
-      "With a spouse? A parent? An adult child? What would it take to have it this week?",
-  },
-  {
-    question:
-      "If you retired tomorrow, what would you miss most about working?",
-    prompt:
-      "The people? The structure? The feeling of contributing? Knowing this helps you plan to replace it.",
-  },
-  {
-    question: "What does your health need from you in the next five years?",
-    prompt:
-      "Retirement dreams are built on a foundation of health. What's one thing your future self is asking you to start now?",
-  },
-];
-
-function getWeeklyQuestion() {
-  const now = new Date();
-  const start = new Date(now.getFullYear(), 0, 1);
-  const weekNum = Math.floor((now - start) / (7 * 24 * 60 * 60 * 1000));
-  return WEEKLY_QUESTIONS[weekNum % WEEKLY_QUESTIONS.length];
-}
-
 export default function BackpackPage() {
-  const [activeSection, setActiveSection] = useState(null);
-  const [reflection, setReflection] = useState("");
-  const [reflectionSaved, triggerReflectionSaved] = useSubmitFeedback(2500);
-  const weeklyQ = getWeeklyQuestion();
+  const [sections, setSections] = useState(BACKPACK_SECTIONS);
+
+  useEffect(() => {
+    supabase
+      .from("backpack_sections")
+      .select("*")
+      .order("sort_order", { ascending: true })
+      .then(({ data }) => {
+        if (data?.length) {
+          setSections(
+            data.map((s) => ({
+              id: s.slug,
+              label: s.label,
+              emoji: s.emoji,
+              color: s.color,
+              tagline: s.tagline,
+              description: s.description,
+              type: s.type,
+            })),
+          );
+        }
+      });
+  }, []);
 
   return (
     <>
@@ -190,23 +130,8 @@ export default function BackpackPage() {
         </div>
 
         <div className="backpack-content">
-          {!activeSection && <BackpackPhotoTrio />}
-          {!activeSection && (
-            <BackpackSectionGrid
-              sections={BACKPACK_SECTIONS}
-              onSectionSelect={setActiveSection}
-            />
-          )}
-          {activeSection === "challenge" && (
-            <ChallengeDetail
-              weeklyQ={weeklyQ}
-              reflection={reflection}
-              setReflection={setReflection}
-              reflectionSaved={reflectionSaved}
-              triggerReflectionSaved={triggerReflectionSaved}
-              onBack={() => setActiveSection(null)}
-            />
-          )}
+          <BackpackPhotoTrio />
+          <BackpackSectionGrid sections={sections} onSectionSelect={() => {}} />
         </div>
       </div>
     </>
