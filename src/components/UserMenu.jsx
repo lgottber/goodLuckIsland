@@ -5,6 +5,7 @@ export default function UserMenu({
   dropdownOpen,
   setDropdownOpen,
   dropdownRef,
+  isAdmin = false,
 }) {
   return (
     <div className="nav-user-menu" ref={dropdownRef}>
@@ -40,6 +41,18 @@ export default function UserMenu({
               <span className="nav-dropdown-icon"></span> {label}
             </a>
           ))}
+          {isAdmin && (
+            <>
+              <div className="nav-dropdown-divider" />
+              <a
+                href="/admin"
+                className="nav-dropdown-item"
+                onClick={() => setDropdownOpen(false)}
+              >
+                <span className="nav-dropdown-icon">⚙️</span> Admin Portal
+              </a>
+            </>
+          )}
           <div className="nav-dropdown-divider" />
           <a
             href="/auth/logout"

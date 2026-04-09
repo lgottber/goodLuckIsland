@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { fetchArticles, fetchEpisodes } from "../../lib/articlesApi";
 import NavBar from "../../components/NavBarDynamic";
 import Modal from "../../components/Modal";
 import FilterTabs from "../../components/FilterTabs";
@@ -181,16 +182,39 @@ export default function ArticlesPage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [featuredPlaying, setFeaturedPlaying] = useState(false);
   const [modalEpisode, setModalEpisode] = useState(null);
+  const [episodes, setEpisodes] = useState(EPISODES);
+  const [allArticles, setAllArticles] = useState(ALL_ARTICLES);
 
-  const featured = ALL_ARTICLES.find((a) => a.featured);
-  const filtered = ALL_ARTICLES.filter((a) => {
-    if (a.featured) return false;
-    if (activeCategory === "All") return true;
-    return a.category === activeCategory;
-  });
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [episodes, articles] = await Promise.all([
+          fetchEpisodes(),
+          fetchArticles(),
+        ]);
+        if (episodes.length) setEpisodes(episodes);
+        if (articles.length) setAllArticles(articles);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    loadData();
+  }, []);
 
-  const podcastFeatured = EPISODES[0];
-  const podcastRest = EPISODES.slice(1);
+  let featured = null;
+  const filtered = [];
+  for (const a of allArticles) {
+    if (a.featured) {
+      featured = a;
+      continue;
+    }
+    if (activeCategory === "All" || a.category === activeCategory) {
+      filtered.push(a);
+    }
+  }
+
+  const podcastFeatured = episodes[0];
+  const podcastRest = episodes.slice(1);
 
   return (
     <>
