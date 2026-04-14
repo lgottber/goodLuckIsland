@@ -7,57 +7,67 @@ import AvatarDisplay from "./AvatarDisplay";
 import AvatarPickerModal from "./AvatarPickerModal";
 import EditModal from "./EditModal";
 import Icon from "./Icon";
+import FlashMessage from "./FlashMessage";
 import BioDisplay from "./BioDisplay";
 import BioEmpty from "./BioEmpty";
 import InterestsList from "./InterestsList";
 import InterestsEmpty from "./InterestsEmpty";
-import { supabase } from "../../lib/supabase.ts";
+import { fetchProfile, upsertProfile } from "../../lib/profileApi";
 import "./profile.css";
 
-// ─── Mock user data — replace with your real auth/db calls ───────────────────
 const INITIAL_USER = {
-  // Basic
-  firstName: "Alex",
-  lastName: "Morgan",
-  handle: "@alexmorgan",
-  email: "alex.morgan@example.com",
-  location: "San Francisco, CA",
+  firstName: "",
+  lastName: "",
+  username: "",
+  email: "",
+  location: "",
   address: "",
   avatarUrl: "",
   avatarId: "",
-  bio:
-    "Gen X professional navigating the next chapter with intention. Passionate about financial independence, whole-life wellness, and making the most of what comes next.",
-  mantra: "Purpose doesn't retire when you do.",
-  memberSince: "January 2026",
-  interests: [
-    "Retirement Planning",
-    "Whole-Life Wellness",
-    "Clear Thinking",
-    "Financial Independence",
-    "Travel",
-  ],
+  bio: "",
+  mantra: "enter your mantra here",
+  memberSince: "",
+  interests: [],
   stats: {
-    articlesRead: 24,
-    podcastsListened: 12,
-    savedItems: 8,
-    daysActive: 47,
+    articlesRead: 0,
+    podcastsListened: 0,
+    savedItems: 0,
+    daysActive: 0,
   },
-  // Life & Career
   age: "",
-  occupation: "Senior Product Manager",
+  occupation: "",
   yearsInOccupation: "",
   education: "",
-  // Retirement
-  isRetired: "",
+  retired: "",
   retirementDate: "",
-  // Life Snapshot
   maritalStatus: "",
   divorced: "",
   kids: "",
   homePaidOff: "",
-  // Financial
   workingIncome: "",
   netWorth: "",
+};
+
+const DB_TO_STATE = {
+  first_name: "firstName",
+  last_name: "lastName",
+  email: "email",
+  username: "username",
+  location: "location",
+  bio: "bio",
+  mantra: "mantra",
+  interests: "interests",
+  occupation: "occupation",
+  education: "education",
+  retired: "retired",
+  retirement_date: "retirementDate",
+  marital_status: "maritalStatus",
+  divorced: "divorced",
+  kids: "kids",
+  home_paid_off: "homePaidOff",
+  working_income: "workingIncome",
+  net_worth: "netWorth",
+  avatar_id: "avatarId",
 };
 
 // ─── Main Profile Page ────────────────────────────────────────────────────────
@@ -65,43 +75,101 @@ export default function ProfilePage() {
   const { user: auth0User } = useAuth0User();
   const [user, setUser] = useState(INITIAL_USER);
 
-  useEffect(() => {
-    if (auth0User) {
-      supabase.from("users").select("*").then(({ error }) => {
-        if (error && process.env.NODE_ENV === "development") {
-          console.error("Supabase error:", error);
-        }
-      });
-    }
-  }, [auth0User]);
+  function applyAuth0Fields(prev) {
+    const nameParts = auth0User.name?.split(" ") ?? [];
+    const firstName = auth0User.given_name ?? nameParts[0] ?? prev.firstName;
+    const lastName = auth0User.family_name ?? nameParts.slice(1).join(" ") ??
+      prev.lastName;
+    return {
+      ...prev,
+      firstName,
+      lastName,
+      email: auth0User.email ?? prev.email,
+      avatarUrl: auth0User.picture ?? prev.avatarUrl,
+      username: auth0User.nickname ? `@${auth0User.nickname}` : prev.username,
+    };
+  }
 
+  function applySupabaseFields(prev, data) {
+    const merged = Object.keys(DB_TO_STATE).reduce((total, curr) => ({
+      ...total,
+      [DB_TO_STATE[curr]]: data[curr] || prev[DB_TO_STATE[curr]],
+    }), prev);
+    return {
+      ...merged,
+      age: data.age != null ? String(data.age) : prev.age,
+      yearsInOccupation: data.years_in_occupation != null
+        ? String(data.years_in_occupation)
+        : prev.yearsInOccupation,
+      avatarUrl: data.avatar_id ? "" : (auth0User.picture || prev.avatarUrl),
+    };
+  }
+
+  function handleProfileData(data) {
+    if (!data) return;
+    setUser((prev) => applySupabaseFields(prev, data));
+  }
+
+  // Seed from Auth0 then overlay saved profile from Supabase
   useEffect(() => {
-    if (auth0User) {
-      setUser((prev) => ({
-        ...prev,
-        firstName: auth0User.given_name ?? auth0User.name?.split(" ")[0] ??
-          prev.firstName,
-        lastName: auth0User.family_name ??
-          auth0User.name?.split(" ").slice(1).join(" ") ?? prev.lastName,
-        email: auth0User.email ?? prev.email,
-        avatarUrl: auth0User.picture ?? prev.avatarUrl,
-        handle: auth0User.nickname ? `@${auth0User.nickname}` : prev.handle,
-      }));
-    }
+    if (!auth0User) return;
+    setUser(applyAuth0Fields);
+    fetchProfile(auth0User.sub).then(handleProfileData);
   }, [auth0User]);
   const [editing, setEditing] = useState(false);
   const [pickingAvatar, setPickingAvatar] = useState(false);
   const [saved, setSaved] = useState(true);
+  const [resetStatus, setResetStatus] = useState("idle"); // idle | sending | sent | error
+
+  async function handlePasswordReset() {
+    if (!auth0User?.email) {
+      throw new Error(
+        "handlePasswordReset called without an authenticated user",
+      );
+    }
+    setResetStatus("sending");
+    try {
+      const res = await fetch(
+        `https://${process.env.NEXT_PUBLIC_AUTH0_DOMAIN}/dbconnections/change_password`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
+            email: auth0User.email,
+            connection: "Username-Password-Authentication",
+          }),
+        },
+      );
+      setResetStatus(res.ok ? "sent" : "error");
+    } catch {
+      setResetStatus("error");
+    }
+  }
 
   const initials = `${user.firstName?.[0] ?? "?"}${user.lastName?.[0] ?? "?"}`
     .toUpperCase();
 
-  const handleSave = (updated) => {
+  function persistProfile(updated) {
+    if (!auth0User) {
+      throw new Error("persistProfile called without an authenticated user");
+    }
+    upsertProfile(auth0User.sub, updated);
+  }
+
+  async function handleSave(updated) {
     setUser(updated);
     setEditing(false);
     setSaved(false);
+    await persistProfile(updated);
     setTimeout(() => setSaved(true), 2000);
-  };
+  }
+
+  function handleAvatarSelect(id) {
+    const updated = { ...user, avatarId: id, avatarUrl: "" };
+    setUser(updated);
+    persistProfile(updated);
+  }
 
   return (
     <>
@@ -115,8 +183,7 @@ export default function ProfilePage() {
       {pickingAvatar && (
         <AvatarPickerModal
           currentAvatar={user.avatarId}
-          onSelect={(id) =>
-            setUser((u) => ({ ...u, avatarId: id, avatarUrl: "" }))}
+          onSelect={handleAvatarSelect}
           onClose={() => setPickingAvatar(false)}
         />
       )}
@@ -161,7 +228,7 @@ export default function ProfilePage() {
 
             <div className="profile-header-info">
               <h1>{user.firstName} {user.lastName}</h1>
-              <p className="profile-handle">{user.handle}</p>
+              <p className="profile-handle">{user.username}</p>
               <div className="profile-meta-row">
                 <span className="profile-badge">🌴 Islander</span>
                 {user.occupation && (
@@ -180,7 +247,21 @@ export default function ProfilePage() {
             </div>
 
             <div className="profile-header-actions">
-              {!saved && <span className="saved-flash">✓ Saved!</span>}
+              {!saved && <FlashMessage message="✓ Saved!" />}
+              {resetStatus === "sent" && (
+                <FlashMessage message="✓ Reset email sent!" />
+              )}
+              {resetStatus === "error" && (
+                <FlashMessage message="Something went wrong" error />
+              )}
+              <button
+                type="button"
+                className="btn-ghost-sm"
+                onClick={handlePasswordReset}
+                disabled={resetStatus === "sending" || resetStatus === "sent"}
+              >
+                {resetStatus === "sending" ? "Sending…" : "Reset Password"}
+              </button>
               <button
                 type="button"
                 className="btn-cta-outline"
