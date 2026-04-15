@@ -58,6 +58,7 @@ const NAV_ITEMS = [
   { id: "episodes", icon: "🎬", label: "Podcast Episodes" },
   { id: "articles", icon: "📖", label: "Articles" },
   { id: "sections", icon: "🎒", label: "Backpack Sections" },
+  { id: "users", icon: "👥", label: "Users" },
 ];
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -89,6 +90,10 @@ export default function AdminPage() {
   const [bpSaving, setBpSaving] = useState(false);
   const [bpStatus, setBpStatus] = useState("idle");
 
+  // Users
+  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
+
   // ── Auth ──
   useEffect(() => {
     if (isLoading || !user) return;
@@ -103,6 +108,7 @@ export default function AdminPage() {
     loadEpisodes();
     loadArticles();
     loadBpSections();
+    loadUsers();
   }, [isAdmin]);
 
   // ── Episodes CRUD ──
@@ -244,6 +250,15 @@ export default function AdminPage() {
     setBpForm(SECTION_BLANK);
   };
 
+  // ── Users ──
+  const loadUsers = async () => {
+    const { data } = await supabase
+      .from("users")
+      .select("*")
+      .order("first_name");
+    if (data) setUsers(data);
+  };
+
   // ── Nav switch ──
   const switchSection = (s) => {
     setActiveSection(s);
@@ -256,6 +271,7 @@ export default function AdminPage() {
     setSelectedBp(null);
     setBpForm(SECTION_BLANK);
     setBpStatus("idle");
+    setSelectedUser(null);
   };
 
   if (isLoading || isAdmin === null) {
@@ -301,29 +317,31 @@ export default function AdminPage() {
             <h2 className="admin-list-heading">
               {NAV_ITEMS.find((n) => n.id === activeSection)?.label}
             </h2>
-            <button
-              type="button"
-              className="admin-new-btn"
-              onClick={() => {
-                if (activeSection === "episodes") {
-                  setSelectedEp("new");
-                  setEpForm(EPISODE_BLANK);
-                  setEpStatus("idle");
-                }
-                if (activeSection === "articles") {
-                  setSelectedArt("new");
-                  setArtForm(ARTICLE_BLANK);
-                  setArtStatus("idle");
-                }
-                if (activeSection === "sections") {
-                  setSelectedBp("new");
-                  setBpForm(SECTION_BLANK);
-                  setBpStatus("idle");
-                }
-              }}
-            >
-              + New
-            </button>
+            {activeSection !== "users" && (
+              <button
+                type="button"
+                className="admin-new-btn"
+                onClick={() => {
+                  if (activeSection === "episodes") {
+                    setSelectedEp("new");
+                    setEpForm(EPISODE_BLANK);
+                    setEpStatus("idle");
+                  }
+                  if (activeSection === "articles") {
+                    setSelectedArt("new");
+                    setArtForm(ARTICLE_BLANK);
+                    setArtStatus("idle");
+                  }
+                  if (activeSection === "sections") {
+                    setSelectedBp("new");
+                    setBpForm(SECTION_BLANK);
+                    setBpStatus("idle");
+                  }
+                }}
+              >
+                + New
+              </button>
+            )}
           </div>
           <div className="admin-list-scroll">
             {activeSection === "episodes" && (
@@ -373,6 +391,26 @@ export default function AdminPage() {
                   >
                     <div className="admin-list-eyebrow">{art.category}</div>
                     <div className="admin-list-name">{art.title}</div>
+                  </button>
+                ))
+            )}
+            {activeSection === "users" && (
+              users.length === 0
+                ? <p className="admin-empty-list">No users yet.</p>
+                : users.map((u) => (
+                  <button
+                    key={u.id}
+                    type="button"
+                    className={`admin-list-item${
+                      selectedUser?.id === u.id ? " active" : ""
+                    }`}
+                    onClick={() => setSelectedUser(u)}
+                  >
+                    <div className="admin-list-eyebrow">{u.email}</div>
+                    <div className="admin-list-name">
+                      {[u.first_name, u.last_name].filter(Boolean).join(" ") ||
+                        u.username || u.id}
+                    </div>
                   </button>
                 ))
             )}
@@ -628,6 +666,130 @@ export default function AdminPage() {
                   </div>
                 </div>
               </EditPanel>
+            ))}
+
+          {/* Users */}
+          {activeSection === "users" && (selectedUser === null
+            ? (
+              <EmptyForm
+                icon="👥"
+                text="Select a user to view their profile."
+              />
+            )
+            : (
+              <>
+                <div className="admin-form-header">
+                  <h2 className="admin-form-title">
+                    {[selectedUser.first_name, selectedUser.last_name]
+                      .filter(Boolean)
+                      .join(" ") || selectedUser.username || selectedUser.id}
+                  </h2>
+                  <div className="admin-form-actions">
+                    <span className="admin-readonly-label">Read-only</span>
+                  </div>
+                </div>
+                <div className="admin-form-scroll">
+                  <div className="admin-section">
+                    <div className="admin-section-label">Account</div>
+                    <div className="admin-grid-2">
+                      <ReadField label="Email" value={selectedUser.email} />
+                      <ReadField
+                        label="Username"
+                        value={selectedUser.username}
+                      />
+                    </div>
+                    <div className="admin-grid-3">
+                      <ReadField
+                        label="First Name"
+                        value={selectedUser.first_name}
+                      />
+                      <ReadField
+                        label="Last Name"
+                        value={selectedUser.last_name}
+                      />
+                      <ReadField
+                        label="Location"
+                        value={selectedUser.location}
+                      />
+                    </div>
+                    <ReadField label="Auth0 ID" value={selectedUser.id} />
+                  </div>
+                  <div className="admin-section">
+                    <div className="admin-section-label">Profile</div>
+                    <ReadField label="Bio" value={selectedUser.bio} multiline />
+                    <ReadField label="Mantra" value={selectedUser.mantra} />
+                    <ReadField
+                      label="Interests"
+                      value={Array.isArray(selectedUser.interests)
+                        ? selectedUser.interests.join(", ")
+                        : selectedUser.interests}
+                    />
+                  </div>
+                  <div className="admin-section">
+                    <div className="admin-section-label">Personal Details</div>
+                    <div className="admin-grid-3">
+                      <ReadField label="Age" value={selectedUser.age} />
+                      <ReadField
+                        label="Occupation"
+                        value={selectedUser.occupation}
+                      />
+                      <ReadField
+                        label="Years in Occupation"
+                        value={selectedUser.years_in_occupation}
+                      />
+                    </div>
+                    <div className="admin-grid-2">
+                      <ReadField
+                        label="Education"
+                        value={selectedUser.education}
+                      />
+                      <ReadField
+                        label="Marital Status"
+                        value={selectedUser.marital_status}
+                      />
+                    </div>
+                    <div className="admin-grid-3">
+                      <ReadField label="Retired" value={selectedUser.retired} />
+                      <ReadField
+                        label="Retirement Date"
+                        value={selectedUser.retirement_date}
+                      />
+                      <ReadField
+                        label="Divorced"
+                        value={selectedUser.divorced}
+                      />
+                    </div>
+                    <div className="admin-grid-3">
+                      <ReadField label="Kids" value={selectedUser.kids} />
+                      <ReadField
+                        label="Home Paid Off"
+                        value={selectedUser.home_paid_off}
+                      />
+                      <ReadField
+                        label="Working Income"
+                        value={selectedUser.working_income}
+                      />
+                    </div>
+                    <ReadField
+                      label="Net Worth"
+                      value={selectedUser.net_worth}
+                    />
+                  </div>
+                  <div className="admin-section">
+                    <div className="admin-section-label">Meta</div>
+                    <div className="admin-grid-2">
+                      <ReadField
+                        label="Avatar ID"
+                        value={selectedUser.avatar_id}
+                      />
+                      <ReadField
+                        label="Last Updated"
+                        value={selectedUser.updated_at}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </>
             ))}
 
           {/* Backpack Sections */}
