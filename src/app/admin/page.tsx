@@ -4,17 +4,47 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useRouter } from "next/navigation";
-import { supabase } from "../../lib/supabase.ts";
+import { sendMassEmail } from "../../lib/emailApi.ts";
+import {
+  type Article,
+  type BackpackSection,
+  deleteArticle,
+  deleteBackpackSection,
+  deleteEpisode,
+  type Episode,
+  fetchAdminArticles,
+  fetchAdminBackpackSections,
+  fetchAdminEpisodes,
+  fetchUsers,
+  insertArticle,
+  insertBackpackSection,
+  insertEpisode,
+  isAdmin as checkIsAdmin,
+  updateArticle,
+  updateBackpackSection,
+  updateEpisode,
+  type UserRecord,
+} from "../../lib/adminApi.ts";
 import NavBar from "../../components/NavBarDynamic";
 import AdminNavButton from "./AdminNavButton";
+import ComposeEmailPanel from "./ComposeEmailPanel";
 import EmptyForm from "./EmptyForm";
 import EditPanel from "./EditPanel";
 import Field from "./Field";
+import ListItemButton from "./ListItemButton";
+import NewItemButton from "./NewItemButton";
+import ReadField from "./ReadField";
 import Toggle from "./Toggle";
+import UserListItem from "./UserListItem";
 import "./admin.css";
 
+// ─── Types ────────────────────────────────────────────────────────────────────
+type SaveStatus = "idle" | "saved" | "error";
+type EmailStatus = "idle" | "sending" | "sent" | "error";
+type ActiveSection = "episodes" | "articles" | "sections" | "users" | "emails";
+
 // ─── Blanks ───────────────────────────────────────────────────────────────────
-const EPISODE_BLANK = {
+const EPISODE_BLANK: Omit<Episode, "id"> = {
   num: "",
   title: "",
   description: "",
@@ -24,7 +54,7 @@ const EPISODE_BLANK = {
   thumbnail: "",
   "sort_order": 0,
 };
-const ARTICLE_BLANK = {
+const ARTICLE_BLANK: Omit<Article, "id"> = {
   category: "",
   title: "",
   excerpt: "",
@@ -34,7 +64,7 @@ const ARTICLE_BLANK = {
   featured: false,
   "sort_order": 0,
 };
-const SECTION_BLANK = {
+const SECTION_BLANK: Omit<BackpackSection, "id"> = {
   slug: "",
   label: "",
   emoji: "",
@@ -54,227 +84,273 @@ const ARTICLE_CATEGORIES = [
 
 const SECTION_TYPES = ["challenge", "coming-soon"];
 
-const NAV_ITEMS = [
+interface NavItem {
+  id: ActiveSection;
+  icon: string;
+  label: string;
+}
+
+const NAV_ITEMS: NavItem[] = [
   { id: "episodes", icon: "🎬", label: "Podcast Episodes" },
   { id: "articles", icon: "📖", label: "Articles" },
   { id: "sections", icon: "🎒", label: "Backpack Sections" },
   { id: "users", icon: "👥", label: "Users" },
+  { id: "emails", icon: "✉️", label: "Send Email" },
 ];
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function AdminPage() {
-  const { user, isLoading } = useAuth0();
+  const { user, isLoading, getIdTokenClaims } = useAuth0();
   const router = useRouter();
-
-  const [isAdmin, setIsAdmin] = useState(null);
-  const [activeSection, setActiveSection] = useState("episodes");
-
-  // Episodes
-  const [episodes, setEpisodes] = useState([]);
-  const [selectedEp, setSelectedEp] = useState(null);
-  const [epForm, setEpForm] = useState(EPISODE_BLANK);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [adminChecked, setAdminChecked] = useState(false);
+  const [activeSection, setActiveSection] = useState<ActiveSection>("episodes");
+  const [episodes, setEpisodes] = useState<Episode[]>([]);
+  const [selectedEp, setSelectedEp] = useState("");
+  const [epForm, setEpForm] = useState<Omit<Episode, "id">>({
+    ...EPISODE_BLANK,
+  });
   const [epSaving, setEpSaving] = useState(false);
-  const [epStatus, setEpStatus] = useState("idle");
-
-  // Articles
-  const [articles, setArticles] = useState([]);
-  const [selectedArt, setSelectedArt] = useState(null);
-  const [artForm, setArtForm] = useState(ARTICLE_BLANK);
+  const [epStatus, setEpStatus] = useState<SaveStatus>("idle");
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [selectedArt, setSelectedArt] = useState<string | null>(null);
+  const [artForm, setArtForm] = useState<Omit<Article, "id">>({
+    ...ARTICLE_BLANK,
+  });
   const [artSaving, setArtSaving] = useState(false);
-  const [artStatus, setArtStatus] = useState("idle");
-
-  // Backpack sections
-  const [bpSections, setBpSections] = useState([]);
-  const [selectedBp, setSelectedBp] = useState(null);
-  const [bpForm, setBpForm] = useState(SECTION_BLANK);
+  const [artStatus, setArtStatus] = useState<SaveStatus>("idle");
+  const [bpSections, setBpSections] = useState<BackpackSection[]>([]);
+  const [selectedBp, setSelectedBp] = useState<string | null>(null);
+  const [bpForm, setBpForm] = useState<Omit<BackpackSection, "id">>({
+    ...SECTION_BLANK,
+  });
   const [bpSaving, setBpSaving] = useState(false);
-  const [bpStatus, setBpStatus] = useState("idle");
+  const [bpStatus, setBpStatus] = useState<SaveStatus>("idle");
+  const [users, setUsers] = useState<UserRecord[]>([]);
+  const [selectedUser, setSelectedUser] = useState<UserRecord | null>(null);
+  const [emailSubject, setEmailSubject] = useState("");
+  const [emailBody, setEmailBody] = useState("");
+  const [emailStatus, setEmailStatus] = useState<EmailStatus>("idle");
+  const [emailSentCount, setEmailSentCount] = useState(0);
 
-  // Users
-  const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
+  // ── Episodes CRUD ──
+  async function saveEp() {
+    setEpSaving(true);
+    setEpStatus("idle");
+    try {
+      if (selectedEp === "new") {
+        await insertEpisode(epForm);
+      } else {
+        await updateEpisode(selectedEp!, epForm);
+      }
+      setEpStatus("saved");
+      const refreshed = await fetchAdminEpisodes();
+      setEpisodes(refreshed);
+      if (selectedEp === "new" && refreshed.length) {
+        const last = refreshed[refreshed.length - 1];
+        setSelectedEp(last.id!);
+        setEpForm(last);
+      }
+    } catch (error) {
+      console.error(error);
+      setEpStatus("error");
+    }
+    setEpSaving(false);
+  }
+  async function deleteEp() {
+    if (
+      !selectedEp || selectedEp === "new" || !confirm("Delete this episode?")
+    ) return;
+    await deleteEpisode(selectedEp);
+    setEpisodes((p) => p.filter((e) => e.id !== selectedEp));
+    setSelectedEp("");
+    setEpForm({ ...EPISODE_BLANK });
+  }
+
+  // ── Articles CRUD ──
+  async function saveArt() {
+    setArtSaving(true);
+    setArtStatus("idle");
+    try {
+      if (selectedArt === "new") {
+        await insertArticle(artForm);
+      } else {
+        await updateArticle(selectedArt!, artForm);
+      }
+      setArtStatus("saved");
+      const refreshed = await fetchAdminArticles();
+      setArticles(refreshed);
+      if (selectedArt === "new" && refreshed.length) {
+        const last = refreshed[refreshed.length - 1];
+        setSelectedArt(last.id!);
+        setArtForm(last);
+      }
+    } catch (error) {
+      console.error(error);
+      setArtStatus("error");
+    }
+    setArtSaving(false);
+  }
+  async function deleteArt() {
+    if (
+      !selectedArt || selectedArt === "new" || !confirm("Delete this article?")
+    ) return;
+    await deleteArticle(selectedArt);
+    setArticles((p) => p.filter((a) => a.id !== selectedArt));
+    setSelectedArt(null);
+    setArtForm({ ...ARTICLE_BLANK });
+  }
+
+  // ── Backpack sections CRUD ──
+  async function saveBp() {
+    setBpSaving(true);
+    setBpStatus("idle");
+    try {
+      if (selectedBp === "new") {
+        await insertBackpackSection(bpForm);
+      } else {
+        await updateBackpackSection(selectedBp!, bpForm);
+      }
+      setBpStatus("saved");
+      const refreshed = await fetchAdminBackpackSections();
+      setBpSections(refreshed);
+      if (selectedBp === "new" && refreshed.length) {
+        const last = refreshed[refreshed.length - 1];
+        setSelectedBp(last.id!);
+        setBpForm(last);
+      }
+    } catch (error) {
+      console.error(error);
+      setBpStatus("error");
+    }
+    setBpSaving(false);
+  }
+  async function deleteBp() {
+    if (
+      !selectedBp || selectedBp === "new" || !confirm("Delete this section?")
+    ) return;
+    await deleteBackpackSection(selectedBp);
+    setBpSections((p) => p.filter((s) => s.id !== selectedBp));
+    setSelectedBp(null);
+    setBpForm({ ...SECTION_BLANK });
+  }
+
+  // ── Email ──
+  async function handleSendEmail() {
+    if (!emailSubject.trim() || !emailBody.trim()) return;
+    if (!confirm(`Send this email to all ${users.length} users?`)) return;
+    setEmailStatus("sending");
+    try {
+      const claims = await getIdTokenClaims();
+      const token = claims?.__raw;
+      if (!token) throw new Error("No auth token");
+      const { sent } = await sendMassEmail(token, emailSubject, emailBody);
+      setEmailSentCount(sent);
+      setEmailStatus("sent");
+      setEmailSubject("");
+      setEmailBody("");
+    } catch (error) {
+      console.error(error);
+      setEmailStatus("error");
+    }
+  }
+
+  // ── Select item ──
+  function selectEpisode(ep: Episode) {
+    setSelectedEp(ep.id!);
+    setEpForm(ep);
+    setEpStatus("idle");
+  }
+
+  function selectArticle(art: Article) {
+    setSelectedArt(art.id!);
+    setArtForm(art);
+    setArtStatus("idle");
+  }
+
+  function selectSection(s: BackpackSection) {
+    setSelectedBp(s.id!);
+    setBpForm(s);
+    setBpStatus("idle");
+  }
+
+  // ── New item ──
+  function handleNewItem() {
+    switch (activeSection) {
+      case "episodes":
+        setSelectedEp("new");
+        setEpForm({ ...EPISODE_BLANK });
+        setEpStatus("idle");
+        break;
+      case "articles":
+        setSelectedArt("new");
+        setArtForm({ ...ARTICLE_BLANK });
+        setArtStatus("idle");
+        break;
+      case "sections":
+        setSelectedBp("new");
+        setBpForm({ ...SECTION_BLANK });
+        setBpStatus("idle");
+        break;
+    }
+  }
+
+  // ── Nav switch ──
+  function switchSection(s: ActiveSection) {
+    setActiveSection(s);
+    setSelectedEp("");
+    setEpForm({ ...EPISODE_BLANK });
+    setEpStatus("idle");
+    setSelectedArt(null);
+    setArtForm({ ...ARTICLE_BLANK });
+    setArtStatus("idle");
+    setSelectedBp(null);
+    setBpForm({ ...SECTION_BLANK });
+    setBpStatus("idle");
+    setSelectedUser(null);
+    setEmailStatus("idle");
+  }
 
   // ── Auth ──
   useEffect(() => {
     if (isLoading || !user) return;
-    supabase.rpc("is_admin", { user_id: user.sub }).then(({ data }) => {
-      if (!data) router.replace("/");
-      else setIsAdmin(true);
-    });
+    async function verifyAdmin() {
+      try {
+        const admin = await checkIsAdmin(user!.sub);
+        if (!admin) router.replace("/");
+        else setIsAdmin(true);
+      } catch (error) {
+        console.error(error);
+        router.replace("/");
+      } finally {
+        setAdminChecked(true);
+      }
+    }
+    verifyAdmin();
   }, [user, isLoading, router]);
 
   useEffect(() => {
     if (!isAdmin) return;
-    loadEpisodes();
-    loadArticles();
-    loadBpSections();
-    loadUsers();
+    async function initData() {
+      const [eps, arts, bps, usrs] = await Promise.all([
+        fetchAdminEpisodes(),
+        fetchAdminArticles(),
+        fetchAdminBackpackSections(),
+        fetchUsers(),
+      ]);
+      setEpisodes(eps);
+      setArticles(arts);
+      setBpSections(bps);
+      setUsers(usrs);
+      if (eps.length) {
+        setSelectedEp(eps[0].id!);
+        setEpForm(eps[0]);
+      }
+    }
+    initData();
   }, [isAdmin]);
 
-  // ── Episodes CRUD ──
-  const loadEpisodes = async () => {
-    const { data } = await supabase.from("episodes").select("*").order(
-      "sort_order",
-    );
-    if (data) setEpisodes(data);
-  };
-  const saveEp = async () => {
-    setEpSaving(true);
-    setEpStatus("idle");
-    const payload = { ...epForm };
-    let error;
-    if (selectedEp === "new") {
-      delete payload.id;
-      ({ error } = await supabase.from("episodes").insert(payload));
-    } else {({ error } = await supabase.from("episodes").update(payload).eq(
-        "id",
-        selectedEp,
-      ));}
-    if (error) {
-      console.error(error);
-      setEpStatus("error");
-    } else {
-      setEpStatus("saved");
-      await loadEpisodes();
-      if (selectedEp === "new") {
-        const { data } = await supabase.from("episodes").select("*").order(
-          "sort_order",
-        );
-        if (data?.length) {
-          setSelectedEp(data[data.length - 1].id);
-          setEpForm(data[data.length - 1]);
-        }
-      }
-    }
-    setEpSaving(false);
-  };
-  const deleteEp = async () => {
-    if (
-      !selectedEp || selectedEp === "new" || !confirm("Delete this episode?")
-    ) return;
-    await supabase.from("episodes").delete().eq("id", selectedEp);
-    setEpisodes((p) => p.filter((e) => e.id !== selectedEp));
-    setSelectedEp(null);
-    setEpForm(EPISODE_BLANK);
-  };
-
-  // ── Articles CRUD ──
-  const loadArticles = async () => {
-    const { data } = await supabase.from("articles").select("*").order(
-      "sort_order",
-    );
-    if (data) setArticles(data);
-  };
-  const saveArt = async () => {
-    setArtSaving(true);
-    setArtStatus("idle");
-    const payload = { ...artForm };
-    let error;
-    if (selectedArt === "new") {
-      delete payload.id;
-      ({ error } = await supabase.from("articles").insert(payload));
-    } else {({ error } = await supabase.from("articles").update(payload).eq(
-        "id",
-        selectedArt,
-      ));}
-    if (error) {
-      console.error(error);
-      setArtStatus("error");
-    } else {
-      setArtStatus("saved");
-      await loadArticles();
-      if (selectedArt === "new") {
-        const { data } = await supabase.from("articles").select("*").order(
-          "sort_order",
-        );
-        if (data?.length) {
-          setSelectedArt(data[data.length - 1].id);
-          setArtForm(data[data.length - 1]);
-        }
-      }
-    }
-    setArtSaving(false);
-  };
-  const deleteArt = async () => {
-    if (
-      !selectedArt || selectedArt === "new" || !confirm("Delete this article?")
-    ) return;
-    await supabase.from("articles").delete().eq("id", selectedArt);
-    setArticles((p) => p.filter((a) => a.id !== selectedArt));
-    setSelectedArt(null);
-    setArtForm(ARTICLE_BLANK);
-  };
-
-  // ── Backpack sections CRUD ──
-  const loadBpSections = async () => {
-    const { data } = await supabase.from("backpack_sections").select("*").order(
-      "sort_order",
-    );
-    if (data) setBpSections(data);
-  };
-  const saveBp = async () => {
-    setBpSaving(true);
-    setBpStatus("idle");
-    const payload = { ...bpForm };
-    let error;
-    if (selectedBp === "new") {
-      delete payload.id;
-      ({ error } = await supabase.from("backpack_sections").insert(payload));
-    } else {({ error } = await supabase.from("backpack_sections").update(
-        payload,
-      ).eq("id", selectedBp));}
-    if (error) {
-      console.error(error);
-      setBpStatus("error");
-    } else {
-      setBpStatus("saved");
-      await loadBpSections();
-      if (selectedBp === "new") {
-        const { data } = await supabase.from("backpack_sections").select("*")
-          .order("sort_order");
-        if (data?.length) {
-          setSelectedBp(data[data.length - 1].id);
-          setBpForm(data[data.length - 1]);
-        }
-      }
-    }
-    setBpSaving(false);
-  };
-  const deleteBp = async () => {
-    if (
-      !selectedBp || selectedBp === "new" || !confirm("Delete this section?")
-    ) return;
-    await supabase.from("backpack_sections").delete().eq("id", selectedBp);
-    setBpSections((p) => p.filter((s) => s.id !== selectedBp));
-    setSelectedBp(null);
-    setBpForm(SECTION_BLANK);
-  };
-
-  // ── Users ──
-  const loadUsers = async () => {
-    const { data } = await supabase
-      .from("users")
-      .select("*")
-      .order("first_name");
-    if (data) setUsers(data);
-  };
-
-  // ── Nav switch ──
-  const switchSection = (s) => {
-    setActiveSection(s);
-    setSelectedEp(null);
-    setEpForm(EPISODE_BLANK);
-    setEpStatus("idle");
-    setSelectedArt(null);
-    setArtForm(ARTICLE_BLANK);
-    setArtStatus("idle");
-    setSelectedBp(null);
-    setBpForm(SECTION_BLANK);
-    setBpStatus("idle");
-    setSelectedUser(null);
-  };
-
-  if (isLoading || isAdmin === null) {
+  if (isLoading || !adminChecked) {
     return (
       <div className="admin-root">
         <NavBar />
@@ -317,30 +393,8 @@ export default function AdminPage() {
             <h2 className="admin-list-heading">
               {NAV_ITEMS.find((n) => n.id === activeSection)?.label}
             </h2>
-            {activeSection !== "users" && (
-              <button
-                type="button"
-                className="admin-new-btn"
-                onClick={() => {
-                  if (activeSection === "episodes") {
-                    setSelectedEp("new");
-                    setEpForm(EPISODE_BLANK);
-                    setEpStatus("idle");
-                  }
-                  if (activeSection === "articles") {
-                    setSelectedArt("new");
-                    setArtForm(ARTICLE_BLANK);
-                    setArtStatus("idle");
-                  }
-                  if (activeSection === "sections") {
-                    setSelectedBp("new");
-                    setBpForm(SECTION_BLANK);
-                    setBpStatus("idle");
-                  }
-                }}
-              >
-                + New
-              </button>
+            {activeSection !== "users" && activeSection !== "emails" && (
+              <NewItemButton onClick={handleNewItem} />
             )}
           </div>
           <div className="admin-list-scroll">
@@ -358,11 +412,7 @@ export default function AdminPage() {
                     className={`admin-list-item${
                       selectedEp === ep.id ? " active" : ""
                     }`}
-                    onClick={() => {
-                      setSelectedEp(ep.id);
-                      setEpForm({ ...ep });
-                      setEpStatus("idle");
-                    }}
+                    onClick={() => selectEpisode(ep)}
                   >
                     <div className="admin-list-eyebrow">{ep.num}</div>
                     <div className="admin-list-name">{ep.title}</div>
@@ -383,35 +433,30 @@ export default function AdminPage() {
                     className={`admin-list-item${
                       selectedArt === art.id ? " active" : ""
                     }`}
-                    onClick={() => {
-                      setSelectedArt(art.id);
-                      setArtForm({ ...art });
-                      setArtStatus("idle");
-                    }}
+                    onClick={() => selectArticle(art)}
                   >
                     <div className="admin-list-eyebrow">{art.category}</div>
                     <div className="admin-list-name">{art.title}</div>
                   </button>
                 ))
             )}
+            {activeSection === "emails" && (
+              <ListItemButton
+                eyebrow="New message"
+                name="Compose Email"
+                active
+              />
+            )}
             {activeSection === "users" && (
               users.length === 0
                 ? <p className="admin-empty-list">No users yet.</p>
                 : users.map((u) => (
-                  <button
+                  <UserListItem
                     key={u.id}
-                    type="button"
-                    className={`admin-list-item${
-                      selectedUser?.id === u.id ? " active" : ""
-                    }`}
-                    onClick={() => setSelectedUser(u)}
-                  >
-                    <div className="admin-list-eyebrow">{u.email}</div>
-                    <div className="admin-list-name">
-                      {[u.first_name, u.last_name].filter(Boolean).join(" ") ||
-                        u.username || u.id}
-                    </div>
-                  </button>
+                    user={u}
+                    active={selectedUser?.id === u.id}
+                    onClick={setSelectedUser}
+                  />
                 ))
             )}
             {activeSection === "sections" && (
@@ -428,13 +473,11 @@ export default function AdminPage() {
                     className={`admin-list-item${
                       selectedBp === s.id ? " active" : ""
                     }`}
-                    onClick={() => {
-                      setSelectedBp(s.id);
-                      setBpForm({ ...s });
-                      setBpStatus("idle");
-                    }}
+                    onClick={() => selectSection(s)}
                   >
-                    <div className="admin-list-eyebrow">{s.emoji} {s.type}</div>
+                    <div className="admin-list-eyebrow">
+                      {s.emoji} {s.type}
+                    </div>
                     <div className="admin-list-name">{s.label}</div>
                   </button>
                 ))
@@ -445,7 +488,7 @@ export default function AdminPage() {
         {/* ── FORM PANEL ── */}
         <div className="admin-form-panel">
           {/* Episodes */}
-          {activeSection === "episodes" && (selectedEp === null
+          {activeSection === "episodes" && (selectedEp === ""
             ? (
               <EmptyForm
                 icon="🎬"
@@ -667,6 +710,20 @@ export default function AdminPage() {
                 </div>
               </EditPanel>
             ))}
+
+          {/* Emails */}
+          {activeSection === "emails" && (
+            <ComposeEmailPanel
+              userCount={users.length}
+              emailStatus={emailStatus}
+              emailSentCount={emailSentCount}
+              emailSubject={emailSubject}
+              emailBody={emailBody}
+              onSubjectChange={setEmailSubject}
+              onBodyChange={setEmailBody}
+              onSend={handleSendEmail}
+            />
+          )}
 
           {/* Users */}
           {activeSection === "users" && (selectedUser === null

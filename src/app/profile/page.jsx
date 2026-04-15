@@ -253,8 +253,12 @@ export default function ProfilePage() {
 
             <div className="profile-header-actions">
               {!saved && <FlashMessage message="✓ Saved!" />}
-              {resetStatus === "sent" && <FlashMessage message="✓ Reset email sent!" />}
-              {resetStatus === "error" && <FlashMessage message="Something went wrong" error />}
+              {resetStatus === "sent" && (
+                <FlashMessage message="✓ Reset email sent!" />
+              )}
+              {resetStatus === "error" && (
+                <FlashMessage message="Something went wrong" error />
+              )}
               <button
                 type="button"
                 className="btn-ghost-sm"
