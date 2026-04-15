@@ -7,7 +7,9 @@ const MENU_ITEMS = [
   { href: "/backpack", label: "My Backpack" },
 ];
 
-export default function NavDropdown({ isAdmin, onClose }) {
+export default function NavDropdown(
+  { isAdmin, onClose, exportStatus, onExport },
+) {
   return (
     <div className="nav-dropdown">
       {MENU_ITEMS.map(({ href, label }) => (
@@ -18,6 +20,22 @@ export default function NavDropdown({ isAdmin, onClose }) {
           onClose={onClose}
         />
       ))}
+      <div className="nav-dropdown-divider" />
+      <button
+        type="button"
+        className="nav-dropdown-item"
+        onClick={onExport}
+        disabled={exportStatus === "exporting"}
+      >
+        <span className="nav-dropdown-icon">📥</span>
+        {exportStatus === "exporting"
+          ? "Exporting…"
+          : exportStatus === "done"
+          ? "✓ Exported!"
+          : exportStatus === "error"
+          ? "Export failed"
+          : "Export My Data"}
+      </button>
       {isAdmin && <NavAdminMenuItem onClose={onClose} />}
       <div className="nav-dropdown-divider" />
       <a
