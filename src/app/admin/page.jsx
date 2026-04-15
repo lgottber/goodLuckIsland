@@ -1,1482 +1,833 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import StatCard from "../../components/StatCard";
-import HBar from "../../components/HBar";
-import SectionCard from "../../components/SectionCard";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useRouter } from "next/navigation";
+import { supabase } from "../../lib/supabase.ts";
+import NavBar from "../../components/NavBarDynamic";
+import "./admin.css";
 
-// ─── Mock Data — replace with real API/DB calls ───────────────────────────────
-const STATS = {
-  totalUsers: 1284,
-  dailyActive: 312,
-  monthlyActive: 891,
-  newThisMonth: 143,
-  newLastMonth: 118,
-  challengeParticipants: 487,
+// ─── Blanks ───────────────────────────────────────────────────────────────────
+const EPISODE_BLANK = {
+  num: "",
+  title: "",
+  description: "",
+  date: "",
+  duration: "",
+  youtube_id: "",
+  thumbnail: "",
+  sort_order: 0,
+};
+const ARTICLE_BLANK = {
+  category: "",
+  title: "",
+  excerpt: "",
+  date: "",
+  read_time: "",
+  image: "",
+  featured: false,
+  sort_order: 0,
+};
+const SECTION_BLANK = {
+  slug: "",
+  label: "",
+  emoji: "",
+  color: "#2e8b7a",
+  tagline: "",
+  description: "",
+  type: "coming-soon",
+  sort_order: 0,
 };
 
-const SIGNUP_DATA = [
-  { month: "Oct", count: 54 },
-  { month: "Nov", count: 78 },
-  { month: "Dec", count: 91 },
-  { month: "Jan", count: 118 },
-  { month: "Feb", count: 118 },
-  { month: "Mar", count: 143 },
+const ARTICLE_CATEGORIES = [
+  "Getting Ready for Retirement",
+  "Whole-Life Wellness",
+  "Clear Thinking",
+  "Financial Independence",
 ];
 
-const AGE_DATA = [
-  { label: "40–44", pct: 12 },
-  { label: "45–49", pct: 24 },
-  { label: "50–54", pct: 31 },
-  { label: "55–59", pct: 22 },
-  { label: "60–64", pct: 8 },
-  { label: "65+", pct: 3 },
+const SECTION_TYPES = ["challenge", "coming-soon"];
+
+const NAV_ITEMS = [
+  { id: "episodes", icon: "🎬", label: "Podcast Episodes" },
+  { id: "articles", icon: "📖", label: "Articles" },
+  { id: "sections", icon: "🎒", label: "Backpack Sections" },
 ];
 
-const RETIREMENT_DATA = [
-  { label: "Planning", pct: 58, color: "#2e8b7a" },
-  { label: "Semi-Retired", pct: 27, color: "#e8673a" },
-  { label: "Retired", pct: 15, color: "#5a7abf" },
-];
-
-const INCOME_DATA = [
-  { label: "Under $50k", pct: 6 },
-  { label: "$50k–$75k", pct: 11 },
-  { label: "$75k–$100k", pct: 18 },
-  { label: "$100k–$150k", pct: 26 },
-  { label: "$150k–$200k", pct: 19 },
-  { label: "$200k–$300k", pct: 12 },
-  { label: "$300k+", pct: 8 },
-];
-
-const NETWORTH_DATA = [
-  { label: "Under $100k", pct: 8 },
-  { label: "$100k–$250k", pct: 14 },
-  { label: "$250k–$500k", pct: 22 },
-  { label: "$500k–$1M", pct: 28 },
-  { label: "$1M–$2M", pct: 18 },
-  { label: "$2M–$5M", pct: 7 },
-  { label: "$5M+", pct: 3 },
-];
-
-const EDUCATION_DATA = [
-  { label: "HS / GED", pct: 4 },
-  { label: "Some College", pct: 9 },
-  { label: "Associate's", pct: 7 },
-  { label: "Bachelor's", pct: 38 },
-  { label: "Master's", pct: 29 },
-  { label: "Doctorate", pct: 8 },
-  { label: "Professional", pct: 5 },
-];
-
-const MARITAL_DATA = [
-  { label: "Married", pct: 54, color: "#2e8b7a" },
-  { label: "Single", pct: 18, color: "#e8673a" },
-  { label: "Partnered", pct: 12, color: "#5a7abf" },
-  { label: "Divorced", pct: 9, color: "#c87840" },
-  { label: "Widowed", pct: 4, color: "#7a5a9a" },
-  { label: "Other", pct: 3, color: "#4a8a6a" },
-];
-
-const LOCATION_DATA = [
-  { state: "California", count: 187 },
-  { state: "Texas", count: 143 },
-  { state: "Florida", count: 128 },
-  { state: "New York", count: 112 },
-  { state: "Illinois", count: 89 },
-  { state: "Washington", count: 76 },
-  { state: "Colorado", count: 68 },
-  { state: "Georgia", count: 61 },
-  { state: "Arizona", count: 54 },
-  { state: "North Carolina", count: 47 },
-];
-
-const TOP_OCCUPATIONS = [
-  { title: "Engineer / Tech", count: 218 },
-  { title: "Healthcare", count: 164 },
-  { title: "Finance / Banking", count: 142 },
-  { title: "Education", count: 118 },
-  { title: "Management / Executive", count: 97 },
-  { title: "Legal", count: 74 },
-  { title: "Sales / Marketing", count: 61 },
-];
-
-const TOP_ARTICLES = [
-  { title: "A Thoughtful Retirement Mindset for Gen X", reads: 4821 },
-  { title: "Popular Advice Isn't Always Helpful Advice", reads: 3942 },
-  { title: "What 'Enough' Really Means", reads: 3318 },
-  { title: "The Identity Problem Nobody Talks About", reads: 2891 },
-  { title: "Whole-Life Wellness After 50", reads: 2644 },
-];
-
-const TOP_PODCASTS = [
-  { title: "Rethinking Retirement, One Choice at a Time", views: 6102 },
-  { title: "The Advisor Who Actually Works for You", views: 4887 },
-  { title: "The Identity Problem Nobody Talks About", views: 4201 },
-  { title: "A Thoughtful Retirement Mindset", views: 3776 },
-  { title: "Popular Advice Isn't Always Helpful Advice", views: 3244 },
-];
-
-const BACKPACK_DATA = [
-  { section: "1 Question Challenge", pct: 62 },
-  { section: "Values & Beliefs", pct: 0, soon: true },
-  { section: "Finding Your Purpose", pct: 0, soon: true },
-  { section: "New Skills", pct: 0, soon: true },
-  { section: "Refinement", pct: 0, soon: true },
-  { section: "Giveback & Share", pct: 0, soon: true },
-];
-
-// ─── Helpers ─────────────────────────────────────────────────────────────────
-const maxSignup = Math.max(...SIGNUP_DATA.map((d) => d.count));
-
-// ─── Component ───────────────────────────────────────────────────────────────
+// ─── Component ────────────────────────────────────────────────────────────────
 export default function AdminPage() {
-  const [activeNav, setActiveNav] = useState("overview");
+  const { user, isLoading } = useAuth0();
+  const router = useRouter();
 
-  // Simple auth gate — replace with real auth check
-  const isAdmin = true; // wire to your session/auth
-  if (!isAdmin) {
+  const [isAdmin, setIsAdmin] = useState(null);
+  const [activeSection, setActiveSection] = useState("episodes");
+
+  // Episodes
+  const [episodes, setEpisodes] = useState([]);
+  const [selectedEp, setSelectedEp] = useState(null);
+  const [epForm, setEpForm] = useState(EPISODE_BLANK);
+  const [epSaving, setEpSaving] = useState(false);
+  const [epStatus, setEpStatus] = useState("idle");
+
+  // Articles
+  const [articles, setArticles] = useState([]);
+  const [selectedArt, setSelectedArt] = useState(null);
+  const [artForm, setArtForm] = useState(ARTICLE_BLANK);
+  const [artSaving, setArtSaving] = useState(false);
+  const [artStatus, setArtStatus] = useState("idle");
+
+  // Backpack sections
+  const [bpSections, setBpSections] = useState([]);
+  const [selectedBp, setSelectedBp] = useState(null);
+  const [bpForm, setBpForm] = useState(SECTION_BLANK);
+  const [bpSaving, setBpSaving] = useState(false);
+  const [bpStatus, setBpStatus] = useState("idle");
+
+  // ── Auth ──
+  useEffect(() => {
+    if (isLoading || !user) return;
+    supabase.rpc("is_admin", { user_id: user.sub }).then(({ data }) => {
+      if (!data) router.replace("/");
+      else setIsAdmin(true);
+    });
+  }, [user, isLoading, router]);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    loadEpisodes();
+    loadArticles();
+    loadBpSections();
+  }, [isAdmin]);
+
+  // ── Episodes CRUD ──
+  const loadEpisodes = async () => {
+    const { data } = await supabase.from("episodes").select("*").order(
+      "sort_order",
+    );
+    if (data) setEpisodes(data);
+  };
+  const saveEp = async () => {
+    setEpSaving(true);
+    setEpStatus("idle");
+    const payload = { ...epForm };
+    let error;
+    if (selectedEp === "new") {
+      delete payload.id;
+      ({ error } = await supabase.from("episodes").insert(payload));
+    } else {({ error } = await supabase.from("episodes").update(payload).eq(
+        "id",
+        selectedEp,
+      ));}
+    if (error) {
+      console.error(error);
+      setEpStatus("error");
+    } else {
+      setEpStatus("saved");
+      await loadEpisodes();
+      if (selectedEp === "new") {
+        const { data } = await supabase.from("episodes").select("*").order(
+          "sort_order",
+        );
+        if (data?.length) {
+          setSelectedEp(data[data.length - 1].id);
+          setEpForm(data[data.length - 1]);
+        }
+      }
+    }
+    setEpSaving(false);
+  };
+  const deleteEp = async () => {
+    if (
+      !selectedEp || selectedEp === "new" || !confirm("Delete this episode?")
+    ) return;
+    await supabase.from("episodes").delete().eq("id", selectedEp);
+    setEpisodes((p) => p.filter((e) => e.id !== selectedEp));
+    setSelectedEp(null);
+    setEpForm(EPISODE_BLANK);
+  };
+
+  // ── Articles CRUD ──
+  const loadArticles = async () => {
+    const { data } = await supabase.from("articles").select("*").order(
+      "sort_order",
+    );
+    if (data) setArticles(data);
+  };
+  const saveArt = async () => {
+    setArtSaving(true);
+    setArtStatus("idle");
+    const payload = { ...artForm };
+    let error;
+    if (selectedArt === "new") {
+      delete payload.id;
+      ({ error } = await supabase.from("articles").insert(payload));
+    } else {({ error } = await supabase.from("articles").update(payload).eq(
+        "id",
+        selectedArt,
+      ));}
+    if (error) {
+      console.error(error);
+      setArtStatus("error");
+    } else {
+      setArtStatus("saved");
+      await loadArticles();
+      if (selectedArt === "new") {
+        const { data } = await supabase.from("articles").select("*").order(
+          "sort_order",
+        );
+        if (data?.length) {
+          setSelectedArt(data[data.length - 1].id);
+          setArtForm(data[data.length - 1]);
+        }
+      }
+    }
+    setArtSaving(false);
+  };
+  const deleteArt = async () => {
+    if (
+      !selectedArt || selectedArt === "new" || !confirm("Delete this article?")
+    ) return;
+    await supabase.from("articles").delete().eq("id", selectedArt);
+    setArticles((p) => p.filter((a) => a.id !== selectedArt));
+    setSelectedArt(null);
+    setArtForm(ARTICLE_BLANK);
+  };
+
+  // ── Backpack sections CRUD ──
+  const loadBpSections = async () => {
+    const { data } = await supabase.from("backpack_sections").select("*").order(
+      "sort_order",
+    );
+    if (data) setBpSections(data);
+  };
+  const saveBp = async () => {
+    setBpSaving(true);
+    setBpStatus("idle");
+    const payload = { ...bpForm };
+    let error;
+    if (selectedBp === "new") {
+      delete payload.id;
+      ({ error } = await supabase.from("backpack_sections").insert(payload));
+    } else {({ error } = await supabase.from("backpack_sections").update(
+        payload,
+      ).eq("id", selectedBp));}
+    if (error) {
+      console.error(error);
+      setBpStatus("error");
+    } else {
+      setBpStatus("saved");
+      await loadBpSections();
+      if (selectedBp === "new") {
+        const { data } = await supabase.from("backpack_sections").select("*")
+          .order("sort_order");
+        if (data?.length) {
+          setSelectedBp(data[data.length - 1].id);
+          setBpForm(data[data.length - 1]);
+        }
+      }
+    }
+    setBpSaving(false);
+  };
+  const deleteBp = async () => {
+    if (
+      !selectedBp || selectedBp === "new" || !confirm("Delete this section?")
+    ) return;
+    await supabase.from("backpack_sections").delete().eq("id", selectedBp);
+    setBpSections((p) => p.filter((s) => s.id !== selectedBp));
+    setSelectedBp(null);
+    setBpForm(SECTION_BLANK);
+  };
+
+  // ── Nav switch ──
+  const switchSection = (s) => {
+    setActiveSection(s);
+    setSelectedEp(null);
+    setEpForm(EPISODE_BLANK);
+    setEpStatus("idle");
+    setSelectedArt(null);
+    setArtForm(ARTICLE_BLANK);
+    setArtStatus("idle");
+    setSelectedBp(null);
+    setBpForm(SECTION_BLANK);
+    setBpStatus("idle");
+  };
+
+  if (isLoading || isAdmin === null) {
     return (
-      <div
-        style={{
-          minHeight: "100vh",
-          background: "#0d1322",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontFamily: "DM Sans, sans-serif",
-        }}
-      >
-        <div style={{ textAlign: "center", color: "#fff" }}>
-          <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🔒</div>
-          <h1
-            style={{
-              fontFamily: "Cormorant Garamond, Georgia, serif",
-              fontSize: "2rem",
-              marginBottom: "0.5rem",
-            }}
+      <div className="admin-root">
+        <NavBar />
+        <div
+          style={{
+            flex: 1,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <span
+            style={{ color: "rgba(255,255,255,0.25)", fontSize: "0.85rem" }}
           >
-            Access Restricted
-          </h1>
-          <p style={{ color: "rgba(255,255,255,0.5)", marginBottom: "1.5rem" }}>
-            You must be an admin to view this page.
-          </p>
-          <Link href="/">
-            <button
-              type="button"
-              style={{
-                background: "#e8673a",
-                color: "#fff",
-                border: "none",
-                borderRadius: 50,
-                padding: "0.75rem 1.5rem",
-                fontWeight: 700,
-                cursor: "pointer",
-              }}
-            >
-              ← Back to Site
-            </button>
-          </Link>
+            Verifying access…
+          </span>
         </div>
       </div>
     );
   }
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "#0d1322",
-        fontFamily: "'DM Sans', system-ui, sans-serif",
-        color: "#fff",
-      }}
-    >
-      {/* ── SIDEBAR ── */}
-      <div
-        style={{
-          position: "fixed",
-          left: 0,
-          top: 0,
-          bottom: 0,
-          width: 220,
-          background: "#0a1020",
-          borderRight: "1px solid rgba(255,255,255,0.06)",
-          display: "flex",
-          flexDirection: "column",
-          zIndex: 100,
-        }}
-      >
-        <div
-          style={{
-            padding: "1.5rem 1.25rem",
-            borderBottom: "1px solid rgba(255,255,255,0.06)",
-          }}
-        >
-          <img
-            src="/goodLuckIslandLogoSmall.png"
-            alt="Good Luck Island Collective"
-            style={{ height: 90, width: "auto", objectFit: "contain" }}
-          />
-          <div
-            style={{
-              marginTop: "0.5rem",
-              fontSize: "0.6rem",
-              fontWeight: 700,
-              letterSpacing: "0.16em",
-              textTransform: "uppercase",
-              color: "rgba(255,255,255,0.25)",
-            }}
-          >
-            Admin Portal
+    <div className="admin-root">
+      <NavBar />
+      <div className="admin-body">
+        {/* ── SIDEBAR ── */}
+        <div className="admin-sidebar">
+          <div className="admin-sidebar-header">
+            <div className="admin-sidebar-label">Content Manager</div>
+          </div>
+          <nav className="admin-sidebar-nav">
+            {NAV_ITEMS.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className={`admin-nav-btn${
+                  activeSection === item.id ? " active" : ""
+                }`}
+                onClick={() => switchSection(item.id)}
+              >
+                <span>{item.icon}</span> {item.label}
+              </button>
+            ))}
+          </nav>
+          <div className="admin-sidebar-footer">
+            <Link href="/" className="admin-back-btn">← Back to Site</Link>
           </div>
         </div>
 
-        <nav
-          style={{
-            flex: 1,
-            padding: "1rem 0.75rem",
-            display: "flex",
-            flexDirection: "column",
-            gap: "0.25rem",
-          }}
-        >
-          {[
-            { id: "overview", icon: "◈", label: "Overview" },
-            { id: "users", icon: "👥", label: "User Demographics" },
-            { id: "content", icon: "📊", label: "Content Engagement" },
-            { id: "backpack", icon: "🎒", label: "Backpack Stats" },
-            { id: "location", icon: "📍", label: "Locations" },
-          ].map((item) => (
+        {/* ── LIST PANEL ── */}
+        <div className="admin-list-panel">
+          <div className="admin-list-header">
+            <h2 className="admin-list-heading">
+              {NAV_ITEMS.find((n) => n.id === activeSection)?.label}
+            </h2>
             <button
               type="button"
-              key={item.id}
-              onClick={() => setActiveNav(item.id)}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.75rem",
-                padding: "0.65rem 0.9rem",
-                borderRadius: 10,
-                background: activeNav === item.id
-                  ? "rgba(46,139,122,0.15)"
-                  : "transparent",
-                border: activeNav === item.id
-                  ? "1px solid rgba(46,139,122,0.3)"
-                  : "1px solid transparent",
-                color: activeNav === item.id
-                  ? "#2e8b7a"
-                  : "rgba(255,255,255,0.45)",
-                fontSize: "0.82rem",
-                fontWeight: 600,
-                cursor: "pointer",
-                fontFamily: "inherit",
-                textAlign: "left",
-                transition: "all 0.15s",
+              className="admin-new-btn"
+              onClick={() => {
+                if (activeSection === "episodes") {
+                  setSelectedEp("new");
+                  setEpForm(EPISODE_BLANK);
+                  setEpStatus("idle");
+                }
+                if (activeSection === "articles") {
+                  setSelectedArt("new");
+                  setArtForm(ARTICLE_BLANK);
+                  setArtStatus("idle");
+                }
+                if (activeSection === "sections") {
+                  setSelectedBp("new");
+                  setBpForm(SECTION_BLANK);
+                  setBpStatus("idle");
+                }
               }}
             >
-              <span style={{ fontSize: "1rem" }}>{item.icon}</span> {item.label}
+              + New
             </button>
-          ))}
-        </nav>
-
-        <div
-          style={{
-            padding: "1rem 1.25rem",
-            borderTop: "1px solid rgba(255,255,255,0.06)",
-          }}
-        >
-          <Link href="/">
-            <button
-              type="button"
-              style={{
-                width: "100%",
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                color: "rgba(255,255,255,0.5)",
-                borderRadius: 10,
-                padding: "0.6rem",
-                fontSize: "0.75rem",
-                fontWeight: 600,
-                cursor: "pointer",
-                fontFamily: "inherit",
-              }}
-            >
-              ← Back to Site
-            </button>
-          </Link>
-        </div>
-      </div>
-
-      {/* ── MAIN CONTENT ── */}
-      <div style={{ marginLeft: 220, padding: "2.5rem", minHeight: "100vh" }}>
-        {/* Header */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "flex-start",
-            justifyContent: "space-between",
-            marginBottom: "2.5rem",
-            flexWrap: "wrap",
-            gap: "1rem",
-          }}
-        >
-          <div>
-            <h1
-              style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontSize: "2.25rem",
-                fontWeight: 600,
-                lineHeight: 1.1,
-                marginBottom: "0.3rem",
-              }}
-            >
-              {activeNav === "overview" && "Platform Overview"}
-              {activeNav === "users" && "User Demographics"}
-              {activeNav === "content" && "Content Engagement"}
-              {activeNav === "backpack" && "Backpack Stats"}
-              {activeNav === "location" && "User Locations"}
-            </h1>
-            <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.35)" }}>
-              Last updated: {new Date().toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </p>
           </div>
-          <div style={{ display: "flex", gap: "0.6rem" }}>
-            <div
-              style={{
-                background: "#131c38",
-                border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: 10,
-                padding: "0.5rem 1rem",
-                fontSize: "0.75rem",
-                color: "rgba(255,255,255,0.5)",
-              }}
-            >
-              🟢 {STATS.dailyActive} active today
-            </div>
-            <div
-              style={{
-                background: "#131c38",
-                border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: 10,
-                padding: "0.5rem 1rem",
-                fontSize: "0.75rem",
-                color: "rgba(255,255,255,0.5)",
-              }}
-            >
-              {STATS.totalUsers.toLocaleString()} total members
-            </div>
+          <div className="admin-list-scroll">
+            {activeSection === "episodes" && (
+              episodes.length === 0
+                ? (
+                  <p className="admin-empty-list">
+                    No episodes yet.<br />Click + New to add one.
+                  </p>
+                )
+                : episodes.map((ep) => (
+                  <button
+                    key={ep.id}
+                    type="button"
+                    className={`admin-list-item${
+                      selectedEp === ep.id ? " active" : ""
+                    }`}
+                    onClick={() => {
+                      setSelectedEp(ep.id);
+                      setEpForm({ ...ep });
+                      setEpStatus("idle");
+                    }}
+                  >
+                    <div className="admin-list-eyebrow">{ep.num}</div>
+                    <div className="admin-list-name">{ep.title}</div>
+                  </button>
+                ))
+            )}
+            {activeSection === "articles" && (
+              articles.length === 0
+                ? (
+                  <p className="admin-empty-list">
+                    No articles yet.<br />Click + New to add one.
+                  </p>
+                )
+                : articles.map((art) => (
+                  <button
+                    key={art.id}
+                    type="button"
+                    className={`admin-list-item${
+                      selectedArt === art.id ? " active" : ""
+                    }`}
+                    onClick={() => {
+                      setSelectedArt(art.id);
+                      setArtForm({ ...art });
+                      setArtStatus("idle");
+                    }}
+                  >
+                    <div className="admin-list-eyebrow">{art.category}</div>
+                    <div className="admin-list-name">{art.title}</div>
+                  </button>
+                ))
+            )}
+            {activeSection === "sections" && (
+              bpSections.length === 0
+                ? (
+                  <p className="admin-empty-list">
+                    No sections yet.<br />Click + New to add one.
+                  </p>
+                )
+                : bpSections.map((s) => (
+                  <button
+                    key={s.id}
+                    type="button"
+                    className={`admin-list-item${
+                      selectedBp === s.id ? " active" : ""
+                    }`}
+                    onClick={() => {
+                      setSelectedBp(s.id);
+                      setBpForm({ ...s });
+                      setBpStatus("idle");
+                    }}
+                  >
+                    <div className="admin-list-eyebrow">{s.emoji} {s.type}</div>
+                    <div className="admin-list-name">{s.label}</div>
+                  </button>
+                ))
+            )}
           </div>
         </div>
 
-        {/* ── OVERVIEW ── */}
-        {activeNav === "overview" && (
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
-          >
-            {/* KPI Row */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)",
-                gap: "1rem",
-              }}
-            >
-              <StatCard
-                label="Total Members"
-                value={STATS.totalUsers.toLocaleString()}
-                sub="All time registrations"
-                accent="#2e8b7a"
+        {/* ── FORM PANEL ── */}
+        <div className="admin-form-panel">
+          {/* Episodes */}
+          {activeSection === "episodes" && (selectedEp === null
+            ? (
+              <EmptyForm
+                icon="🎬"
+                text="Select an episode or create a new one."
               />
-              <StatCard
-                label="Daily Active"
-                value={STATS.dailyActive}
-                sub="Unique sessions today"
-                accent="#e8673a"
-              />
-              <StatCard
-                label="Monthly Active"
-                value={STATS.monthlyActive}
-                sub="Last 30 days"
-                accent="#5a7abf"
-              />
-              <StatCard
-                label="New This Month"
-                value={`+${STATS.newThisMonth}`}
-                sub={`+${STATS.newLastMonth} last month`}
-                accent="#c87840"
-              />
-            </div>
-
-            {/* Signup Chart + Retirement Status */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "2fr 1fr",
-                gap: "1rem",
-              }}
-            >
-              <SectionCard title="New Signups — Last 6 Months">
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "flex-end",
-                    gap: "0.75rem",
-                    height: 140,
-                    paddingTop: "1rem",
-                  }}
-                >
-                  {SIGNUP_DATA.map((d) => (
-                    <div
-                      key={d.month}
-                      style={{
-                        flex: 1,
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: "0.65rem",
-                          color: "rgba(255,255,255,0.4)",
-                        }}
-                      >
-                        {d.count}
-                      </span>
-                      <div
-                        style={{
-                          width: "100%",
-                          background: "rgba(46,139,122,0.15)",
-                          borderRadius: "6px 6px 0 0",
-                          position: "relative",
-                          height: `${(d.count / maxSignup) * 100}px`,
-                          minHeight: 8,
-                        }}
-                      >
-                        <div
-                          style={{
-                            position: "absolute",
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            background:
-                              "linear-gradient(to top, #2e8b7a, rgba(46,139,122,0.5))",
-                            borderRadius: "6px 6px 0 0",
-                            height: "100%",
-                          }}
-                        />
-                      </div>
-                      <span
-                        style={{
-                          fontSize: "0.65rem",
-                          color: "rgba(255,255,255,0.35)",
-                        }}
-                      >
-                        {d.month}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </SectionCard>
-
-              <SectionCard title="Retirement Status">
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "1.25rem",
-                    paddingTop: "0.5rem",
-                  }}
-                >
-                  {RETIREMENT_DATA.map((d) => (
-                    <div key={d.label}>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          marginBottom: "0.4rem",
-                        }}
-                      >
-                        <span
-                          style={{
-                            fontSize: "0.78rem",
-                            color: "rgba(255,255,255,0.7)",
-                            fontWeight: 600,
-                          }}
-                        >
-                          {d.label}
-                        </span>
-                        <span
-                          style={{
-                            fontSize: "0.78rem",
-                            color: d.color,
-                            fontWeight: 700,
-                          }}
-                        >
-                          {d.pct}%
-                        </span>
-                      </div>
-                      <div
-                        style={{
-                          height: 8,
-                          background: "rgba(255,255,255,0.07)",
-                          borderRadius: 4,
-                          overflow: "hidden",
-                        }}
-                      >
-                        <div
-                          style={{
-                            height: "100%",
-                            width: `${d.pct}%`,
-                            background: d.color,
-                            borderRadius: 4,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </SectionCard>
-            </div>
-
-            {/* Top Content */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "1rem",
-              }}
-            >
-              <SectionCard title="Top Articles">
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "0.75rem",
-                  }}
-                >
-                  {TOP_ARTICLES.map((a, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.75rem",
-                        padding: "0.6rem 0",
-                        borderBottom: "1px solid rgba(255,255,255,0.05)",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: "0.7rem",
-                          fontWeight: 700,
-                          color: "rgba(255,255,255,0.2)",
-                          width: 16,
-                        }}
-                      >
-                        #{i + 1}
-                      </span>
-                      <span
-                        style={{
-                          fontSize: "0.8rem",
-                          color: "rgba(255,255,255,0.75)",
-                          flex: 1,
-                          lineHeight: 1.4,
-                        }}
-                      >
-                        {a.title}
-                      </span>
-                      <span
-                        style={{
-                          fontSize: "0.72rem",
-                          fontWeight: 700,
-                          color: "#2e8b7a",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {a.reads.toLocaleString()} reads
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </SectionCard>
-              <SectionCard title="Top Podcast Episodes">
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "0.75rem",
-                  }}
-                >
-                  {TOP_PODCASTS.map((p, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.75rem",
-                        padding: "0.6rem 0",
-                        borderBottom: "1px solid rgba(255,255,255,0.05)",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: "0.7rem",
-                          fontWeight: 700,
-                          color: "rgba(255,255,255,0.2)",
-                          width: 16,
-                        }}
-                      >
-                        #{i + 1}
-                      </span>
-                      <span
-                        style={{
-                          fontSize: "0.8rem",
-                          color: "rgba(255,255,255,0.75)",
-                          flex: 1,
-                          lineHeight: 1.4,
-                        }}
-                      >
-                        {p.title}
-                      </span>
-                      <span
-                        style={{
-                          fontSize: "0.72rem",
-                          fontWeight: 700,
-                          color: "#e8673a",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {p.views.toLocaleString()} views
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </SectionCard>
-            </div>
-          </div>
-        )}
-
-        {/* ── USER DEMOGRAPHICS ── */}
-        {activeNav === "users" && (
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
-          >
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "1rem",
-              }}
-            >
-              <SectionCard title="Age Distribution">
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "0.85rem",
-                  }}
-                >
-                  {AGE_DATA.map((d) => (
-                    <HBar
-                      key={d.label}
-                      label={d.label}
-                      pct={d.pct}
-                      total={STATS.totalUsers}
-                    />
-                  ))}
-                </div>
-              </SectionCard>
-
-              <SectionCard title="Retirement Status">
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "1.1rem",
-                    paddingTop: "0.25rem",
-                  }}
-                >
-                  {RETIREMENT_DATA.map((d) => (
-                    <div key={d.label}>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          marginBottom: "0.35rem",
-                        }}
-                      >
-                        <span
-                          style={{
-                            fontSize: "0.8rem",
-                            color: "rgba(255,255,255,0.7)",
-                            fontWeight: 600,
-                          }}
-                        >
-                          {d.label}
-                        </span>
-                        <span
-                          style={{
-                            fontSize: "0.78rem",
-                            fontWeight: 700,
-                            color: d.color,
-                          }}
-                        >
-                          {d.pct}%{" "}
-                          <span
-                            style={{
-                              color: "rgba(255,255,255,0.25)",
-                              fontWeight: 400,
-                            }}
-                          >
-                            · {Math.round(STATS.totalUsers * d.pct / 100)} users
-                          </span>
-                        </span>
-                      </div>
-                      <div
-                        style={{
-                          height: 10,
-                          background: "rgba(255,255,255,0.07)",
-                          borderRadius: 5,
-                          overflow: "hidden",
-                        }}
-                      >
-                        <div
-                          style={{
-                            height: "100%",
-                            width: `${d.pct}%`,
-                            background: d.color,
-                            borderRadius: 5,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </SectionCard>
-
-              <SectionCard title="Education Level">
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "0.85rem",
-                  }}
-                >
-                  {EDUCATION_DATA.map((d) => (
-                    <HBar
-                      key={d.label}
-                      label={d.label}
-                      pct={d.pct}
-                      color="#5a7abf"
-                      total={STATS.totalUsers}
-                    />
-                  ))}
-                </div>
-              </SectionCard>
-
-              <SectionCard title="Marital Status">
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "0.85rem",
-                  }}
-                >
-                  {MARITAL_DATA.map((d) => (
-                    <HBar
-                      key={d.label}
-                      label={d.label}
-                      pct={d.pct}
-                      color={d.color}
-                      total={STATS.totalUsers}
-                    />
-                  ))}
-                </div>
-              </SectionCard>
-
-              <SectionCard title="Income Range (Working)">
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "0.85rem",
-                  }}
-                >
-                  {INCOME_DATA.map((d) => (
-                    <HBar
-                      key={d.label}
-                      label={d.label}
-                      pct={d.pct}
-                      color="#c87840"
-                      total={STATS.totalUsers}
-                    />
-                  ))}
-                </div>
-              </SectionCard>
-
-              <SectionCard title="Net Worth Range">
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "0.85rem",
-                  }}
-                >
-                  {NETWORTH_DATA.map((d) => (
-                    <HBar
-                      key={d.label}
-                      label={d.label}
-                      pct={d.pct}
-                      color="#7a5a9a"
-                      total={STATS.totalUsers}
-                    />
-                  ))}
-                </div>
-              </SectionCard>
-
-              <SectionCard title="Top Occupations" span={2}>
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(2, 1fr)",
-                    gap: "0.85rem",
-                  }}
-                >
-                  {TOP_OCCUPATIONS.map((o) => (
-                    <div
-                      key={o.title}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.75rem",
-                      }}
-                    >
-                      <div style={{ flex: 1 }}>
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            marginBottom: "0.3rem",
-                          }}
-                        >
-                          <span
-                            style={{
-                              fontSize: "0.78rem",
-                              color: "rgba(255,255,255,0.7)",
-                            }}
-                          >
-                            {o.title}
-                          </span>
-                          <span
-                            style={{
-                              fontSize: "0.72rem",
-                              color: "#2e8b7a",
-                              fontWeight: 700,
-                            }}
-                          >
-                            {o.count}
-                          </span>
-                        </div>
-                        <div
-                          style={{
-                            height: 6,
-                            background: "rgba(255,255,255,0.07)",
-                            borderRadius: 3,
-                            overflow: "hidden",
-                          }}
-                        >
-                          <div
-                            style={{
-                              height: "100%",
-                              width: `${
-                                (o.count / TOP_OCCUPATIONS[0].count) * 100
-                              }%`,
-                              background: "#2e8b7a",
-                              borderRadius: 3,
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </SectionCard>
-            </div>
-          </div>
-        )}
-
-        {/* ── CONTENT ENGAGEMENT ── */}
-        {activeNav === "content" && (
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
-          >
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                gap: "1rem",
-              }}
-            >
-              <StatCard
-                label="Total Article Reads"
-                value="17.6k"
-                sub="All time"
-                accent="#2e8b7a"
-              />
-              <StatCard
-                label="Total Podcast Views"
-                value="22.2k"
-                sub="All time on YouTube"
-                accent="#e8673a"
-              />
-              <StatCard
-                label="Challenge Participants"
-                value={STATS.challengeParticipants}
-                sub={`${
-                  Math.round(
-                    STATS.challengeParticipants / STATS.totalUsers * 100,
-                  )
-                }% of members`}
-                accent="#c87840"
-              />
-            </div>
-
-            {/* Signup chart */}
-            <SectionCard title="New Signups — Last 6 Months">
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "flex-end",
-                  gap: "1.25rem",
-                  height: 180,
-                  paddingTop: "1.5rem",
-                }}
+            )
+            : (
+              <EditPanel
+                title={selectedEp === "new"
+                  ? "New Episode"
+                  : epForm.title || "Edit Episode"}
+                saving={epSaving}
+                status={epStatus}
+                saveLabel="Save Episode"
+                onSave={saveEp}
+                onDelete={selectedEp !== "new" ? deleteEp : null}
               >
-                {SIGNUP_DATA.map((d) => (
-                  <div
-                    key={d.month}
-                    style={{
-                      flex: 1,
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: "0.5rem",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: "0.72rem",
-                        color: "rgba(255,255,255,0.5)",
-                        fontWeight: 600,
-                      }}
+                <div className="admin-section">
+                  <div className="admin-section-label">Metadata</div>
+                  <div className="admin-grid-3">
+                    <Field
+                      label="Episode #"
+                      value={epForm.num}
+                      onChange={(v) => setEpForm((f) => ({ ...f, num: v }))}
+                      placeholder="EP. 07"
+                    />
+                    <Field
+                      label="Date"
+                      value={epForm.date}
+                      onChange={(v) => setEpForm((f) => ({ ...f, date: v }))}
+                      placeholder="Mar 1, 2026"
+                    />
+                    <Field
+                      label="Duration"
+                      value={epForm.duration}
+                      onChange={(v) =>
+                        setEpForm((f) => ({ ...f, duration: v }))}
+                      placeholder="42 min"
+                    />
+                  </div>
+                </div>
+                <div className="admin-section">
+                  <div className="admin-section-label">Content</div>
+                  <Field
+                    label="Title"
+                    value={epForm.title}
+                    onChange={(v) => setEpForm((f) => ({ ...f, title: v }))}
+                    placeholder="Episode title"
+                  />
+                  <Field
+                    label="Description"
+                    value={epForm.description}
+                    onChange={(v) =>
+                      setEpForm((f) => ({ ...f, description: v }))}
+                    placeholder="Episode description…"
+                    multiline
+                  />
+                </div>
+                <div className="admin-section">
+                  <div className="admin-section-label">Media</div>
+                  <Field
+                    label="YouTube ID"
+                    value={epForm.youtube_id}
+                    onChange={(v) =>
+                      setEpForm((f) => ({ ...f, youtube_id: v }))}
+                    placeholder="dQw4w9WgXcQ"
+                    hint="The ID from the YouTube URL — e.g. youtube.com/watch?v=dQw4w9WgXcQ"
+                  />
+                  <div>
+                    <Field
+                      label="Thumbnail URL"
+                      value={epForm.thumbnail}
+                      onChange={(v) =>
+                        setEpForm((f) => ({ ...f, thumbnail: v }))}
+                      placeholder="https://…"
+                    />
+                    {epForm.thumbnail && (
+                      <img
+                        src={epForm.thumbnail}
+                        alt="Preview"
+                        className="admin-image-preview"
+                      />
+                    )}
+                  </div>
+                </div>
+                <div className="admin-section">
+                  <div className="admin-section-label">Settings</div>
+                  <div style={{ maxWidth: 160 }}>
+                    <Field
+                      label="Sort Order"
+                      value={String(epForm.sort_order)}
+                      onChange={(v) =>
+                        setEpForm((f) => ({
+                          ...f,
+                          sort_order: parseInt(v) || 0,
+                        }))}
+                      placeholder="1"
+                      hint="Lower numbers appear first."
+                    />
+                  </div>
+                </div>
+              </EditPanel>
+            ))}
+
+          {/* Articles */}
+          {activeSection === "articles" && (selectedArt === null
+            ? (
+              <EmptyForm
+                icon="📖"
+                text="Select an article or create a new one."
+              />
+            )
+            : (
+              <EditPanel
+                title={selectedArt === "new"
+                  ? "New Article"
+                  : artForm.title || "Edit Article"}
+                saving={artSaving}
+                status={artStatus}
+                saveLabel="Save Article"
+                onSave={saveArt}
+                onDelete={selectedArt !== "new" ? deleteArt : null}
+              >
+                <div className="admin-section">
+                  <div className="admin-section-label">Metadata</div>
+                  <div className="admin-field">
+                    <label>Category</label>
+                    <select
+                      value={artForm.category}
+                      onChange={(e) =>
+                        setArtForm((f) => ({ ...f, category: e.target.value }))}
                     >
-                      {d.count}
-                    </span>
-                    <div
-                      style={{
-                        width: "100%",
-                        position: "relative",
-                        height: `${(d.count / maxSignup) * 140}px`,
-                        minHeight: 10,
-                      }}
-                    >
-                      <div
-                        style={{
-                          position: "absolute",
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          background:
-                            "linear-gradient(to top, #2e8b7a, rgba(46,139,122,0.4))",
-                          borderRadius: "8px 8px 0 0",
-                          height: "100%",
-                        }}
+                      <option value="">Select a category…</option>
+                      {ARTICLE_CATEGORIES.map((c) => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="admin-grid-2">
+                    <Field
+                      label="Date"
+                      value={artForm.date}
+                      onChange={(v) => setArtForm((f) => ({ ...f, date: v }))}
+                      placeholder="Mar 1, 2026"
+                    />
+                    <Field
+                      label="Read Time"
+                      value={artForm.read_time}
+                      onChange={(v) =>
+                        setArtForm((f) => ({ ...f, read_time: v }))}
+                      placeholder="5 min read"
+                    />
+                  </div>
+                </div>
+                <div className="admin-section">
+                  <div className="admin-section-label">Content</div>
+                  <Field
+                    label="Title"
+                    value={artForm.title}
+                    onChange={(v) => setArtForm((f) => ({ ...f, title: v }))}
+                    placeholder="Article title"
+                  />
+                  <Field
+                    label="Excerpt"
+                    value={artForm.excerpt}
+                    onChange={(v) => setArtForm((f) => ({ ...f, excerpt: v }))}
+                    placeholder="Short description shown in the article grid…"
+                    multiline
+                  />
+                </div>
+                <div className="admin-section">
+                  <div className="admin-section-label">Media</div>
+                  <div>
+                    <Field
+                      label="Image URL"
+                      value={artForm.image}
+                      onChange={(v) => setArtForm((f) => ({ ...f, image: v }))}
+                      placeholder="https://…"
+                    />
+                    {artForm.image && (
+                      <img
+                        src={artForm.image}
+                        alt="Preview"
+                        className="admin-image-preview"
+                      />
+                    )}
+                  </div>
+                </div>
+                <div className="admin-section">
+                  <div className="admin-section-label">Settings</div>
+                  <div className="admin-grid-2">
+                    <div style={{ maxWidth: 160 }}>
+                      <Field
+                        label="Sort Order"
+                        value={String(artForm.sort_order)}
+                        onChange={(v) =>
+                          setArtForm((f) => ({
+                            ...f,
+                            sort_order: parseInt(v) || 0,
+                          }))}
+                        placeholder="1"
+                        hint="Lower numbers appear first."
                       />
                     </div>
-                    <span
-                      style={{
-                        fontSize: "0.72rem",
-                        color: "rgba(255,255,255,0.35)",
-                      }}
-                    >
-                      {d.month}
-                    </span>
+                    <div className="admin-field">
+                      <label>Featured</label>
+                      <Toggle
+                        on={artForm.featured}
+                        onToggle={() =>
+                          setArtForm((f) => ({ ...f, featured: !f.featured }))}
+                        labelOn="Featured article"
+                        labelOff="Not featured"
+                      />
+                      <span className="admin-field-hint">
+                        Shown as the hero article on the articles page.
+                      </span>
+                    </div>
                   </div>
-                ))}
-              </div>
-            </SectionCard>
-
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "1rem",
-              }}
-            >
-              <SectionCard title="Most Read Articles">
-                <div
-                  style={{ display: "flex", flexDirection: "column", gap: "0" }}
-                >
-                  {TOP_ARTICLES.map((a, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.75rem",
-                        padding: "0.85rem 0",
-                        borderBottom: "1px solid rgba(255,255,255,0.05)",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: "1rem",
-                          width: 24,
-                          textAlign: "center",
-                          color: i === 0
-                            ? "#f0b429"
-                            : i === 1
-                            ? "rgba(255,255,255,0.4)"
-                            : i === 2
-                            ? "#c87840"
-                            : "rgba(255,255,255,0.15)",
-                          fontWeight: 700,
-                        }}
-                      >
-                        {i === 0
-                          ? "🥇"
-                          : i === 1
-                          ? "🥈"
-                          : i === 2
-                          ? "🥉"
-                          : `#${i + 1}`}
-                      </span>
-                      <div style={{ flex: 1 }}>
-                        <p
-                          style={{
-                            fontSize: "0.8rem",
-                            color: "rgba(255,255,255,0.8)",
-                            lineHeight: 1.4,
-                            marginBottom: "0.25rem",
-                          }}
-                        >
-                          {a.title}
-                        </p>
-                        <div
-                          style={{
-                            height: 4,
-                            background: "rgba(255,255,255,0.06)",
-                            borderRadius: 2,
-                            overflow: "hidden",
-                          }}
-                        >
-                          <div
-                            style={{
-                              height: "100%",
-                              width: `${
-                                (a.reads / TOP_ARTICLES[0].reads) * 100
-                              }%`,
-                              background: "#2e8b7a",
-                              borderRadius: 2,
-                            }}
-                          />
-                        </div>
-                      </div>
-                      <span
-                        style={{
-                          fontSize: "0.72rem",
-                          fontWeight: 700,
-                          color: "#2e8b7a",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {a.reads.toLocaleString()}
-                      </span>
-                    </div>
-                  ))}
                 </div>
-              </SectionCard>
+              </EditPanel>
+            ))}
 
-              <SectionCard title="Most Watched Podcast Episodes">
-                <div
-                  style={{ display: "flex", flexDirection: "column", gap: "0" }}
-                >
-                  {TOP_PODCASTS.map((p, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.75rem",
-                        padding: "0.85rem 0",
-                        borderBottom: "1px solid rgba(255,255,255,0.05)",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: "1rem",
-                          width: 24,
-                          textAlign: "center",
-                          color: i === 0
-                            ? "#f0b429"
-                            : i === 1
-                            ? "rgba(255,255,255,0.4)"
-                            : i === 2
-                            ? "#c87840"
-                            : "rgba(255,255,255,0.15)",
-                          fontWeight: 700,
-                        }}
-                      >
-                        {i === 0
-                          ? "🥇"
-                          : i === 1
-                          ? "🥈"
-                          : i === 2
-                          ? "🥉"
-                          : `#${i + 1}`}
-                      </span>
-                      <div style={{ flex: 1 }}>
-                        <p
-                          style={{
-                            fontSize: "0.8rem",
-                            color: "rgba(255,255,255,0.8)",
-                            lineHeight: 1.4,
-                            marginBottom: "0.25rem",
-                          }}
-                        >
-                          {p.title}
-                        </p>
-                        <div
-                          style={{
-                            height: 4,
-                            background: "rgba(255,255,255,0.06)",
-                            borderRadius: 2,
-                            overflow: "hidden",
-                          }}
-                        >
-                          <div
-                            style={{
-                              height: "100%",
-                              width: `${
-                                (p.views / TOP_PODCASTS[0].views) * 100
-                              }%`,
-                              background: "#e8673a",
-                              borderRadius: 2,
-                            }}
-                          />
-                        </div>
-                      </div>
-                      <span
-                        style={{
-                          fontSize: "0.72rem",
-                          fontWeight: 700,
-                          color: "#e8673a",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {p.views.toLocaleString()}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </SectionCard>
-            </div>
-          </div>
-        )}
-
-        {/* ── BACKPACK STATS ── */}
-        {activeNav === "backpack" && (
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
-          >
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                gap: "1rem",
-              }}
-            >
-              <StatCard
-                label="Backpack Opened"
-                value="68%"
-                sub={`${Math.round(STATS.totalUsers * 0.68)} members`}
-                accent="#2e8b7a"
+          {/* Backpack Sections */}
+          {activeSection === "sections" && (selectedBp === null
+            ? (
+              <EmptyForm
+                icon="🎒"
+                text="Select a section or create a new one."
               />
-              <StatCard
-                label="Challenge Participants"
-                value={STATS.challengeParticipants}
-                sub="Wrote at least 1 reflection"
-                accent="#e8673a"
-              />
-              <StatCard
-                label="Avg. Sections Started"
-                value="1.2"
-                sub="Per active backpack user"
-                accent="#5a7abf"
-              />
-            </div>
-
-            <SectionCard title="Section Engagement">
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "1.25rem",
-                }}
+            )
+            : (
+              <EditPanel
+                title={selectedBp === "new"
+                  ? "New Section"
+                  : bpForm.label || "Edit Section"}
+                saving={bpSaving}
+                status={bpStatus}
+                saveLabel="Save Section"
+                onSave={saveBp}
+                onDelete={selectedBp !== "new" ? deleteBp : null}
               >
-                {BACKPACK_DATA.map((d) => (
-                  <div key={d.section}>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        marginBottom: "0.4rem",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: "0.82rem",
-                          color: "rgba(255,255,255,0.75)",
-                          fontWeight: 600,
-                        }}
+                <div className="admin-section">
+                  <div className="admin-section-label">Identity</div>
+                  <div className="admin-grid-2">
+                    <Field
+                      label="Label"
+                      value={bpForm.label}
+                      onChange={(v) => setBpForm((f) => ({ ...f, label: v }))}
+                      placeholder="The 1 Question Retirement Challenge"
+                    />
+                    <Field
+                      label="Slug"
+                      value={bpForm.slug}
+                      onChange={(v) => setBpForm((f) => ({ ...f, slug: v }))}
+                      placeholder="challenge"
+                      hint="Internal ID — changing 'challenge' will break the challenge detail view."
+                    />
+                  </div>
+                  <div className="admin-grid-2">
+                    <Field
+                      label="Emoji"
+                      value={bpForm.emoji}
+                      onChange={(v) => setBpForm((f) => ({ ...f, emoji: v }))}
+                      placeholder="❓"
+                    />
+                    <Field
+                      label="Color"
+                      value={bpForm.color}
+                      onChange={(v) => setBpForm((f) => ({ ...f, color: v }))}
+                      placeholder="#e8673a"
+                      hint="Hex color for the section card accent."
+                    />
+                  </div>
+                </div>
+                <div className="admin-section">
+                  <div className="admin-section-label">Content</div>
+                  <Field
+                    label="Tagline"
+                    value={bpForm.tagline}
+                    onChange={(v) => setBpForm((f) => ({ ...f, tagline: v }))}
+                    placeholder="One question. One week. A lifetime of clarity."
+                  />
+                  <Field
+                    label="Description"
+                    value={bpForm.description}
+                    onChange={(v) =>
+                      setBpForm((f) => ({ ...f, description: v }))}
+                    placeholder="Each week a single powerful question…"
+                    multiline
+                  />
+                </div>
+                <div className="admin-section">
+                  <div className="admin-section-label">Settings</div>
+                  <div className="admin-grid-2">
+                    <div className="admin-field">
+                      <label>Type</label>
+                      <select
+                        value={bpForm.type}
+                        onChange={(e) =>
+                          setBpForm((f) => ({ ...f, type: e.target.value }))}
                       >
-                        {d.section}
-                      </span>
-                      {d.soon
-                        ? (
-                          <span
-                            style={{
-                              fontSize: "0.58rem",
-                              fontWeight: 700,
-                              letterSpacing: "0.1em",
-                              textTransform: "uppercase",
-                              background: "rgba(255,255,255,0.07)",
-                              color: "rgba(255,255,255,0.3)",
-                              padding: "0.2rem 0.6rem",
-                              borderRadius: 50,
-                            }}
-                          >
-                            Coming Soon
-                          </span>
-                        )
-                        : (
-                          <span
-                            style={{
-                              fontSize: "0.78rem",
-                              fontWeight: 700,
-                              color: "#2e8b7a",
-                            }}
-                          >
-                            {d.pct}% participation
-                          </span>
-                        )}
+                        {SECTION_TYPES.map((t) => (
+                          <option key={t} value={t}>{t}</option>
+                        ))}
+                      </select>
                     </div>
-                    <div
-                      style={{
-                        height: 10,
-                        background: "rgba(255,255,255,0.07)",
-                        borderRadius: 5,
-                        overflow: "hidden",
-                      }}
-                    >
-                      <div
-                        style={{
-                          height: "100%",
-                          width: `${d.pct}%`,
-                          background: d.soon
-                            ? "rgba(255,255,255,0.05)"
-                            : "#2e8b7a",
-                          borderRadius: 5,
-                        }}
+                    <div style={{ maxWidth: 160 }}>
+                      <Field
+                        label="Sort Order"
+                        value={String(bpForm.sort_order)}
+                        onChange={(v) =>
+                          setBpForm((f) => ({
+                            ...f,
+                            sort_order: parseInt(v) || 0,
+                          }))}
+                        placeholder="1"
+                        hint="Lower numbers appear first."
                       />
                     </div>
                   </div>
-                ))}
-              </div>
-            </SectionCard>
-
-            <SectionCard title="1 Question Challenge — Weekly Reflections Submitted">
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "flex-end",
-                  gap: "0.75rem",
-                  height: 140,
-                  paddingTop: "1rem",
-                }}
-              >
-                {[38, 52, 61, 74, 68, 82, 79, 91, 87, 95, 103, 98].map((
-                  v,
-                  i,
-                ) => (
-                  <div
-                    key={i}
-                    style={{
-                      flex: 1,
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: "0.35rem",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: "100%",
-                        position: "relative",
-                        height: `${(v / 103) * 110}px`,
-                      }}
-                    >
-                      <div
-                        style={{
-                          position: "absolute",
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          background:
-                            "linear-gradient(to top, #e8673a, rgba(232,103,58,0.4))",
-                          borderRadius: "4px 4px 0 0",
-                          height: "100%",
-                        }}
-                      />
-                    </div>
-                    <span
-                      style={{
-                        fontSize: "0.55rem",
-                        color: "rgba(255,255,255,0.25)",
-                      }}
-                    >
-                      W{i + 1}
-                    </span>
-                  </div>
-                ))}
-              </div>
-              <p
-                style={{
-                  fontSize: "0.7rem",
-                  color: "rgba(255,255,255,0.3)",
-                  marginTop: "0.75rem",
-                }}
-              >
-                Weekly reflections over the last 12 weeks — showing consistent
-                growth in participation.
-              </p>
-            </SectionCard>
-          </div>
-        )}
-
-        {/* ── LOCATION ── */}
-        {activeNav === "location" && (
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
-          >
-            <SectionCard title="Top 10 States by Member Count">
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.9rem",
-                }}
-              >
-                {LOCATION_DATA.map((l, i) => (
-                  <div
-                    key={l.state}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "1rem",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: "0.7rem",
-                        color: "rgba(255,255,255,0.25)",
-                        width: 20,
-                        textAlign: "right",
-                      }}
-                    >
-                      #{i + 1}
-                    </span>
-                    <span
-                      style={{
-                        fontSize: "0.82rem",
-                        color: "rgba(255,255,255,0.7)",
-                        width: 140,
-                        flexShrink: 0,
-                      }}
-                    >
-                      {l.state}
-                    </span>
-                    <div
-                      style={{
-                        flex: 1,
-                        height: 10,
-                        background: "rgba(255,255,255,0.07)",
-                        borderRadius: 5,
-                        overflow: "hidden",
-                      }}
-                    >
-                      <div
-                        style={{
-                          height: "100%",
-                          width: `${(l.count / LOCATION_DATA[0].count) * 100}%`,
-                          background: `hsl(${160 + i * 8}, 50%, 45%)`,
-                          borderRadius: 5,
-                        }}
-                      />
-                    </div>
-                    <span
-                      style={{
-                        fontSize: "0.78rem",
-                        fontWeight: 700,
-                        color: "rgba(255,255,255,0.5)",
-                        width: 36,
-                        textAlign: "right",
-                      }}
-                    >
-                      {l.count}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </SectionCard>
-
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr",
-                gap: "1rem",
-              }}
-            >
-              <StatCard
-                label="States Represented"
-                value="47"
-                sub="Out of 50 US states"
-                accent="#2e8b7a"
-              />
-              <StatCard
-                label="International"
-                value="38"
-                sub="Members outside the US"
-                accent="#5a7abf"
-              />
-              <StatCard
-                label="Top City"
-                value="Los Angeles"
-                sub="84 members"
-                accent="#c87840"
-              />
-            </div>
-          </div>
-        )}
+                </div>
+              </EditPanel>
+            ))}
+        </div>
       </div>
     </div>
+  );
+}
+
+// ─── Shared sub-components ────────────────────────────────────────────────────
+function EmptyForm({ icon, text }) {
+  return (
+    <div className="admin-empty-form">
+      <div className="admin-empty-form-icon">{icon}</div>
+      <div className="admin-empty-form-text">{text}</div>
+    </div>
+  );
+}
+
+function EditPanel(
+  { title, saving, status, saveLabel, onSave, onDelete, children },
+) {
+  return (
+    <>
+      <div className="admin-form-header">
+        <h2 className="admin-form-title">{title}</h2>
+        <div className="admin-form-actions">
+          {status === "saved" && (
+            <span className="admin-status-ok">✓ Saved</span>
+          )}
+          {status === "error" && (
+            <span className="admin-status-err">Save failed</span>
+          )}
+          {onDelete && (
+            <button
+              type="button"
+              className="admin-delete-btn"
+              onClick={onDelete}
+            >
+              Delete
+            </button>
+          )}
+          <button
+            type="button"
+            className="admin-save-btn"
+            onClick={onSave}
+            disabled={saving}
+          >
+            {saving ? "Saving…" : saveLabel}
+          </button>
+        </div>
+      </div>
+      <div className="admin-form-scroll">{children}</div>
+    </>
+  );
+}
+
+function Field({ label, value, onChange, placeholder, multiline, hint }) {
+  return (
+    <div className="admin-field">
+      <label>{label}</label>
+      {multiline
+        ? (
+          <textarea
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder={placeholder}
+          />
+        )
+        : (
+          <input
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder={placeholder}
+          />
+        )}
+      {hint && <span className="admin-field-hint">{hint}</span>}
+    </div>
+  );
+}
+
+function Toggle({ on, onToggle, labelOn, labelOff }) {
+  return (
+    <button
+      type="button"
+      className={`admin-toggle-btn${on ? " on" : ""}`}
+      onClick={onToggle}
+    >
+      <span className={`admin-toggle-track${on ? " on" : ""}`}>
+        <span className="admin-toggle-thumb" />
+      </span>
+      {on ? labelOn : labelOff}
+    </button>
   );
 }
