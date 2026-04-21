@@ -193,6 +193,14 @@ dist
 
 # End of https://www.toptal.com/developers/gitignore/api/node,nextjs,git,dotenv
 
+### Terraform ###
+terraform/terraform.tfvars
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/*.tfstate.*.backup
+
 ### Claude ###
 .claude/
 memory/

@@ -1,12 +1,11 @@
 {
-  "export": "out",
   "nodeModulesDir": "auto",
   "unstable": [
     "unsafe-proto"
   ],
   "imports": {
-    "next": "npm:next@16.2.2",
-    "next/": "npm:next@16.2.2/"
+    "next": "npm:next@15.5.2",
+    "next/": "npm:next@15.5.2/"
   },
   "compilerOptions": {
     "lib": [
@@ -25,8 +24,9 @@
     }
   },
   "tasks": {
-    "dev": "deno run -A --unstable-detect-cjs npm:next@16.2.2 dev",
-    "build": "deno run -A --unstable-detect-cjs npm:next@16.2.2 build",
+    "dev": "deno run -A --unstable-detect-cjs npm:next@15.5.2 dev",
+    "build": "deno run -A --unstable-detect-cjs npm:next@15.5.2 build",
+    "build:pages": "deno task build && npx @cloudflare/next-on-pages",
     "lint": "deno lint --fix && deno fmt --check"
   }
 }
