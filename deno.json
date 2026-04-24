@@ -1,11 +1,12 @@
 {
+  "export": "out",
   "nodeModulesDir": "auto",
   "unstable": [
     "unsafe-proto"
   ],
   "imports": {
-    "next": "npm:next@15.5.2",
-    "next/": "npm:next@15.5.2/"
+    "next": "npm:next@16.2.2",
+    "next/": "npm:next@16.2.2/"
   },
   "compilerOptions": {
     "lib": [
@@ -17,16 +18,38 @@
     "jsx": "preserve"
   },
   "lint": {
+    "plugins": [
+      "jsr:@intility/no-inline-styles",
+      "./custom_lint_rules/no-inline-jsx.ts",
+      "./custom_lint_rules/single_component_plugin.ts",
+      "./custom_lint_rules/no-complex-inline-jsx.ts"
+    ],
     "rules": {
+      "tags": [
+        "recommended",
+        "react"
+      ],
+      "include": [
+        "camelcase",
+        "no-implicit-declare-namespace-export",
+        "no-type-assertion"
+      ],
       "exclude": [
         "no-process-global"
       ]
     }
   },
+  "fmt": {
+    "useTabs": false,
+    "lineWidth": 80,
+    "indentWidth": 2,
+    "semiColons": true,
+    "singleQuote": false,
+    "proseWrap": "preserve"
+  },
   "tasks": {
-    "dev": "deno run -A --unstable-detect-cjs npm:next@15.5.2 dev",
-    "build": "deno run -A --unstable-detect-cjs npm:next@15.5.2 build",
-    "build:pages": "deno task build && npx @cloudflare/next-on-pages",
+    "dev": "deno run -A --unstable-detect-cjs npm:next@16.2.2 dev",
+    "build": "deno run -A --unstable-detect-cjs npm:next@16.2.2 build",
     "lint": "deno lint --fix && deno fmt --check"
   }
 }

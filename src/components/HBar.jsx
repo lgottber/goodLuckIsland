@@ -1,55 +1,23 @@
+import "./HBar.css";
+
 export default function HBar({ label, pct, color = "#2e8b7a", total }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-      <span
-        style={{
-          fontSize: "0.75rem",
-          color: "rgba(255,255,255,0.55)",
-          width: 110,
-          flexShrink: 0,
-          textAlign: "right",
-        }}
-      >
-        {label}
-      </span>
-      <div
-        style={{
-          flex: 1,
-          height: 8,
-          background: "rgba(255,255,255,0.07)",
-          borderRadius: 4,
-          overflow: "hidden",
-        }}
-      >
+    <div className="hbar">
+      <span className="hbar-label">{label}</span>
+      <div className="hbar-track">
         <div
-          style={{
-            height: "100%",
-            width: `${pct}%`,
-            background: color,
-            borderRadius: 4,
-            transition: "width 0.6s ease",
+          className="hbar-fill"
+          ref={(el) => {
+            if (el) {
+              el.style.setProperty("--hbar-width", `${pct}%`);
+              el.style.setProperty("--hbar-color", color);
+            }
           }}
         />
       </div>
-      <span
-        style={{
-          fontSize: "0.72rem",
-          color: "rgba(255,255,255,0.4)",
-          width: 32,
-          textAlign: "right",
-        }}
-      >
-        {pct}%
-      </span>
+      <span className="hbar-pct">{pct}%</span>
       {total && (
-        <span
-          style={{
-            fontSize: "0.7rem",
-            color: "rgba(255,255,255,0.25)",
-            width: 36,
-            textAlign: "right",
-          }}
-        >
+        <span className="hbar-total">
           {Math.round(total * pct / 100)}
         </span>
       )}

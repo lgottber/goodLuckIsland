@@ -13,6 +13,9 @@ import BioEmpty from "./BioEmpty";
 import InterestsList from "./InterestsList";
 import InterestsEmpty from "./InterestsEmpty";
 import { fetchProfile, upsertProfile } from "../../lib/profileApi";
+import ProfileMetaItem from "./ProfileMetaItem";
+import InfoRow from "./InfoRow";
+import ProfileInfoEmpty from "./ProfileInfoEmpty";
 import "./profile.css";
 
 const INITIAL_USER = {
@@ -49,8 +52,8 @@ const INITIAL_USER = {
 };
 
 const DB_TO_STATE = {
-  first_name: "firstName",
-  last_name: "lastName",
+  "first_name": "firstName",
+  "last_name": "lastName",
   email: "email",
   username: "username",
   location: "location",
@@ -60,14 +63,14 @@ const DB_TO_STATE = {
   occupation: "occupation",
   education: "education",
   retired: "retired",
-  retirement_date: "retirementDate",
-  marital_status: "maritalStatus",
+  "retirement_date": "retirementDate",
+  "marital_status": "maritalStatus",
   divorced: "divorced",
   kids: "kids",
-  home_paid_off: "homePaidOff",
-  working_income: "workingIncome",
-  net_worth: "netWorth",
-  avatar_id: "avatarId",
+  "home_paid_off": "homePaidOff",
+  "working_income": "workingIncome",
+  "net_worth": "netWorth",
+  "avatar_id": "avatarId",
 };
 
 // ─── Main Profile Page ────────────────────────────────────────────────────────
@@ -232,16 +235,18 @@ export default function ProfilePage() {
               <div className="profile-meta-row">
                 <span className="profile-badge">🌴 Islander</span>
                 {user.occupation && (
-                  <span className="profile-occupation">
-                    <Icon name="briefcase" size={13} />
-                    {user.occupation}
-                  </span>
+                  <ProfileMetaItem
+                    className="profile-occupation"
+                    iconName="briefcase"
+                    value={user.occupation}
+                  />
                 )}
                 {user.location && (
-                  <span className="profile-location">
-                    <Icon name="location" size={13} />
-                    {user.location}
-                  </span>
+                  <ProfileMetaItem
+                    className="profile-location"
+                    iconName="location"
+                    value={user.location}
+                  />
                 )}
               </div>
             </div>
@@ -313,50 +318,33 @@ export default function ProfilePage() {
             <div className="profile-card">
               <h3>About</h3>
               {user.occupation && (
-                <div className="info-row">
-                  <Icon name="briefcase" size={16} />
-                  <div className="info-row-text">
-                    <div className="info-row-label">Occupation</div>
-                    <div className="info-row-value">{user.occupation}</div>
-                  </div>
-                </div>
+                <InfoRow
+                  iconName="briefcase"
+                  label="Occupation"
+                  value={user.occupation}
+                />
               )}
               {user.location && (
-                <div className="info-row">
-                  <Icon name="location" size={16} />
-                  <div className="info-row-text">
-                    <div className="info-row-label">Location</div>
-                    <div className="info-row-value">{user.location}</div>
-                  </div>
-                </div>
+                <InfoRow
+                  iconName="location"
+                  label="Location"
+                  value={user.location}
+                />
               )}
               {user.email && (
-                <div className="info-row">
-                  <Icon name="mail" size={16} />
-                  <div className="info-row-text">
-                    <div className="info-row-label">Email</div>
-                    <div className="info-row-value">{user.email}</div>
-                  </div>
-                </div>
+                <InfoRow
+                  iconName="mail"
+                  label="Email"
+                  value={user.email}
+                />
               )}
-              <div className="info-row">
-                <Icon name="calendar" size={16} />
-                <div className="info-row-text">
-                  <div className="info-row-label">Member Since</div>
-                  <div className="info-row-value">{user.memberSince}</div>
-                </div>
-              </div>
+              <InfoRow
+                iconName="calendar"
+                label="Member Since"
+                value={user.memberSince}
+              />
               {!user.occupation && !user.location && (
-                <p className="info-row-value empty">
-                  No details added yet.{" "}
-                  <button
-                    type="button"
-                    className="inline-link"
-                    onClick={() => setEditing(true)}
-                  >
-                    Add info →
-                  </button>
-                </p>
+                <ProfileInfoEmpty onEdit={() => setEditing(true)} />
               )}
             </div>
 

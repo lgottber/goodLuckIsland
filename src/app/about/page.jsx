@@ -235,7 +235,7 @@ export default function AboutPage() {
                 <div className="contact-detail-icon">🎙️</div>{" "}
                 <Link
                   href="/podcast"
-                  style={{ color: "var(--teal)", fontWeight: 600 }}
+                  className="contact-detail-link"
                 >
                   Listen to the Podcast
                 </Link>
@@ -244,7 +244,7 @@ export default function AboutPage() {
                 <div className="contact-detail-icon">📖</div>{" "}
                 <Link
                   href="/shop"
-                  style={{ color: "var(--teal)", fontWeight: 600 }}
+                  className="contact-detail-link"
                 >
                   Get the Book
                 </Link>

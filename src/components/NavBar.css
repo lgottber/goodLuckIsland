@@ -313,3 +313,8 @@
   background: var(--navy, #1e2d5a);
   color: #fff;
 }
+.nav-logo-img {
+  height: 64px;
+  width: auto;
+  object-fit: contain;
+}

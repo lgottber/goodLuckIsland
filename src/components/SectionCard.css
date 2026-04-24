@@ -1,0 +1,23 @@
+.section-card {
+  background: #131c38;
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.section-card--span-2 {
+  grid-column: span 2;
+}
+.section-card--span-3 {
+  grid-column: span 3;
+}
+.section-card--span-4 {
+  grid-column: span 4;
+}
+.section-card-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 1.25rem;
+}

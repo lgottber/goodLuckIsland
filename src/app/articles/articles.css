@@ -968,3 +968,12 @@ body {
     padding: 0.45rem 0.85rem;
   }
 }
+
+.articles-grid-empty {
+  color: var(--muted);
+  text-align: center;
+  padding: 2rem 0;
+}
+.articles-tab-pad {
+  padding: 0 2rem;
+}

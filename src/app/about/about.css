@@ -741,3 +741,8 @@ body {
     padding: 1.5rem 1.25rem;
   }
 }
+
+.contact-detail-link {
+  color: var(--teal);
+  font-weight: 600;
+}

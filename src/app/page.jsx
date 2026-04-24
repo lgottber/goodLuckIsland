@@ -6,6 +6,10 @@ import NavBar from "../components/NavBarDynamic";
 import { FacebookIcon, InstagramIcon, YoutubeIcon } from "../components/Icons";
 import HeroCtaUser from "./HeroCtaUser";
 import HeroCtaGuest from "./HeroCtaGuest";
+import MarqueeItem from "./MarqueeItem";
+import PillarCard from "./PillarCard";
+import ValueCard from "./ValueCard";
+import PromiseItem from "./PromiseItem";
 
 export default function HomePage() {
   const { user } = useAuth0();
@@ -55,11 +59,7 @@ export default function HomePage() {
               "Next Chapter",
               "Financial Clarity",
               "Life After Work",
-            ].map((d, i) => (
-              <span key={`${d}-${i}`} className="marquee-item">
-                <span className="marquee-dot">◈</span> {d}
-              </span>
-            ))}
+            ].map((d, i) => <MarqueeItem key={`${d}-${i}`} text={d} />)}
           </div>
         </div>
 
@@ -104,10 +104,7 @@ export default function HomePage() {
                 { icon: "🗺️", label: "Intentional Lifestyle Design" },
                 { icon: "🤝", label: "Community Without Pressure" },
               ].map(({ icon, label }) => (
-                <div key={label} className="pillar-card">
-                  <span className="pillar-icon">{icon}</span>
-                  <span className="pillar-label">{label}</span>
-                </div>
+                <PillarCard key={label} icon={icon} label={label} />
               ))}
             </div>
           </div>
@@ -168,11 +165,7 @@ export default function HomePage() {
                   desc: "The people who make the island worth reaching",
                 },
               ].map(({ icon, title, desc }) => (
-                <div key={title} className="value-card">
-                  <span className="value-icon">{icon}</span>
-                  <span className="value-title">{title}</span>
-                  <span className="value-desc">{desc}</span>
-                </div>
+                <ValueCard key={title} icon={icon} title={title} desc={desc} />
               ))}
             </div>
           </div>
@@ -204,12 +197,7 @@ export default function HomePage() {
                 "No pressure",
                 "No product agenda",
                 "Only perspective & learning",
-              ].map((text) => (
-                <div key={text} className="promise-item">
-                  <div className="promise-check">✓</div>
-                  <span className="promise-text">{text}</span>
-                </div>
-              ))}
+              ].map((text) => <PromiseItem key={text} text={text} />)}
             </div>
           </div>
         </section>
@@ -252,7 +240,7 @@ export default function HomePage() {
               <img
                 src="/goodLuckIslandLogoSmall.png"
                 alt="Good Luck Island Collective"
-                style={{ height: 100, width: "auto", objectFit: "contain" }}
+                className="footer-brand-logo"
               />
               <span>
                 Curating calm clarity for the next chapter of life.

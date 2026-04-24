@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useAuth0 } from "@auth0/auth0-react";
-import Modal from "./Modal";
+import NavGateModal from "./NavGateModal";
 import UserMenu from "./UserMenu";
 import GuestAuthButtons from "./GuestAuthButtons";
 import MobileArticlesLink from "./MobileArticlesLink";
@@ -17,7 +17,6 @@ import "./NavBar.css";
 export default function NavBar({
   activePage = "",
   authSection = null,
-  logoHeight = 64,
   largeAvatar = false,
 }) {
   const { user } = useAuth0();
@@ -85,11 +84,7 @@ export default function NavBar({
             <img
               src="/goodLuckIslandLogoSmall.png"
               alt="Good Luck Island Collective"
-              style={{
-                height: logoHeight,
-                width: "auto",
-                objectFit: "contain",
-              }}
+              className="nav-logo-img"
             />
           </Link>
           <div className="nav-links">
@@ -165,36 +160,7 @@ export default function NavBar({
           : <MobileGuestAuth setMobileOpen={setMobileOpen} />}
       </div>
 
-      {showGate && (
-        <Modal
-          backdropClassName="nav-gate-backdrop"
-          contentClassName="nav-gate-modal"
-          onClose={() => setShowGate(false)}
-        >
-          <button
-            type="button"
-            className="nav-gate-close"
-            onClick={() => setShowGate(false)}
-          >
-            ✕
-          </button>
-          <div className="nav-gate-icon">🔒</div>
-          <h3 className="nav-gate-title">Member Content</h3>
-          <p className="nav-gate-desc">
-            Articles and podcast episodes are free to access — just sign in or
-            create your free account to get in.
-          </p>
-          <div className="nav-gate-actions">
-            <a href="/auth/login" className="nav-gate-btn-solid">Sign In</a>
-            <a
-              href="/auth/login?screen_hint=signup"
-              className="nav-gate-btn-ghost"
-            >
-              Join Free →
-            </a>
-          </div>
-        </Modal>
-      )}
+      {showGate && <NavGateModal onClose={() => setShowGate(false)} />}
     </>
   );
 }
