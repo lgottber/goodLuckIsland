@@ -50,6 +50,7 @@
   "tasks": {
     "dev": "deno run -A --unstable-detect-cjs npm:next@16.2.2 dev",
     "build": "deno run -A --unstable-detect-cjs npm:next@16.2.2 build",
+    "build:pages": "deno run -A --unstable-detect-cjs npm:next@16.2.2 build",
     "lint": "deno lint --fix && deno fmt --check"
   }
 }
