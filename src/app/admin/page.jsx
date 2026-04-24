@@ -6,6 +6,11 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabase.ts";
 import NavBar from "../../components/NavBarDynamic";
+import AdminNavButton from "./AdminNavButton";
+import EmptyForm from "./EmptyForm";
+import EditPanel from "./EditPanel";
+import Field from "./Field";
+import Toggle from "./Toggle";
 import "./admin.css";
 
 // ─── Blanks ───────────────────────────────────────────────────────────────────
@@ -15,19 +20,19 @@ const EPISODE_BLANK = {
   description: "",
   date: "",
   duration: "",
-  youtube_id: "",
+  "youtube_id": "",
   thumbnail: "",
-  sort_order: 0,
+  "sort_order": 0,
 };
 const ARTICLE_BLANK = {
   category: "",
   title: "",
   excerpt: "",
   date: "",
-  read_time: "",
+  "read_time": "",
   image: "",
   featured: false,
-  sort_order: 0,
+  "sort_order": 0,
 };
 const SECTION_BLANK = {
   slug: "",
@@ -37,7 +42,7 @@ const SECTION_BLANK = {
   tagline: "",
   description: "",
   type: "coming-soon",
-  sort_order: 0,
+  "sort_order": 0,
 };
 
 const ARTICLE_CATEGORIES = [
@@ -257,17 +262,8 @@ export default function AdminPage() {
     return (
       <div className="admin-root">
         <NavBar />
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <span
-            style={{ color: "rgba(255,255,255,0.25)", fontSize: "0.85rem" }}
-          >
+        <div className="admin-loading-body">
+          <span className="admin-loading-text">
             Verifying access…
           </span>
         </div>
@@ -286,16 +282,12 @@ export default function AdminPage() {
           </div>
           <nav className="admin-sidebar-nav">
             {NAV_ITEMS.map((item) => (
-              <button
+              <AdminNavButton
                 key={item.id}
-                type="button"
-                className={`admin-nav-btn${
-                  activeSection === item.id ? " active" : ""
-                }`}
+                item={item}
+                active={activeSection === item.id}
                 onClick={() => switchSection(item.id)}
-              >
-                <span>{item.icon}</span> {item.label}
-              </button>
+              />
             ))}
           </nav>
           <div className="admin-sidebar-footer">
@@ -503,7 +495,7 @@ export default function AdminPage() {
                 </div>
                 <div className="admin-section">
                   <div className="admin-section-label">Settings</div>
-                  <div style={{ maxWidth: 160 }}>
+                  <div className="admin-field-narrow">
                     <Field
                       label="Sort Order"
                       value={String(epForm.sort_order)}
@@ -607,7 +599,7 @@ export default function AdminPage() {
                 <div className="admin-section">
                   <div className="admin-section-label">Settings</div>
                   <div className="admin-grid-2">
-                    <div style={{ maxWidth: 160 }}>
+                    <div className="admin-field-narrow">
                       <Field
                         label="Sort Order"
                         value={String(artForm.sort_order)}
@@ -722,7 +714,7 @@ export default function AdminPage() {
                         ))}
                       </select>
                     </div>
-                    <div style={{ maxWidth: 160 }}>
+                    <div className="admin-field-narrow">
                       <Field
                         label="Sort Order"
                         value={String(bpForm.sort_order)}
@@ -742,92 +734,5 @@ export default function AdminPage() {
         </div>
       </div>
     </div>
-  );
-}
-
-// ─── Shared sub-components ────────────────────────────────────────────────────
-function EmptyForm({ icon, text }) {
-  return (
-    <div className="admin-empty-form">
-      <div className="admin-empty-form-icon">{icon}</div>
-      <div className="admin-empty-form-text">{text}</div>
-    </div>
-  );
-}
-
-function EditPanel(
-  { title, saving, status, saveLabel, onSave, onDelete, children },
-) {
-  return (
-    <>
-      <div className="admin-form-header">
-        <h2 className="admin-form-title">{title}</h2>
-        <div className="admin-form-actions">
-          {status === "saved" && (
-            <span className="admin-status-ok">✓ Saved</span>
-          )}
-          {status === "error" && (
-            <span className="admin-status-err">Save failed</span>
-          )}
-          {onDelete && (
-            <button
-              type="button"
-              className="admin-delete-btn"
-              onClick={onDelete}
-            >
-              Delete
-            </button>
-          )}
-          <button
-            type="button"
-            className="admin-save-btn"
-            onClick={onSave}
-            disabled={saving}
-          >
-            {saving ? "Saving…" : saveLabel}
-          </button>
-        </div>
-      </div>
-      <div className="admin-form-scroll">{children}</div>
-    </>
-  );
-}
-
-function Field({ label, value, onChange, placeholder, multiline, hint }) {
-  return (
-    <div className="admin-field">
-      <label>{label}</label>
-      {multiline
-        ? (
-          <textarea
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            placeholder={placeholder}
-          />
-        )
-        : (
-          <input
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            placeholder={placeholder}
-          />
-        )}
-      {hint && <span className="admin-field-hint">{hint}</span>}
-    </div>
-  );
-}
-
-function Toggle({ on, onToggle, labelOn, labelOff }) {
-  return (
-    <button
-      type="button"
-      className={`admin-toggle-btn${on ? " on" : ""}`}
-      onClick={onToggle}
-    >
-      <span className={`admin-toggle-track${on ? " on" : ""}`}>
-        <span className="admin-toggle-thumb" />
-      </span>
-      {on ? labelOn : labelOff}
-    </button>
   );
 }

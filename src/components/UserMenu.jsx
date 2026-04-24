@@ -1,3 +1,5 @@
+import NavDropdown from "./NavDropdown";
+
 export default function UserMenu({
   user,
   initials,
@@ -26,41 +28,10 @@ export default function UserMenu({
           : <div className="nav-avatar-initials">{initials}</div>}
       </button>
       {dropdownOpen && (
-        <div className="nav-dropdown">
-          {[
-            { href: "/profile", label: "My Profile" },
-            { href: "/saved", label: "Saved Content" },
-            { href: "/backpack", label: "My Backpack" },
-          ].map(({ href, label }) => (
-            <a
-              key={href}
-              href={href}
-              className="nav-dropdown-item"
-              onClick={() => setDropdownOpen(false)}
-            >
-              <span className="nav-dropdown-icon"></span> {label}
-            </a>
-          ))}
-          {isAdmin && (
-            <>
-              <div className="nav-dropdown-divider" />
-              <a
-                href="/admin"
-                className="nav-dropdown-item"
-                onClick={() => setDropdownOpen(false)}
-              >
-                <span className="nav-dropdown-icon">⚙️</span> Admin Portal
-              </a>
-            </>
-          )}
-          <div className="nav-dropdown-divider" />
-          <a
-            href="/auth/logout"
-            className="nav-dropdown-item nav-dropdown-logout"
-          >
-            <span className="nav-dropdown-icon"></span> Logout
-          </a>
-        </div>
+        <NavDropdown
+          isAdmin={isAdmin}
+          onClose={() => setDropdownOpen(false)}
+        />
       )}
     </div>
   );

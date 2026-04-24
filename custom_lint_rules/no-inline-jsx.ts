@@ -9,12 +9,13 @@ const plugin: Deno.lint.Plugin = {
           VariableDeclarator(node) {
             const init = node.init;
             if (
-              init?.type === "JSXElement" || 
+              init?.type === "JSXElement" ||
               init?.type === "JSXFragment"
             ) {
               context.report({
                 node: init,
-                message: "Inline JSX declarations are disallowed. Return JSX directly or use a component function.",
+                message:
+                  "Inline JSX declarations are disallowed. Return JSX directly or use a component function.",
               });
             }
           },
@@ -25,4 +26,3 @@ const plugin: Deno.lint.Plugin = {
 };
 
 export default plugin;
-

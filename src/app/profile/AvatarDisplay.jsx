@@ -281,59 +281,55 @@ export const AVATAR_ERAS = [
   },
 ];
 
+function applyAvatarVars(el, size, borderColor, bg) {
+  if (!el) return;
+  el.style.setProperty("--avatar-size", `${size}px`);
+  el.style.setProperty("--avatar-border", borderColor);
+  if (bg) el.style.setProperty("background", bg);
+}
+
 export default function AvatarDisplay(
   { avatarId, avatarUrl, initials, size = 104, borderColor = "var(--cream)" },
 ) {
   const allChars = AVATAR_ERAS.flatMap((e) => e.characters);
   const char = allChars.find((c) => c.id === avatarId);
 
-  const baseStyle = {
-    width: size,
-    height: size,
-    borderRadius: "50%",
-    border: `4px solid ${borderColor}`,
-    boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "hidden",
-    flexShrink: 0,
-  };
-
   if (avatarUrl) {
     return (
-      <div style={baseStyle}>
-        <img
-          src={avatarUrl}
-          alt="avatar"
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
-        />
+      <div
+        className="avatar-display"
+        ref={(el) => applyAvatarVars(el, size, borderColor, null)}
+      >
+        <img src={avatarUrl} alt="avatar" className="avatar-display-img" />
       </div>
     );
   }
   if (char) {
     return (
       <div
-        style={{ ...baseStyle, background: char.bg, flexDirection: "column" }}
+        className="avatar-display avatar-display--char"
+        ref={(el) => {
+          applyAvatarVars(el, size, borderColor, char.bg);
+          if (el) {
+            el.style.setProperty("--avatar-emoji-size", `${size * 0.42}px`);
+          }
+        }}
       >
-        <span style={{ fontSize: size * 0.42, lineHeight: 1 }}>
-          {char.emoji}
-        </span>
+        <span className="avatar-display-emoji">{char.emoji}</span>
       </div>
     );
   }
   return (
-    <div style={{ ...baseStyle, background: "var(--navy)" }}>
-      <span
-        style={{
-          color: "#fff",
-          fontFamily: "var(--serif)",
-          fontSize: size * 0.3,
-          fontWeight: 600,
-        }}
-      >
-        {initials}
-      </span>
+    <div
+      className="avatar-display"
+      ref={(el) => {
+        applyAvatarVars(el, size, borderColor, "var(--navy)");
+        if (el) {
+          el.style.setProperty("--avatar-initials-size", `${size * 0.3}px`);
+        }
+      }}
+    >
+      <span className="avatar-display-initials">{initials}</span>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import Field from "./Field";
+import InterestTagList from "./InterestTagList";
 
 export default function BasicInfoTab({
   form,
@@ -101,21 +102,7 @@ export default function BasicInfoTab({
           placeholder="e.g. Travel, Golf, Cooking..."
         />
         {form.interests.length > 0 && (
-          <div className="tag-list tag-list--spaced">
-            {form.interests.map((tag) => (
-              <span key={tag} className="tag tag--removable">
-                {tag}
-                <button
-                  type="button"
-                  className="tag-remove-btn"
-                  onClick={() =>
-                    removeInterest(tag)}
-                >
-                  ✕
-                </button>
-              </span>
-            ))}
-          </div>
+          <InterestTagList tags={form.interests} onRemove={removeInterest} />
         )}
       </Field>
     </div>

@@ -1189,3 +1189,9 @@ button {
     align-items: center;
   }
 }
+
+.footer-brand-logo {
+  height: 100px;
+  width: auto;
+  object-fit: contain;
+}

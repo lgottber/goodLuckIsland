@@ -1,14 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { fetchArticles, fetchEpisodes } from "../../lib/articlesApi";
 import NavBar from "../../components/NavBarDynamic";
-import Modal from "../../components/Modal";
 import FilterTabs from "../../components/FilterTabs";
-import { ClockIcon, PlayIcon, YoutubeIcon } from "../../components/Icons";
-import ArticleGrid from "./ArticleGrid";
-import FeaturedVideoPlayer from "./FeaturedVideoPlayer";
+import ArticlesTab from "./ArticlesTab";
+import PodcastTab from "./PodcastTab";
+import VideoModal from "./VideoModal";
 import "./articles.css";
 
 // ─── Mock Articles — replace with your real CMS / database ───────────────────
@@ -91,14 +89,6 @@ const ALL_ARTICLES = [
     image:
       "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80",
   },
-];
-
-const CATEGORIES = [
-  "All",
-  "Getting Ready for Retirement",
-  "Whole-Life Wellness",
-  "Clear Thinking",
-  "Financial Independence",
 ];
 
 // ─── Mock Episodes — replace with your real data / CMS ───────────────────────
@@ -188,11 +178,11 @@ export default function ArticlesPage() {
   useEffect(() => {
     async function loadData() {
       try {
-        const [episodes, articles] = await Promise.all([
+        const [fetchedEpisodes, articles] = await Promise.all([
           fetchEpisodes(),
           fetchArticles(),
         ]);
-        if (episodes.length) setEpisodes(episodes);
+        if (fetchedEpisodes.length) setEpisodes(fetchedEpisodes);
         if (articles.length) setAllArticles(articles);
       } catch (error) {
         console.error(error);
@@ -246,264 +236,32 @@ export default function ArticlesPage() {
 
         {/* ── ARTICLES TAB ── */}
         {activeTab === "articles" && (
-          <>
-            {/* Arch hero image */}
-            <div className="articles-arch">
-              <img
-                src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&q=80"
-                alt="Retirement lifestyle"
-              />
-            </div>
-
-            {/* Book promo card */}
-            <div style={{ padding: "0 2rem" }}>
-              <div className="book-promo-strip">
-                <div className="book-promo-icon">📖</div>
-                <div className="book-promo-text">
-                  <p className="book-promo-from">From our book:</p>
-                  <p className="book-promo-title">
-                    Don't Drink the Retirement Planning Cool Aid
-                  </p>
-                </div>
-                <Link href="/shop">
-                  <button type="button" className="book-promo-btn">
-                    Read More
-                  </button>
-                </Link>
-              </div>
-            </div>
-
-            <div className="articles-content">
-              {/* Filter Bar */}
-              <FilterTabs
-                containerClass="filter-bar"
-                buttonClass="filter-btn"
-                items={CATEGORIES}
-                active={activeCategory}
-                onChange={setActiveCategory}
-              />
-
-              {/* Featured Article */}
-              {activeCategory === "All" && featured && (
-                <div className="featured-article">
-                  <div className="featured-img">
-                    <img src={featured.image} alt={featured.title} />
-                    <span className="featured-tag-overlay">
-                      {featured.category}
-                    </span>
-                  </div>
-                  <div className="featured-body">
-                    <p className="featured-label">✦ Featured Article</p>
-                    <div className="featured-meta">
-                      <span>{featured.date}</span>
-                      <span className="featured-meta-dot" />
-                      <span>{featured.readTime}</span>
-                    </div>
-                    <h2 className="featured-title">{featured.title}</h2>
-                    <p className="featured-excerpt">{featured.excerpt}</p>
-                    <button type="button" className="btn-read">
-                      Read Article →
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Pull Quote */}
-              {activeCategory === "All" && (
-                <div className="pull-quote-band">
-                  <p className="pull-quote-text">
-                    Planning for the future isn't about predicting every outcome
-                    — it's about giving your future self more choices. It's
-                    progress, resilience, and peace of mind.
-                  </p>
-                  <p className="pull-quote-source">
-                    Good Luck Island Collective
-                  </p>
-                </div>
-              )}
-
-              {/* Article Grid */}
-              <ArticleGrid articles={filtered} />
-
-              {/* Newsletter Strip */}
-              <div className="newsletter-strip">
-                <div className="newsletter-strip-text">
-                  <h3>Get new articles in your inbox</h3>
-                  <p>
-                    No noise. No spam. Just thoughtful content delivered when
-                    there's something worth reading.
-                  </p>
-                </div>
-                <div className="newsletter-form">
-                  <input
-                    className="newsletter-input"
-                    type="email"
-                    placeholder="Your email address"
-                  />
-                  <button type="button" className="newsletter-btn">
-                    Subscribe
-                  </button>
-                </div>
-              </div>
-            </div>
-          </>
+          <ArticlesTab
+            activeCategory={activeCategory}
+            setActiveCategory={setActiveCategory}
+            featured={featured}
+            filtered={filtered}
+          />
         )}
 
         {/* ── PODCAST TAB ── */}
         {activeTab === "podcast" && (
-          <div className="podcast-tab-wrapper">
-            {/* Subscribe row */}
-            <div className="podcast-subscribe-row">
-              <a
-                href="https://youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <button type="button" className="podcast-sub-btn">
-                  <YoutubeIcon />
-                  Subscribe on YouTube
-                </button>
-              </a>
-              <button type="button" className="podcast-sub-btn">
-                🎙️ Apple Podcasts
-              </button>
-              <button type="button" className="podcast-sub-btn">
-                🟢 Spotify
-              </button>
-            </div>
-
-            {/* Podcast content */}
-            <div className="podcast-content">
-              {/* Featured Episode */}
-              <div>
-                <p className="podcast-featured-label">🎬 Latest Episode</p>
-                <div className="featured-episode">
-                  <div className="featured-video-side">
-                    <FeaturedVideoPlayer
-                      episode={podcastFeatured}
-                      playing={featuredPlaying}
-                      onPlay={() => setFeaturedPlaying(true)}
-                    />
-                  </div>
-
-                  <div className="featured-info">
-                    <div className="featured-meta">
-                      <span className="ep-badge">Podcast</span>
-                      <span className="ep-num">{podcastFeatured.num}</span>
-                      <span className="ep-date">{podcastFeatured.date}</span>
-                    </div>
-                    <h2 className="featured-title">{podcastFeatured.title}</h2>
-                    <p className="featured-desc">{podcastFeatured.desc}</p>
-                    <div className="featured-duration">
-                      <ClockIcon />
-                      {podcastFeatured.duration}
-                    </div>
-                    <div className="featured-actions">
-                      <button
-                        type="button"
-                        className="btn-watch"
-                        onClick={() => setFeaturedPlaying(true)}
-                      >
-                        <PlayIcon size={14} /> Watch Episode
-                      </button>
-                      <a
-                        href={`https://www.youtube.com/watch?v=${podcastFeatured.youtubeId}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <button type="button" className="btn-youtube">
-                          <YoutubeIcon /> Open on YouTube
-                        </button>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* All Episodes Grid */}
-              <div>
-                <p className="episodes-section-label">All Episodes</p>
-                <div className="episodes-grid">
-                  {podcastRest.map((ep) => (
-                    <div
-                      key={ep.id}
-                      className="episode-card"
-                      onClick={() => setModalEpisode(ep)}
-                    >
-                      <div className="episode-thumb">
-                        <img src={ep.thumbnail} alt={ep.title} />
-                        <div className="episode-thumb-overlay">
-                          <button
-                            type="button"
-                            className="episode-thumb-play"
-                          >
-                            <PlayIcon size={16} />
-                          </button>
-                        </div>
-                        <span className="episode-duration-badge">
-                          {ep.duration}
-                        </span>
-                      </div>
-                      <div className="episode-body">
-                        <div className="episode-body-meta">
-                          <span className="episode-body-num">{ep.num}</span>
-                          <span className="episode-body-date">{ep.date}</span>
-                        </div>
-                        <h3 className="episode-body-title">{ep.title}</h3>
-                        <p className="episode-body-desc">{ep.desc}</p>
-                        <div className="episode-body-watch">
-                          <PlayIcon size={12} /> Watch Episode
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+          <PodcastTab
+            podcastFeatured={podcastFeatured}
+            podcastRest={podcastRest}
+            featuredPlaying={featuredPlaying}
+            setFeaturedPlaying={setFeaturedPlaying}
+            setModalEpisode={setModalEpisode}
+          />
         )}
       </div>
 
       {/* ── VIDEO MODAL ── */}
       {modalEpisode && (
-        <Modal
-          backdropClassName="video-modal-backdrop"
-          contentClassName="video-modal"
+        <VideoModal
+          episode={modalEpisode}
           onClose={() => setModalEpisode(null)}
-        >
-          <div className="video-modal-header">
-            <h3 className="video-modal-title">{modalEpisode.title}</h3>
-            <button
-              type="button"
-              className="video-modal-close"
-              onClick={() => setModalEpisode(null)}
-            >
-              ✕
-            </button>
-          </div>
-          <div className="video-modal-embed">
-            <iframe
-              src={`https://www.youtube.com/embed/${modalEpisode.youtubeId}?autoplay=1`}
-              title={modalEpisode.title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-          <div className="video-modal-footer">
-            <span className="video-modal-meta">
-              {modalEpisode.num} · {modalEpisode.date} · {modalEpisode.duration}
-            </span>
-            <a
-              href={`https://www.youtube.com/watch?v=${modalEpisode.youtubeId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <button type="button" className="video-modal-yt">
-                <YoutubeIcon /> Open on YouTube
-              </button>
-            </a>
-          </div>
-        </Modal>
+        />
       )}
     </>
   );

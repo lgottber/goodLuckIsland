@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import Script from "next/script";
 
 declare global {
-  interface Window {
+  export interface Window {
     ShopifyBuy: {
       buildClient: (
         config: { domain: string; storefrontAccessToken: string },
