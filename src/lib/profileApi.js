@@ -9,6 +9,16 @@ export async function fetchProfile(userId) {
   return data;
 }
 
+export async function exportProfileData(userId) {
+  const { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("id", userId)
+    .single();
+  if (error) throw error;
+  return data;
+}
+
 export async function upsertProfile(userId, updated) {
   const { error } = await supabase.from("users").upsert({
     id: userId,

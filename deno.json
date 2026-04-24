@@ -24,6 +24,9 @@
       "./custom_lint_rules/single_component_plugin.ts",
       "./custom_lint_rules/no-complex-inline-jsx.ts"
     ],
+    "exclude": [
+      "supabase/"
+    ],
     "rules": {
       "tags": [
         "recommended",

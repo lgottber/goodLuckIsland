@@ -35,6 +35,7 @@
   ],
   "exclude": [
     "node_modules",
-    "custom_lint_rules"
+    "custom_lint_rules",
+    "supabase"
   ]
 }

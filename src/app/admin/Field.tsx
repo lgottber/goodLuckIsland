@@ -1,5 +1,14 @@
+interface FieldProps {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+  multiline?: boolean;
+  hint?: string;
+}
+
 export default function Field(
-  { label, value, onChange, placeholder, multiline, hint },
+  { label, value, onChange, placeholder, multiline, hint }: FieldProps,
 ) {
   return (
     <div className="admin-field">
