@@ -1,0 +1,38 @@
+.hbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.hbar-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.55);
+  width: 110px;
+  flex-shrink: 0;
+  text-align: right;
+}
+.hbar-track {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.hbar-fill {
+  height: 100%;
+  width: var(--hbar-width, 0%);
+  background: var(--hbar-color, #2e8b7a);
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.hbar-pct {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.4);
+  width: 32px;
+  text-align: right;
+}
+.hbar-total {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.25);
+  width: 36px;
+  text-align: right;
+}

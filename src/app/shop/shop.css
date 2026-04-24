@@ -1,46 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap");
-
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-:root {
-  --navy: #1e2d5a;
-  --teal: #2e8b7a;
-  --coral: #e8673a;
-  --coral-dk: #d45a2e;
-  --cream: #f0ebe0;
-  --cream-dk: #e6dfd2;
-  --muted: #6b7280;
-  --serif: "Cormorant Garamond", Georgia, serif;
-  --sans: "DM Sans", system-ui, sans-serif;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
 body {
-  font-family: var(--sans);
-  color: var(--navy);
   background: var(--cream);
-  margin: 0;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-button {
-  font-family: var(--sans);
-  cursor: pointer;
-}
-
-img {
-  display: block;
 }
 
 /* ── PAGE ── */
@@ -54,85 +13,7 @@ img {
   padding: 2rem;
 }
 
-/* ── MOBILE NAV ── */
-.nav-hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  margin-left: auto;
-}
-
-.nav-hamburger span {
-  display: block;
-  width: 24px;
-  height: 2px;
-  background: var(--navy);
-  border-radius: 2px;
-  transition: all 0.3s;
-}
-
-.nav-hamburger.open span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-.nav-hamburger.open span:nth-child(2) {
-  opacity: 0;
-}
-.nav-hamburger.open span:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
-}
-
-.nav-mobile-menu {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(12px);
-  z-index: 99;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1.75rem;
-}
-
-.nav-mobile-menu.open {
-  display: flex;
-}
-
-.nav-mobile-menu a {
-  font-family: var(--sans);
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: var(--navy);
-}
-
-.nav-mobile-menu .mobile-coral {
-  color: var(--coral);
-}
-
-.nav-mobile-close {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: var(--navy);
-}
-
 @media (max-width: 960px) {
-  .nav-hamburger {
-    display: flex;
-  }
-
-  .nav-links {
-    display: none !important;
-  }
-
   .shop-content {
     padding: 1.25rem;
   }

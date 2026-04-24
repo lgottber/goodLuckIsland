@@ -1,11 +1,15 @@
 "use client";
 import "./home.css";
 import { useAuth0 } from "@auth0/auth0-react";
-import dynamic from "next/dynamic";
-
-const NavBar = dynamic(() => import("../components/NavBar.jsx"), {
-  ssr: false,
-});
+import Link from "next/link";
+import NavBar from "../components/NavBarDynamic";
+import { FacebookIcon, InstagramIcon, YoutubeIcon } from "../components/Icons";
+import HeroCtaUser from "./HeroCtaUser";
+import HeroCtaGuest from "./HeroCtaGuest";
+import MarqueeItem from "./MarqueeItem";
+import PillarCard from "./PillarCard";
+import ValueCard from "./ValueCard";
+import PromiseItem from "./PromiseItem";
 
 export default function HomePage() {
   const { user } = useAuth0();
@@ -28,25 +32,7 @@ export default function HomePage() {
               like.
             </p>
             <div className="hero-cta">
-              {user
-                ? (
-                  <a href="/profile" className="cta-primary">
-                    Explore The Island
-                  </a>
-                )
-                : (
-                  <>
-                    <a
-                      href="/auth/login?screen_hint=signup"
-                      className="cta-primary"
-                    >
-                      Start Your Lifestyle Discovery
-                    </a>
-                    <a href="/profile" className="cta-ghost">
-                      Explore the Island
-                    </a>
-                  </>
-                )}
+              {user ? <HeroCtaUser /> : <HeroCtaGuest />}
             </div>
           </div>
           <div className="hero-scroll">
@@ -73,11 +59,7 @@ export default function HomePage() {
               "Next Chapter",
               "Financial Clarity",
               "Life After Work",
-            ].map((d, i) => (
-              <span key={i} className="marquee-item">
-                <span className="marquee-dot">◈</span> {d}
-              </span>
-            ))}
+            ].map((d, i) => <MarqueeItem key={`${d}-${i}`} text={d} />)}
           </div>
         </div>
 
@@ -122,10 +104,7 @@ export default function HomePage() {
                 { icon: "🗺️", label: "Intentional Lifestyle Design" },
                 { icon: "🤝", label: "Community Without Pressure" },
               ].map(({ icon, label }) => (
-                <div key={label} className="pillar-card">
-                  <span className="pillar-icon">{icon}</span>
-                  <span className="pillar-label">{label}</span>
-                </div>
+                <PillarCard key={label} icon={icon} label={label} />
               ))}
             </div>
           </div>
@@ -186,11 +165,7 @@ export default function HomePage() {
                   desc: "The people who make the island worth reaching",
                 },
               ].map(({ icon, title, desc }) => (
-                <div key={title} className="value-card">
-                  <span className="value-icon">{icon}</span>
-                  <span className="value-title">{title}</span>
-                  <span className="value-desc">{desc}</span>
-                </div>
+                <ValueCard key={title} icon={icon} title={title} desc={desc} />
               ))}
             </div>
           </div>
@@ -222,12 +197,7 @@ export default function HomePage() {
                 "No pressure",
                 "No product agenda",
                 "Only perspective & learning",
-              ].map((text) => (
-                <div key={text} className="promise-item">
-                  <div className="promise-check">✓</div>
-                  <span className="promise-text">{text}</span>
-                </div>
-              ))}
+              ].map((text) => <PromiseItem key={text} text={text} />)}
             </div>
           </div>
         </section>
@@ -242,12 +212,12 @@ export default function HomePage() {
               actually want. Take the challenge. Start the conversation.
             </p>
             <div className="discovery-ctas">
-              <a href="/profile" className="cta-primary">
+              <Link href="/profile" className="cta-primary">
                 Take the One Question Retirement Challenge
-              </a>
-              <a href="/profile" className="cta-navy-ghost">
+              </Link>
+              <Link href="/profile" className="cta-navy-ghost">
                 Explore the Lifestyle Pillars Map
-              </a>
+              </Link>
             </div>
           </div>
         </section>
@@ -270,7 +240,7 @@ export default function HomePage() {
               <img
                 src="/goodLuckIslandLogoSmall.png"
                 alt="Good Luck Island Collective"
-                style={{ height: 100, width: "auto", objectFit: "contain" }}
+                className="footer-brand-logo"
               />
               <span>
                 Curating calm clarity for the next chapter of life.
@@ -278,53 +248,20 @@ export default function HomePage() {
             </div>
           </div>
           <nav className="footer-nav-row" aria-label="Footer navigation">
-            <a href="/about">About</a>
+            <Link href="/about">About</Link>
             <a href="#">Resources</a>
             <a href="#">Contact</a>
             <a href="#">Privacy</a>
           </nav>
           <div className="social-row">
-            <a
-              href="#"
-              className="social-link"
-              aria-label="YouTube"
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z" />
-              </svg>
+            <a href="#" className="social-link" aria-label="YouTube">
+              <YoutubeIcon />
             </a>
-            <a
-              href="#"
-              className="social-link"
-              aria-label="Instagram"
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.2 4.9 1.8 5.1 5.1.1 1.3.1 1.6.1 4.8 0 3.2 0 3.6-.1 4.8-.2 3.3-1.8 4.9-5.1 5.1-1.3.1-1.6.1-4.9.1-3.2 0-3.6 0-4.8-.1-3.3-.2-4.9-1.8-5.1-5.1C2 15.6 2 15.2 2 12c0-3.2 0-3.6.1-4.8C2.3 3.9 3.9 2.3 7.2 2.1c1.2-.1 1.6-.1 4.8-.1zm0-2.2C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1.1 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4A6.2 6.2 0 0 0 12 5.8zm0 10.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8z" />
-              </svg>
+            <a href="#" className="social-link" aria-label="Instagram">
+              <InstagramIcon />
             </a>
-            <a
-              href="#"
-              className="social-link"
-              aria-label="Facebook"
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M24 12.1C24 5.4 18.6 0 12 0S0 5.4 0 12.1c0 6 4.4 11 10.1 11.9v-8.4H7.1v-3.5h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.9v2.3h3.4l-.5 3.5H13.8V24C19.6 23.1 24 18.1 24 12.1z" />
-              </svg>
+            <a href="#" className="social-link" aria-label="Facebook">
+              <FacebookIcon />
             </a>
           </div>
           <div className="footer-bottom">

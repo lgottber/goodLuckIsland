@@ -1,0 +1,12 @@
+cloudflare_api_token  = "your-cloudflare-api-token"
+cloudflare_account_id = "your-account-id"
+cloudflare_zone_id    = "your-zone-id"
+project_name          = "good-luck-island"
+subdomain             = "@"
+custom_domain         = "goodluckisland.com"
+admin_emails          = ["you@example.com"]
+
+# Access login page branding (defaults match the app palette — override if needed)
+# access_logo_url        = "https://yourdomain.com/logo.png"
+# access_bg_color        = "#f0ebe0"
+# access_header_bg_color = "#1e2d5a"

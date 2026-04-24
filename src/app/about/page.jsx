@@ -1,13 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
+import NavBar from "../../components/NavBarDynamic";
+import TestimonialCard from "./TestimonialCard";
+import { useSubmitFeedback } from "../../hooks/useSubmitFeedback";
 import "./about.css";
-
-const NavBar = dynamic(() => import("../../components/NavBar.jsx"), {
-  ssr: false,
-});
 
 const TESTIMONIALS = [
   {
@@ -43,12 +41,11 @@ export default function AboutPage() {
     email: "",
     message: "",
   });
-  const [submitted, setSubmitted] = useState(false);
+  const [submitted, triggerSubmitted] = useSubmitFeedback(3500);
 
   const handleSubmit = () => {
     if (!formData.email || !formData.message) return;
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3500);
+    triggerSubmitted();
     setFormData({ firstName: "", lastName: "", email: "", message: "" });
   };
 
@@ -207,34 +204,9 @@ export default function AboutPage() {
           />
           <div className="stories-inner">
             <h2 className="stories-title">Positive Stories</h2>
-            {TESTIMONIALS.map((t) =>
-              t.style === "light"
-                ? (
-                  <div key={t.id} className="testimonial-light">
-                    <div className="testimonial-avatar-placeholder">🙂</div>
-                    <div className="testimonial-body">
-                      <p className="testimonial-text">"{t.text}"</p>
-                      <p className="testimonial-name">— {t.name}</p>
-                    </div>
-                    <span className="testimonial-light-quote">"</span>
-                  </div>
-                )
-                : (
-                  <div key={t.id} className="testimonial-dark">
-                    <div className="testimonial-dark-body">
-                      {t.text.split("\n\n").map((para, i) => (
-                        <p key={i} className="testimonial-dark-text">
-                          "{para}"
-                        </p>
-                      ))}
-                      <p className="testimonial-dark-name">— {t.name}</p>
-                    </div>
-                    <div className="testimonial-dark-avatar-placeholder">
-                      🙂
-                    </div>
-                  </div>
-                )
-            )}
+            {TESTIMONIALS.map((t) => (
+              <TestimonialCard key={t.id} testimonial={t} />
+            ))}
           </div>
         </div>
 
@@ -263,7 +235,7 @@ export default function AboutPage() {
                 <div className="contact-detail-icon">🎙️</div>{" "}
                 <Link
                   href="/podcast"
-                  style={{ color: "var(--teal)", fontWeight: 600 }}
+                  className="contact-detail-link"
                 >
                   Listen to the Podcast
                 </Link>
@@ -272,7 +244,7 @@ export default function AboutPage() {
                 <div className="contact-detail-icon">📖</div>{" "}
                 <Link
                   href="/shop"
-                  style={{ color: "var(--teal)", fontWeight: 600 }}
+                  className="contact-detail-link"
                 >
                   Get the Book
                 </Link>

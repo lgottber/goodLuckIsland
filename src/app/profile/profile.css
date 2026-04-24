@@ -1,16 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap");
-
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 body {
-  font-family: var(--sans);
   background: var(--cream);
-  color: var(--navy);
-  margin: 0;
 }
 
 /* ── PAGE LAYOUT ── */
@@ -49,7 +38,7 @@ body {
   overflow: hidden;
 }
 .banner-mantra-ghost {
-  font-family: "Cormorant Garamond", serif;
+  font-family: var(--serif);
   font-style: italic;
   font-weight: 700;
   font-size: 5.5rem;
@@ -74,7 +63,7 @@ body {
   text-align: center;
 }
 .banner-mantra-quote {
-  font-family: "Cormorant Garamond", serif;
+  font-family: var(--serif);
   font-size: 3.5rem;
   font-weight: 700;
   color: var(--teal);
@@ -83,7 +72,7 @@ body {
   flex-shrink: 0;
 }
 .banner-mantra-text {
-  font-family: "Cormorant Garamond", serif;
+  font-family: var(--serif);
   font-style: italic;
   font-weight: 600;
   font-size: 2rem;
@@ -205,6 +194,31 @@ body {
   font-size: 0.78rem;
   color: var(--teal);
   font-weight: 600;
+}
+.saved-flash--error {
+  color: var(--coral);
+}
+.btn-ghost-sm {
+  background: transparent;
+  color: var(--navy);
+  border: 1.5px solid rgba(30, 45, 90, 0.3);
+  border-radius: 50px;
+  padding: 0.55rem 1.2rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--sans);
+  opacity: 0.75;
+}
+.btn-ghost-sm:hover {
+  border-color: var(--navy);
+  opacity: 1;
+}
+.btn-ghost-sm:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 .btn-secondary {
   background: transparent;
@@ -407,6 +421,7 @@ body {
 .info-row-value.empty {
   color: var(--muted);
   font-style: italic;
+  padding: 0.5rem 0;
 }
 
 /* ── TAGS ── */
@@ -415,12 +430,28 @@ body {
   flex-wrap: wrap;
   gap: 0.5rem;
 }
+.tag-list--spaced {
+  margin-top: 0.6rem;
+}
 .tag {
   font-size: 0.72rem;
   font-weight: 600;
   padding: 0.35rem 0.85rem;
   border-radius: 50px;
   font-family: var(--sans);
+}
+.tag--removable {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.tag-remove-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  color: var(--muted);
 }
 .tag-teal {
   background: var(--teal);
@@ -503,6 +534,10 @@ body {
   display: flex;
   gap: 0.75rem;
   justify-content: flex-end;
+}
+.modal-footer-actions {
+  display: flex;
+  gap: 0.75rem;
 }
 
 /* ── FORM FIELDS ── */
@@ -626,6 +661,9 @@ body {
   padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--cream-dk);
   margin-bottom: 0.25rem;
+}
+.modal-section-label--spaced {
+  margin-top: 0.5rem;
 }
 
 /* ── YES/NO BUTTONS ── */
@@ -874,4 +912,50 @@ body {
     padding: 0.6rem 0.5rem;
     font-size: 0.65rem;
   }
+}
+
+.avatar-picker-footer {
+  justify-content: space-between;
+  align-items: center;
+}
+.avatar-picker-hint {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.avatar-modal-subtitle {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 0.25rem;
+}
+
+/* ── AvatarDisplay ── */
+.avatar-display {
+  border-radius: 50%;
+  border: 4px solid var(--avatar-border, var(--cream));
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  width: var(--avatar-size, 104px);
+  height: var(--avatar-size, 104px);
+}
+.avatar-display--char {
+  flex-direction: column;
+}
+.avatar-display-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.avatar-display-emoji {
+  font-size: var(--avatar-emoji-size, 44px);
+  line-height: 1;
+}
+.avatar-display-initials {
+  color: #fff;
+  font-family: var(--serif);
+  font-size: var(--avatar-initials-size, 31px);
+  font-weight: 600;
 }

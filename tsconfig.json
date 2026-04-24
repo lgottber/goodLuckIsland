@@ -26,6 +26,7 @@
   },
   "include": [
     "next-env.d.ts",
+    "src/custom.d.ts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts",
@@ -33,6 +34,7 @@
     "**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "custom_lint_rules"
   ]
 }

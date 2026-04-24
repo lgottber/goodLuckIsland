@@ -1,41 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap");
-
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-:root {
-  --navy: #1e2d5a;
-  --teal: #2e8b7a;
-  --coral: #e8673a;
-  --coral-dk: #d45a2e;
-  --cream: #f0ebe0;
-  --cream-dk: #e6dfd2;
-  --cream-md: #ede7d9;
-  --muted: #6b7280;
-  --serif: "Cormorant Garamond", Georgia, serif;
-  --sans: "DM Sans", system-ui, sans-serif;
-}
-html {
-  scroll-behavior: smooth;
-}
 body {
-  font-family: var(--sans);
   background: var(--cream);
-  color: var(--navy);
-  margin: 0;
-}
-a {
-  text-decoration: none;
-  color: inherit;
-}
-button {
-  font-family: var(--sans);
-  cursor: pointer;
-}
-img {
-  display: block;
 }
 
 /* ── PAGE ── */
@@ -699,79 +663,7 @@ img {
   }
 }
 
-/* ── MOBILE NAV HAMBURGER ── */
-.nav-hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  margin-left: auto;
-}
-.nav-hamburger span {
-  display: block;
-  width: 24px;
-  height: 2px;
-  background: var(--navy);
-  border-radius: 2px;
-  transition: all 0.3s;
-}
-.nav-hamburger.open span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-.nav-hamburger.open span:nth-child(2) {
-  opacity: 0;
-}
-.nav-hamburger.open span:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
-}
-.nav-mobile-menu {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(240, 235, 224, 0.98);
-  backdrop-filter: blur(12px);
-  z-index: 99;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1.75rem;
-}
-.nav-mobile-menu.open {
-  display: flex;
-}
-.nav-mobile-menu a {
-  font-family: var(--sans);
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: var(--navy);
-}
-.nav-mobile-menu .mobile-coral {
-  color: var(--coral);
-}
-.nav-mobile-close {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: var(--navy);
-}
-
 @media (max-width: 1000px) {
-  .nav-hamburger {
-    display: flex;
-  }
-  .nav-links {
-    display: none !important;
-  }
   .about-hero {
     grid-template-columns: 1fr;
     padding: 3rem 1.25rem 0;
@@ -786,6 +678,10 @@ img {
     width: calc(50% - 0.5rem);
     height: 150px;
   }
+  .about-hero-left {
+    align-items: center;
+    text-align: center;
+  }
   .nicholas-section {
     padding: 3rem 1.25rem;
     gap: 2rem;
@@ -796,10 +692,18 @@ img {
   }
   .nicholas-photo-wrap {
     max-width: 280px;
+    margin: 0 auto;
   }
   .contact-section {
     grid-template-columns: 1fr;
     padding: 3rem 1.25rem;
+  }
+  .contact-info {
+    align-items: center;
+    text-align: center;
+  }
+  .contact-details {
+    align-items: flex-start;
   }
   .mission-section {
     padding: 4rem 1.25rem;
@@ -825,6 +729,9 @@ img {
   .contact-form-row {
     grid-template-columns: 1fr;
   }
+  .contact-submit {
+    align-self: center;
+  }
   .about-search-bar {
     max-width: 100%;
   }
@@ -833,4 +740,9 @@ img {
     align-items: flex-start;
     padding: 1.5rem 1.25rem;
   }
+}
+
+.contact-detail-link {
+  color: var(--teal);
+  font-weight: 600;
 }
