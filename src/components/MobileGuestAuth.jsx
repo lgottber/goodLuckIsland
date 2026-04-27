@@ -2,7 +2,7 @@ export default function MobileGuestAuth({ setMobileOpen }) {
   return (
     <div className="nav-mobile-auth">
       <a
-        href="/auth/login?screen_hint=signup"
+        href="/signup"
         className="nav-btn-solid"
         onClick={() => setMobileOpen(false)}
       >

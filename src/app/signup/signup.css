@@ -1,4 +1,4 @@
-.consent-page {
+.signup-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -7,7 +7,7 @@
   padding: 2rem 1rem;
 }
 
-.consent-card {
+.signup-card {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
@@ -19,7 +19,7 @@
   gap: 1.5rem;
 }
 
-.consent-seal {
+.signup-seal {
   width: 120px;
   height: 120px;
   object-fit: contain;
@@ -27,7 +27,7 @@
   display: block;
 }
 
-.consent-title {
+.signup-title {
   font-size: 1.75rem;
   font-weight: 700;
   color: #fff;
@@ -35,14 +35,14 @@
   margin: 0;
 }
 
-.consent-subtitle {
+.signup-subtitle {
   color: rgba(255, 255, 255, 0.65);
   text-align: center;
   margin: 0;
   font-size: 0.95rem;
 }
 
-.consent-policy-scroll {
+.signup-policy-scroll {
   max-height: 280px;
   overflow-y: auto;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -51,7 +51,7 @@
   background: rgba(0, 0, 0, 0.2);
 }
 
-.consent-policy-text {
+.signup-policy-text {
   color: rgba(255, 255, 255, 0.75);
   font-size: 0.8rem;
   line-height: 1.6;
@@ -60,7 +60,7 @@
   margin: 0;
 }
 
-.consent-checkbox-label {
+.signup-checkbox-label {
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
@@ -69,7 +69,7 @@
   cursor: pointer;
 }
 
-.consent-checkbox {
+.signup-checkbox {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
@@ -78,20 +78,20 @@
   accent-color: #2e8b7a;
 }
 
-.consent-error {
+.signup-error {
   color: #f87171;
   font-size: 0.85rem;
   text-align: center;
   margin: 0;
 }
 
-.consent-actions {
+.signup-actions {
   display: flex;
   gap: 1rem;
   justify-content: flex-end;
 }
 
-.consent-btn-decline {
+.signup-btn-decline {
   padding: 0.6rem 1.25rem;
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -102,12 +102,12 @@
   transition: border-color 0.2s, color 0.2s;
 }
 
-.consent-btn-decline:hover {
+.signup-btn-decline:hover {
   border-color: rgba(255, 255, 255, 0.4);
   color: rgba(255, 255, 255, 0.9);
 }
 
-.consent-btn-accept {
+.signup-btn-accept {
   padding: 0.6rem 1.5rem;
   border-radius: 8px;
   border: none;
@@ -119,11 +119,11 @@
   transition: background 0.2s;
 }
 
-.consent-btn-accept:hover:not(:disabled) {
+.signup-btn-accept:hover:not(:disabled) {
   background: #25705f;
 }
 
-.consent-btn-accept:disabled {
+.signup-btn-accept:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
