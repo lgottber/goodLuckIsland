@@ -12,7 +12,7 @@ import BioDisplay from "./BioDisplay";
 import BioEmpty from "./BioEmpty";
 import InterestsList from "./InterestsList";
 import InterestsEmpty from "./InterestsEmpty";
-import { fetchProfile, upsertProfile } from "../../lib/profileApi";
+import { createUser, fetchProfile, upsertProfile } from "../../lib/profileApi";
 import ProfileMetaItem from "./ProfileMetaItem";
 import InfoRow from "./InfoRow";
 import ProfileInfoEmpty from "./ProfileInfoEmpty";
@@ -117,7 +117,13 @@ export default function ProfilePage() {
   useEffect(() => {
     if (!auth0User) return;
     setUser(applyAuth0Fields);
-    fetchProfile(auth0User.sub).then(handleProfileData);
+    fetchProfile(auth0User.sub).then(async (data) => {
+      if (!data) {
+        await createUser(auth0User.sub, auth0User.email);
+        return;
+      }
+      handleProfileData(data);
+    });
   }, [auth0User]);
   const [editing, setEditing] = useState(false);
   const [pickingAvatar, setPickingAvatar] = useState(false);
