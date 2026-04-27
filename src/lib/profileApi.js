@@ -1,5 +1,13 @@
 import { supabase } from "./supabase.ts";
 
+export async function createUser(userId, email) {
+  const { error } = await supabase.from("users").insert({
+    id: userId,
+    email: email,
+  });
+  if (error) throw error;
+}
+
 export async function fetchProfile(userId) {
   const { data } = await supabase
     .from("users")
