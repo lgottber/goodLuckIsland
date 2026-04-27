@@ -38,7 +38,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID!}
       cacheLocation="localstorage"
       authorizationParams={{
-        redirect_uri: process.env.NEXT_PUBLIC_AUTH0_CALLBACK_URL,
+        redirect_uri: typeof window !== "undefined" ? window.location.origin + "/auth/callback" : undefined,
       }}
       onRedirectCallback={(appState) => {
         router.replace(appState?.returnTo ?? "/");
