@@ -9,7 +9,6 @@ export default function UserMenu({
   dropdownOpen,
   setDropdownOpen,
   dropdownRef,
-  isAdmin = false,
 }) {
   const [exportStatus, setExportStatus] = useState("idle");
 
@@ -58,7 +57,6 @@ export default function UserMenu({
       </button>
       {dropdownOpen && (
         <NavDropdown
-          isAdmin={isAdmin}
           onClose={() => setDropdownOpen(false)}
           exportStatus={exportStatus}
           onExport={handleExportData}
