@@ -29,7 +29,8 @@ async function storefrontFetch<T>(
   if (!res.ok) throw new Error(`Shopify fetch failed: ${res.status}`);
   const json = await res.json();
   if (json.errors) throw new Error(json.errors[0].message);
-  return json.data as T;
+  const result: T = json.data;
+  return result;
 }
 
 const GET_PRODUCT = `

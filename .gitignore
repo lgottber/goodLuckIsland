@@ -140,6 +140,7 @@ web_modules/
 # Next.js build output
 .next
 out
+.open-next
 
 # Nuxt.js build / generate output
 .nuxt
@@ -192,6 +193,9 @@ dist
 .svelte-kit
 
 # End of https://www.toptal.com/developers/gitignore/api/node,nextjs,git,dotenv
+
+### Wrangler ###
+.wrangler/
 
 ### Terraform ###
 terraform/terraform.tfvars

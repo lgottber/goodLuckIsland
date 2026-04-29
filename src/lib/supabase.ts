@@ -26,9 +26,10 @@ function getClient() {
 
 // Lazy proxy so module-level imports don't crash during SSR prerendering
 // when env vars are absent at build time.
-// deno-lint-ignore no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/consistent-type-assertions
 export const supabase = new Proxy({} as SupabaseClient<any>, {
   get(_, prop: string) {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return (getClient() as unknown as Record<string, unknown>)[prop];
   },
 });

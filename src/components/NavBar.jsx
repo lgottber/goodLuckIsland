@@ -11,7 +11,6 @@ import MobileArticlesGatedButton from "./MobileArticlesGatedButton";
 import MobileUserSection from "./MobileUserSection";
 import MobileGuestAuth from "./MobileGuestAuth";
 import { useClickOutside } from "../hooks/useClickOutside";
-import { isAdmin as checkIsAdmin } from "../lib/adminApi";
 import "./NavBar.css";
 
 export default function NavBar({
@@ -24,20 +23,7 @@ export default function NavBar({
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showGate, setShowGate] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
   const dropdownRef = useRef(null);
-
-  useEffect(() => {
-    if (!user) return;
-    async function loadAdminStatus() {
-      try {
-        setIsAdmin(await checkIsAdmin(user.sub));
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    loadAdminStatus();
-  }, [user]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(globalThis.scrollY > 40);
@@ -67,7 +53,6 @@ export default function NavBar({
         dropdownOpen={dropdownOpen}
         setDropdownOpen={setDropdownOpen}
         dropdownRef={dropdownRef}
-        isAdmin={isAdmin}
       />
     )
     : <GuestAuthButtons />;
@@ -154,7 +139,6 @@ export default function NavBar({
           ? (
             <MobileUserSection
               setMobileOpen={setMobileOpen}
-              isAdmin={isAdmin}
             />
           )
           : <MobileGuestAuth setMobileOpen={setMobileOpen} />}

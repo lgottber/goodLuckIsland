@@ -1,5 +1,4 @@
 import NavDropdownItem from "./NavDropdownItem";
-import NavAdminMenuItem from "./NavAdminMenuItem";
 
 const MENU_ITEMS = [
   { href: "/profile", label: "My Profile" },
@@ -8,7 +7,7 @@ const MENU_ITEMS = [
 ];
 
 export default function NavDropdown(
-  { isAdmin, onClose, exportStatus, onExport },
+  { onClose, exportStatus, onExport },
 ) {
   return (
     <div className="nav-dropdown">
@@ -36,7 +35,6 @@ export default function NavDropdown(
           ? "Export failed"
           : "Export My Data"}
       </button>
-      {isAdmin && <NavAdminMenuItem onClose={onClose} />}
       <div className="nav-dropdown-divider" />
       <a
         href="/auth/logout"
