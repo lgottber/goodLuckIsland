@@ -1,8 +1,6 @@
-name: CI / Deploy
+name: Staging
 
 on:
-  push:
-    branches: ["main"]
   pull_request:
     branches: ["main"]
     types: [opened, synchronize, reopened, closed]
@@ -13,6 +11,7 @@ permissions:
 
 jobs:
   lint:
+    if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,7 +30,7 @@ jobs:
   deploy-staging:
     runs-on: ubuntu-latest
     needs: lint
-    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    if: github.event.action != 'closed'
     steps:
       - uses: actions/checkout@v4
 
@@ -96,42 +95,9 @@ jobs:
               });
             }
 
-  deploy-production:
-    runs-on: ubuntu-latest
-    needs: lint
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build for Cloudflare Workers
-        run: npx opennextjs-cloudflare build
-        env:
-          NEXT_PUBLIC_AUTH0_DOMAIN: ${{ secrets.NEXT_PUBLIC_AUTH0_DOMAIN }}
-          NEXT_PUBLIC_AUTH0_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_AUTH0_CLIENT_ID }}
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-          NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN: ${{ secrets.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN }}
-          NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN: ${{ secrets.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN }}
-          NEXT_PUBLIC_SHOPIFY_COLLECTION_ID: ${{ secrets.NEXT_PUBLIC_SHOPIFY_COLLECTION_ID }}
-
-      - name: Deploy to Cloudflare Workers (production)
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy
-
   cleanup-staging:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    if: github.event.action == 'closed'
     steps:
       - name: Delete staging Worker
         continue-on-error: true
@@ -139,4 +105,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: delete good-luck-island-pr-${{ github.event.pull_request.number }} --force
+          command: delete --name good-luck-island-pr-${{ github.event.pull_request.number }} --force
