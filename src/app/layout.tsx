@@ -1,4 +1,3 @@
-/// <reference path="../custom.d.ts" />
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./home.css";

@@ -17,12 +17,11 @@ const Auth0Provider = dynamic(
 function SupabaseAuthSync() {
   const { getIdTokenClaims } = useAuth0();
 
-  const getToken = async () => {
-    const claims = await getIdTokenClaims();
-    return claims?.__raw ?? null;
-  };
-
   useEffect(() => {
+    const getToken = async () => {
+      const claims = await getIdTokenClaims();
+      return claims?.__raw ?? null;
+    };
     setSupabaseTokenGetter(getToken);
   }, [getIdTokenClaims]);
 
@@ -38,6 +37,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID!}
       cacheLocation="localstorage"
       authorizationParams={{
+        // eslint-disable-next-line camelcase
         redirect_uri: typeof window !== "undefined" ? window.location.origin + "/auth/callback" : undefined,
       }}
       onRedirectCallback={(appState) => {

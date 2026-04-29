@@ -63,6 +63,7 @@ export interface UserRecord {
 }
 
 export async function isAdmin(userId: string): Promise<boolean> {
+  // eslint-disable-next-line camelcase
   const { data, error } = await supabase.rpc("is_admin", { user_id: userId });
   if (error) throw error;
   return !!data;
@@ -75,7 +76,8 @@ export async function fetchAdminEpisodes(): Promise<Episode[]> {
     .select("*")
     .order("sort_order");
   if (error) throw error;
-  return (data ?? []) as Episode[];
+  const episodes: Episode[] = data ?? [];
+  return episodes;
 }
 
 export async function insertEpisode(
@@ -108,7 +110,8 @@ export async function fetchAdminArticles(): Promise<Article[]> {
     .select("*")
     .order("sort_order");
   if (error) throw error;
-  return (data ?? []) as Article[];
+  const articles: Article[] = data ?? [];
+  return articles;
 }
 
 export async function insertArticle(
@@ -141,7 +144,8 @@ export async function fetchAdminBackpackSections(): Promise<BackpackSection[]> {
     .select("*")
     .order("sort_order");
   if (error) throw error;
-  return (data ?? []) as BackpackSection[];
+  const sections: BackpackSection[] = data ?? [];
+  return sections;
 }
 
 export async function insertBackpackSection(
@@ -175,5 +179,6 @@ export async function fetchUsers(): Promise<UserRecord[]> {
     .select("*")
     .order("first_name");
   if (error) throw error;
-  return (data ?? []) as UserRecord[];
+  const users: UserRecord[] = data ?? [];
+  return users;
 }

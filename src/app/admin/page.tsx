@@ -553,6 +553,7 @@ export default function AdminPage() {
                     label="YouTube ID"
                     value={epForm.youtube_id}
                     onChange={(v) =>
+                      // eslint-disable-next-line camelcase
                       setEpForm((f) => ({ ...f, youtube_id: v }))}
                     placeholder="dQw4w9WgXcQ"
                     hint="The ID from the YouTube URL — e.g. youtube.com/watch?v=dQw4w9WgXcQ"
@@ -583,6 +584,7 @@ export default function AdminPage() {
                       onChange={(v) =>
                         setEpForm((f) => ({
                           ...f,
+                          // eslint-disable-next-line camelcase
                           sort_order: parseInt(v) || 0,
                         }))}
                       placeholder="1"
@@ -638,6 +640,7 @@ export default function AdminPage() {
                       label="Read Time"
                       value={artForm.read_time}
                       onChange={(v) =>
+                        // eslint-disable-next-line camelcase
                         setArtForm((f) => ({ ...f, read_time: v }))}
                       placeholder="5 min read"
                     />
@@ -687,6 +690,7 @@ export default function AdminPage() {
                         onChange={(v) =>
                           setArtForm((f) => ({
                             ...f,
+                            // eslint-disable-next-line camelcase
                             sort_order: parseInt(v) || 0,
                           }))}
                         placeholder="1"
@@ -940,6 +944,7 @@ export default function AdminPage() {
                         onChange={(v) =>
                           setBpForm((f) => ({
                             ...f,
+                            // eslint-disable-next-line camelcase
                             sort_order: parseInt(v) || 0,
                           }))}
                         placeholder="1"
