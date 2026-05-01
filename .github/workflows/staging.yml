@@ -3,7 +3,7 @@ name: Staging
 on:
   pull_request:
     branches: ["main"]
-    types: [opened, synchronize, reopened, closed]
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: read
@@ -11,7 +11,6 @@ permissions:
 
 jobs:
   lint:
-    if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,10 +26,9 @@ jobs:
       - name: Run linter
         run: npm run lint:check
 
-  deploy-staging:
+  deploy-preview:
     runs-on: ubuntu-latest
     needs: lint
-    if: github.event.action != 'closed'
     steps:
       - uses: actions/checkout@v4
 
@@ -42,8 +40,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build for Cloudflare Workers
-        run: npx opennextjs-cloudflare build
+      - name: Build for Cloudflare Pages
+        run: npx next build && npx @cloudflare/next-on-pages
         env:
           NEXT_PUBLIC_AUTH0_DOMAIN: ${{ secrets.NEXT_PUBLIC_AUTH0_DOMAIN }}
           NEXT_PUBLIC_AUTH0_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_AUTH0_CLIENT_ID }}
@@ -53,32 +51,26 @@ jobs:
           NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN: ${{ secrets.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN }}
           NEXT_PUBLIC_SHOPIFY_COLLECTION_ID: ${{ secrets.NEXT_PUBLIC_SHOPIFY_COLLECTION_ID }}
 
-      - name: Patch wrangler.toml for staging
-        run: |
-          sed -i 's/service = "good-luck-island"/service = "good-luck-island-pr-${{ github.event.pull_request.number }}"/' wrangler.toml
-          sed -i 's/workers_dev = false/workers_dev = true/' wrangler.toml
-          sed -i 's/preview_urls = false/preview_urls = true/' wrangler.toml
-
-      - name: Deploy to Cloudflare Workers (staging)
+      - name: Deploy preview to Cloudflare Pages
         id: deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy --name good-luck-island-pr-${{ github.event.pull_request.number }}
+          command: pages deploy .vercel/output/static --project-name good-luck-island --branch pr-${{ github.event.pull_request.number }}
 
-      - name: Comment staging URL on PR
+      - name: Comment preview URL on PR
         uses: actions/github-script@v7
         with:
           script: |
             const url = '${{ steps.deploy.outputs.deployment-url }}';
-            const body = `### Staging Deployment\n\n| Environment | URL |\n|---|---|\n| Staging | ${url} |`;
+            const body = `### Preview Deployment\n\n| Environment | URL |\n|---|---|\n| Preview | ${url} |`;
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
             });
-            const existing = comments.find(c => c.body.includes('### Staging Deployment'));
+            const existing = comments.find(c => c.body.includes('### Preview Deployment'));
             if (existing) {
               await github.rest.issues.updateComment({
                 owner: context.repo.owner,
@@ -94,15 +86,3 @@ jobs:
                 body,
               });
             }
-
-  cleanup-staging:
-    runs-on: ubuntu-latest
-    if: github.event.action == 'closed'
-    steps:
-      - name: Delete staging Worker
-        continue-on-error: true
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: delete --name good-luck-island-pr-${{ github.event.pull_request.number }} --force

@@ -38,8 +38,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build for Cloudflare Workers
-        run: npx opennextjs-cloudflare build
+      - name: Build for Cloudflare Pages
+        run: npx next build && npx @cloudflare/next-on-pages
         env:
           NEXT_PUBLIC_AUTH0_DOMAIN: ${{ secrets.NEXT_PUBLIC_AUTH0_DOMAIN }}
           NEXT_PUBLIC_AUTH0_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_AUTH0_CLIENT_ID }}
@@ -49,9 +49,9 @@ jobs:
           NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN: ${{ secrets.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN }}
           NEXT_PUBLIC_SHOPIFY_COLLECTION_ID: ${{ secrets.NEXT_PUBLIC_SHOPIFY_COLLECTION_ID }}
 
-      - name: Deploy to Cloudflare Workers (production)
+      - name: Deploy to Cloudflare Pages (production)
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy --name good-luck-island
+          command: pages deploy .vercel/output/static --project-name good-luck-island --branch main

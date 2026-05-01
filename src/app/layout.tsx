@@ -3,6 +3,8 @@ import "./globals.css";
 import "./home.css";
 import { Providers } from "./providers.tsx";
 
+export const runtime = "edge";
+
 export const metadata: Metadata = {
   title: "Good Luck Island Collective",
   description: "A self-help education platform for Gen X professionals",

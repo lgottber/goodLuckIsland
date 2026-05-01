@@ -1,6 +1,6 @@
 import ShopClient from "./ShopClient.tsx";
 
-export const revalidate = 3600;
+export const dynamic = "force-static";
 
 export default function ShopPage() {
   return <ShopClient />;

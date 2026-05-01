@@ -5,12 +5,18 @@ resource "cloudflare_pages_project" "app" {
 
   deployment_configs {
     production {
-      compatibility_date  = "2024-09-23"
+      compatibility_date  = "2024-12-30"
       compatibility_flags = ["nodejs_compat"]
+      analytics_engine_datasets = {
+        ANALYTICS = "good_luck_island_events"
+      }
     }
     preview {
-      compatibility_date  = "2024-09-23"
+      compatibility_date  = "2024-12-30"
       compatibility_flags = ["nodejs_compat"]
+      analytics_engine_datasets = {
+        ANALYTICS = "good_luck_island_events"
+      }
     }
   }
 }
