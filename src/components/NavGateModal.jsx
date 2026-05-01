@@ -23,7 +23,7 @@ export default function NavGateModal({ onClose }) {
       <div className="nav-gate-actions">
         <a href="/auth/login" className="nav-gate-btn-solid">Sign In</a>
         <a
-          href="/auth/login?screen_hint=signup"
+          href="/signup"
           className="nav-gate-btn-ghost"
         >
           Join Free →
