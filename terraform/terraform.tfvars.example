@@ -6,6 +6,19 @@ subdomain             = "@"
 custom_domain         = "goodluckisland.com"
 admin_emails          = ["you@example.com"]
 
+# GitHub integration
+github_owner = "your-github-username-or-org"
+github_repo  = "goodLuckIsland"
+
+# App environment variables (injected into Cloudflare Pages builds)
+next_public_auth0_domain             = "your-tenant.us.auth0.com"
+next_public_auth0_client_id          = "your-auth0-client-id"
+next_public_supabase_url             = "https://your-project.supabase.co"
+next_public_supabase_anon_key        = "your-supabase-anon-key"
+next_public_shopify_store_domain     = "your-store.myshopify.com"
+next_public_shopify_storefront_token = "your-storefront-token"
+next_public_shopify_collection_id    = "gid://shopify/Collection/your-id"
+
 # Access login page branding (defaults match the app palette — override if needed)
 # access_logo_url        = "https://yourdomain.com/logo.png"
 # access_bg_color        = "#f0ebe0"

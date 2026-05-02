@@ -53,3 +53,59 @@ variable "access_header_bg_color" {
   type        = string
   default     = "#1e2d5a"  # --navy from globals.css
 }
+
+# GitHub integration
+
+variable "github_owner" {
+  description = "GitHub organization or username that owns the repository"
+  type        = string
+}
+
+variable "github_repo" {
+  description = "GitHub repository name (without the owner prefix)"
+  type        = string
+}
+
+# App environment variables — injected into both production and preview builds
+
+variable "next_public_auth0_domain" {
+  description = "Auth0 tenant domain (e.g. your-tenant.us.auth0.com)"
+  type        = string
+  sensitive   = true
+}
+
+variable "next_public_auth0_client_id" {
+  description = "Auth0 SPA client ID"
+  type        = string
+  sensitive   = true
+}
+
+variable "next_public_supabase_url" {
+  description = "Supabase project URL"
+  type        = string
+  sensitive   = true
+}
+
+variable "next_public_supabase_anon_key" {
+  description = "Supabase anonymous (public) API key"
+  type        = string
+  sensitive   = true
+}
+
+variable "next_public_shopify_store_domain" {
+  description = "Shopify storefront domain (e.g. your-store.myshopify.com)"
+  type        = string
+  sensitive   = true
+}
+
+variable "next_public_shopify_storefront_token" {
+  description = "Shopify Storefront API access token"
+  type        = string
+  sensitive   = true
+}
+
+variable "next_public_shopify_collection_id" {
+  description = "Shopify collection GID to display in the shop"
+  type        = string
+  sensitive   = true
+}
