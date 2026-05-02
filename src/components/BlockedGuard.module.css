@@ -1,0 +1,48 @@
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--cream);
+  padding: 2rem;
+  text-align: center;
+  font-family: var(--sans);
+}
+
+.heading {
+  font-family: var(--serif);
+  font-size: 2.5rem;
+  color: var(--navy);
+  margin-bottom: 1rem;
+}
+
+.message {
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+.fetchError {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--coral);
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.5rem;
+  z-index: 1000;
+}
+
+.signOutButton {
+  background: var(--coral);
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.4rem;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
