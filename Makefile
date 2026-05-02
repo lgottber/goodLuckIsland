@@ -1,4 +1,4 @@
-.PHONY: tf-init tf-plan tf-apply tf-fix-state tf-import-pages
+.PHONY: tf-init tf-plan tf-apply tf-fix-state tf-import-pages sync-secrets
 
 tf-init:
 	terraform -chdir=terraform init
@@ -16,3 +16,6 @@ tf-plan:
 
 tf-apply:
 	terraform -chdir=terraform apply -auto-approve
+
+sync-secrets:
+	gh secret set -f .env.local

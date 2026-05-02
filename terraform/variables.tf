@@ -31,11 +31,6 @@ variable "custom_domain" {
   type        = string
 }
 
-variable "admin_emails" {
-  description = "Email addresses allowed to access the /admin route via Cloudflare Access"
-  type        = list(string)
-}
-
 variable "access_logo_url" {
   description = "URL of the logo shown on the Cloudflare Access login page (null = Cloudflare default)"
   type        = string

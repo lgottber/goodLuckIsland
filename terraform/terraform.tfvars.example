@@ -4,7 +4,6 @@ cloudflare_zone_id    = "your-zone-id"
 project_name          = "good-luck-island"
 subdomain             = "@"
 custom_domain         = "goodluckisland.com"
-admin_emails          = ["you@example.com"]
 
 # GitHub integration
 github_owner = "your-github-username-or-org"
