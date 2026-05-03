@@ -13,7 +13,7 @@ resource "cloudflare_pages_project" "app" {
       compatibility_date  = "2024-12-30"
       compatibility_flags = ["nodejs_compat"]
       analytics_engine_datasets = {
-        ANALYTICS = { dataset = "good_luck_island_events" }
+        GOOD_LUCK_ISLAND_ANALYTICS_ENGINE = { dataset = "good_luck_island_analytics" }
       }
       env_vars = {
         NEXT_PUBLIC_AUTH0_DOMAIN             = { type = "plain_text", value = var.next_public_auth0_domain }
@@ -29,7 +29,7 @@ resource "cloudflare_pages_project" "app" {
       compatibility_date  = "2024-12-30"
       compatibility_flags = ["nodejs_compat"]
       analytics_engine_datasets = {
-        ANALYTICS = { dataset = "good_luck_island_events" }
+        GOOD_LUCK_ISLAND_ANALYTICS_ENGINE = { dataset = "good_luck_island_analytics" }
       }
       env_vars = {
         NEXT_PUBLIC_AUTH0_DOMAIN             = { type = "plain_text", value = var.next_public_auth0_domain }
