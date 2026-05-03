@@ -5,10 +5,6 @@ project_name          = "good-luck-island"
 subdomain             = "@"
 custom_domain         = "goodluckisland.com"
 
-# GitHub integration
-github_owner = "your-github-username-or-org"
-github_repo  = "goodLuckIsland"
-
 # App environment variables (injected into Cloudflare Pages builds)
 next_public_auth0_domain             = "your-tenant.us.auth0.com"
 next_public_auth0_client_id          = "your-auth0-client-id"

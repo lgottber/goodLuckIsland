@@ -1,16 +1,29 @@
-resource "cloudflare_zone_settings_override" "main" {
-  zone_id = var.cloudflare_zone_id
+resource "cloudflare_zone_setting" "ssl" {
+  zone_id    = var.cloudflare_zone_id
+  setting_id = "ssl"
+  value      = "full"
+}
 
-  settings {
-    # TLS
-    ssl              = "full"
-    always_use_https = "on"
-    min_tls_version  = "1.2"
+resource "cloudflare_zone_setting" "always_use_https" {
+  zone_id    = var.cloudflare_zone_id
+  setting_id = "always_use_https"
+  value      = "on"
+}
 
-    # Performance — caching is managed by Cloudflare Pages natively
-    brotli = "on"
+resource "cloudflare_zone_setting" "min_tls_version" {
+  zone_id    = var.cloudflare_zone_id
+  setting_id = "min_tls_version"
+  value      = "1.2"
+}
 
-    # Security
-    security_level = "medium"
-  }
+resource "cloudflare_zone_setting" "brotli" {
+  zone_id    = var.cloudflare_zone_id
+  setting_id = "brotli"
+  value      = "on"
+}
+
+resource "cloudflare_zone_setting" "security_level" {
+  zone_id    = var.cloudflare_zone_id
+  setting_id = "security_level"
+  value      = "medium"
 }

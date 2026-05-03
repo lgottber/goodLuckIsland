@@ -5,5 +5,5 @@ output "pages_url" {
 
 output "custom_domain_url" {
   description = "Custom domain URL once DNS propagates"
-  value       = "https://${cloudflare_pages_domain.app.domain}"
+  value       = "https://${cloudflare_pages_domain.app.name}"
 }

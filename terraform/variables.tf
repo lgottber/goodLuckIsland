@@ -23,7 +23,7 @@ variable "project_name" {
 variable "subdomain" {
   description = "Subdomain to point to Pages (use @ for the root domain)"
   type        = string
-  default     = "@"
+  default     = "good-luck-island"
 }
 
 variable "custom_domain" {
@@ -47,18 +47,6 @@ variable "access_header_bg_color" {
   description = "Header bar colour on the Access login screen (hex)"
   type        = string
   default     = "#1e2d5a"  # --navy from globals.css
-}
-
-# GitHub integration
-
-variable "github_owner" {
-  description = "GitHub organization or username that owns the repository"
-  type        = string
-}
-
-variable "github_repo" {
-  description = "GitHub repository name (without the owner prefix)"
-  type        = string
 }
 
 # App environment variables — injected into both production and preview builds
