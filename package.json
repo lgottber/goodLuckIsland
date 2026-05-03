@@ -6,11 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "build:cf": "next build && npx @cloudflare/next-on-pages",
-    "preview": "npm run build:cf && wrangler pages dev .vercel/output/static",
+    "preview": "npm run build:cf && wrangler pages dev --ip '127.0.0.1' .vercel/output/static",
     "deploy:production": "wrangler pages deploy .vercel/output/static --project-name good-luck-island --branch main",
     "lint": "eslint . --fix",
     "lint:check": "eslint .",
     "format": "prettier --write .",
+    "postinstall": "patch-package",
     "format:check": "prettier --check ."
   },
   "dependencies": {
@@ -32,6 +33,7 @@
     "eslint": "^9.0.0",
     "eslint-plugin-react": "^7.37.0",
     "eslint-plugin-react-hooks": "^5.0.0",
+    "patch-package": "^8.0.1",
     "prettier": "^3.0.0",
     "supabase": "^2.91.2",
     "typescript": "6.0.2",

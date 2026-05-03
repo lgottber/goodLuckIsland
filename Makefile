@@ -1,4 +1,4 @@
-.PHONY: tf-init tf-plan tf-apply tf-fix-state tf-import-pages sync-secrets
+.PHONY: tf-init tf-plan tf-apply tf-fix-state tf-import-pages sync-secrets delete-secrets
 
 tf-init:
 	terraform -chdir=terraform init
@@ -19,3 +19,6 @@ tf-apply:
 
 sync-secrets:
 	gh secret set -f .env.local
+
+delete-secrets:
+	gh secret list | awk '{print $$1}' | xargs -I {} gh secret delete {}
