@@ -1,0 +1,16 @@
+.unsub-page {
+  max-width: 480px;
+  margin: 120px auto;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.unsub-title {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+.unsub-body {
+  color: #555;
+  line-height: 1.6;
+}
