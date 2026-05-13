@@ -4,7 +4,7 @@ body {
 
 /* ── PAGE ── */
 .shop-page {
-  padding-top: 110px;
+  padding-top: var(--nav-height);
 }
 
 .shop-content {

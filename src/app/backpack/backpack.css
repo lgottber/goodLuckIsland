@@ -9,7 +9,7 @@ body {
 .backpack-page {
   min-height: 100vh;
   background: var(--cream);
-  padding-top: 110px;
+  padding-top: var(--nav-height);
 }
 
 /* ── Header banner (arch-bottom, matches profile/template style) ── */

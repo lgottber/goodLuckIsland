@@ -4,7 +4,7 @@ body {
 
 /* ── PAGE ── */
 .about-page {
-  padding-top: 110px;
+  padding-top: var(--nav-height);
 }
 
 /* ── HERO SPLIT — Canva style: text left, photo stack right ── */
