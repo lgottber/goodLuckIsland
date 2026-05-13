@@ -7,12 +7,21 @@ const CORS_HEADERS = {
 
 const BATCH_SIZE = 100;
 
-function subFromJwt(token: string): string | null {
-  try {
-    return JSON.parse(atob(token.split(".")[1])).sub ?? null;
-  } catch {
-    return null;
+function subFromJwt(token: string): string {
+  const parts = token.split(".");
+  if (parts.length !== 3) {
+    throw new Error(`Malformed JWT: expected 3 parts, got ${parts.length}`);
   }
+  let payload: Record<string, unknown>;
+  try {
+    payload = JSON.parse(atob(parts[1]));
+  } catch {
+    throw new Error("Malformed JWT: payload is not valid base64-encoded JSON");
+  }
+  if (typeof payload.sub !== "string" || !payload.sub) {
+    throw new Error("Malformed JWT: missing or invalid 'sub' claim");
+  }
+  return payload.sub;
 }
 
 Deno.serve(async (req) => {
@@ -21,9 +30,15 @@ Deno.serve(async (req) => {
   }
 
   const token = (req.headers.get("Authorization") ?? "").replace("Bearer ", "");
-  const userId = subFromJwt(token);
-  if (!token || !userId) {
-    return new Response("Unauthorized", { status: 401, headers: CORS_HEADERS });
+  if (!token) {
+    return new Response("Unauthorized: missing Bearer token", { status: 401, headers: CORS_HEADERS });
+  }
+
+  let userId: string;
+  try {
+    userId = subFromJwt(token);
+  } catch (err) {
+    return new Response(`Unauthorized: ${(err as Error).message}`, { status: 401, headers: CORS_HEADERS });
   }
 
   // Verify admin using the caller's Auth0 JWT (respects RLS)
