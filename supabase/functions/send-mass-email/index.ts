@@ -7,6 +7,15 @@ const CORS_HEADERS = {
 
 const BATCH_SIZE = 100;
 
+function makeSupabaseClient(key: string, token?: string) {
+  const accessToken = () => Promise.resolve(token);
+  return createClient(
+    Deno.env.get("SUPABASE_URL")!,
+    key,
+    token ? { accessToken } : undefined,
+  );
+}
+
 function isNonEmptyString(value: string): boolean {
   return value.length > 0;
 }
@@ -46,11 +55,7 @@ Deno.serve(async (req) => {
   }
 
   // Verify admin using the caller's Auth0 JWT (respects RLS)
-  const supabaseUser = createClient(
-    Deno.env.get("SUPABASE_URL")!,
-    Deno.env.get("SUPABASE_ANON_KEY")!,
-    { accessToken: () => Promise.resolve(token) },
-  );
+  const supabaseUser = makeSupabaseClient(Deno.env.get("SUPABASE_ANON_KEY")!, token);
   const { data: isAdmin } = await supabaseUser.rpc("is_admin", {
     user_id: userId,
   });
@@ -67,10 +72,7 @@ Deno.serve(async (req) => {
   }
 
   // Use service role to read all user emails
-  const supabaseAdmin = createClient(
-    Deno.env.get("SUPABASE_URL")!,
-    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-  );
+  const supabaseAdmin = makeSupabaseClient(Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
   const { data: users, error } = await supabaseAdmin
     .from("users")
     .select("email");
