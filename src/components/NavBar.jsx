@@ -41,21 +41,26 @@ export default function NavBar({
   }
 
   const initials = user?.name
-    ? user.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()
-    : user?.email?.[0]?.toUpperCase() ?? "?";
+    ? user.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase()
+    : (user?.email?.[0]?.toUpperCase() ?? "?");
 
-  const avatarAuthSection = user
-    ? (
-      <UserMenu
-        user={user}
-        initials={initials}
-        largeAvatar={largeAvatar}
-        dropdownOpen={dropdownOpen}
-        setDropdownOpen={setDropdownOpen}
-        dropdownRef={dropdownRef}
-      />
-    )
-    : <GuestAuthButtons />;
+  const avatarAuthSection = user ? (
+    <UserMenu
+      user={user}
+      initials={initials}
+      largeAvatar={largeAvatar}
+      dropdownOpen={dropdownOpen}
+      setDropdownOpen={setDropdownOpen}
+      dropdownRef={dropdownRef}
+    />
+  ) : (
+    <GuestAuthButtons />
+  );
 
   const navParts = ["nav"];
   if (activePage === "home") navParts.push("nav-hero");
@@ -64,9 +69,7 @@ export default function NavBar({
 
   return (
     <>
-      <nav
-        className={navClassName}
-      >
+      <nav className={navClassName}>
         <div className="nav-inner">
           <Link href="/" className="nav-logo">
             <img
@@ -103,9 +106,7 @@ export default function NavBar({
               Podcasts &amp; Articles
             </Link>
           </div>
-          <div className="nav-auth">
-            {authSection ?? avatarAuthSection}
-          </div>
+          <div className="nav-auth">{authSection ?? avatarAuthSection}</div>
           <button
             type="button"
             className={`nav-hamburger ${mobileOpen ? "open" : ""}`}
@@ -126,25 +127,25 @@ export default function NavBar({
         >
           ✕
         </button>
-        <Link href="/about" onClick={() => setMobileOpen(false)}>About</Link>
+        <Link href="/about" onClick={() => setMobileOpen(false)}>
+          About
+        </Link>
         <Link href="/shop" onClick={() => setMobileOpen(false)}>
           Shop
         </Link>
-        {user
-          ? <MobileArticlesLink setMobileOpen={setMobileOpen} />
-          : (
-            <MobileArticlesGatedButton
-              setMobileOpen={setMobileOpen}
-              setShowGate={setShowGate}
-            />
-          )}
-        {user
-          ? (
-            <MobileUserSection
-              setMobileOpen={setMobileOpen}
-            />
-          )
-          : <MobileGuestAuth setMobileOpen={setMobileOpen} />}
+        {user ? (
+          <MobileArticlesLink setMobileOpen={setMobileOpen} />
+        ) : (
+          <MobileArticlesGatedButton
+            setMobileOpen={setMobileOpen}
+            setShowGate={setShowGate}
+          />
+        )}
+        {user ? (
+          <MobileUserSection setMobileOpen={setMobileOpen} />
+        ) : (
+          <MobileGuestAuth setMobileOpen={setMobileOpen} />
+        )}
       </div>
 
       {showGate && <NavGateModal onClose={() => setShowGate(false)} />}

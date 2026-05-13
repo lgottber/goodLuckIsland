@@ -7,9 +7,7 @@ export default function SavedList({ items }) {
       <div className="saved-empty">
         <div className="saved-empty-icon">🔖</div>
         <h3>Nothing saved yet</h3>
-        <p>
-          Bookmark articles and podcast episodes to find them here.
-        </p>
+        <p>Bookmark articles and podcast episodes to find them here.</p>
         <Link href="/articles" className="saved-empty-cta">
           Browse Podcasts &amp; Articles →
         </Link>
@@ -18,7 +16,9 @@ export default function SavedList({ items }) {
   }
   return (
     <div className="saved-list">
-      {items.map((item) => <SavedItem key={item.id} item={item} />)}
+      {items.map((item) => (
+        <SavedItem key={item.id} item={item} />
+      ))}
     </div>
   );
 }

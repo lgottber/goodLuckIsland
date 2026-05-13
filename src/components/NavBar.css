@@ -14,7 +14,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: border-color 0.2s, transform 0.15s;
+  transition:
+    border-color 0.2s,
+    transform 0.15s;
   flex-shrink: 0;
 }
 .nav-avatar-btn:hover {
@@ -52,7 +54,9 @@
   border-radius: 14px;
   padding: 0.5rem;
   min-width: 200px;
-  box-shadow: 0 8px 32px rgba(30, 45, 90, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 8px 32px rgba(30, 45, 90, 0.18),
+    0 2px 8px rgba(0, 0, 0, 0.08);
   z-index: 500;
   animation: dropdownIn 0.15s ease;
 }
@@ -305,7 +309,9 @@
   font-size: 0.9rem;
   font-weight: 600;
   text-decoration: none;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
   display: inline-block;
 }
 

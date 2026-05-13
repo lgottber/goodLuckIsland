@@ -52,8 +52,8 @@ const INITIAL_USER = {
 };
 
 const DB_TO_STATE = {
-  "first_name": "firstName",
-  "last_name": "lastName",
+  first_name: "firstName",
+  last_name: "lastName",
   email: "email",
   username: "username",
   location: "location",
@@ -63,14 +63,14 @@ const DB_TO_STATE = {
   occupation: "occupation",
   education: "education",
   retired: "retired",
-  "retirement_date": "retirementDate",
-  "marital_status": "maritalStatus",
+  retirement_date: "retirementDate",
+  marital_status: "maritalStatus",
   divorced: "divorced",
   kids: "kids",
-  "home_paid_off": "homePaidOff",
-  "working_income": "workingIncome",
-  "net_worth": "netWorth",
-  "avatar_id": "avatarId",
+  home_paid_off: "homePaidOff",
+  working_income: "workingIncome",
+  net_worth: "netWorth",
+  avatar_id: "avatarId",
 };
 
 // ─── Main Profile Page ────────────────────────────────────────────────────────
@@ -81,8 +81,8 @@ export default function ProfilePage() {
   function applyAuth0Fields(prev) {
     const nameParts = auth0User.name?.split(" ") ?? [];
     const firstName = auth0User.given_name ?? nameParts[0] ?? prev.firstName;
-    const lastName = auth0User.family_name ?? nameParts.slice(1).join(" ") ??
-      prev.lastName;
+    const lastName =
+      auth0User.family_name ?? nameParts.slice(1).join(" ") ?? prev.lastName;
     return {
       ...prev,
       firstName,
@@ -94,17 +94,21 @@ export default function ProfilePage() {
   }
 
   function applySupabaseFields(prev, data) {
-    const merged = Object.keys(DB_TO_STATE).reduce((total, curr) => ({
-      ...total,
-      [DB_TO_STATE[curr]]: data[curr] || prev[DB_TO_STATE[curr]],
-    }), prev);
+    const merged = Object.keys(DB_TO_STATE).reduce(
+      (total, curr) => ({
+        ...total,
+        [DB_TO_STATE[curr]]: data[curr] || prev[DB_TO_STATE[curr]],
+      }),
+      prev,
+    );
     return {
       ...merged,
       age: data.age != null ? String(data.age) : prev.age,
-      yearsInOccupation: data.years_in_occupation != null
-        ? String(data.years_in_occupation)
-        : prev.yearsInOccupation,
-      avatarUrl: data.avatar_id ? "" : (auth0User.picture || prev.avatarUrl),
+      yearsInOccupation:
+        data.years_in_occupation != null
+          ? String(data.years_in_occupation)
+          : prev.yearsInOccupation,
+      avatarUrl: data.avatar_id ? "" : auth0User.picture || prev.avatarUrl,
     };
   }
 
@@ -156,8 +160,8 @@ export default function ProfilePage() {
     }
   }
 
-  const initials = `${user.firstName?.[0] ?? "?"}${user.lastName?.[0] ?? "?"}`
-    .toUpperCase();
+  const initials =
+    `${user.firstName?.[0] ?? "?"}${user.lastName?.[0] ?? "?"}`.toUpperCase();
 
   function persistProfile(updated) {
     if (!auth0User) {
@@ -236,7 +240,9 @@ export default function ProfilePage() {
             </div>
 
             <div className="profile-header-info">
-              <h1>{user.firstName} {user.lastName}</h1>
+              <h1>
+                {user.firstName} {user.lastName}
+              </h1>
               <p className="profile-handle">{user.username}</p>
               <div className="profile-meta-row">
                 <span className="profile-badge">🌴 Islander</span>
@@ -313,9 +319,11 @@ export default function ProfilePage() {
           {/* Bio card */}
           <div className="profile-card profile-card--bio">
             <p className="section-label-sm">About Me</p>
-            {user.bio
-              ? <BioDisplay bio={user.bio} />
-              : <BioEmpty onEditClick={() => setEditing(true)} />}
+            {user.bio ? (
+              <BioDisplay bio={user.bio} />
+            ) : (
+              <BioEmpty onEditClick={() => setEditing(true)} />
+            )}
           </div>
 
           {/* About & Interests row */}
@@ -338,11 +346,7 @@ export default function ProfilePage() {
                 />
               )}
               {user.email && (
-                <InfoRow
-                  iconName="mail"
-                  label="Email"
-                  value={user.email}
-                />
+                <InfoRow iconName="mail" label="Email" value={user.email} />
               )}
               <InfoRow
                 iconName="calendar"
@@ -357,9 +361,11 @@ export default function ProfilePage() {
             {/* Interests */}
             <div className="profile-card">
               <h3>Interests</h3>
-              {user.interests.length > 0
-                ? <InterestsList interests={user.interests} />
-                : <InterestsEmpty onEditClick={() => setEditing(true)} />}
+              {user.interests.length > 0 ? (
+                <InterestsList interests={user.interests} />
+              ) : (
+                <InterestsEmpty onEditClick={() => setEditing(true)} />
+              )}
             </div>
           </div>
         </div>

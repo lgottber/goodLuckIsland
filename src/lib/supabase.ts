@@ -27,8 +27,11 @@ function getClient() {
 
 // Lazy proxy so module-level imports don't crash during SSR prerendering
 // when env vars are absent at build time.
-export const supabase = new Proxy({} as ReturnType<typeof createClient<Database>>, {
-  get(_, prop) {
-    return Reflect.get(getClient(), prop);
+export const supabase = new Proxy(
+  {} as ReturnType<typeof createClient<Database>>,
+  {
+    get(_, prop) {
+      return Reflect.get(getClient(), prop);
+    },
   },
-});
+);

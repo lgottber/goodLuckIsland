@@ -25,9 +25,11 @@ export default function BackpackSectionCard({ section, index, onSelect }) {
         </div>
       </div>
       <div className="backpack-card-footer">
-        {section.type === "coming-soon"
-          ? <BackpackComingSoonBadge />
-          : <BackpackCardCta />}
+        {section.type === "coming-soon" ? (
+          <BackpackComingSoonBadge />
+        ) : (
+          <BackpackCardCta />
+        )}
       </div>
     </button>
   );

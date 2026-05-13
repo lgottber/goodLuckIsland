@@ -46,18 +46,27 @@ Deno.serve(async (req) => {
 
   const token = (req.headers.get("Authorization") ?? "").replace("Bearer ", "");
   if (!token) {
-    return new Response("Unauthorized: missing Bearer token", { status: 401, headers: CORS_HEADERS });
+    return new Response("Unauthorized: missing Bearer token", {
+      status: 401,
+      headers: CORS_HEADERS,
+    });
   }
 
   let userId: string;
   try {
     userId = subFromJwt(token);
   } catch (err) {
-    return new Response(`Unauthorized: ${(err as Error).message}`, { status: 401, headers: CORS_HEADERS });
+    return new Response(`Unauthorized: ${(err as Error).message}`, {
+      status: 401,
+      headers: CORS_HEADERS,
+    });
   }
 
   // Verify admin using the caller's Auth0 JWT (respects RLS)
-  const supabaseUser = makeSupabaseClient(Deno.env.get("SUPABASE_ANON_KEY")!, token);
+  const supabaseUser = makeSupabaseClient(
+    Deno.env.get("SUPABASE_ANON_KEY")!,
+    token,
+  );
   const { data: isAdmin } = await supabaseUser.rpc("is_admin", {
     user_id: userId,
   });
@@ -74,7 +83,9 @@ Deno.serve(async (req) => {
   }
 
   // Use service role to read all user emails
-  const supabaseAdmin = makeSupabaseClient(Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+  const supabaseAdmin = makeSupabaseClient(
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+  );
   const { data: users, error } = await supabaseAdmin
     .from("users")
     .select("email");
@@ -94,7 +105,8 @@ Deno.serve(async (req) => {
     });
   }
 
-  const from = Deno.env.get("RESEND_FROM_EMAIL") ??
+  const from =
+    Deno.env.get("RESEND_FROM_EMAIL") ??
     "Good Luck Island <hello@goodluckisland.com>";
   const resendKey = Deno.env.get("RESEND_API_KEY")!;
 
@@ -104,7 +116,7 @@ Deno.serve(async (req) => {
     const res = await fetch("https://api.resend.com/emails/batch", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${resendKey}`,
+        Authorization: `Bearer ${resendKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(

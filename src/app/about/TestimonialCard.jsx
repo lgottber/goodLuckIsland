@@ -21,9 +21,7 @@ export default function TestimonialCard({ testimonial }) {
         ))}
         <p className="testimonial-dark-name">— {testimonial.name}</p>
       </div>
-      <div className="testimonial-dark-avatar-placeholder">
-        🙂
-      </div>
+      <div className="testimonial-dark-avatar-placeholder">🙂</div>
     </div>
   );
 }

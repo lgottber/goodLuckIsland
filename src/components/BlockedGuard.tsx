@@ -45,10 +45,7 @@ export function BlockedGuard({ children }: { children: React.ReactNode }) {
         <p className={styles.message}>
           An admin has removed your access to Good Luck Island.
         </p>
-        <button
-          className={styles.signOutButton}
-          onClick={handleSignOut}
-        >
+        <button className={styles.signOutButton} onClick={handleSignOut}>
           Sign out
         </button>
       </div>

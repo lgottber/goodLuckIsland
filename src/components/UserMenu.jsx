@@ -44,15 +44,15 @@ export default function UserMenu({
         onClick={() => setDropdownOpen(!dropdownOpen)}
         aria-label="User menu"
       >
-        {user.picture
-          ? (
-            <img
-              src={user.picture}
-              alt={user.name ?? "User"}
-              className="nav-avatar-img"
-            />
-          )
-          : <div className="nav-avatar-initials">{initials}</div>}
+        {user.picture ? (
+          <img
+            src={user.picture}
+            alt={user.name ?? "User"}
+            className="nav-avatar-img"
+          />
+        ) : (
+          <div className="nav-avatar-initials">{initials}</div>
+        )}
       </button>
       {dropdownOpen && (
         <NavDropdown

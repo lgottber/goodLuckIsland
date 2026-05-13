@@ -1,8 +1,11 @@
 import { useEffect } from "react";
 
-export default function Modal(
-  { onClose, backdropClassName, contentClassName, children },
-) {
+export default function Modal({
+  onClose,
+  backdropClassName,
+  contentClassName,
+  children,
+}) {
   useEffect(() => {
     const onKeyDown = (e) => {
       if (e.key === "Escape") onClose();

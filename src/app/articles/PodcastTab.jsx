@@ -12,11 +12,7 @@ export default function PodcastTab({
   return (
     <div className="podcast-tab-wrapper">
       <div className="podcast-subscribe-row">
-        <a
-          href="https://youtube.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
           <button type="button" className="podcast-sub-btn">
             <YoutubeIcon />
             Subscribe on YouTube

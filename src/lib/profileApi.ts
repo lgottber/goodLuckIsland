@@ -34,7 +34,9 @@ export async function createUser(userId: string, email: string) {
   if (error) throw error;
 }
 
-export async function fetchProfile(userId: string): Promise<Tables<"users"> | null> {
+export async function fetchProfile(
+  userId: string,
+): Promise<Tables<"users"> | null> {
   const { data } = await supabase
     .from("users")
     .select("*")
@@ -43,7 +45,9 @@ export async function fetchProfile(userId: string): Promise<Tables<"users"> | nu
   return data;
 }
 
-export async function exportProfileData(userId: string): Promise<Tables<"users">> {
+export async function exportProfileData(
+  userId: string,
+): Promise<Tables<"users">> {
   const { data, error } = await supabase
     .from("users")
     .select("*")
@@ -66,9 +70,10 @@ export async function upsertProfile(userId: string, updated: ProfileUpdate) {
     interests: updated.interests,
     age: updated.age !== "" ? parseInt(updated.age, 10) : null,
     occupation: updated.occupation,
-    years_in_occupation: updated.yearsInOccupation !== ""
-      ? parseInt(updated.yearsInOccupation, 10)
-      : null,
+    years_in_occupation:
+      updated.yearsInOccupation !== ""
+        ? parseInt(updated.yearsInOccupation, 10)
+        : null,
     education: updated.education,
     retired: updated.retired,
     retirement_date: updated.retirementDate,

@@ -558,7 +558,9 @@ body {
   text-transform: uppercase;
   color: var(--navy);
 }
-.field input, .field textarea, .field select {
+.field input,
+.field textarea,
+.field select {
   padding: 0.8rem 1rem;
   border: 1.5px solid #d8d0c4;
   border-radius: 12px;
@@ -567,13 +569,18 @@ body {
   background: #fff;
   color: var(--navy);
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
-.field input:focus, .field textarea:focus, .field select:focus {
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
   border-color: var(--navy);
   box-shadow: 0 0 0 3px rgba(30, 45, 90, 0.07);
 }
-.field input::placeholder, .field textarea::placeholder {
+.field input::placeholder,
+.field textarea::placeholder {
   color: #b0a898;
 }
 .field textarea {

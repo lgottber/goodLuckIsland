@@ -99,7 +99,9 @@
   color: rgba(255, 255, 255, 0.65);
   font-size: 0.9rem;
   cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
+  transition:
+    border-color 0.2s,
+    color 0.2s;
 }
 
 .signup-btn-decline:hover {

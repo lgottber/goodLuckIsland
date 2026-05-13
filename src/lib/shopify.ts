@@ -8,10 +8,10 @@ type ShopifyProduct = {
   variants: { edges: { node: ShopifyVariant }[] };
 };
 
-const ENDPOINT =
-  `https://${process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN}/api/2024-01/graphql.json`;
+const ENDPOINT = `https://${process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN}/api/2024-01/graphql.json`;
 const rawToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN;
-if (!rawToken) throw new Error("NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN is not set");
+if (!rawToken)
+  throw new Error("NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN is not set");
 const TOKEN: string = rawToken;
 
 async function storefrontFetch<T>(
@@ -57,10 +57,9 @@ const GET_PRODUCT = `
 
 export async function fetchProduct(numericId: string): Promise<ShopifyProduct> {
   const gid = `gid://shopify/Product/${numericId}`;
-  const data = await storefrontFetch<{ node: ShopifyProduct }>(
-    GET_PRODUCT,
-    { id: gid },
-  );
+  const data = await storefrontFetch<{ node: ShopifyProduct }>(GET_PRODUCT, {
+    id: gid,
+  });
   if (!data.node) throw new Error(`Product ${numericId} not found in Shopify`);
   return data.node;
 }

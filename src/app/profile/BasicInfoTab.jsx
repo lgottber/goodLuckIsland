@@ -82,10 +82,7 @@ export default function BasicInfoTab({
       <div className="modal-section-label modal-section-label--spaced">
         About You
       </div>
-      <Field
-        label="Bio"
-        hint={`${(form.bio || "").length} / 300 characters`}
-      >
+      <Field label="Bio" hint={`${(form.bio || "").length} / 300 characters`}>
         <textarea
           value={form.bio}
           onChange={(e) => set("bio", e.target.value)}

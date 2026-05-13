@@ -5,9 +5,11 @@ import AvatarEraTab from "./AvatarEraTab";
 import AvatarCharacterButton from "./AvatarCharacterButton";
 import { AVATAR_ERAS } from "./AvatarDisplay";
 
-export default function AvatarPickerModal(
-  { currentAvatar, onSelect, onClose },
-) {
+export default function AvatarPickerModal({
+  currentAvatar,
+  onSelect,
+  onClose,
+}) {
   const [selectedEra, setSelectedEra] = useState("80s");
   const era = AVATAR_ERAS.find((e) => e.era === selectedEra);
 

@@ -27,7 +27,10 @@ export default function EditModal({ user, onSave, onClose }) {
     }
   };
   const removeInterest = (tag) =>
-    set("interests", form.interests.filter((t) => t !== tag));
+    set(
+      "interests",
+      form.interests.filter((t) => t !== tag),
+    );
 
   const tabIdx = MODAL_TABS.indexOf(activeTab);
 
@@ -90,13 +93,13 @@ export default function EditModal({ user, onSave, onClose }) {
           <button type="button" className="btn-cancel" onClick={onClose}>
             Cancel
           </button>
-          {tabIdx < MODAL_TABS.length - 1
-            ? (
-              <ModalNextButton
-                onNext={() => setActiveTab(MODAL_TABS[tabIdx + 1])}
-              />
-            )
-            : <ModalSaveButton onSave={() => onSave(form)} />}
+          {tabIdx < MODAL_TABS.length - 1 ? (
+            <ModalNextButton
+              onNext={() => setActiveTab(MODAL_TABS[tabIdx + 1])}
+            />
+          ) : (
+            <ModalSaveButton onSave={() => onSave(form)} />
+          )}
         </div>
       </div>
     </Modal>

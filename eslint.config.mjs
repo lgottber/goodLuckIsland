@@ -8,7 +8,15 @@ import noComplexInlineJsxPlugin from "./custom_lint_rules/no-complex-inline-jsx.
 
 export default [
   {
-    ignores: ["supabase/**", "node_modules/**", "out/**", ".next/**", ".history/**", "next-env.d.ts", "src/types/supabase.ts"],
+    ignores: [
+      "supabase/**",
+      "node_modules/**",
+      "out/**",
+      ".next/**",
+      ".history/**",
+      "next-env.d.ts",
+      "src/types/supabase.ts",
+    ],
   },
   {
     files: ["**/*.ts", "**/*.tsx"],

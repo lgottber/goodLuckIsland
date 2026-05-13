@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 const TAG_COLORS = {
-  "Retirement": "teal",
-  "Wellness": "navy",
+  Retirement: "teal",
+  Wellness: "navy",
   "Clear Thinking": "coral",
   "Financial Independence": "teal",
 };
@@ -12,9 +12,7 @@ export default function SavedItem({ item }) {
     <div className="saved-item">
       <div className="saved-item-img">
         <img src={item.image} alt={item.title} />
-        <span
-          className={`saved-item-type saved-item-type--${item.type}`}
-        >
+        <span className={`saved-item-type saved-item-type--${item.type}`}>
           {item.type === "podcast" ? "🎙 Podcast" : "📄 Article"}
         </span>
       </div>

@@ -18,9 +18,7 @@ export default function HBar({ label, pct, color = "#2e8b7a", total }) {
       </div>
       <span className="hbar-pct">{pct}%</span>
       {total && (
-        <span className="hbar-total">
-          {Math.round(total * pct / 100)}
-        </span>
+        <span className="hbar-total">{Math.round((total * pct) / 100)}</span>
       )}
     </div>
   );

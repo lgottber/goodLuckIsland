@@ -5,7 +5,9 @@ export const runtime = "edge";
 export async function POST(request: Request) {
   try {
     const { env } = getRequestContext<CloudflareEnv>();
-    const body: { event: string; properties?: { page?: string } } = JSON.parse(await request.text());
+    const body: { event: string; properties?: { page?: string } } = JSON.parse(
+      await request.text(),
+    );
     const { event, properties } = body;
 
     env.ANALYTICS.writeDataPoint({

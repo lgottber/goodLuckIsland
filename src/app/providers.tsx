@@ -14,11 +14,11 @@ const Auth0Provider = dynamic(
   { ssr: false },
 );
 
-
 export function Providers({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   if (!AUTH0_DOMAIN) throw new Error("NEXT_PUBLIC_AUTH0_DOMAIN is not set");
-  if (!AUTH0_CLIENT_ID) throw new Error("NEXT_PUBLIC_AUTH0_CLIENT_ID is not set");
+  if (!AUTH0_CLIENT_ID)
+    throw new Error("NEXT_PUBLIC_AUTH0_CLIENT_ID is not set");
 
   return (
     <Auth0Provider
@@ -26,7 +26,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
       clientId={AUTH0_CLIENT_ID}
       cacheLocation="localstorage"
       authorizationParams={{
-        redirect_uri: window.location.origin + "/auth/callback",
+        redirect_uri:
+          typeof window !== "undefined"
+            ? window.location.origin + "/auth/callback"
+            : undefined,
       }}
       onRedirectCallback={(appState) => {
         router.replace(appState?.returnTo ?? "/");
