@@ -57,12 +57,15 @@ export default function NavBar({
     )
     : <GuestAuthButtons />;
 
+  const navParts = ["nav"];
+  if (activePage === "home") navParts.push("nav-hero");
+  if (scrolled) navParts.push("nav-scrolled");
+  const navClassName = navParts.join(" ");
+
   return (
     <>
       <nav
-        className={`nav${activePage === "home" ? " nav-hero" : ""}${
-          scrolled ? " nav-scrolled" : ""
-        }`}
+        className={navClassName}
       >
         <div className="nav-inner">
           <Link href="/" className="nav-logo">
