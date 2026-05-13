@@ -11,7 +11,7 @@ export const auth0: Auth0Client | null = typeof window !== "undefined"
     clientId: AUTH0_CLIENT_ID!,
     authorizationParams: {
       // eslint-disable-next-line camelcase
-      redirect_uri: `${globalThis.location.origin}${REDIRECT_URL_PATH}`,
+      redirect_uri: `${window.location.origin}${REDIRECT_URL_PATH}`,
     },
   })
   : null;

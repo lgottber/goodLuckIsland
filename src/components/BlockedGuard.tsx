@@ -11,7 +11,7 @@ export function BlockedGuard({ children }: { children: React.ReactNode }) {
   const [fetchError, setFetchError] = useState(false);
 
   function handleSignOut() {
-    logout({ logoutParams: { returnTo: globalThis.location.origin } });
+    logout({ logoutParams: { returnTo: window.location.origin } });
   }
 
   useEffect(() => {
