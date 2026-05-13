@@ -8,8 +8,8 @@
     "build:cf": "next build && npx @cloudflare/next-on-pages",
     "preview": "npm run build:cf && wrangler pages dev --ip '127.0.0.1' .vercel/output/static",
     "deploy:production": "wrangler pages deploy .vercel/output/static --project-name good-luck-island --branch main",
-    "lint": "eslint . --fix",
-    "lint:check": "eslint .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "postinstall": "patch-package",
     "format:check": "prettier --check ."
