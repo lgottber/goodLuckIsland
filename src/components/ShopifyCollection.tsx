@@ -35,9 +35,10 @@ const BUTTON_STYLES = {
 export default function ShopifyCollection() {
   const abortedRef = useRef(false);
   const initializedRef = useRef(false);
+  const collectionRef = useRef<HTMLDivElement>(null);
 
-  function ShopifyBuyInit() {
-    if (abortedRef.current || initializedRef.current) return;
+  async function ShopifyBuyInit() {
+    if (initializedRef.current) return;
     initializedRef.current = true;
 
     const client = globalThis.ShopifyBuy.buildClient({
@@ -45,11 +46,12 @@ export default function ShopifyCollection() {
       storefrontAccessToken: process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN!,
     });
 
-    globalThis.ShopifyBuy.UI.onReady(client).then(function (ui) {
-      if (abortedRef.current) return;
-      ui.createComponent("collection", {
+    const ui = await globalThis.ShopifyBuy.UI.onReady(client);
+
+    if (abortedRef.current) return;
+    ui.createComponent("collection", {
         id: process.env.NEXT_PUBLIC_SHOPIFY_COLLECTION_ID!,
-        node: document.getElementById("collection-component-1775146534337"),
+        node: collectionRef.current,
         moneyFormat: "%24%7B%7Bamount%7D%7D",
         options: {
           product: {
@@ -220,7 +222,6 @@ export default function ShopifyCollection() {
           },
         },
       });
-    });
   }
 
   useEffect(() => {
@@ -243,7 +244,7 @@ export default function ShopifyCollection() {
         strategy="afterInteractive"
         onLoad={ShopifyBuyInit}
       />
-      <div id="collection-component-1775146534337" />
+      <div ref={collectionRef} />
     </>
   );
 }
