@@ -12,7 +12,7 @@ export default function LogoutPage() {
         returnTo: window.location.origin,
       },
     });
-  }, []);
+  }, [logout]);
 
   return null;
 }
