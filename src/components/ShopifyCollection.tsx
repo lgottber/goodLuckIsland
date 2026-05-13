@@ -41,12 +41,12 @@ export default function ShopifyCollection() {
     if (initializedRef.current) return;
     initializedRef.current = true;
 
-    const client = globalThis.ShopifyBuy.buildClient({
+    const client = window.ShopifyBuy.buildClient({
       domain: process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN!,
       storefrontAccessToken: process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN!,
     });
 
-    const ui = await globalThis.ShopifyBuy.UI.onReady(client);
+    const ui = await window.ShopifyBuy.UI.onReady(client);
 
     if (abortedRef.current) return;
     ui.createComponent("collection", {
@@ -228,7 +228,7 @@ export default function ShopifyCollection() {
     abortedRef.current = false;
 
     // Handles navigation-back case where the script is already loaded
-    if (globalThis.ShopifyBuy?.UI) {
+    if (window.ShopifyBuy?.UI) {
       ShopifyBuyInit();
     }
 

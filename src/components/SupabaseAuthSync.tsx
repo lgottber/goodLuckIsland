@@ -16,6 +16,7 @@ export function SupabaseAuthSync() {
         return claims?.__raw ?? null;
       } catch {
         setTokenError(true);
+        return null;
       }
     };
     setSupabaseTokenGetter(getToken);

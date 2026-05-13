@@ -15,10 +15,11 @@ export function BlockedGuard({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
-    if (!isAuthenticated || !user) return;
+    if (!isAuthenticated || !user?.sub) return;
+    const sub = user.sub;
     async function checkBlocked() {
       try {
-        const profile = await fetchProfile(user.sub);
+        const profile = await fetchProfile(sub);
         if (profile?.blocked_at) setIsBlocked(true);
       } catch {
         setFetchError(true);
