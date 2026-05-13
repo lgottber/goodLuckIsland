@@ -28,7 +28,7 @@ export default function UserMenu({
       a.href = url;
       a.download = "my-good-luck-island-data.csv";
       a.click();
-      URL.revokeObjectURL(url);
+      setTimeout(() => URL.revokeObjectURL(url), 0);
       setExportStatus("done");
       setTimeout(() => setExportStatus("idle"), 3000);
     } catch {
