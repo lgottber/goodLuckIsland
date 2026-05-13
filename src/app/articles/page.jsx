@@ -174,6 +174,7 @@ export default function ArticlesPage() {
   const [modalEpisode, setModalEpisode] = useState(null);
   const [episodes, setEpisodes] = useState(EPISODES);
   const [allArticles, setAllArticles] = useState(ALL_ARTICLES);
+  const [loadError, setLoadError] = useState(false);
 
   useEffect(() => {
     async function loadData() {
@@ -184,8 +185,8 @@ export default function ArticlesPage() {
         ]);
         if (fetchedEpisodes.length) setEpisodes(fetchedEpisodes);
         if (articles.length) setAllArticles(articles);
-      } catch (error) {
-        console.error(error);
+      } catch {
+        setLoadError(true);
       }
     }
     loadData();
@@ -211,6 +212,11 @@ export default function ArticlesPage() {
       <NavBar activePage="articles" largeAvatar />
 
       <div className="articles-page">
+        {loadError && (
+          <p className="articles-load-error">
+            Could not load content. Showing default content.
+          </p>
+        )}
         {/* ── HEADER ── */}
         <div className="articles-header">
           <span className="articles-header-eyebrow">Member Content</span>

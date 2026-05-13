@@ -31,8 +31,7 @@ export default function UserMenu({
       URL.revokeObjectURL(url);
       setExportStatus("done");
       setTimeout(() => setExportStatus("idle"), 3000);
-    } catch (error) {
-      console.error(error);
+    } catch {
       setExportStatus("error");
     }
   }
