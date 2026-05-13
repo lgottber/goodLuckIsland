@@ -253,18 +253,21 @@ button {
   justify-content: center;
   flex-wrap: wrap;
 }
+.cta-primary,
+.cta-ghost {
+  padding: 0.85rem 2rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-block;
+}
 .cta-primary {
   background: #e8673a;
   color: #fff;
   border: none;
-  padding: 0.85rem 2rem;
-  border-radius: 50px;
-  font-size: 0.9rem;
   font-weight: 600;
-  cursor: pointer;
   letter-spacing: 0.02em;
-  transition: all 0.2s;
-  display: inline-block;
 }
 .cta-primary:hover {
   background: #d45a2e;
@@ -275,13 +278,7 @@ button {
   background: transparent;
   color: #fff;
   border: 1.5px solid rgba(255, 255, 255, 0.6);
-  padding: 0.85rem 2rem;
-  border-radius: 50px;
-  font-size: 0.9rem;
   font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: inline-block;
 }
 .cta-ghost:hover {
   border-color: #fff;
