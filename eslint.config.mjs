@@ -8,7 +8,7 @@ import noComplexInlineJsxPlugin from "./custom_lint_rules/no-complex-inline-jsx.
 
 export default [
   {
-    ignores: ["supabase/**", "node_modules/**", "out/**", ".next/**", ".history/**", "next-env.d.ts"],
+    ignores: ["supabase/**", "node_modules/**", "out/**", ".next/**", ".history/**", "next-env.d.ts", "src/types/supabase.ts"],
   },
   {
     files: ["**/*.ts", "**/*.tsx"],
@@ -47,6 +47,14 @@ export default [
       "no-complex-jsx/no-complex-inline-jsx": "error",
       "react/forbid-dom-props": ["error", { forbid: ["style"] }],
       "react/forbid-component-props": ["error", { forbid: ["style"] }],
+    },
+  },
+  {
+    // The Proxy target in supabase.ts requires a type assertion — TypeScript has no
+    // alternative for giving a Proxy a different return type than its target object.
+    files: ["src/lib/supabase.ts"],
+    rules: {
+      "@typescript-eslint/consistent-type-assertions": "off",
     },
   },
 ];
