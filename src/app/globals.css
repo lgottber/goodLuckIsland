@@ -2,6 +2,7 @@
 
 :root {
   --nav-height: 110px;
+  --page-header-radius: 0 0 60% 60% / 0 0 44px 44px;
   --navy: #1e2d5a;
   --teal: #2e8b7a;
   --coral: #e8673a;

@@ -20,7 +20,7 @@ body {
   text-align: center;
   position: relative;
   overflow: visible;
-  border-radius: 0 0 60% 60% / 0 0 44px 44px;
+  border-radius: var(--page-header-radius);
   margin-bottom: 3rem;
 }
 .backpack-header::before {
