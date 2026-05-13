@@ -7,6 +7,10 @@ const CORS_HEADERS = {
 
 const BATCH_SIZE = 100;
 
+function isNonEmptyString(value: string): boolean {
+  return value.length > 0;
+}
+
 function subFromJwt(token: string): string {
   const parts = token.split(".");
   if (parts.length !== 3) {
@@ -77,9 +81,9 @@ Deno.serve(async (req) => {
     });
   }
 
-  const emails = (users ?? []).map((u: { email: string }) => u.email).filter(
-    Boolean,
-  );
+  const emails = (users ?? [])
+    .map((u: { email: string }) => u.email)
+    .filter(isNonEmptyString);
   if (emails.length === 0) {
     return new Response(JSON.stringify({ sent: 0 }), {
       headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
