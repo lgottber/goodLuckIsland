@@ -55,5 +55,5 @@ export async function upsertProfile(userId, updated) {
     avatar_id: updated.avatarId,
     updated_at: new Date().toISOString(),
   });
-  if (error) console.error("Failed to save profile:", error);
+  if (error) throw error;
 }

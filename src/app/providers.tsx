@@ -16,10 +16,15 @@ const Auth0Provider = dynamic(
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const auth0Domain = process.env.NEXT_PUBLIC_AUTH0_DOMAIN;
+  const auth0ClientId = process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID;
+  if (!auth0Domain) throw new Error("NEXT_PUBLIC_AUTH0_DOMAIN is not set");
+  if (!auth0ClientId) throw new Error("NEXT_PUBLIC_AUTH0_CLIENT_ID is not set");
+
   return (
     <Auth0Provider
-      domain={process.env.NEXT_PUBLIC_AUTH0_DOMAIN!}
-      clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID!}
+      domain={auth0Domain}
+      clientId={auth0ClientId}
       cacheLocation="localstorage"
       authorizationParams={{
         // eslint-disable-next-line camelcase
