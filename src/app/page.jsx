@@ -59,7 +59,7 @@ export default function HomePage() {
               "Next Chapter",
               "Financial Clarity",
               "Life After Work",
-            ].map((d, i) => <MarqueeItem key={`${d}-${i}`} text={d} />)}
+            ].map((d, i) => <MarqueeItem key={`marquee-${i}`} text={d} />)}
           </div>
         </div>
 
