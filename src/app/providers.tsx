@@ -26,7 +26,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
       clientId={AUTH0_CLIENT_ID}
       cacheLocation="localstorage"
       authorizationParams={{
-        // eslint-disable-next-line camelcase
         redirect_uri: typeof window !== "undefined" ? window.location.origin + "/auth/callback" : undefined,
       }}
       onRedirectCallback={(appState) => {

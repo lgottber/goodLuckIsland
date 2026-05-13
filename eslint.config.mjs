@@ -34,7 +34,7 @@ export default [
     rules: {
       ...tsPlugin.configs.recommended.rules,
       ...reactPlugin.configs.recommended.rules,
-      camelcase: "error",
+      camelcase: ["error", { allow: ["redirect_uri"] }],
       "@typescript-eslint/consistent-type-assertions": [
         "error",
         { assertionStyle: "never" },

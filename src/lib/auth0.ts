@@ -10,7 +10,6 @@ export const auth0: Auth0Client | null = typeof window !== "undefined"
     domain: AUTH0_DOMAIN!,
     clientId: AUTH0_CLIENT_ID!,
     authorizationParams: {
-      // eslint-disable-next-line camelcase
       redirect_uri: `${window.location.origin}${REDIRECT_URL_PATH}`,
     },
   })
