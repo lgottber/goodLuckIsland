@@ -10,7 +10,8 @@ type ShopifyProduct = {
 
 const ENDPOINT =
   `https://${process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN}/api/2024-01/graphql.json`;
-const TOKEN = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN!;
+const TOKEN = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN;
+if (!TOKEN) throw new Error("NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN is not set");
 
 async function storefrontFetch<T>(
   query: string,
