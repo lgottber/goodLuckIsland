@@ -300,7 +300,6 @@ body {
 .nicholas-links {
   display: flex;
   gap: 0.75rem;
-  /* flex-wrap: wrap; */
   margin-top: 4rem;
   justify-content: center;
 }
@@ -623,49 +622,6 @@ body {
 @media (max-width: 1000px) {
   .about-hero {
     grid-template-columns: 1fr;
-  }
-  .about-hero-photos {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-  .about-hero-photos img {
-    width: calc(50% - 0.5rem);
-    height: 160px;
-  }
-  .nicholas-columns {
-    grid-template-columns: 1fr;
-  }
-  .nicholas-photo-wrap {
-    max-width: 320px;
-  }
-  .contact-section {
-    grid-template-columns: 1fr;
-  }
-  .nav-links {
-    display: none;
-  }
-}
-@media (max-width: 600px) {
-  .mission-pillars {
-    grid-template-columns: 1fr;
-  }
-  .testimonial-light {
-    grid-template-columns: 1fr;
-  }
-  .testimonial-dark {
-    grid-template-columns: 1fr;
-  }
-  .testimonial-dark-avatar, .testimonial-dark-avatar-placeholder {
-    display: none;
-  }
-  .contact-form-row {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 1000px) {
-  .about-hero {
-    grid-template-columns: 1fr;
     padding: 3rem 1.25rem 0;
     gap: 2rem;
     min-height: unset;
@@ -710,6 +666,9 @@ body {
   }
   .stories-inner {
     padding: 3rem 1.25rem 4rem;
+  }
+  .nav-links {
+    display: none;
   }
 }
 @media (max-width: 600px) {

@@ -513,25 +513,6 @@ body {
 }
 
 /* ── RESPONSIVE ── */
-@media (max-width: 960px) {
-  .featured-episode {
-    grid-template-columns: 1fr;
-  }
-  .featured-video-side {
-    min-height: 260px;
-  }
-  .episodes-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .nav-links {
-    display: none;
-  }
-}
-@media (max-width: 600px) {
-  .episodes-grid {
-    grid-template-columns: 1fr;
-  }
-}
 
 /* ── MOBILE NAV HAMBURGER ── */
 .nav-hamburger {
