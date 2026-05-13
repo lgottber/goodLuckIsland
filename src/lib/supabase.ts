@@ -1,4 +1,4 @@
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
 
 let getToken: () => Promise<string | null> = () => Promise.resolve(null);
 
@@ -26,10 +26,8 @@ function getClient() {
 
 // Lazy proxy so module-level imports don't crash during SSR prerendering
 // when env vars are absent at build time.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/consistent-type-assertions
-export const supabase = new Proxy({} as SupabaseClient<any>, {
-  get(_, prop: string) {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    return (getClient() as unknown as Record<string, unknown>)[prop];
+export const supabase = new Proxy({} as ReturnType<typeof createClient>, {
+  get(_, prop) {
+    return Reflect.get(getClient(), prop);
   },
 });
