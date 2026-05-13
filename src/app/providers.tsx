@@ -26,7 +26,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       clientId={AUTH0_CLIENT_ID}
       cacheLocation="localstorage"
       authorizationParams={{
-        redirect_uri: typeof window !== "undefined" ? window.location.origin + "/auth/callback" : undefined,
+        redirect_uri: window.location.origin + "/auth/callback",
       }}
       onRedirectCallback={(appState) => {
         router.replace(appState?.returnTo ?? "/");
