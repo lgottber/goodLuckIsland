@@ -27,12 +27,9 @@ async function storefrontFetch<T>(
     ...options,
   });
   if (!res.ok) throw new Error(`Shopify fetch failed: ${res.status}`);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const rawJson: any = await res.json();
-  const json: { errors?: { message: string }[]; data: T } = rawJson;
+  const json: { errors?: { message: string }[]; data: T } = await res.json();
   if (json.errors) throw new Error(json.errors[0].message);
-  const result: T = json.data;
-  return result;
+  return json.data;
 }
 
 const GET_PRODUCT = `
