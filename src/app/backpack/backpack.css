@@ -40,7 +40,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--teal);
+  color: rgba(255, 255, 255, 0.75);
   margin-bottom: 0.85rem;
   position: relative;
   z-index: 1;
@@ -85,8 +85,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--navy);
-  opacity: 0.5;
+  color: var(--muted);
   white-space: nowrap;
 }
 .backpack-progress-bar-wrap {
@@ -222,7 +221,7 @@ body {
 }
 .backpack-section-tagline {
   font-size: 0.78rem;
-  color: rgba(30, 45, 90, 0.55);
+  color: var(--muted);
   line-height: 1.55;
   font-style: italic;
 }
@@ -414,7 +413,7 @@ body {
 }
 .challenge-reflection-hint {
   font-size: 0.76rem;
-  color: rgba(30, 45, 90, 0.45);
+  color: var(--muted);
 }
 .btn-save {
   background: var(--coral, #e8673a);
@@ -448,7 +447,7 @@ body {
   border-radius: 14px;
   padding: 1.1rem 1.4rem;
   font-size: 0.83rem;
-  color: rgba(30, 45, 90, 0.55);
+  color: var(--muted);
   line-height: 1.65;
   border: 1.5px solid var(--cream-dk, #e6dfd2);
 }

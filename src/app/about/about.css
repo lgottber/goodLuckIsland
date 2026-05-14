@@ -285,7 +285,7 @@ body {
 .nicholas-photo-caption {
   margin-top: 1rem;
   font-size: 0.78rem;
-  color: rgba(30, 45, 90, 0.5);
+  color: var(--muted);
   text-align: center;
   line-height: 1.6;
   letter-spacing: 0.02em;

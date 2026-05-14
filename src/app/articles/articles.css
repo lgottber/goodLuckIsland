@@ -233,7 +233,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--coral);
+  color: var(--navy);
 }
 .featured-title {
   font-family: var(--serif);
@@ -364,7 +364,7 @@ body {
   padding-top: 1rem;
   font-size: 0.72rem;
   font-weight: 700;
-  color: var(--coral);
+  color: var(--navy);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   border-top: 1px solid var(--cream-dk);
@@ -378,7 +378,7 @@ body {
   padding-left: 0;
 }
 .article-card-read:hover {
-  color: var(--coral-dk);
+  color: var(--teal);
 }
 .article-card-read-arrow {
   transition: transform 0.2s;
@@ -422,7 +422,7 @@ body {
 .pull-quote-source {
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--teal);
+  color: rgba(255, 255, 255, 0.75);
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -567,7 +567,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--teal);
+  color: rgba(255, 255, 255, 0.75);
   margin-bottom: 1.25rem;
 }
 .episodes-section-label {
@@ -575,7 +575,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.55);
   margin-bottom: 1.5rem;
 }
 
@@ -825,11 +825,11 @@ body {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--teal);
+  color: rgba(255, 255, 255, 0.75);
 }
 .episode-body-date {
   font-size: 0.62rem;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.55);
   margin-left: auto;
 }
 .episode-body-title {
@@ -857,7 +857,7 @@ body {
   padding-top: 0.75rem;
   font-size: 0.72rem;
   font-weight: 700;
-  color: var(--coral);
+  color: #fff;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   border-top: 1px solid rgba(255, 255, 255, 0.07);

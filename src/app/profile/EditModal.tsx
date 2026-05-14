@@ -95,7 +95,7 @@ export default function EditModal({ user, onSave, onClose }: { user: ProfileForm
               className="btn-cancel"
               onClick={() => setActiveTab(MODAL_TABS[tabIdx - 1])}
             >
-              ← Back
+              Back
             </button>
           )}
         </div>

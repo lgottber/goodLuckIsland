@@ -8,7 +8,7 @@
   --cream: #f0ebe0;
   --cream-dk: #e6dfd2;
   --cream-md: #ede7d9;
-  --muted: #6b7280;
+  --muted: #5c6370;
   --serif: var(--font-cormorant), Georgia, serif;
   --sans: var(--font-dm-sans), system-ui, sans-serif;
 }
@@ -17,7 +17,7 @@ html {
   font-size: 162.5%; /* 26px base — scales all rem values site-wide */
 }
 
-@media (max-width: 640px) {
+@media (max-width: 850px) {
   html {
     font-size: 100%; /* 16px base on mobile to prevent oversized layout */
   }
@@ -110,7 +110,7 @@ html {
 }
 .video-modal-meta {
   font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.6);
 }
 .video-modal-yt {
   display: flex;
