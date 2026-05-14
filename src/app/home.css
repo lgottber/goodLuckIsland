@@ -181,7 +181,7 @@ button {
 .hero-bg {
   position: absolute;
   inset: 0;
-  background-image: url("/beachFiller.png");
+  background-image: url("/beach_filler.png");
   background-size: cover;
   background-position: center;
   animation: slowZoom 20s ease-in-out infinite alternate;

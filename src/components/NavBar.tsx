@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import PictureImage from "./PictureImage";
 import { useAuth0 } from "@auth0/auth0-react";
 import NavGateModal from "./NavGateModal";
 import UserMenu from "./UserMenu";
@@ -76,10 +77,11 @@ export default function NavBar({
       <nav className={navClassName}>
         <div className="nav-inner">
           <Link href="/" className="nav-logo">
-            <img
-              src="/goodLuckIslandLogoSmall.png"
-              alt="Good Luck Island Collective"
+            <PictureImage
+              name="/good_luck_island_logo_small.png"
+              alt="Good Luck Island Collective logo"
               className="nav-logo-img"
+              sizes="40px"
             />
           </Link>
           <div className="nav-links">

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import PictureImage from "../../components/PictureImage";
 
 const TAG_COLORS: Record<string, string> = {
   Retirement: "teal",
@@ -13,7 +14,11 @@ export default function SavedItem({ item }: { item: SavedItemData }) {
   return (
     <div className="saved-item">
       <div className="saved-item-img">
-        <img src={item.image} alt={item.title} />
+        <PictureImage
+          name={item.image}
+          alt={`Cover image for saved ${item.type}: ${item.title}`}
+          sizes="(max-width: 768px) 100vw, 25vw"
+        />
         <span className={`saved-item-type saved-item-type--${item.type}`}>
           {item.type === "podcast" ? "🎙 Podcast" : "📄 Article"}
         </span>

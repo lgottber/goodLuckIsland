@@ -3,6 +3,7 @@ import "./home.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import Link from "next/link";
 import NavBar from "../components/NavBarDynamic";
+import PictureImage from "../components/PictureImage";
 import { FacebookIcon, InstagramIcon, YoutubeIcon } from "../components/Icons";
 import HeroCtaUser from "./HeroCtaUser";
 import HeroCtaGuest from "./HeroCtaGuest";
@@ -83,7 +84,11 @@ export default function HomePage() {
               </blockquote>
             </div>
             <div className="problem-image">
-              <img src="/fallingbike.gif" alt="falling off a bike" />
+              <PictureImage
+                name="/falling_bike.gif"
+                alt="Animated image of someone falling off a bicycle, representing the challenge of navigating retirement without guidance"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
             </div>
           </div>
         </section>
@@ -241,10 +246,11 @@ export default function HomePage() {
         <footer className="footer">
           <div className="footer-inner">
             <div className="footer-brand">
-              <img
-                src="/goodLuckIslandLogoSmall.png"
-                alt="Good Luck Island Collective"
+              <PictureImage
+                name="/good_luck_island_logo_small.png"
+                alt="Good Luck Island Collective logo"
                 className="footer-brand-logo"
+                sizes="120px"
               />
               <span>Curating calm clarity for the next chapter of life.</span>
             </div>

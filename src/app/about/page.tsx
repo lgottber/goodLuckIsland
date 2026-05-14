@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import NavBar from "../../components/NavBarDynamic";
+import PictureImage from "../../components/PictureImage";
 import TestimonialCard from "./TestimonialCard";
 import { useSubmitFeedback } from "../../hooks/useSubmitFeedback";
 import "./about.css";
@@ -80,21 +81,25 @@ export default function AboutPage() {
 
           {/* Photo stack — right column, Canva style */}
           <div className="about-hero-photos">
-            <img
-              src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80"
-              alt="Peaceful scenery"
+            <PictureImage
+              name="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80"
+              alt="Panoramic view of misty mountain peaks and valleys"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
-            <img
-              src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80"
-              alt="Ocean view"
+            <PictureImage
+              name="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80"
+              alt="Crystal clear blue water washing up on a tropical sandy beach"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
-            <img
-              src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80"
-              alt="Working outdoors"
+            <PictureImage
+              name="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80"
+              alt="Two professionals reviewing documents together while planning their next chapter"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
-            <img
-              src="https://images.unsplash.com/photo-1473625247510-8ceb1760943f?w=600&q=80"
-              alt="Journey ahead"
+            <PictureImage
+              name="https://images.unsplash.com/photo-1473625247510-8ceb1760943f?w=600&q=80"
+              alt="A lone person walking a breathtaking coastal path representing the journey ahead"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
           </div>
         </div>
@@ -149,10 +154,11 @@ export default function AboutPage() {
 
           <div className="nicholas-columns">
             <div className="nicholas-photo-wrap">
-              <img
+              <PictureImage
                 className="nicholas-photo"
-                src="/nicholas.png"
-                alt="Nicholas Livecchi"
+                name="/nicholas.png"
+                alt="Nicholas Livecchi, founder of Good Luck Island Collective and certified retirement planning professional"
+                sizes="(max-width: 768px) 100vw, 400px"
               />
               <div className="nicholas-cred-badge">
                 CFP® · CRP® · CPRC® <br /> Author · Podcast Host
@@ -194,10 +200,11 @@ export default function AboutPage() {
 
         {/* ── POSITIVE STORIES — Canva style ── */}
         <div className="stories-section">
-          <img
+          <PictureImage
             className="stories-hero-img"
-            src="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=1400&q=70"
-            alt="Peaceful landscape"
+            name="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=1400&q=70"
+            alt="Lush forest landscape with sunlight filtering through tall trees, representing positive life stories"
+            sizes="100vw"
           />
           <div className="stories-inner">
             <h2 className="stories-title">Positive Stories</h2>

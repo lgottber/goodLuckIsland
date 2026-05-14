@@ -1,3 +1,5 @@
+import PictureImage from "../../components/PictureImage";
+
 type WeeklyQ = { question: string; prompt: string };
 
 export default function ChallengeDetail({
@@ -40,7 +42,11 @@ export default function ChallengeDetail({
       </div>
 
       <div className="challenge-photo-banner">
-        <img src="/bench.png" alt="A quiet moment of reflection" />
+        <PictureImage
+          name="/bench.png"
+          alt="A person sitting alone on a park bench in quiet reflection, representing the inner work of retirement planning"
+          sizes="(max-width: 768px) 100vw, 80vw"
+        />
       </div>
 
       <div className="challenge-reflection">

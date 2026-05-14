@@ -1,10 +1,16 @@
+import PictureImage from "../../components/PictureImage";
+
 type Article = { id: number; category: string; title: string; excerpt: string | null; date: string | null; readTime: string | null; image: string | null; featured?: boolean };
 
 export default function ArticleCard({ article }: { article: Article }) {
   return (
     <div className="article-card">
       <div className="article-card-img">
-        <img src={article.image ?? undefined} alt={article.title} />
+        <PictureImage
+          name={article.image ?? undefined}
+          alt={`Article cover image: ${article.title}`}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
         <span className="article-card-tag">{article.category}</span>
       </div>
       <div className="article-card-body">

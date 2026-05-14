@@ -1,4 +1,5 @@
 import { PlayIcon } from "../../components/Icons";
+import PictureImage from "../../components/PictureImage";
 
 type Episode = { id: number; num: string; title: string; desc: string | null; date: string | null; duration: string | null; youtubeId: string | null; thumbnail: string | null };
 
@@ -15,10 +16,11 @@ export default function FeaturedVideoPlayer({ episode, playing, onPlay }: { epis
   }
   return (
     <>
-      <img
+      <PictureImage
         className="featured-thumbnail"
-        src={episode.thumbnail ?? undefined}
-        alt={episode.title}
+        name={episode.thumbnail ?? undefined}
+        alt={`Thumbnail for featured podcast episode: ${episode.title}`}
+        sizes="(max-width: 768px) 100vw, 60vw"
       />
       <button
         type="button"

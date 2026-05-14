@@ -2,6 +2,7 @@ import { useState, RefObject } from "react";
 import { User } from "@auth0/auth0-react";
 import { exportProfileData } from "../lib/profileApi";
 import NavDropdown from "./NavDropdown";
+import PictureImage from "./PictureImage";
 
 export default function UserMenu({
   user,
@@ -53,10 +54,11 @@ export default function UserMenu({
         aria-label="User menu"
       >
         {user.picture ? (
-          <img
-            src={user.picture}
-            alt={user.name ?? "User"}
+          <PictureImage
+            name={user.picture}
+            alt={user.name ? `${user.name} profile picture` : "User profile picture"}
             className="nav-avatar-img"
+            sizes="40px"
           />
         ) : (
           <div className="nav-avatar-initials">{initials}</div>
