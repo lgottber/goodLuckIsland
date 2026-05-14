@@ -78,53 +78,49 @@ export default function ProfilePage() {
   const { user: auth0User } = useAuth0User();
   const [user, setUser] = useState(INITIAL_USER);
 
-  function applyAuth0Fields(prev: typeof INITIAL_USER) {
-    if (!auth0User) return prev;
-    const nameParts = auth0User.name?.split(" ") ?? [];
-    const firstName = auth0User.given_name ?? nameParts[0] ?? prev.firstName;
-    const lastName =
-      auth0User.family_name ?? nameParts.slice(1).join(" ") ?? prev.lastName;
-    return {
-      ...prev,
-      firstName,
-      lastName,
-      email: auth0User.email ?? prev.email,
-      avatarUrl: auth0User.picture ?? prev.avatarUrl,
-      username: auth0User.nickname ? `@${auth0User.nickname}` : prev.username,
-    };
-  }
-
-  function applySupabaseFields(prev: typeof INITIAL_USER, data: Record<string, unknown>) {
-    const merged: typeof INITIAL_USER = { ...prev };
-    for (const [dbKey, stateKey] of Object.entries(DB_TO_STATE)) {
-      Object.assign(merged, { [stateKey]: data[dbKey] ?? prev[stateKey] });
-    }
-    return {
-      ...merged,
-      age: data.age != null ? String(data.age) : prev.age,
-      yearsInOccupation:
-        data.years_in_occupation != null
-          ? String(data.years_in_occupation)
-          : prev.yearsInOccupation,
-      avatarUrl: data.avatar_id ? "" : (auth0User?.picture ?? prev.avatarUrl),
-    };
-  }
-
-  function handleProfileData(data: Record<string, unknown>) {
-    if (!data) return;
-    setUser((prev) => applySupabaseFields(prev, data));
-  }
-
   // Seed from Auth0 then overlay saved profile from Supabase
   useEffect(() => {
     if (!auth0User) return;
+    const a0 = auth0User;
+
+    function applyAuth0Fields(prev: typeof INITIAL_USER) {
+      const nameParts = a0.name?.split(" ") ?? [];
+      const firstName = a0.given_name ?? nameParts[0] ?? prev.firstName;
+      const lastName =
+        a0.family_name ?? nameParts.slice(1).join(" ") ?? prev.lastName;
+      return {
+        ...prev,
+        firstName,
+        lastName,
+        email: a0.email ?? prev.email,
+        avatarUrl: a0.picture ?? prev.avatarUrl,
+        username: a0.nickname ? `@${a0.nickname}` : prev.username,
+      };
+    }
+
+    function applySupabaseFields(prev: typeof INITIAL_USER, data: Record<string, unknown>) {
+      const merged: typeof INITIAL_USER = { ...prev };
+      for (const [dbKey, stateKey] of Object.entries(DB_TO_STATE)) {
+        Object.assign(merged, { [stateKey]: data[dbKey] ?? prev[stateKey] });
+      }
+      return {
+        ...merged,
+        age: data.age != null ? String(data.age) : prev.age,
+        yearsInOccupation:
+          data.years_in_occupation != null
+            ? String(data.years_in_occupation)
+            : prev.yearsInOccupation,
+        avatarUrl: data.avatar_id ? "" : (a0.picture ?? prev.avatarUrl),
+      };
+    }
+
     setUser(applyAuth0Fields);
-    fetchProfile(auth0User.sub ?? "").then(async (data) => {
+    fetchProfile(a0.sub ?? "").then(async (data) => {
       if (!data) {
-        await createUser(auth0User.sub ?? "", auth0User.email ?? "");
+        await createUser(a0.sub ?? "", a0.email ?? "");
         return;
       }
-      handleProfileData(data);
+      if (data) setUser((prev) => applySupabaseFields(prev, data));
     });
   }, [auth0User]);
   const [editing, setEditing] = useState(false);
