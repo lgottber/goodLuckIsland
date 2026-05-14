@@ -1,4 +1,5 @@
 import NavDropdownItem from "./NavDropdownItem";
+import Icon from "./Icon";
 
 const MENU_ITEMS = [
   { href: "/profile", label: "My Profile" },
@@ -24,18 +25,18 @@ export default function NavDropdown({ onClose, exportStatus, onExport }: { onClo
         onClick={onExport}
         disabled={exportStatus === "exporting"}
       >
-        <span className="nav-dropdown-icon">📥</span>
+        <span className="nav-dropdown-icon"><Icon name="download" size={14} /></span>
         {exportStatus === "exporting"
           ? "Exporting…"
           : exportStatus === "done"
-            ? "✓ Exported!"
+            ? <><Icon name="check" size={13} /> Exported!</>
             : exportStatus === "error"
               ? "Export failed"
               : "Export My Data"}
       </button>
       <div className="nav-dropdown-divider" />
       <a href="/auth/logout" className="nav-dropdown-item nav-dropdown-logout">
-        <span className="nav-dropdown-icon"></span> Logout
+        <span className="nav-dropdown-icon"><Icon name="logout" size={14} /></span> Logout
       </a>
     </div>
   );

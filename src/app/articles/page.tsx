@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { fetchArticles, fetchEpisodes } from "../../lib/articlesApi";
 import NavBar from "../../components/NavBarDynamic";
+import Icon from "../../components/Icon";
 import FilterTabs from "../../components/FilterTabs";
 import ArticlesTab from "./ArticlesTab";
 import PodcastTab from "./PodcastTab";
@@ -230,8 +231,8 @@ export default function ArticlesPage() {
           containerClass="content-tabs"
           buttonClass="content-tab"
           items={[
-            { label: "📖 Articles", value: "articles" },
-            { label: "🎬 Podcast", value: "podcast" },
+            { label: <><Icon name="book" size={14} /> Articles</>, value: "articles" },
+            { label: <><Icon name="film" size={14} /> Podcast</>, value: "podcast" },
           ]}
           active={activeTab}
           onChange={setActiveTab}

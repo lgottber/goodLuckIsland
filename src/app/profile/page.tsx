@@ -216,51 +216,53 @@ export default function ProfilePage() {
         {/* ── PROFILE HEADER ── */}
         <div className="profile-header-wrap">
           <div className="profile-header">
-            <div className="profile-avatar-wrap">
-              <AvatarDisplay
-                avatarId={user.avatarId}
-                avatarUrl={user.avatarUrl}
-                initials={initials}
-                size={120}
-              />
-              <button
-                type="button"
-                className="avatar-edit-btn"
-                onClick={() => setPickingAvatar(true)}
-                title="Change avatar"
-              >
-                <Icon name="camera" size={12} />
-              </button>
-            </div>
+            <div className="profile-header-left">
+              <div className="profile-avatar-wrap">
+                <AvatarDisplay
+                  avatarId={user.avatarId}
+                  avatarUrl={user.avatarUrl}
+                  initials={initials}
+                  size={120}
+                />
+                <button
+                  type="button"
+                  className="avatar-edit-btn"
+                  onClick={() => setPickingAvatar(true)}
+                  title="Change avatar"
+                >
+                  <Icon name="camera" size={12} />
+                </button>
+              </div>
 
-            <div className="profile-header-info">
-              <h1>
-                {user.firstName} {user.lastName}
-              </h1>
-              <p className="profile-handle">{user.username}</p>
-              <div className="profile-meta-row">
-                <span className="profile-badge">🌴 Islander</span>
-                {user.occupation && (
-                  <ProfileMetaItem
-                    className="profile-occupation"
-                    iconName="briefcase"
-                    value={user.occupation}
-                  />
-                )}
-                {user.location && (
-                  <ProfileMetaItem
-                    className="profile-location"
-                    iconName="location"
-                    value={user.location}
-                  />
-                )}
+              <div className="profile-header-info">
+                <h1>
+                  {user.firstName} {user.lastName}
+                </h1>
+                <p className="profile-handle">{user.username}</p>
+                <div className="profile-meta-row">
+                  <span className="profile-badge"><Icon name="palm" size={12} /> Islander</span>
+                  {user.occupation && (
+                    <ProfileMetaItem
+                      className="profile-occupation"
+                      iconName="briefcase"
+                      value={user.occupation}
+                    />
+                  )}
+                  {user.location && (
+                    <ProfileMetaItem
+                      className="profile-location"
+                      iconName="location"
+                      value={user.location}
+                    />
+                  )}
+                </div>
               </div>
             </div>
 
             <div className="profile-header-actions">
-              {!saved && <FlashMessage message="✓ Saved!" />}
+              {!saved && <FlashMessage message={<><Icon name="check" size={13} /> Saved!</>} />}
               {resetStatus === "sent" && (
-                <FlashMessage message="✓ Reset email sent!" />
+                <FlashMessage message={<><Icon name="check" size={13} /> Reset email sent!</>} />
               )}
               {resetStatus === "error" && (
                 <FlashMessage message="Something went wrong" error />

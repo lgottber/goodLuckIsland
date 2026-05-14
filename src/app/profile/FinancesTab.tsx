@@ -1,5 +1,6 @@
 import Field from "./Field";
 import Select from "./Select";
+import Icon from "./Icon";
 
 type FormState = { workingIncome: string; netWorth: string };
 
@@ -8,7 +9,7 @@ export default function FinancesTab({ form, set }: { form: FormState; set: (key:
     <div className="edit-modal-body">
       <div className="modal-section-label">Financial Overview</div>
       <p className="modal-privacy-note">
-        🔒 This information is private and never shared publicly. It helps us
+        <Icon name="lock" size={13} /> This information is private and never shared publicly. It helps us
         tailor content to where you are in your journey.
       </p>
 

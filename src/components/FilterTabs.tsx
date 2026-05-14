@@ -1,4 +1,6 @@
-type FilterTabItem = { label: string; value: string };
+import { ReactNode } from "react";
+
+type FilterTabItem = { label: ReactNode; value: string };
 
 export default function FilterTabs({
   items,

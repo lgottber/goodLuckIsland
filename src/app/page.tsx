@@ -5,6 +5,7 @@ import Link from "next/link";
 import NavBar from "../components/NavBarDynamic";
 import PictureImage from "../components/PictureImage";
 import { FacebookIcon, InstagramIcon, YoutubeIcon } from "../components/Icons";
+import Icon from "../components/Icon";
 import HeroCtaUser from "./HeroCtaUser";
 import HeroCtaGuest from "./HeroCtaGuest";
 import MarqueeItem from "./MarqueeItem";
@@ -106,10 +107,10 @@ export default function HomePage() {
             </p>
             <div className="pillars-strip">
               {[
-                { icon: "🚫", label: "Freedom from Noise" },
-                { icon: "🧠", label: "Independent Thinking" },
-                { icon: "🗺️", label: "Intentional Lifestyle Design" },
-                { icon: "🤝", label: "Community Without Pressure" },
+                { icon: <Icon name="block" size={22} />, label: "Freedom from Noise" },
+                { icon: <Icon name="brain" size={22} />, label: "Independent Thinking" },
+                { icon: <Icon name="map" size={22} />, label: "Intentional Lifestyle Design" },
+                { icon: <Icon name="users" size={22} />, label: "Community Without Pressure" },
               ].map(({ icon, label }) => (
                 <PillarCard key={label} icon={icon} label={label} />
               ))}
@@ -132,42 +133,42 @@ export default function HomePage() {
             <div className="values-grid">
               {[
                 {
-                  icon: "🗽",
+                  icon: <Icon name="flag" size={22} />,
                   title: "Autonomy",
                   desc: "The right to design your own path without pressure",
                 },
                 {
-                  icon: "🎨",
+                  icon: <Icon name="palette" size={22} />,
                   title: "Creative Reinvention",
                   desc: "Retirement isn't an ending. It's your second act",
                 },
                 {
-                  icon: "🌿",
+                  icon: <Icon name="leaf" size={22} />,
                   title: "Authentic Experiences",
                   desc: "Real moments over status symbols",
                 },
                 {
-                  icon: "💪",
+                  icon: <Icon name="activity" size={22} />,
                   title: "Health & Longevity",
                   desc: "Investing in the vessel, not just the portfolio",
                 },
                 {
-                  icon: "📈",
+                  icon: <Icon name="trending-up" size={22} />,
                   title: "Personal Growth",
                   desc: "Still curious. Still learning. Always evolving",
                 },
                 {
-                  icon: "💡",
+                  icon: <Icon name="lightbulb" size={22} />,
                   title: "Financial Confidence",
                   desc: "Calm clarity over panic-driven decisions",
                 },
                 {
-                  icon: "⏳",
+                  icon: <Icon name="hourglass" size={22} />,
                   title: "Time Freedom",
                   desc: "The ultimate retirement asset",
                 },
                 {
-                  icon: "❤️",
+                  icon: <Icon name="heart" size={22} />,
                   title: "Meaningful Relationships",
                   desc: "The people who make the island worth reaching",
                 },

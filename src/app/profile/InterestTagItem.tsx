@@ -1,3 +1,5 @@
+import Icon from "./Icon";
+
 export default function InterestTagItem({ tag, onRemove }: { tag: string; onRemove: (tag: string) => void }) {
   return (
     <span className="tag tag--removable">
@@ -7,7 +9,7 @@ export default function InterestTagItem({ tag, onRemove }: { tag: string; onRemo
         className="tag-remove-btn"
         onClick={() => onRemove(tag)}
       >
-        ✕
+        <Icon name="x" size={10} />
       </button>
     </span>
   );

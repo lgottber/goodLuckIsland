@@ -126,13 +126,6 @@ export default function NavBar({
       </nav>
 
       <div className={`nav-mobile-menu ${mobileOpen ? "open" : ""}`}>
-        <button
-          type="button"
-          className="nav-mobile-close"
-          onClick={() => setMobileOpen(false)}
-        >
-          ✕
-        </button>
         <Link href="/about" onClick={() => setMobileOpen(false)}>
           About
         </Link>

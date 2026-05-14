@@ -143,9 +143,19 @@
   align-items: center;
   justify-content: center;
   gap: 1.75rem;
+  transform: translateX(100%);
+  transition:
+    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    display 0.35s allow-discrete;
 }
 .nav-mobile-menu.open {
   display: flex;
+  transform: translateX(0);
+}
+@starting-style {
+  .nav-mobile-menu.open {
+    transform: translateX(100%);
+  }
 }
 .nav-mobile-menu a {
   font-family: var(--sans);

@@ -1,3 +1,6 @@
+# image types created on builds
+*.webp
+
 certificates
 node_modules
 # Created by https://www.toptal.com/developers/gitignore/api/node,nextjs,git,dotenv

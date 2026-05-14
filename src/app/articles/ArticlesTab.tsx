@@ -1,5 +1,6 @@
 import Link from "next/link";
 import PictureImage from "../../components/PictureImage";
+import Icon from "../../components/Icon";
 import FilterTabs from "../../components/FilterTabs";
 import ArticleGrid from "./ArticleGrid";
 import FeaturedArticle from "./FeaturedArticle";
@@ -38,7 +39,7 @@ export default function ArticlesTab({
 
       <div className="articles-tab-pad">
         <div className="book-promo-strip">
-          <div className="book-promo-icon">📖</div>
+          <div className="book-promo-icon"><Icon name="book" size={24} /></div>
           <div className="book-promo-text">
             <p className="book-promo-from">From our book:</p>
             <p className="book-promo-title">

@@ -1,6 +1,7 @@
 import FeaturedVideoPlayer from "./FeaturedVideoPlayer";
 import EpisodeCard from "./EpisodeCard";
 import { ClockIcon, PlayIcon, YoutubeIcon } from "../../components/Icons";
+import Icon from "../../components/Icon";
 
 type Episode = { id: number; num: string; title: string; desc: string | null; date: string | null; duration: string | null; youtubeId: string | null; thumbnail: string | null };
 
@@ -27,16 +28,16 @@ export default function PodcastTab({
           </button>
         </a>
         <button type="button" className="podcast-sub-btn">
-          🎙️ Apple Podcasts
+          <Icon name="mic" size={14} /> Apple Podcasts
         </button>
         <button type="button" className="podcast-sub-btn">
-          🟢 Spotify
+          <Icon name="headphones" size={14} /> Spotify
         </button>
       </div>
 
       <div className="podcast-content">
         <div>
-          <p className="podcast-featured-label">🎬 Latest Episode</p>
+          <p className="podcast-featured-label"><Icon name="film" size={14} /> Latest Episode</p>
           <div className="featured-episode">
             <div className="featured-video-side">
               <FeaturedVideoPlayer

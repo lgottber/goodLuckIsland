@@ -1,44 +1,11 @@
 import Field from "./Field";
+import RetirementDetails from "./RetirementDetails";
 
 const RETIRED = "Yes, I'm retired";
 
 type FormState = { retired: string; retirementDate: string };
 
 export default function RetirementTab({ form, set }: { form: FormState; set: (key: string, val: unknown) => void }) {
-  let retiredSection = null;
-  if (form.retired) {
-    let dateLabel = "When do you plan to retire?";
-    let dateHint = "Your target retirement date";
-    let tipIcon = "🌴";
-    let tipClassName = "retirement-tip";
-    let tipText =
-      "Planning ahead is exactly what the Good Luck Island Collective is here for. You're in the right place.";
-
-    if (form.retired === RETIRED) {
-      dateLabel = "When did you retire?";
-      dateHint = "Month and year you retired";
-      tipIcon = "🎉";
-      tipClassName = "retirement-tip congrats";
-      tipText =
-        "Congratulations! Welcome to the next chapter. We're glad you're here.";
-    }
-
-    retiredSection = (
-      <>
-        <Field label={dateLabel} hint={dateHint}>
-          <input
-            type="month"
-            value={form.retirementDate}
-            onChange={(e) => set("retirementDate", e.target.value)}
-          />
-        </Field>
-        <div className={tipClassName}>
-          <span className="retirement-tip-icon">{tipIcon}</span>
-          <p>{tipText}</p>
-        </div>
-      </>
-    );
-  }
 
   return (
     <div className="edit-modal-body">
@@ -57,7 +24,7 @@ export default function RetirementTab({ form, set }: { form: FormState; set: (ke
           ))}
         </div>
       </Field>
-      {retiredSection}
+      {form.retired && <RetirementDetails form={form} set={set} />}
     </div>
   );
 }

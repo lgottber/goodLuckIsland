@@ -1,5 +1,7 @@
 import Link from "next/link";
 import PictureImage from "../../components/PictureImage";
+import SavedTypeLabel from "./SavedTypeLabel";
+import SavedItemCta from "./SavedItemCta";
 
 const TAG_COLORS: Record<string, string> = {
   Retirement: "teal",
@@ -20,7 +22,7 @@ export default function SavedItem({ item }: { item: SavedItemData }) {
           sizes="(max-width: 768px) 100vw, 25vw"
         />
         <span className={`saved-item-type saved-item-type--${item.type}`}>
-          {item.type === "podcast" ? "🎙 Podcast" : "📄 Article"}
+          <SavedTypeLabel type={item.type} />
         </span>
       </div>
       <div className="saved-item-body">
@@ -38,7 +40,7 @@ export default function SavedItem({ item }: { item: SavedItemData }) {
         <p className="saved-item-excerpt">{item.excerpt}</p>
         <div className="saved-item-footer">
           <Link href="/articles" className="saved-item-cta">
-            {item.type === "podcast" ? "Listen Now →" : "Read Now →"}
+            <SavedItemCta type={item.type} />
           </Link>
           <button type="button" className="saved-item-remove">
             Remove

@@ -1,5 +1,6 @@
 import Modal from "../../components/Modal";
 import { YoutubeIcon } from "../../components/Icons";
+import Icon from "../../components/Icon";
 
 type Episode = { id: number; num: string; title: string; desc: string | null; date: string | null; duration: string | null; youtubeId: string | null; thumbnail: string | null };
 
@@ -13,7 +14,7 @@ export default function VideoModal({ episode, onClose }: { episode: Episode; onC
       <div className="video-modal-header">
         <h3 className="video-modal-title">{episode.title}</h3>
         <button type="button" className="video-modal-close" onClick={onClose}>
-          ✕
+          <Icon name="x" size={16} />
         </button>
       </div>
       <div className="video-modal-embed">

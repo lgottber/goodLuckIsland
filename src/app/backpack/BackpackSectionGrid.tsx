@@ -1,6 +1,7 @@
+import { ReactNode } from "react";
 import BackpackSectionCard from "./BackpackSectionCard";
 
-type BackpackSection = { id: string; type: string; color: string; emoji: string; label: string; tagline: string };
+type BackpackSection = { id: string; type: string; color: string; emoji: ReactNode; label: string; tagline: string };
 
 export default function BackpackSectionGrid({ sections, onSectionSelect }: { sections: BackpackSection[]; onSectionSelect: (id: string) => void }) {
   return (
