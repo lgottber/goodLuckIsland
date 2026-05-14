@@ -46,7 +46,7 @@ button {
   left: 0;
   right: 0;
   z-index: 100;
-  padding: 0.4rem 2rem;
+  padding: 23px 2rem;
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(20px);
   box-shadow: 0 1px 0 rgba(30, 45, 90, 0.08);
@@ -1184,7 +1184,7 @@ button {
 }
 @media (max-width: 640px) {
   .nav {
-    padding: 0.85rem 1.25rem;
+    padding: 23px 1.25rem;
   }
   .hero-title {
     font-size: 2.2rem;
