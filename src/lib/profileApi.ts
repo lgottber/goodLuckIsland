@@ -31,7 +31,8 @@ export async function createUser(userId: string, email: string) {
     id: userId,
     email: email,
   });
-  if (error) throw error;
+  // 23505 = unique_violation — user already exists, nothing to do
+  if (error && error.code !== "23505") throw new Error(error.message);
 }
 
 export async function fetchProfile(
@@ -53,7 +54,7 @@ export async function exportProfileData(
     .select("*")
     .eq("id", userId)
     .single();
-  if (error) throw error;
+  if (error) throw new Error(error.message);
   return data;
 }
 
@@ -86,5 +87,5 @@ export async function upsertProfile(userId: string, updated: ProfileUpdate) {
     avatar_id: updated.avatarId,
     updated_at: new Date().toISOString(),
   });
-  if (error) throw error;
+  if (error) throw new Error(error.message);
 }

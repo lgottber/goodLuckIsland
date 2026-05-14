@@ -1,0 +1,25 @@
+.site-footer {
+  background: var(--navy);
+  padding: 1.25rem 2rem;
+  margin-top: auto;
+}
+
+.site-footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-seal {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  opacity: 0.92;
+  transition: opacity 0.2s;
+}
+
+.footer-seal:hover {
+  opacity: 1;
+}

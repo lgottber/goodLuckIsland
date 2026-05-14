@@ -3,6 +3,7 @@ import { Cormorant_Garamond as CormorantGaramond, DM_Sans as DMSans } from "next
 import "./globals.css";
 import "./home.css";
 import { Providers } from "./providers.tsx";
+import Footer from "../components/Footer";
 
 const cormorantGaramond = CormorantGaramond({
   subsets: ["latin"],
@@ -38,6 +39,7 @@ export default function RootLayout({
     <html lang="en" className={`${cormorantGaramond.variable} ${dmSans.variable}`} data-scroll-behavior="smooth">
       <body>
         <Providers>{children}</Providers>
+        <Footer />
       </body>
     </html>
   );
