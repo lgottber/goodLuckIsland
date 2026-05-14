@@ -10,11 +10,7 @@ export default function VideoModal({ episode, onClose }) {
     >
       <div className="video-modal-header">
         <h3 className="video-modal-title">{episode.title}</h3>
-        <button
-          type="button"
-          className="video-modal-close"
-          onClick={onClose}
-        >
+        <button type="button" className="video-modal-close" onClick={onClose}>
           ✕
         </button>
       </div>

@@ -2,23 +2,15 @@ import { PlayIcon } from "../../components/Icons";
 
 export default function EpisodeCard({ ep, onPlay }) {
   return (
-    <div
-      className="episode-card"
-      onClick={onPlay}
-    >
+    <div className="episode-card" onClick={onPlay}>
       <div className="episode-thumb">
         <img src={ep.thumbnail} alt={ep.title} />
         <div className="episode-thumb-overlay">
-          <button
-            type="button"
-            className="episode-thumb-play"
-          >
+          <button type="button" className="episode-thumb-play">
             <PlayIcon size={16} />
           </button>
         </div>
-        <span className="episode-duration-badge">
-          {ep.duration}
-        </span>
+        <span className="episode-duration-badge">{ep.duration}</span>
       </div>
       <div className="episode-body">
         <div className="episode-body-meta">

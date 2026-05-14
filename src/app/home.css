@@ -1,4 +1,6 @@
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -48,7 +50,9 @@ button {
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(20px);
   box-shadow: 0 1px 0 rgba(30, 45, 90, 0.08);
-  transition: background 0.3s, box-shadow 0.3s;
+  transition:
+    background 0.3s,
+    box-shadow 0.3s;
 }
 .nav-scrolled {
   background: rgba(255, 255, 255, 0.97);
@@ -253,18 +257,21 @@ button {
   justify-content: center;
   flex-wrap: wrap;
 }
+.cta-primary,
+.cta-ghost {
+  padding: 0.85rem 2rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-block;
+}
 .cta-primary {
   background: #e8673a;
   color: #fff;
   border: none;
-  padding: 0.85rem 2rem;
-  border-radius: 50px;
-  font-size: 0.9rem;
   font-weight: 600;
-  cursor: pointer;
   letter-spacing: 0.02em;
-  transition: all 0.2s;
-  display: inline-block;
 }
 .cta-primary:hover {
   background: #d45a2e;
@@ -275,13 +282,7 @@ button {
   background: transparent;
   color: #fff;
   border: 1.5px solid rgba(255, 255, 255, 0.6);
-  padding: 0.85rem 2rem;
-  border-radius: 50px;
-  font-size: 0.9rem;
   font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: inline-block;
 }
 .cta-ghost:hover {
   border-color: #fff;
@@ -311,7 +312,8 @@ button {
   animation: scrollPulse 2s ease-in-out infinite;
 }
 @keyframes scrollPulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.5;
     transform: scaleY(1);
   }
@@ -422,7 +424,9 @@ button {
   line-height: 1;
   padding: 4px 8px;
   border-radius: 6px;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 .modal-close:hover {
   background: #f0f0f0;
@@ -503,7 +507,9 @@ button {
   font-weight: 600;
   cursor: pointer;
   letter-spacing: 0.02em;
-  transition: background 0.2s, transform 0.1s;
+  transition:
+    background 0.2s,
+    transform 0.1s;
   width: 100%;
   font-family: var(--sans);
 }
@@ -524,7 +530,9 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
   color: #333;
   width: 100%;
   font-family: var(--sans);
@@ -540,7 +548,8 @@ button {
   color: #bbb;
   font-size: 0.8rem;
 }
-.modal-divider::before, .modal-divider::after {
+.modal-divider::before,
+.modal-divider::after {
   content: "";
   flex: 1;
   height: 1px;
@@ -625,7 +634,8 @@ button {
 .nav-mobile-menu.open {
   display: flex;
 }
-.nav-mobile-menu a, .nav-mobile-menu button {
+.nav-mobile-menu a,
+.nav-mobile-menu button {
   font-family: var(--sans);
   font-size: 1.4rem;
   font-weight: 600;
@@ -826,7 +836,9 @@ button {
   flex-direction: column;
   align-items: center;
   gap: 0.75rem;
-  transition: transform 0.25s, box-shadow 0.25s;
+  transition:
+    transform 0.25s,
+    box-shadow 0.25s;
 }
 .pillar-card:hover {
   transform: translateY(-4px);
@@ -893,7 +905,9 @@ button {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  transition: background 0.2s, transform 0.2s;
+  transition:
+    background 0.2s,
+    transform 0.2s;
 }
 .value-card:hover {
   background: rgba(255, 255, 255, 0.1);
@@ -1125,7 +1139,9 @@ button {
   align-items: center;
   justify-content: center;
   color: rgba(255, 255, 255, 0.6);
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
 }
 .social-link:hover {
   background: rgba(255, 255, 255, 0.15);

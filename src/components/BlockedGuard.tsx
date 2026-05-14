@@ -11,14 +11,15 @@ export function BlockedGuard({ children }: { children: React.ReactNode }) {
   const [fetchError, setFetchError] = useState(false);
 
   function handleSignOut() {
-    logout({ logoutParams: { returnTo: globalThis.location.origin } });
+    logout({ logoutParams: { returnTo: window.location.origin } });
   }
 
   useEffect(() => {
-    if (!isAuthenticated || !user) return;
+    if (!isAuthenticated || !user?.sub) return;
+    const sub = user.sub;
     async function checkBlocked() {
       try {
-        const profile = await fetchProfile(user.sub);
+        const profile = await fetchProfile(sub);
         if (profile?.blocked_at) setIsBlocked(true);
       } catch {
         setFetchError(true);
@@ -44,10 +45,7 @@ export function BlockedGuard({ children }: { children: React.ReactNode }) {
         <p className={styles.message}>
           An admin has removed your access to Good Luck Island.
         </p>
-        <button
-          className={styles.signOutButton}
-          onClick={handleSignOut}
-        >
+        <button className={styles.signOutButton} onClick={handleSignOut}>
           Sign out
         </button>
       </div>

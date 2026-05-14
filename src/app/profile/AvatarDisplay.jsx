@@ -288,9 +288,13 @@ function applyAvatarVars(el, size, borderColor, bg) {
   if (bg) el.style.setProperty("background", bg);
 }
 
-export default function AvatarDisplay(
-  { avatarId, avatarUrl, initials, size = 104, borderColor = "var(--cream)" },
-) {
+export default function AvatarDisplay({
+  avatarId,
+  avatarUrl,
+  initials,
+  size = 104,
+  borderColor = "var(--cream)",
+}) {
   const allChars = AVATAR_ERAS.flatMap((e) => e.characters);
   const char = allChars.find((c) => c.id === avatarId);
 

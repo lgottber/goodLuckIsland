@@ -82,13 +82,14 @@ const BACKPACK_SECTIONS = [
 
 export default function BackpackPage() {
   const [sections, setSections] = useState(BACKPACK_SECTIONS);
+  const [loadError, setLoadError] = useState(false);
 
   useEffect(() => {
     fetchBackpackSections()
       .then((data) => {
         if (data.length) setSections(data);
       })
-      .catch(console.error);
+      .catch(() => setLoadError(true));
   }, []);
 
   return (
@@ -96,6 +97,11 @@ export default function BackpackPage() {
       <NavBar activePage="backpack" largeAvatar />
 
       <div className="backpack-page">
+        {loadError && (
+          <p className="backpack-load-error">
+            Could not load your backpack data. Showing default content.
+          </p>
+        )}
         {/* ── HEADER ── */}
         <div className="backpack-header">
           <p className="backpack-eyebrow">Good Luck Island Collective</p>

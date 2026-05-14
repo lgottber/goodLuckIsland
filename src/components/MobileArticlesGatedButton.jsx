@@ -1,6 +1,7 @@
-export default function MobileArticlesGatedButton(
-  { setMobileOpen, setShowGate },
-) {
+export default function MobileArticlesGatedButton({
+  setMobileOpen,
+  setShowGate,
+}) {
   return (
     <button
       type="button"

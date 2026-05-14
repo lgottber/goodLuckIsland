@@ -27,9 +27,7 @@ export default function FeaturedVideoPlayer({ episode, playing, onPlay }) {
         <span className="featured-play-btn" aria-hidden="true">
           <PlayIcon size={26} />
         </span>
-        <span className="featured-play-label">
-          Watch Now
-        </span>
+        <span className="featured-play-label">Watch Now</span>
       </button>
     </>
   );

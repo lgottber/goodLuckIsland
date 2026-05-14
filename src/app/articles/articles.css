@@ -4,7 +4,7 @@ body {
 
 /* ── PAGE ── */
 .articles-page {
-  padding-top: 110px;
+  padding-top: var(--nav-height);
   min-height: 100vh;
   background: var(--cream);
 }
@@ -635,7 +635,9 @@ body {
   align-items: center;
   justify-content: center;
   box-shadow: 0 8px 28px rgba(232, 103, 58, 0.5);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 .featured-play-btn:hover {
   transform: scale(1.08);
@@ -867,29 +869,6 @@ body {
     grid-template-columns: 1fr;
   }
   .featured-img {
-    min-height: 260px;
-  }
-  .articles-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .nav-links {
-    display: none;
-  }
-}
-@media (max-width: 600px) {
-  .articles-grid {
-    grid-template-columns: 1fr;
-  }
-  .book-promo-strip {
-    flex-wrap: wrap;
-  }
-}
-
-@media (max-width: 960px) {
-  .featured-article {
-    grid-template-columns: 1fr;
-  }
-  .featured-img {
     min-height: 240px;
   }
   .articles-grid {
@@ -908,6 +887,29 @@ body {
   .newsletter-strip {
     flex-direction: column;
     gap: 1.25rem;
+  }
+  .nav-links {
+    display: none;
+  }
+  .featured-episode {
+    grid-template-columns: 1fr;
+  }
+  .featured-video-side {
+    min-height: 260px;
+  }
+  .episodes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .podcast-content {
+    padding: 2.5rem 1.25rem 4rem;
+  }
+  .podcast-subscribe-row {
+    gap: 0.5rem;
+    padding: 2rem 1.25rem 0;
+  }
+  .podcast-sub-btn {
+    font-size: 0.72rem;
+    padding: 0.45rem 0.85rem;
   }
 }
 @media (max-width: 600px) {
@@ -943,29 +945,6 @@ body {
   }
   .featured-actions {
     flex-direction: column;
-  }
-}
-
-@media (max-width: 960px) {
-  .featured-episode {
-    grid-template-columns: 1fr;
-  }
-  .featured-video-side {
-    min-height: 260px;
-  }
-  .episodes-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .podcast-content {
-    padding: 2.5rem 1.25rem 4rem;
-  }
-  .podcast-subscribe-row {
-    gap: 0.5rem;
-    padding: 2rem 1.25rem 0;
-  }
-  .podcast-sub-btn {
-    font-size: 0.72rem;
-    padding: 0.45rem 0.85rem;
   }
 }
 

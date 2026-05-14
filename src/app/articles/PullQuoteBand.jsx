@@ -6,9 +6,7 @@ export default function PullQuoteBand() {
         about giving your future self more choices. It's progress, resilience,
         and peace of mind.
       </p>
-      <p className="pull-quote-source">
-        Good Luck Island Collective
-      </p>
+      <p className="pull-quote-source">Good Luck Island Collective</p>
     </div>
   );
 }

@@ -1,5 +1,19 @@
-import ShopClient from "./ShopClient.tsx";
+"use client";
+
+import NavBar from "../../components/NavBarDynamic";
+import ShopifyCollection from "../../components/ShopifyCollection";
+import "./shop.css";
 
 export default function ShopPage() {
-  return <ShopClient />;
+  return (
+    <>
+      <NavBar activePage="shop" />
+
+      <div className="shop-page">
+        <div className="shop-content">
+          <ShopifyCollection />
+        </div>
+      </div>
+    </>
+  );
 }

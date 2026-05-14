@@ -4,7 +4,7 @@ body {
 
 /* ── PAGE ── */
 .about-page {
-  padding-top: 110px;
+  padding-top: var(--nav-height);
 }
 
 /* ── HERO SPLIT — Canva style: text left, photo stack right ── */
@@ -37,7 +37,7 @@ body {
   font-size: clamp(3rem, 5vw, 5rem);
   font-weight: 600;
   color: var(--teal);
-  line-height: 1.0;
+  line-height: 1;
   letter-spacing: -0.01em;
   text-transform: uppercase;
 }
@@ -300,7 +300,6 @@ body {
 .nicholas-links {
   display: flex;
   gap: 0.75rem;
-  /* flex-wrap: wrap; */
   margin-top: 4rem;
   justify-content: center;
 }
@@ -559,7 +558,8 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 0.75rem;
 }
-.contact-input, .contact-textarea {
+.contact-input,
+.contact-textarea {
   padding: 0.85rem 1.1rem;
   border: 1.5px solid var(--cream-dk);
   border-radius: 14px;
@@ -571,10 +571,12 @@ body {
   transition: border-color 0.2s;
   width: 100%;
 }
-.contact-input:focus, .contact-textarea:focus {
+.contact-input:focus,
+.contact-textarea:focus {
   border-color: var(--navy);
 }
-.contact-input::placeholder, .contact-textarea::placeholder {
+.contact-input::placeholder,
+.contact-textarea::placeholder {
   color: #b5ae9f;
 }
 .contact-textarea {
@@ -623,49 +625,6 @@ body {
 @media (max-width: 1000px) {
   .about-hero {
     grid-template-columns: 1fr;
-  }
-  .about-hero-photos {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-  .about-hero-photos img {
-    width: calc(50% - 0.5rem);
-    height: 160px;
-  }
-  .nicholas-columns {
-    grid-template-columns: 1fr;
-  }
-  .nicholas-photo-wrap {
-    max-width: 320px;
-  }
-  .contact-section {
-    grid-template-columns: 1fr;
-  }
-  .nav-links {
-    display: none;
-  }
-}
-@media (max-width: 600px) {
-  .mission-pillars {
-    grid-template-columns: 1fr;
-  }
-  .testimonial-light {
-    grid-template-columns: 1fr;
-  }
-  .testimonial-dark {
-    grid-template-columns: 1fr;
-  }
-  .testimonial-dark-avatar, .testimonial-dark-avatar-placeholder {
-    display: none;
-  }
-  .contact-form-row {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 1000px) {
-  .about-hero {
-    grid-template-columns: 1fr;
     padding: 3rem 1.25rem 0;
     gap: 2rem;
     min-height: unset;
@@ -711,6 +670,9 @@ body {
   .stories-inner {
     padding: 3rem 1.25rem 4rem;
   }
+  .nav-links {
+    display: none;
+  }
 }
 @media (max-width: 600px) {
   .mission-pillars {
@@ -723,7 +685,8 @@ body {
   .testimonial-dark {
     grid-template-columns: 1fr;
   }
-  .testimonial-dark-avatar, .testimonial-dark-avatar-placeholder {
+  .testimonial-dark-avatar,
+  .testimonial-dark-avatar-placeholder {
     display: none;
   }
   .contact-form-row {

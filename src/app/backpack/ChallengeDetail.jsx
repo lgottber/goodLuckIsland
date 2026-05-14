@@ -9,11 +9,7 @@ export default function ChallengeDetail({
   return (
     <div className="backpack-detail-card">
       <div className="backpack-section-nav">
-        <button
-          type="button"
-          className="backpack-back-btn"
-          onClick={onBack}
-        >
+        <button type="button" className="backpack-back-btn" onClick={onBack}>
           ← Back to Backpack
         </button>
         <span className="backpack-section-breadcrumb">
@@ -23,7 +19,8 @@ export default function ChallengeDetail({
 
       <div className="challenge-card">
         <div className="challenge-week-badge">
-          Week of {new Date().toLocaleDateString("en-US", {
+          Week of{" "}
+          {new Date().toLocaleDateString("en-US", {
             month: "long",
             day: "numeric",
             year: "numeric",

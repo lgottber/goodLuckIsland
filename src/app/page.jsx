@@ -59,7 +59,9 @@ export default function HomePage() {
               "Next Chapter",
               "Financial Clarity",
               "Life After Work",
-            ].map((d, i) => <MarqueeItem key={`${d}-${i}`} text={d} />)}
+            ].map((d, i) => (
+              <MarqueeItem key={`marquee-${i}`} text={d} />
+            ))}
           </div>
         </div>
 
@@ -197,7 +199,9 @@ export default function HomePage() {
                 "No pressure",
                 "No product agenda",
                 "Only perspective & learning",
-              ].map((text) => <PromiseItem key={text} text={text} />)}
+              ].map((text) => (
+                <PromiseItem key={text} text={text} />
+              ))}
             </div>
           </div>
         </section>
@@ -242,9 +246,7 @@ export default function HomePage() {
                 alt="Good Luck Island Collective"
                 className="footer-brand-logo"
               />
-              <span>
-                Curating calm clarity for the next chapter of life.
-              </span>
+              <span>Curating calm clarity for the next chapter of life.</span>
             </div>
           </div>
           <nav className="footer-nav-row" aria-label="Footer navigation">

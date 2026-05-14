@@ -9,10 +9,10 @@ export default function LogoutPage() {
   useEffect(() => {
     logout({
       logoutParams: {
-        returnTo: globalThis.location.origin,
+        returnTo: window.location.origin,
       },
     });
-  }, []);
+  }, [logout]);
 
   return null;
 }

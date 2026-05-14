@@ -3,9 +3,7 @@ export default function FeaturedArticle({ featured }) {
     <div className="featured-article">
       <div className="featured-img">
         <img src={featured.image} alt={featured.title} />
-        <span className="featured-tag-overlay">
-          {featured.category}
-        </span>
+        <span className="featured-tag-overlay">{featured.category}</span>
       </div>
       <div className="featured-body">
         <p className="featured-label">✦ Featured Article</p>

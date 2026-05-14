@@ -97,8 +97,7 @@ const EPISODES = [
     id: 1,
     num: "EP. 01",
     title: "Rethinking Retirement, One Choice at a Time",
-    desc:
-      "What if the biggest mistake Gen X makes isn't financial — it's not knowing what they actually want? We kick off the show by questioning everything you've been told about retirement.",
+    desc: "What if the biggest mistake Gen X makes isn't financial — it's not knowing what they actually want? We kick off the show by questioning everything you've been told about retirement.",
     date: "Mar 1, 2026",
     duration: "42 min",
     youtubeId: "YOUTUBE_ID_1",
@@ -109,8 +108,7 @@ const EPISODES = [
     id: 2,
     num: "EP. 02",
     title: "The Advisor Who Actually Works for You",
-    desc:
-      "Not all financial advisors are created equal. We break down how to spot the ones who are selling Cool Aid — and how to find the rare ones who actually have your back.",
+    desc: "Not all financial advisors are created equal. We break down how to spot the ones who are selling Cool Aid — and how to find the rare ones who actually have your back.",
     date: "Feb 22, 2026",
     duration: "38 min",
     youtubeId: "YOUTUBE_ID_2",
@@ -121,8 +119,7 @@ const EPISODES = [
     id: 3,
     num: "EP. 03",
     title: "What Whole-Life Wellness Really Means After 50",
-    desc:
-      "Health isn't just about your body. It's about your mind, your relationships, your sense of purpose. This episode reframes what it means to actually be well going into retirement.",
+    desc: "Health isn't just about your body. It's about your mind, your relationships, your sense of purpose. This episode reframes what it means to actually be well going into retirement.",
     date: "Feb 15, 2026",
     duration: "45 min",
     youtubeId: "YOUTUBE_ID_3",
@@ -133,8 +130,7 @@ const EPISODES = [
     id: 4,
     num: "EP. 04",
     title: "The Identity Problem Nobody Talks About",
-    desc:
-      "For decades, work has been who you are. So what happens when it's gone? We talk candidly about the identity crisis that catches so many retirees off guard — and how to get ahead of it.",
+    desc: "For decades, work has been who you are. So what happens when it's gone? We talk candidly about the identity crisis that catches so many retirees off guard — and how to get ahead of it.",
     date: "Feb 8, 2026",
     duration: "51 min",
     youtubeId: "YOUTUBE_ID_4",
@@ -145,8 +141,7 @@ const EPISODES = [
     id: 5,
     num: "EP. 05",
     title: "A Thoughtful Retirement Mindset for Gen X",
-    desc:
-      "Gen X got sandwiched — between Boomers who changed the rules and Millennials who got the apps. This episode is about owning your unique position and planning on your own terms.",
+    desc: "Gen X got sandwiched — between Boomers who changed the rules and Millennials who got the apps. This episode is about owning your unique position and planning on your own terms.",
     date: "Feb 1, 2026",
     duration: "36 min",
     youtubeId: "YOUTUBE_ID_5",
@@ -157,8 +152,7 @@ const EPISODES = [
     id: 6,
     num: "EP. 06",
     title: "Popular Advice Isn't Always Helpful Advice",
-    desc:
-      "Loud doesn't mean right. In this episode we dig into the most repeated retirement advice that sounds wise but often leads people astray — and what to think instead.",
+    desc: "Loud doesn't mean right. In this episode we dig into the most repeated retirement advice that sounds wise but often leads people astray — and what to think instead.",
     date: "Jan 25, 2026",
     duration: "40 min",
     youtubeId: "YOUTUBE_ID_6",
@@ -174,6 +168,7 @@ export default function ArticlesPage() {
   const [modalEpisode, setModalEpisode] = useState(null);
   const [episodes, setEpisodes] = useState(EPISODES);
   const [allArticles, setAllArticles] = useState(ALL_ARTICLES);
+  const [loadError, setLoadError] = useState(false);
 
   useEffect(() => {
     async function loadData() {
@@ -184,8 +179,8 @@ export default function ArticlesPage() {
         ]);
         if (fetchedEpisodes.length) setEpisodes(fetchedEpisodes);
         if (articles.length) setAllArticles(articles);
-      } catch (error) {
-        console.error(error);
+      } catch {
+        setLoadError(true);
       }
     }
     loadData();
@@ -211,6 +206,11 @@ export default function ArticlesPage() {
       <NavBar activePage="articles" largeAvatar />
 
       <div className="articles-page">
+        {loadError && (
+          <p className="articles-load-error">
+            Could not load content. Showing default content.
+          </p>
+        )}
         {/* ── HEADER ── */}
         <div className="articles-header">
           <span className="articles-header-eyebrow">Member Content</span>

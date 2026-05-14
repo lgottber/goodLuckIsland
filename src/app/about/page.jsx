@@ -11,24 +11,21 @@ const TESTIMONIALS = [
   {
     id: 1,
     style: "light",
-    text:
-      "I've read a lot of retirement content over the years. Most of it made me feel anxious. Good Luck Island Collective was the first place that made me feel like I was actually being prepared — not sold to.",
+    text: "I've read a lot of retirement content over the years. Most of it made me feel anxious. Good Luck Island Collective was the first place that made me feel like I was actually being prepared — not sold to.",
     name: "Sandra M., 54 — Chicago, IL",
     avatar: null,
   },
   {
     id: 2,
     style: "dark",
-    text:
-      "Nicholas has a way of cutting through the noise that I've never encountered anywhere else. The book changed how I talk to my financial advisor. The podcast changed how I think about what I actually want.\n\nI didn't know I was missing this kind of guidance until I found it.",
+    text: "Nicholas has a way of cutting through the noise that I've never encountered anywhere else. The book changed how I talk to my financial advisor. The podcast changed how I think about what I actually want.\n\nI didn't know I was missing this kind of guidance until I found it.",
     name: "David K., 58 — Austin, TX",
     avatar: null,
   },
   {
     id: 3,
     style: "light",
-    text:
-      "I forwarded three articles to my husband and said 'this is exactly what I've been trying to say.' The content here puts words to things I've been feeling for years. That's rare.",
+    text: "I forwarded three articles to my husband and said 'this is exactly what I've been trying to say.' The content here puts words to things I've been feeling for years. That's rare.",
     name: "Renée T., 51 — Portland, OR",
     avatar: null,
   },
@@ -63,8 +60,7 @@ export default function AboutPage() {
               <p>
                 Good Luck Island Collective is a self-help education platform
                 built specifically for Gen X professionals who are preparing for
-                retirement — and aren't sure what they're actually preparing
-                {" "}
+                retirement — and aren't sure what they're actually preparing{" "}
                 <em>for</em>.
               </p>
               <p>
@@ -108,7 +104,8 @@ export default function AboutPage() {
           <div className="mission-inner">
             <p className="mission-eyebrow">Why We Exist</p>
             <h2>
-              Retirement isn't just a financial event.<br />
+              Retirement isn't just a financial event.
+              <br />
               <em>It's a life transition.</em>
             </h2>
             <div className="mission-pillars">
@@ -233,19 +230,13 @@ export default function AboutPage() {
               </div>
               <div className="contact-detail">
                 <div className="contact-detail-icon">🎙️</div>{" "}
-                <Link
-                  href="/podcast"
-                  className="contact-detail-link"
-                >
+                <Link href="/podcast" className="contact-detail-link">
                   Listen to the Podcast
                 </Link>
               </div>
               <div className="contact-detail">
                 <div className="contact-detail-icon">📖</div>{" "}
-                <Link
-                  href="/shop"
-                  className="contact-detail-link"
-                >
+                <Link href="/shop" className="contact-detail-link">
                   Get the Book
                 </Link>
               </div>
@@ -259,14 +250,16 @@ export default function AboutPage() {
                 placeholder="First name"
                 value={formData.firstName}
                 onChange={(e) =>
-                  setFormData({ ...formData, firstName: e.target.value })}
+                  setFormData({ ...formData, firstName: e.target.value })
+                }
               />
               <input
                 className="contact-input"
                 placeholder="Last name"
                 value={formData.lastName}
                 onChange={(e) =>
-                  setFormData({ ...formData, lastName: e.target.value })}
+                  setFormData({ ...formData, lastName: e.target.value })
+                }
               />
             </div>
             <input
@@ -275,7 +268,8 @@ export default function AboutPage() {
               placeholder="Email address"
               value={formData.email}
               onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })}
+                setFormData({ ...formData, email: e.target.value })
+              }
             />
             <textarea
               className="contact-textarea"
@@ -283,7 +277,8 @@ export default function AboutPage() {
               rows={6}
               value={formData.message}
               onChange={(e) =>
-                setFormData({ ...formData, message: e.target.value })}
+                setFormData({ ...formData, message: e.target.value })
+              }
             />
             <button
               type="button"

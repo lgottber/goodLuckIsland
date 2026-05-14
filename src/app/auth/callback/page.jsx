@@ -8,9 +8,8 @@ export default function CallbackPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (isLoading) return;
-    if (error) throw error;
-    if (!user) throw new Error("Auth completed but no user was returned");
+    if (isLoading || error) return;
+    if (!user) return;
     router.replace("/");
   }, [isLoading, error, user, router]);
 

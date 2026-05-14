@@ -7,11 +7,7 @@ export default function NavGateModal({ onClose }) {
       contentClassName="nav-gate-modal"
       onClose={onClose}
     >
-      <button
-        type="button"
-        className="nav-gate-close"
-        onClick={onClose}
-      >
+      <button type="button" className="nav-gate-close" onClick={onClose}>
         ✕
       </button>
       <div className="nav-gate-icon">🔒</div>
@@ -21,11 +17,10 @@ export default function NavGateModal({ onClose }) {
         create your free account to get in.
       </p>
       <div className="nav-gate-actions">
-        <a href="/auth/login" className="nav-gate-btn-solid">Sign In</a>
-        <a
-          href="/signup"
-          className="nav-gate-btn-ghost"
-        >
+        <a href="/auth/login" className="nav-gate-btn-solid">
+          Sign In
+        </a>
+        <a href="/signup" className="nav-gate-btn-ghost">
           Join Free →
         </a>
       </div>

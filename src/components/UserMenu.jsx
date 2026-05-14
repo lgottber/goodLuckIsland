@@ -28,11 +28,10 @@ export default function UserMenu({
       a.href = url;
       a.download = "my-good-luck-island-data.csv";
       a.click();
-      URL.revokeObjectURL(url);
+      setTimeout(() => URL.revokeObjectURL(url), 0);
       setExportStatus("done");
       setTimeout(() => setExportStatus("idle"), 3000);
-    } catch (error) {
-      console.error(error);
+    } catch {
       setExportStatus("error");
     }
   }
@@ -45,15 +44,15 @@ export default function UserMenu({
         onClick={() => setDropdownOpen(!dropdownOpen)}
         aria-label="User menu"
       >
-        {user.picture
-          ? (
-            <img
-              src={user.picture}
-              alt={user.name ?? "User"}
-              className="nav-avatar-img"
-            />
-          )
-          : <div className="nav-avatar-initials">{initials}</div>}
+        {user.picture ? (
+          <img
+            src={user.picture}
+            alt={user.name ?? "User"}
+            className="nav-avatar-img"
+          />
+        ) : (
+          <div className="nav-avatar-initials">{initials}</div>
+        )}
       </button>
       {dropdownOpen && (
         <NavDropdown
