@@ -5,7 +5,6 @@ type PictureImageProps = {
   className?: string;
   width?: number;
   height?: number;
-  style?: React.CSSProperties;
 };
 
 function deriveWebpSrc(name: string): string | null {
@@ -26,7 +25,6 @@ export default function PictureImage({
   className,
   width,
   height,
-  style,
 }: PictureImageProps) {
   if (!name) return null;
   const dot = name.lastIndexOf(".");
@@ -39,7 +37,6 @@ export default function PictureImage({
         className={className}
         width={width}
         height={height}
-        style={style}
         loading="lazy"
       />
     );
@@ -57,7 +54,6 @@ export default function PictureImage({
         className={className}
         width={width}
         height={height}
-        style={style}
         loading="lazy"
       />
     </picture>
