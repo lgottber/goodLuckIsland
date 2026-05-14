@@ -1,9 +1,0 @@
-export default function Field({ label, hint, children }) {
-  return (
-    <div className="field">
-      <label>{label}</label>
-      {children}
-      {hint && <span className="field-hint">{hint}</span>}
-    </div>
-  );
-}
