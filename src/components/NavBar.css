@@ -166,7 +166,7 @@
   cursor: pointer;
   color: var(--navy);
 }
-@media (max-width: 960px) {
+@media (max-width: 1100px) {
   .nav-hamburger {
     display: flex;
   }
