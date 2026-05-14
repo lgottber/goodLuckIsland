@@ -16,36 +16,34 @@ export default function LifeCareerTab({ form, set }: { form: FormState; set: (ke
           placeholder="Your current or most recent role"
         />
       </Field>
-      <div className="field-row">
-        <Field label="Years in Occupation">
-          <input
-            type="number"
-            value={form.yearsInOccupation}
-            onChange={(e) => set("yearsInOccupation", e.target.value)}
-            placeholder="e.g. 15"
-            min="0"
-            max="60"
-          />
-        </Field>
-        <Field label="Education Level">
-          <Select
-            value={form.education}
-            onChange={(e) => set("education", e.target.value)}
-            placeholder="Select your highest level"
-          >
-            <option value="High School / GED">High School / GED</option>
-            <option value="Trade / Vocational">Trade / Vocational</option>
-            <option value="Some College">Some College</option>
-            <option value="Associate's Degree">Associate&apos;s Degree</option>
-            <option value="Bachelor's Degree">Bachelor&apos;s Degree</option>
-            <option value="Master's Degree">Master&apos;s Degree</option>
-            <option value="Doctorate / PhD">Doctorate / PhD</option>
-            <option value="Professional Degree (JD/MD)">
-              Professional Degree (JD/MD)
-            </option>
-          </Select>
-        </Field>
-      </div>
+      <Field label="Years in Occupation">
+        <input
+          type="number"
+          value={form.yearsInOccupation}
+          onChange={(e) => set("yearsInOccupation", e.target.value)}
+          placeholder="e.g. 15"
+          min="0"
+          max="60"
+        />
+      </Field>
+      <Field label="Education Level">
+        <Select
+          value={form.education}
+          onChange={(e) => set("education", e.target.value)}
+          placeholder="Select your highest level"
+        >
+          <option value="High School / GED">High School / GED</option>
+          <option value="Trade / Vocational">Trade / Vocational</option>
+          <option value="Some College">Some College</option>
+          <option value="Associate's Degree">Associate&apos;s Degree</option>
+          <option value="Bachelor's Degree">Bachelor&apos;s Degree</option>
+          <option value="Master's Degree">Master&apos;s Degree</option>
+          <option value="Doctorate / PhD">Doctorate / PhD</option>
+          <option value="Professional Degree (JD/MD)">
+            Professional Degree (JD/MD)
+          </option>
+        </Select>
+      </Field>
 
       <div className="modal-section-label modal-section-label--spaced">
         Life Snapshot
@@ -65,14 +63,12 @@ export default function LifeCareerTab({ form, set }: { form: FormState; set: (ke
         </Select>
       </Field>
 
-      <div className="field-row">
-        <Field label="Previously Divorced?">
-          <YesNo value={form.divorced} onChange={(v) => set("divorced", v)} />
-        </Field>
-        <Field label="Do you have kids?">
-          <YesNo value={form.kids} onChange={(v) => set("kids", v)} />
-        </Field>
-      </div>
+      <Field label="Previously Divorced?">
+        <YesNo value={form.divorced} onChange={(v) => set("divorced", v)} />
+      </Field>
+      <Field label="Do you have kids?">
+        <YesNo value={form.kids} onChange={(v) => set("kids", v)} />
+      </Field>
 
       <Field label="Home paid off?">
         <YesNo
