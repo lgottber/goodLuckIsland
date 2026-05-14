@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { Cormorant_Garamond as CormorantGaramond, DM_Sans as DMSans } from "next/font/google";
 import "./globals.css";
 import "./home.css";
 import { Providers } from "./providers.tsx";
 
-const cormorantGaramond = Cormorant_Garamond({
+const cormorantGaramond = CormorantGaramond({
   subsets: ["latin"],
   weight: ["400", "600"],
   style: ["normal", "italic"],
@@ -12,7 +12,7 @@ const cormorantGaramond = Cormorant_Garamond({
   display: "swap",
 });
 
-const dmSans = DM_Sans({
+const dmSans = DMSans({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-dm-sans",
