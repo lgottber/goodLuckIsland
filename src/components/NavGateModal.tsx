@@ -22,7 +22,7 @@ export default function NavGateModal({ onClose }: { onClose: () => void }) {
           Sign In
         </a>
         <a href="/signup" className="nav-gate-btn-ghost">
-          Join Free <Icon name="arrow-right" size={14} />
+          Join Free
         </a>
       </div>
     </Modal>

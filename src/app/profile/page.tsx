@@ -13,6 +13,7 @@ import BioEmpty from "./BioEmpty";
 import InterestsList from "./InterestsList";
 import InterestsEmpty from "./InterestsEmpty";
 import { createUser, fetchProfile, upsertProfile } from "../../lib/profileApi";
+import { downloadProfileDataCsv } from "../../lib/exportUtils";
 import ProfileMetaItem from "./ProfileMetaItem";
 import InfoRow from "./InfoRow";
 import ProfileInfoEmpty from "./ProfileInfoEmpty";
@@ -127,6 +128,7 @@ export default function ProfilePage() {
   const [pickingAvatar, setPickingAvatar] = useState(false);
   const [saved, setSaved] = useState(true);
   const [resetStatus, setResetStatus] = useState("idle"); // idle | sending | sent | error
+  const [exportStatus, setExportStatus] = useState("idle"); // idle | exporting | done | error
 
   async function handlePasswordReset() {
     if (!auth0User?.email) {
@@ -151,6 +153,25 @@ export default function ProfilePage() {
       setResetStatus(res.ok ? "sent" : "error");
     } catch {
       setResetStatus("error");
+    }
+  }
+
+  function exportLabel() {
+    if (exportStatus === "exporting") return "Exporting…";
+    if (exportStatus === "done") return <><Icon name="check" size={13} /> Exported!</>;
+    if (exportStatus === "error") return "Export failed";
+    return "Export My Data";
+  }
+
+  async function handleExportData() {
+    if (!auth0User?.sub) return;
+    setExportStatus("exporting");
+    try {
+      await downloadProfileDataCsv(auth0User.sub);
+      setExportStatus("done");
+      setTimeout(() => setExportStatus("idle"), 3000);
+    } catch {
+      setExportStatus("error");
     }
   }
 
@@ -267,6 +288,14 @@ export default function ProfilePage() {
               {resetStatus === "error" && (
                 <FlashMessage message="Something went wrong" error />
               )}
+              <button
+                type="button"
+                className="btn-ghost-sm"
+                onClick={handleExportData}
+                disabled={exportStatus === "exporting"}
+              >
+                {exportLabel()}
+              </button>
               <button
                 type="button"
                 className="btn-ghost-sm"

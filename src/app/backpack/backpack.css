@@ -58,7 +58,7 @@ body {
 .backpack-header p {
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.8);
-  max-width: 500px;
+  max-width: 31.25rem;
   margin: 0 auto;
   line-height: 1.75;
   position: relative;
@@ -67,7 +67,7 @@ body {
 
 /* ── Progress strip ── */
 .backpack-progress-strip {
-  max-width: 860px;
+  max-width: 53.75rem;
   margin: -1.5rem auto 0;
   background: #fff;
   border-radius: 20px;
@@ -90,8 +90,8 @@ body {
 }
 .backpack-progress-bar-wrap {
   flex: 1;
-  min-width: 120px;
-  height: 7px;
+  min-width: 7.5rem;
+  height: 0.4375rem;
   background: var(--cream-dk, #e6dfd2);
   border-radius: 10px;
   overflow: hidden;
@@ -112,7 +112,7 @@ body {
 
 /* ── Content ── */
 .backpack-content {
-  max-width: 1100px;
+  max-width: 68.75rem;
   margin: 0 auto;
   padding: 2rem 2rem 6rem;
 }
@@ -129,10 +129,10 @@ body {
 .backpack-photo-item {
   border-radius: 18px;
   overflow: hidden;
-  height: 180px;
+  height: 11.25rem;
 }
 .backpack-photo-item--tall {
-  height: 220px;
+  height: 13.75rem;
   align-self: center;
 }
 .backpack-photo-item img {
@@ -181,7 +181,7 @@ body {
 
 /* Color accent top bar */
 .backpack-card-accent {
-  height: 5px;
+  height: 0.3125rem;
   background: var(--section-color, var(--navy));
   width: 100%;
 }
@@ -198,7 +198,7 @@ body {
   font-weight: 700;
   color: rgba(30, 45, 90, 0.3);
   letter-spacing: 0.08em;
-  min-width: 22px;
+  min-width: 1.375rem;
   flex-shrink: 0;
   padding-top: 0.2rem;
 }
@@ -315,8 +315,8 @@ body {
   position: absolute;
   bottom: 0;
   right: 0;
-  width: 220px;
-  height: 220px;
+  width: 13.75rem;
+  height: 13.75rem;
   background: radial-gradient(
     circle at bottom right,
     rgba(46, 139, 122, 0.22),
@@ -360,7 +360,7 @@ body {
 .challenge-photo-banner {
   border-radius: 16px;
   overflow: hidden;
-  height: 200px;
+  height: 12.5rem;
 }
 .challenge-photo-banner img {
   width: 100%;
@@ -453,9 +453,9 @@ body {
 }
 
 /* ── Responsive ── */
-@media (max-width: 960px) {
+@media (max-width: 60rem) {
   .backpack-photo-item--tall {
-    height: 180px;
+    height: 11.25rem;
   }
   .backpack-section-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -467,7 +467,7 @@ body {
     margin: -1rem 1.5rem 0;
   }
 }
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .backpack-photo-trio {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
@@ -477,7 +477,7 @@ body {
   }
   .backpack-photo-item,
   .backpack-photo-item--tall {
-    height: 140px;
+    height: 8.75rem;
   }
   .backpack-section-grid {
     grid-template-columns: 1fr;

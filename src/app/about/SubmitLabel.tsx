@@ -1,6 +1,4 @@
-import Icon from "../../components/Icon";
-
 export default function SubmitLabel({ submitted }: { submitted: boolean }) {
-  if (submitted) return <><Icon name="check" size={14} /> Message Sent!</>;
+  if (submitted) return <>Message Sent!</>;
   return "Send Message";
 }

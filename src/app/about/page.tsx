@@ -173,7 +173,7 @@ export default function AboutPage() {
                 </Link>
                 <Link href="/podcast">
                   <button type="button" className="btn-nicholas-ghost">
-                    Listen to the Podcast <Icon name="arrow-right" size={13} />
+                    Listen to the Podcast
                   </button>
                 </Link>
               </div>

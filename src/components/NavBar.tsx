@@ -32,8 +32,13 @@ export default function NavBar({
 
   useEffect(() => {
     const onScroll = () => setScrolled(globalThis.scrollY > 40);
+    const onResize = () => { setDropdownOpen(false); setMobileOpen(false); };
     globalThis.addEventListener("scroll", onScroll, { passive: true });
-    return () => globalThis.removeEventListener("scroll", onScroll);
+    globalThis.addEventListener("resize", onResize, { passive: true });
+    return () => {
+      globalThis.removeEventListener("scroll", onScroll);
+      globalThis.removeEventListener("resize", onResize);
+    };
   }, []);
 
   useClickOutside(dropdownRef, () => setDropdownOpen(false), dropdownOpen);
@@ -82,6 +87,8 @@ export default function NavBar({
               alt="Good Luck Island Collective logo"
               className="nav-logo-img"
               sizes="40px"
+              width={64}
+              height={64}
             />
           </Link>
           <div className="nav-links">

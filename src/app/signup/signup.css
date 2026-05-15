@@ -12,7 +12,7 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   padding: 2.5rem;
-  max-width: 640px;
+  max-width: 40rem;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -20,8 +20,8 @@
 }
 
 .signup-seal {
-  width: 120px;
-  height: 120px;
+  width: 7.5rem;
+  height: 7.5rem;
   object-fit: contain;
   margin: 0 auto;
   display: block;
@@ -43,7 +43,7 @@
 }
 
 .signup-policy-scroll {
-  max-height: 280px;
+  max-height: 17.5rem;
   overflow-y: auto;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
@@ -70,8 +70,8 @@
 }
 
 .signup-checkbox {
-  width: 18px;
-  height: 18px;
+  width: 1.125rem;
+  height: 1.125rem;
   flex-shrink: 0;
   margin-top: 2px;
   cursor: pointer;

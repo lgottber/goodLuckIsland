@@ -35,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${cormorantGaramond.variable} ${dmSans.variable}`}>
+    <html lang="en" className={`${cormorantGaramond.variable} ${dmSans.variable}`} data-scroll-behavior="smooth">
       <body>
         <Providers>{children}</Providers>
       </body>

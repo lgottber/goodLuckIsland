@@ -12,7 +12,7 @@ export default function SavedList({ items }: { items: SavedItemData[] }) {
         <h3>Nothing saved yet</h3>
         <p>Bookmark articles and podcast episodes to find them here.</p>
         <Link href="/articles" className="saved-empty-cta">
-          Browse Podcasts &amp; Articles <Icon name="arrow-right" size={14} />
+          Browse Podcasts &amp; Articles
         </Link>
       </div>
     );

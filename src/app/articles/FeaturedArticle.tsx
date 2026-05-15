@@ -24,7 +24,7 @@ export default function FeaturedArticle({ featured }: { featured: Article }) {
         <h2 className="featured-title">{featured.title}</h2>
         <p className="featured-excerpt">{featured.excerpt}</p>
         <button type="button" className="btn-read">
-          Read Article <Icon name="arrow-right" size={14} />
+          Read Article
         </button>
       </div>
     </div>
