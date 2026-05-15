@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import "./signup.css";
+import PictureImage from "../../components/PictureImage";
 
 const PRIVACY_POLICY = `Welcome to Good Luck Island 🌴
 
@@ -35,10 +36,11 @@ export default function SignupPage() {
   return (
     <div className="signup-page">
       <div className="signup-card">
-        <img
-          src="/privacyPolicy.png"
-          alt="Good Luck Island Privacy Seal"
+        <PictureImage
+          name="/privacy_policy.png"
+          alt="Good Luck Island privacy policy seal badge"
           className="signup-seal"
+          sizes="(max-width: 768px) 150px, 200px"
         />
         <h1 className="signup-title">Join the Island</h1>
         <p className="signup-subtitle">

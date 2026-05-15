@@ -1,3 +1,6 @@
+# image types created on builds
+*.webp
+
 certificates
 node_modules
 # Created by https://www.toptal.com/developers/gitignore/api/node,nextjs,git,dotenv
@@ -196,6 +199,7 @@ dist
 
 ### Wrangler ###
 .wrangler/
+.dev.vars
 
 ### Terraform ###
 terraform/terraform.tfvars
@@ -204,6 +208,9 @@ terraform/.terraform.lock.hcl
 terraform/*.tfstate
 terraform/*.tfstate.backup
 terraform/*.tfstate.*.backup
+
+### Editor ###
+.helix/
 
 ### Claude ###
 .claude/

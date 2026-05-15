@@ -1,3 +1,5 @@
+import SelectedCheck from "./SelectedCheck";
+
 type AvatarCharacter = { id: string; name: string; emoji: string; bg: string; fg: string; desc: string };
 
 export default function AvatarCharacterButton({ char, isSelected, onSelect }: { char: AvatarCharacter; isSelected: boolean; onSelect: (id: string) => void }) {
@@ -14,7 +16,7 @@ export default function AvatarCharacterButton({ char, isSelected, onSelect }: { 
         }}
       >
         <span className="avatar-emoji">{char.emoji}</span>
-        {isSelected && <div className="avatar-selected-check">✓</div>}
+        {isSelected && <SelectedCheck />}
       </div>
       <span className="avatar-character-name">{char.name}</span>
       <span className="avatar-character-show">{char.desc}</span>

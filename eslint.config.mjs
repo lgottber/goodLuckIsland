@@ -5,6 +5,7 @@ import reactHooksPlugin from "eslint-plugin-react-hooks";
 import noInlineJsxPlugin from "./custom_lint_rules/no-inline-jsx.mjs";
 import singleComponentPlugin from "./custom_lint_rules/single_component_plugin.mjs";
 import noComplexInlineJsxPlugin from "./custom_lint_rules/no-complex-inline-jsx.mjs";
+import imageSrcSnakeCasePlugin from "./custom_lint_rules/image-src-snake-case.mjs";
 
 export default [
   {
@@ -27,6 +28,7 @@ export default [
       "custom-jsx": noInlineJsxPlugin,
       "single-component": singleComponentPlugin,
       "no-complex-jsx": noComplexInlineJsxPlugin,
+      "image-src": imageSrcSnakeCasePlugin,
     },
     languageOptions: {
       parser: tsParser,
@@ -53,6 +55,7 @@ export default [
       "custom-jsx/no-inline-jsx-decl": "error",
       "single-component/one-component-per-file": "error",
       "no-complex-jsx/no-complex-inline-jsx": "error",
+      "image-src/image-src-snake-case": "error",
       "react/forbid-dom-props": ["error", { forbid: ["style"] }],
       "react/forbid-component-props": ["error", { forbid: ["style"] }],
     },

@@ -1,17 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ReactNode } from "react";
 import NavBar from "../../components/NavBarDynamic";
 import BackpackPhotoTrio from "./BackpackPhotoTrio";
 import BackpackSectionGrid from "./BackpackSectionGrid";
 import { fetchBackpackSections } from "../../lib/backpackApi";
+import Icon from "../../components/Icon";
 import "./backpack.css";
 
-const BACKPACK_SECTIONS = [
+const BACKPACK_SECTIONS: Array<{ id: string; label: string; emoji: ReactNode; color: string; tagline: string; description: string; type: string }> = [
   {
     id: "challenge",
     label: "The 1 Question Retirement Challenge",
-    emoji: "❓",
+    emoji: <Icon name="help" size={22} />,
     color: "#e8673a",
     tagline: "One question. One week. A lifetime of clarity.",
     description:
@@ -21,7 +23,7 @@ const BACKPACK_SECTIONS = [
   {
     id: "pinwhirl",
     label: "The Pinwhirl Tool",
-    emoji: "🌀",
+    emoji: <Icon name="rotate" size={22} />,
     color: "#2e8b7a",
     tagline: "Spin your priorities into focus.",
     description:
@@ -31,7 +33,7 @@ const BACKPACK_SECTIONS = [
   {
     id: "values",
     label: "Values & Beliefs",
-    emoji: "🧭",
+    emoji: <Icon name="compass" size={22} />,
     color: "#1e2d5a",
     tagline: "Know what you stand for before you stand down.",
     description:
@@ -41,7 +43,7 @@ const BACKPACK_SECTIONS = [
   {
     id: "purpose",
     label: "Finding Your Purpose",
-    emoji: "🔦",
+    emoji: <Icon name="lightbulb" size={22} />,
     color: "#7a5a9a",
     tagline: "What gets you out of bed when work doesn't?",
     description:
@@ -51,7 +53,7 @@ const BACKPACK_SECTIONS = [
   {
     id: "skills",
     label: "New Skills",
-    emoji: "🛠️",
+    emoji: <Icon name="wrench" size={22} />,
     color: "#5a8a6a",
     tagline: "Life skills for the chapter ahead.",
     description:
@@ -61,7 +63,7 @@ const BACKPACK_SECTIONS = [
   {
     id: "refinement",
     label: "Refinement",
-    emoji: "✨",
+    emoji: <Icon name="sparkle" size={22} />,
     color: "#c87840",
     tagline: "Bringing it all together.",
     description:
@@ -71,7 +73,7 @@ const BACKPACK_SECTIONS = [
   {
     id: "giveback",
     label: "Giveback & Share",
-    emoji: "🤲",
+    emoji: <Icon name="hands" size={22} />,
     color: "#3a6a9a",
     tagline: "Share your story. Give back. Pay it forward.",
     description:

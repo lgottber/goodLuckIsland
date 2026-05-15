@@ -1,4 +1,5 @@
 import { PlayIcon } from "../../components/Icons";
+import PictureImage from "../../components/PictureImage";
 
 type Episode = { id: number; num: string; title: string; desc: string | null; date: string | null; duration: string | null; youtubeId: string | null; thumbnail: string | null };
 
@@ -6,7 +7,11 @@ export default function EpisodeCard({ ep, onPlay }: { ep: Episode; onPlay: () =>
   return (
     <div className="episode-card" onClick={onPlay}>
       <div className="episode-thumb">
-        <img src={ep.thumbnail ?? undefined} alt={ep.title} />
+        <PictureImage
+          name={ep.thumbnail ?? undefined}
+          alt={`Thumbnail for podcast episode ${ep.num}: ${ep.title}`}
+          sizes="(max-width: 768px) 100vw, 33vw"
+        />
         <div className="episode-thumb-overlay">
           <button type="button" className="episode-thumb-play">
             <PlayIcon size={16} />

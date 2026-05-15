@@ -22,44 +22,40 @@ export default function BasicInfoTab({
   return (
     <div className="edit-modal-body">
       <div className="modal-section-label">Identity</div>
-      <div className="field-row">
-        <Field label="First Name">
-          <input
-            type="text"
-            value={form.firstName}
-            onChange={(e) => set("firstName", e.target.value)}
-            placeholder="First name"
-          />
-        </Field>
-        <Field label="Last Name">
-          <input
-            type="text"
-            value={form.lastName}
-            onChange={(e) => set("lastName", e.target.value)}
-            placeholder="Last name"
-          />
-        </Field>
-      </div>
-      <div className="field-row">
-        <Field label="Username">
-          <input
-            type="text"
-            value={form.username}
-            onChange={(e) => set("username", e.target.value)}
-            placeholder="@username"
-          />
-        </Field>
-        <Field label="Age">
-          <input
-            type="number"
-            value={form.age}
-            onChange={(e) => set("age", e.target.value)}
-            placeholder="e.g. 52"
-            min="1"
-            max="120"
-          />
-        </Field>
-      </div>
+      <Field label="First Name">
+        <input
+          type="text"
+          value={form.firstName}
+          onChange={(e) => set("firstName", e.target.value)}
+          placeholder="First name"
+        />
+      </Field>
+      <Field label="Last Name">
+        <input
+          type="text"
+          value={form.lastName}
+          onChange={(e) => set("lastName", e.target.value)}
+          placeholder="Last name"
+        />
+      </Field>
+      <Field label="Username">
+        <input
+          type="text"
+          value={form.username}
+          onChange={(e) => set("username", e.target.value)}
+          placeholder="@username"
+        />
+      </Field>
+      <Field label="Age">
+        <input
+          type="number"
+          value={form.age}
+          onChange={(e) => set("age", e.target.value)}
+          placeholder="e.g. 52"
+          min="1"
+          max="120"
+        />
+      </Field>
       <Field label="Email">
         <input
           type="email"

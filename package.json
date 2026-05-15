@@ -12,7 +12,14 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "postinstall": "patch-package",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "tf:init": "terraform -chdir=terraform init",
+    "tf:plan": "terraform -chdir=terraform plan",
+    "tf:apply": "terraform -chdir=terraform apply -auto-approve",
+    "tf:destroy": "terraform -chdir=terraform destroy -auto-approve",
+    "tf:import-pages": "terraform -chdir=terraform import cloudflare_pages_project.app $CLOUDFLARE_ACCOUNT_ID/good-luck-island",
+    "secrets:sync": "gh secret set -f .env.local",
+    "secrets:delete-all": "gh secret list | awk '{print $1}' | xargs -I {} gh secret delete {}"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",

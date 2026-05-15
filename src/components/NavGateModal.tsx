@@ -1,4 +1,5 @@
 import Modal from "./Modal";
+import Icon from "./Icon";
 
 export default function NavGateModal({ onClose }: { onClose: () => void }) {
   return (
@@ -8,9 +9,9 @@ export default function NavGateModal({ onClose }: { onClose: () => void }) {
       onClose={onClose}
     >
       <button type="button" className="nav-gate-close" onClick={onClose}>
-        ✕
+        <Icon name="x" size={18} />
       </button>
-      <div className="nav-gate-icon">🔒</div>
+      <div className="nav-gate-icon"><Icon name="lock" size={32} /></div>
       <h3 className="nav-gate-title">Member Content</h3>
       <p className="nav-gate-desc">
         Articles and podcast episodes are free to access — just sign in or
@@ -21,7 +22,7 @@ export default function NavGateModal({ onClose }: { onClose: () => void }) {
           Sign In
         </a>
         <a href="/signup" className="nav-gate-btn-ghost">
-          Join Free →
+          Join Free
         </a>
       </div>
     </Modal>

@@ -52,10 +52,12 @@ export default function EditModal({ user, onSave, onClose }: { user: ProfileForm
     >
       {/* Header */}
       <div className="edit-modal-header">
+        <div>
+          <button type="button" className="edit-modal-close" onClick={onClose}>
+            <Icon name="x" size={18} />
+          </button>
+        </div>
         <h2>Edit Islander Profile</h2>
-        <button type="button" className="edit-modal-close" onClick={onClose}>
-          <Icon name="x" size={18} />
-        </button>
       </div>
 
       {/* Tab bar */}
@@ -95,7 +97,7 @@ export default function EditModal({ user, onSave, onClose }: { user: ProfileForm
               className="btn-cancel"
               onClick={() => setActiveTab(MODAL_TABS[tabIdx - 1])}
             >
-              ← Back
+              Back
             </button>
           )}
         </div>

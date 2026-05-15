@@ -1,6 +1,7 @@
 import FeaturedVideoPlayer from "./FeaturedVideoPlayer";
 import EpisodeCard from "./EpisodeCard";
-import { ClockIcon, PlayIcon, YoutubeIcon } from "../../components/Icons";
+import { ClockIcon } from "../../components/Icons";
+import Icon from "../../components/Icon";
 
 type Episode = { id: number; num: string; title: string; desc: string | null; date: string | null; duration: string | null; youtubeId: string | null; thumbnail: string | null };
 
@@ -22,21 +23,20 @@ export default function PodcastTab({
       <div className="podcast-subscribe-row">
         <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
           <button type="button" className="podcast-sub-btn">
-            <YoutubeIcon />
             Subscribe on YouTube
           </button>
         </a>
         <button type="button" className="podcast-sub-btn">
-          🎙️ Apple Podcasts
+          Apple Podcasts
         </button>
         <button type="button" className="podcast-sub-btn">
-          🟢 Spotify
+          Spotify
         </button>
       </div>
 
       <div className="podcast-content">
         <div>
-          <p className="podcast-featured-label">🎬 Latest Episode</p>
+          <p className="podcast-featured-label"><Icon name="film" size={14} /> Latest Episode</p>
           <div className="featured-episode">
             <div className="featured-video-side">
               <FeaturedVideoPlayer
@@ -64,7 +64,7 @@ export default function PodcastTab({
                   className="btn-watch"
                   onClick={() => setFeaturedPlaying(true)}
                 >
-                  <PlayIcon size={14} /> Watch Episode
+                  Watch Episode
                 </button>
                 <a
                   href={`https://www.youtube.com/watch?v=${podcastFeatured.youtubeId}`}
@@ -72,7 +72,7 @@ export default function PodcastTab({
                   rel="noopener noreferrer"
                 >
                   <button type="button" className="btn-youtube">
-                    <YoutubeIcon /> Open on YouTube
+                    Open on YouTube
                   </button>
                 </a>
               </div>

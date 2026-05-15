@@ -3,7 +3,9 @@ import "./home.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import Link from "next/link";
 import NavBar from "../components/NavBarDynamic";
+import PictureImage from "../components/PictureImage";
 import { FacebookIcon, InstagramIcon, YoutubeIcon } from "../components/Icons";
+import Icon from "../components/Icon";
 import HeroCtaUser from "./HeroCtaUser";
 import HeroCtaGuest from "./HeroCtaGuest";
 import MarqueeItem from "./MarqueeItem";
@@ -83,7 +85,11 @@ export default function HomePage() {
               </blockquote>
             </div>
             <div className="problem-image">
-              <img src="/fallingbike.gif" alt="falling off a bike" />
+              <PictureImage
+                name="/falling_bike.gif"
+                alt="Animated image of someone falling off a bicycle, representing the challenge of navigating retirement without guidance"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
             </div>
           </div>
         </section>
@@ -101,10 +107,10 @@ export default function HomePage() {
             </p>
             <div className="pillars-strip">
               {[
-                { icon: "🚫", label: "Freedom from Noise" },
-                { icon: "🧠", label: "Independent Thinking" },
-                { icon: "🗺️", label: "Intentional Lifestyle Design" },
-                { icon: "🤝", label: "Community Without Pressure" },
+                { icon: <Icon name="block" size={22} />, label: "Freedom from Noise" },
+                { icon: <Icon name="brain" size={22} />, label: "Independent Thinking" },
+                { icon: <Icon name="map" size={22} />, label: "Intentional Lifestyle Design" },
+                { icon: <Icon name="users" size={22} />, label: "Community Without Pressure" },
               ].map(({ icon, label }) => (
                 <PillarCard key={label} icon={icon} label={label} />
               ))}
@@ -127,42 +133,42 @@ export default function HomePage() {
             <div className="values-grid">
               {[
                 {
-                  icon: "🗽",
+                  icon: <Icon name="flag" size={22} />,
                   title: "Autonomy",
                   desc: "The right to design your own path without pressure",
                 },
                 {
-                  icon: "🎨",
+                  icon: <Icon name="palette" size={22} />,
                   title: "Creative Reinvention",
                   desc: "Retirement isn't an ending. It's your second act",
                 },
                 {
-                  icon: "🌿",
+                  icon: <Icon name="leaf" size={22} />,
                   title: "Authentic Experiences",
                   desc: "Real moments over status symbols",
                 },
                 {
-                  icon: "💪",
+                  icon: <Icon name="activity" size={22} />,
                   title: "Health & Longevity",
                   desc: "Investing in the vessel, not just the portfolio",
                 },
                 {
-                  icon: "📈",
+                  icon: <Icon name="trending-up" size={22} />,
                   title: "Personal Growth",
                   desc: "Still curious. Still learning. Always evolving",
                 },
                 {
-                  icon: "💡",
+                  icon: <Icon name="lightbulb" size={22} />,
                   title: "Financial Confidence",
                   desc: "Calm clarity over panic-driven decisions",
                 },
                 {
-                  icon: "⏳",
+                  icon: <Icon name="hourglass" size={22} />,
                   title: "Time Freedom",
                   desc: "The ultimate retirement asset",
                 },
                 {
-                  icon: "❤️",
+                  icon: <Icon name="heart" size={22} />,
                   title: "Meaningful Relationships",
                   desc: "The people who make the island worth reaching",
                 },
@@ -241,10 +247,11 @@ export default function HomePage() {
         <footer className="footer">
           <div className="footer-inner">
             <div className="footer-brand">
-              <img
-                src="/goodLuckIslandLogoSmall.png"
-                alt="Good Luck Island Collective"
+              <PictureImage
+                name="/good_luck_island_logo_small.png"
+                alt="Good Luck Island Collective logo"
                 className="footer-brand-logo"
+                sizes="120px"
               />
               <span>Curating calm clarity for the next chapter of life.</span>
             </div>

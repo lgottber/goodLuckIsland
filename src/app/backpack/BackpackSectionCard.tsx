@@ -1,7 +1,8 @@
+import { ReactNode } from "react";
 import BackpackComingSoonBadge from "./BackpackComingSoonBadge";
 import BackpackCardCta from "./BackpackCardCta";
 
-type BackpackSection = { id: string; type: string; color: string; emoji: string; label: string; tagline: string };
+type BackpackSection = { id: string; type: string; color: string; emoji: ReactNode; label: string; tagline: string };
 
 export default function BackpackSectionCard({ section, index, onSelect }: { section: BackpackSection; index: number; onSelect: (id: string) => void }) {
   return (

@@ -1,7 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap");
-
 :root {
-  --nav-height: 110px;
+  --nav-height: 6.875rem;
   --page-header-radius: 0 0 60% 60% / 0 0 44px 44px;
   --navy: #1e2d5a;
   --teal: #2e8b7a;
@@ -10,16 +8,20 @@
   --cream: #f0ebe0;
   --cream-dk: #e6dfd2;
   --cream-md: #ede7d9;
-  --muted: #6b7280;
-  --serif: "Cormorant Garamond", Georgia, serif;
-  --sans: "DM Sans", system-ui, sans-serif;
+  --muted: #5c6370;
+  --serif: var(--font-cormorant), Georgia, serif;
+  --sans: var(--font-dm-sans), system-ui, sans-serif;
 }
 
 html {
   font-size: 162.5%; /* 26px base — scales all rem values site-wide */
 }
 
-@media (max-width: 640px) {
+svg {
+  color: inherit;
+}
+
+@media (max-width: 62.5rem) {
   html {
     font-size: 100%; /* 16px base on mobile to prevent oversized layout */
   }
@@ -49,7 +51,7 @@ html {
   background: #0d1630;
   border-radius: 20px;
   width: 100%;
-  max-width: 900px;
+  max-width: 56.25rem;
   overflow: hidden;
   box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
   animation: scaleIn 0.25s ease;
@@ -81,8 +83,8 @@ html {
   background: rgba(255, 255, 255, 0.08);
   border: none;
   color: rgba(255, 255, 255, 0.6);
-  width: 32px;
-  height: 32px;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
   font-size: 1rem;
   display: flex;
@@ -112,7 +114,7 @@ html {
 }
 .video-modal-meta {
   font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.6);
 }
 .video-modal-yt {
   display: flex;
@@ -130,7 +132,7 @@ html {
 .video-modal-yt:hover {
   background: #cc0000;
 }
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .video-modal {
     border-radius: 12px;
   }

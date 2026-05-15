@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import PictureImage from "./PictureImage";
 import { useAuth0 } from "@auth0/auth0-react";
 import NavGateModal from "./NavGateModal";
 import UserMenu from "./UserMenu";
@@ -31,8 +32,13 @@ export default function NavBar({
 
   useEffect(() => {
     const onScroll = () => setScrolled(globalThis.scrollY > 40);
+    const onResize = () => { setDropdownOpen(false); setMobileOpen(false); };
     globalThis.addEventListener("scroll", onScroll, { passive: true });
-    return () => globalThis.removeEventListener("scroll", onScroll);
+    globalThis.addEventListener("resize", onResize, { passive: true });
+    return () => {
+      globalThis.removeEventListener("scroll", onScroll);
+      globalThis.removeEventListener("resize", onResize);
+    };
   }, []);
 
   useClickOutside(dropdownRef, () => setDropdownOpen(false), dropdownOpen);
@@ -76,10 +82,13 @@ export default function NavBar({
       <nav className={navClassName}>
         <div className="nav-inner">
           <Link href="/" className="nav-logo">
-            <img
-              src="/goodLuckIslandLogoSmall.png"
-              alt="Good Luck Island Collective"
+            <PictureImage
+              name="/good_luck_island_logo_small.png"
+              alt="Good Luck Island Collective logo"
               className="nav-logo-img"
+              sizes="40px"
+              width={64}
+              height={64}
             />
           </Link>
           <div className="nav-links">
@@ -124,13 +133,6 @@ export default function NavBar({
       </nav>
 
       <div className={`nav-mobile-menu ${mobileOpen ? "open" : ""}`}>
-        <button
-          type="button"
-          className="nav-mobile-close"
-          onClick={() => setMobileOpen(false)}
-        >
-          ✕
-        </button>
         <Link href="/about" onClick={() => setMobileOpen(false)}>
           About
         </Link>

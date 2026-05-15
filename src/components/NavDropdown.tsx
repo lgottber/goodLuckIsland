@@ -1,4 +1,5 @@
 import NavDropdownItem from "./NavDropdownItem";
+import Icon from "./Icon";
 
 const MENU_ITEMS = [
   { href: "/profile", label: "My Profile" },
@@ -6,7 +7,7 @@ const MENU_ITEMS = [
   { href: "/backpack", label: "My Backpack" },
 ];
 
-export default function NavDropdown({ onClose, exportStatus, onExport }: { onClose: () => void; exportStatus: string; onExport: () => void }) {
+export default function NavDropdown({ onClose }: { onClose: () => void }) {
   return (
     <div className="nav-dropdown">
       {MENU_ITEMS.map(({ href, label }) => (
@@ -18,24 +19,8 @@ export default function NavDropdown({ onClose, exportStatus, onExport }: { onClo
         />
       ))}
       <div className="nav-dropdown-divider" />
-      <button
-        type="button"
-        className="nav-dropdown-item"
-        onClick={onExport}
-        disabled={exportStatus === "exporting"}
-      >
-        <span className="nav-dropdown-icon">📥</span>
-        {exportStatus === "exporting"
-          ? "Exporting…"
-          : exportStatus === "done"
-            ? "✓ Exported!"
-            : exportStatus === "error"
-              ? "Export failed"
-              : "Export My Data"}
-      </button>
-      <div className="nav-dropdown-divider" />
       <a href="/auth/logout" className="nav-dropdown-item nav-dropdown-logout">
-        <span className="nav-dropdown-icon"></span> Logout
+        <span className="nav-dropdown-icon"><Icon name="logout" size={14} /></span> Logout
       </a>
     </div>
   );

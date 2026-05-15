@@ -13,6 +13,7 @@ import BioEmpty from "./BioEmpty";
 import InterestsList from "./InterestsList";
 import InterestsEmpty from "./InterestsEmpty";
 import { createUser, fetchProfile, upsertProfile } from "../../lib/profileApi";
+import { downloadProfileDataCsv } from "../../lib/exportUtils";
 import ProfileMetaItem from "./ProfileMetaItem";
 import InfoRow from "./InfoRow";
 import ProfileInfoEmpty from "./ProfileInfoEmpty";
@@ -127,6 +128,7 @@ export default function ProfilePage() {
   const [pickingAvatar, setPickingAvatar] = useState(false);
   const [saved, setSaved] = useState(true);
   const [resetStatus, setResetStatus] = useState("idle"); // idle | sending | sent | error
+  const [exportStatus, setExportStatus] = useState("idle"); // idle | exporting | done | error
 
   async function handlePasswordReset() {
     if (!auth0User?.email) {
@@ -151,6 +153,25 @@ export default function ProfilePage() {
       setResetStatus(res.ok ? "sent" : "error");
     } catch {
       setResetStatus("error");
+    }
+  }
+
+  function exportLabel() {
+    if (exportStatus === "exporting") return "Exporting…";
+    if (exportStatus === "done") return <><Icon name="check" size={13} /> Exported!</>;
+    if (exportStatus === "error") return "Export failed";
+    return "Export My Data";
+  }
+
+  async function handleExportData() {
+    if (!auth0User?.sub) return;
+    setExportStatus("exporting");
+    try {
+      await downloadProfileDataCsv(auth0User.sub);
+      setExportStatus("done");
+      setTimeout(() => setExportStatus("idle"), 3000);
+    } catch {
+      setExportStatus("error");
     }
   }
 
@@ -216,55 +237,65 @@ export default function ProfilePage() {
         {/* ── PROFILE HEADER ── */}
         <div className="profile-header-wrap">
           <div className="profile-header">
-            <div className="profile-avatar-wrap">
-              <AvatarDisplay
-                avatarId={user.avatarId}
-                avatarUrl={user.avatarUrl}
-                initials={initials}
-                size={120}
-              />
-              <button
-                type="button"
-                className="avatar-edit-btn"
-                onClick={() => setPickingAvatar(true)}
-                title="Change avatar"
-              >
-                <Icon name="camera" size={12} />
-              </button>
-            </div>
+            <div className="profile-header-left">
+              <div className="profile-avatar-wrap">
+                <AvatarDisplay
+                  avatarId={user.avatarId}
+                  avatarUrl={user.avatarUrl}
+                  initials={initials}
+                  size={120}
+                />
+                <button
+                  type="button"
+                  className="avatar-edit-btn"
+                  onClick={() => setPickingAvatar(true)}
+                  title="Change avatar"
+                >
+                  <Icon name="camera" size={12} />
+                </button>
+              </div>
 
-            <div className="profile-header-info">
-              <h1>
-                {user.firstName} {user.lastName}
-              </h1>
-              <p className="profile-handle">{user.username}</p>
-              <div className="profile-meta-row">
-                <span className="profile-badge">🌴 Islander</span>
-                {user.occupation && (
-                  <ProfileMetaItem
-                    className="profile-occupation"
-                    iconName="briefcase"
-                    value={user.occupation}
-                  />
-                )}
-                {user.location && (
-                  <ProfileMetaItem
-                    className="profile-location"
-                    iconName="location"
-                    value={user.location}
-                  />
-                )}
+              <div className="profile-header-info">
+                <h1>
+                  {user.firstName} {user.lastName}
+                </h1>
+                <p className="profile-handle">{user.username}</p>
+                <div className="profile-meta-row">
+                  <span className="profile-badge"><Icon name="palm" size={12} /> Islander</span>
+                  {user.occupation && (
+                    <ProfileMetaItem
+                      className="profile-occupation"
+                      iconName="briefcase"
+                      value={user.occupation}
+                    />
+                  )}
+                  {user.location && (
+                    <ProfileMetaItem
+                      className="profile-location"
+                      iconName="location"
+                      value={user.location}
+                    />
+                  )}
+                </div>
               </div>
             </div>
 
             <div className="profile-header-actions">
-              {!saved && <FlashMessage message="✓ Saved!" />}
+              {!saved && <FlashMessage message={<><Icon name="check" size={13} /> Saved!</>} />}
               {resetStatus === "sent" && (
-                <FlashMessage message="✓ Reset email sent!" />
+                <FlashMessage message={<><Icon name="check" size={13} /> Reset email sent!</>} />
               )}
               {resetStatus === "error" && (
                 <FlashMessage message="Something went wrong" error />
               )}
+              <button
+                type="button"
+                className="btn-ghost-sm"
+                onClick={handleExportData}
+                disabled={exportStatus === "exporting"}
+              >
+                {exportLabel()}
+              </button>
               <button
                 type="button"
                 className="btn-ghost-sm"

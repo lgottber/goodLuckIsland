@@ -22,14 +22,14 @@ body {
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 .nav-inner {
-  max-width: 1280px;
+  max-width: 80rem;
   margin: 0 auto;
   display: flex;
   align-items: center;
   gap: 2rem;
 }
 .nav-logo img {
-  height: 44px;
+  height: 2.75rem;
   width: auto;
   object-fit: contain;
 }
@@ -117,7 +117,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--teal);
+  color: rgba(255, 255, 255, 0.75);
   margin-bottom: 1rem;
 }
 .podcast-header h1 {
@@ -136,7 +136,7 @@ body {
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.55);
   line-height: 1.75;
-  max-width: 520px;
+  max-width: 32.5rem;
   margin: 0 auto 1.75rem;
 }
 .podcast-subscribe-row {
@@ -165,8 +165,8 @@ body {
   background: rgba(255, 255, 255, 0.1);
 }
 .podcast-sub-btn svg {
-  width: 16px;
-  height: 16px;
+  width: 1rem;
+  height: 1rem;
   flex-shrink: 0;
 }
 
@@ -174,7 +174,7 @@ body {
 .podcast-content {
   position: relative;
   z-index: 1;
-  max-width: 1100px;
+  max-width: 68.75rem;
   margin: 0 auto;
   padding: 3.5rem 2rem 6rem;
   display: flex;
@@ -188,7 +188,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--teal);
+  color: rgba(255, 255, 255, 0.75);
   margin-bottom: 1.25rem;
 }
 
@@ -215,7 +215,7 @@ body {
 .featured-video-side {
   position: relative;
   background: #000;
-  min-height: 340px;
+  min-height: 21.25rem;
 }
 .featured-video-side iframe {
   width: 100%;
@@ -249,8 +249,8 @@ body {
   background: rgba(18, 26, 52, 0.3);
 }
 .featured-play-btn {
-  width: 68px;
-  height: 68px;
+  width: 4.25rem;
+  height: 4.25rem;
   border-radius: 50%;
   background: var(--coral);
   border: none;
@@ -379,7 +379,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.55);
   margin-bottom: 1.5rem;
 }
 .episodes-grid {
@@ -438,8 +438,8 @@ body {
   opacity: 1;
 }
 .episode-thumb-play {
-  width: 44px;
-  height: 44px;
+  width: 2.75rem;
+  height: 2.75rem;
   border-radius: 50%;
   background: var(--coral);
   border: none;
@@ -478,11 +478,11 @@ body {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--teal);
+  color: rgba(255, 255, 255, 0.75);
 }
 .episode-body-date {
   font-size: 0.62rem;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.55);
   margin-left: auto;
 }
 .episode-body-title {
@@ -510,7 +510,7 @@ body {
   padding-top: 0.75rem;
   font-size: 0.72rem;
   font-weight: 700;
-  color: var(--coral);
+  color: #fff;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   border-top: 1px solid rgba(255, 255, 255, 0.07);
@@ -531,8 +531,8 @@ body {
 }
 .nav-hamburger span {
   display: block;
-  width: 24px;
-  height: 2px;
+  width: 1.5rem;
+  height: 0.125rem;
   background: rgba(255, 255, 255, 0.85);
   border-radius: 2px;
   transition: all 0.3s;
@@ -584,7 +584,7 @@ body {
   color: rgba(255, 255, 255, 0.7);
 }
 
-@media (max-width: 960px) {
+@media (max-width: 60rem) {
   .nav-hamburger {
     display: flex;
   }
@@ -595,7 +595,7 @@ body {
     grid-template-columns: 1fr;
   }
   .featured-video-side {
-    min-height: 240px;
+    min-height: 15rem;
   }
   .episodes-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -614,7 +614,7 @@ body {
     padding: 0.45rem 0.85rem;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .episodes-grid {
     grid-template-columns: 1fr;
   }

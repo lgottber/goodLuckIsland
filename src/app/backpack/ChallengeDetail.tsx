@@ -1,3 +1,7 @@
+import PictureImage from "../../components/PictureImage";
+import Icon from "../../components/Icon";
+import SaveLabel from "./SaveLabel";
+
 type WeeklyQ = { question: string; prompt: string };
 
 export default function ChallengeDetail({
@@ -19,10 +23,10 @@ export default function ChallengeDetail({
     <div className="backpack-detail-card">
       <div className="backpack-section-nav">
         <button type="button" className="backpack-back-btn" onClick={onBack}>
-          ← Back to Backpack
+          <Icon name="arrow-left" size={14} /> Back to Backpack
         </button>
         <span className="backpack-section-breadcrumb">
-          ❓ The 1 Question Retirement Challenge
+          <Icon name="help" size={14} /> The 1 Question Retirement Challenge
         </span>
       </div>
 
@@ -40,7 +44,11 @@ export default function ChallengeDetail({
       </div>
 
       <div className="challenge-photo-banner">
-        <img src="/bench.png" alt="A quiet moment of reflection" />
+        <PictureImage
+          name="/bench.png"
+          alt="A person sitting alone on a park bench in quiet reflection, representing the inner work of retirement planning"
+          sizes="(max-width: 768px) 100vw, 80vw"
+        />
       </div>
 
       <div className="challenge-reflection">
@@ -54,7 +62,7 @@ export default function ChallengeDetail({
         />
         <div className="challenge-reflection-footer">
           <span className="challenge-reflection-hint">
-            🔒 Your reflection is private — only you can see it.
+            <Icon name="lock" size={13} /> Your reflection is private — only you can see it.
           </span>
           <button
             type="button"
@@ -62,13 +70,13 @@ export default function ChallengeDetail({
             onClick={triggerReflectionSaved}
             disabled={!reflection.trim()}
           >
-            {reflectionSaved ? "✓ Saved!" : "Save Reflection"}
+            <SaveLabel saved={reflectionSaved} />
           </button>
         </div>
       </div>
 
       <div className="challenge-archive-note">
-        <span>📅</span>
+        <Icon name="calendar" size={16} />
         <p>
           A new question appears every week. Your saved reflections will build
           into a personal retirement journal over time.

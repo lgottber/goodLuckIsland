@@ -1,3 +1,5 @@
+import PictureImage from "../../components/PictureImage";
+
 export const AVATAR_ERAS = [
   {
     era: "70s",
@@ -310,7 +312,7 @@ export default function AvatarDisplay({
         className="avatar-display"
         ref={(el) => applyAvatarVars(el, size, borderColor, null)}
       >
-        <img src={avatarUrl} alt="avatar" className="avatar-display-img" />
+        <PictureImage name={avatarUrl} alt="User profile avatar photo" className="avatar-display-img" sizes="(max-width: 768px) 80px, 120px" />
       </div>
     );
   }

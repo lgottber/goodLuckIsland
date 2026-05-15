@@ -1,4 +1,6 @@
 import Link from "next/link";
+import PictureImage from "../../components/PictureImage";
+import Icon from "../../components/Icon";
 import FilterTabs from "../../components/FilterTabs";
 import ArticleGrid from "./ArticleGrid";
 import FeaturedArticle from "./FeaturedArticle";
@@ -28,15 +30,16 @@ export default function ArticlesTab({
   return (
     <>
       <div className="articles-arch">
-        <img
-          src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&q=80"
-          alt="Retirement lifestyle"
+        <PictureImage
+          name="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&q=80"
+          alt="Serene beach with clear blue water representing the calm retirement lifestyle Good Luck Island promotes"
+          sizes="(max-width: 768px) 100vw, 900px"
         />
       </div>
 
       <div className="articles-tab-pad">
         <div className="book-promo-strip">
-          <div className="book-promo-icon">📖</div>
+          <div className="book-promo-icon"><Icon name="book" size={24} /></div>
           <div className="book-promo-text">
             <p className="book-promo-from">From our book:</p>
             <p className="book-promo-title">
