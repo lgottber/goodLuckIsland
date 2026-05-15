@@ -213,6 +213,12 @@ button {
   animation: slowZoom 20s ease-in-out infinite alternate;
 }
 
+@supports (background-image: url("data:image/webp,")) {
+  .hero-bg {
+    background-image: url("/beach_filler.webp");
+  }
+}
+
 @keyframes slowZoom {
   from {
     transform: scale(1);
