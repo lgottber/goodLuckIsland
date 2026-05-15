@@ -1,9 +1,8 @@
-import {
-  type ReadableStream as WorkersReadableStream,
-  Response,
-  Headers,
-  PagesFunction,
-} from '@cloudflare/workers-types';
+import { Response, Headers, PagesFunction } from '@cloudflare/workers-types';
+
+interface Env {
+  ANALYTICS: AnalyticsEngineDataset;
+}
 
 const SESSION_COOKIE_NAME = 'gli_session';
 const SESSION_DURATION_SECONDS = 24 * 60 * 60;
@@ -26,7 +25,7 @@ function parseSessionCookie(cookieHeader: string | null): string | null {
   return null;
 }
 
-export const onRequest: PagesFunction = async (context) => {
+export const onRequest: PagesFunction<Env> = async (context) => {
   const response = await context.next();
 
   if (parseSessionCookie(context.request.headers.get('Cookie'))) {
@@ -39,13 +38,21 @@ export const onRequest: PagesFunction = async (context) => {
 
   const sessionId = await generateSessionId(ip, country, date);
 
+  context.env.ANALYTICS.writeDataPoint({
+    indexes: [sessionId],
+    blobs: [date],
+    doubles: [1],
+  });
+
   const newHeaders = new Headers(response.headers);
   newHeaders.append(
     'Set-Cookie',
     `${SESSION_COOKIE_NAME}=${sessionId}; Max-Age=${SESSION_DURATION_SECONDS}; Path=/; SameSite=Lax; Secure; HttpOnly`,
   );
 
-  return new Response(response.body as WorkersReadableStream<Uint8Array> | null, {
+  const body = await response.arrayBuffer();
+
+  return new Response(body, {
     status: response.status,
     statusText: response.statusText,
     headers: newHeaders,

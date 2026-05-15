@@ -4,7 +4,7 @@ interface Env {
   ANALYTICS: AnalyticsEngineDataset;
 }
 
-async function emit (context: EventContext<Env, any, Record<any, unknown>>) {
+async function emit(context: EventContext<Env, string, Record<string, unknown>>) {
   const url = new URL(context.request.url);
 
   context.env.ANALYTICS.writeDataPoint({
