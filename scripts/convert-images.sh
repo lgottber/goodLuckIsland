@@ -37,7 +37,7 @@ find "$PUBLIC_DIR" -maxdepth 1 -type f \( \
   ext="${filename##*.}"
   base="${filename%.*}"
   snake="$(to_snake_case "$base")"
-  new_name="${snake}.${ext,,}"
+  new_name="${snake}.$(echo "$ext" | tr '[:upper:]' '[:lower:]')"
   if [[ "$filename" != "$new_name" ]]; then
     echo "    $filename -> $new_name"
     mv "$img" "$dir/$new_name"
@@ -74,7 +74,7 @@ find "$PUBLIC_DIR" -maxdepth 1 -type f \( -iname "*.png" -o -iname "*.gif" \) | 
   webp="${base}.webp"
   ext="${img##*.}"
   echo "    $img -> $webp"
-  if [[ "${ext,,}" == "gif" ]] && command -v gif2webp &>/dev/null; then
+  if [[ "$(echo "$ext" | tr '[:upper:]' '[:lower:]')" == "gif" ]] && command -v gif2webp &>/dev/null; then
     gif2webp -quiet "$img" -o "$webp"
   else
     convert "$img" "$webp"
