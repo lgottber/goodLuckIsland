@@ -1,4 +1,4 @@
-import { Response, Headers, PagesFunction } from '@cloudflare/workers-types';
+import type { PagesFunction } from '@cloudflare/workers-types';
 
 interface Env {
   ANALYTICS: AnalyticsEngineDataset;
@@ -38,23 +38,21 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
   const sessionId = await generateSessionId(ip, country, date);
 
-  context.env.ANALYTICS.writeDataPoint({
+  context.env.ANALYTICS?.writeDataPoint({
     indexes: [sessionId],
     blobs: [date],
     doubles: [1],
   });
 
-  const newHeaders = new Headers(response.headers);
+  const newHeaders = new Headers(response.headers as unknown as HeadersInit);
   newHeaders.append(
     'Set-Cookie',
     `${SESSION_COOKIE_NAME}=${sessionId}; Max-Age=${SESSION_DURATION_SECONDS}; Path=/; SameSite=Lax; Secure; HttpOnly`,
   );
 
-  const body = await response.arrayBuffer();
-
-  return new Response(body, {
+  return new Response(response.body as unknown as BodyInit | null, {
     status: response.status,
     statusText: response.statusText,
     headers: newHeaders,
-  });
+  }) as unknown as typeof response;
 };

@@ -68,4 +68,12 @@ export default [
       "@typescript-eslint/consistent-type-assertions": "off",
     },
   },
+  {
+    // Cloudflare Workers types (Response, Headers, ReadableStream) are incompatible
+    // with the standard web types — assertions are required to bridge them.
+    files: ["functions/**/*.ts"],
+    rules: {
+      "@typescript-eslint/consistent-type-assertions": "off",
+    },
+  },
 ];
