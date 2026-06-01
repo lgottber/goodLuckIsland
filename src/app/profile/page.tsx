@@ -13,6 +13,7 @@ import BioEmpty from "./BioEmpty";
 import InterestsList from "./InterestsList";
 import InterestsEmpty from "./InterestsEmpty";
 import { createUser, fetchProfile, upsertProfile } from "../../lib/profileApi";
+import QuizNudgeCard from "../quiz/QuizNudgeCard";
 import { downloadProfileDataCsv } from "../../lib/exportUtils";
 import ProfileMetaItem from "./ProfileMetaItem";
 import InfoRow from "./InfoRow";
@@ -99,7 +100,10 @@ export default function ProfilePage() {
       };
     }
 
-    function applySupabaseFields(prev: typeof INITIAL_USER, data: Record<string, unknown>) {
+    function applySupabaseFields(
+      prev: typeof INITIAL_USER,
+      data: Record<string, unknown>,
+    ) {
       const merged: typeof INITIAL_USER = { ...prev };
       for (const [dbKey, stateKey] of Object.entries(DB_TO_STATE)) {
         Object.assign(merged, { [stateKey]: data[dbKey] ?? prev[stateKey] });
@@ -115,15 +119,19 @@ export default function ProfilePage() {
       };
     }
 
-    setUser(applyAuth0Fields);
-    fetchProfile(a0.sub ?? "").then(async (data) => {
+    async function loadProfile() {
+      const data = await fetchProfile(a0.sub ?? "");
       if (!data) {
         await createUser(a0.sub ?? "", a0.email ?? "");
         return;
       }
-      if (data) setUser((prev) => applySupabaseFields(prev, data));
-    });
+      setUser((prev) => applySupabaseFields(prev, data));
+    }
+
+    setUser(applyAuth0Fields);
+    loadProfile().catch(() => setInitError(true));
   }, [auth0User]);
+  const [initError, setInitError] = useState(false);
   const [editing, setEditing] = useState(false);
   const [pickingAvatar, setPickingAvatar] = useState(false);
   const [saved, setSaved] = useState(true);
@@ -158,7 +166,7 @@ export default function ProfilePage() {
 
   function exportLabel() {
     if (exportStatus === "exporting") return "Exporting…";
-    if (exportStatus === "done") return <><Icon name="check" size={13} /> Exported!</>;
+    if (exportStatus === "done") return "Exported!";
     if (exportStatus === "error") return "Export failed";
     return "Export My Data";
   }
@@ -174,6 +182,16 @@ export default function ProfilePage() {
       setExportStatus("error");
     }
   }
+
+  const flash = !saved
+    ? { message: "Saved!", error: false }
+    : resetStatus === "sent"
+    ? { message: "Reset email sent!", error: false }
+    : initError
+    ? { message: "Couldn't load your profile. Please refresh.", error: true }
+    : resetStatus === "error"
+    ? { message: "Something went wrong", error: true }
+    : null;
 
   const initials =
     `${user.firstName?.[0] ?? "?"}${user.lastName?.[0] ?? "?"}`.toUpperCase();
@@ -261,7 +279,9 @@ export default function ProfilePage() {
                 </h1>
                 <p className="profile-handle">{user.username}</p>
                 <div className="profile-meta-row">
-                  <span className="profile-badge"><Icon name="palm" size={12} /> Islander</span>
+                  <span className="profile-badge">
+                    <Icon name="palm" size={12} /> Islander
+                  </span>
                   {user.occupation && (
                     <ProfileMetaItem
                       className="profile-occupation"
@@ -281,12 +301,8 @@ export default function ProfilePage() {
             </div>
 
             <div className="profile-header-actions">
-              {!saved && <FlashMessage message={<><Icon name="check" size={13} /> Saved!</>} />}
-              {resetStatus === "sent" && (
-                <FlashMessage message={<><Icon name="check" size={13} /> Reset email sent!</>} />
-              )}
-              {resetStatus === "error" && (
-                <FlashMessage message="Something went wrong" error />
+              {flash && (
+                <FlashMessage message={flash.message} error={flash.error} />
               )}
               <button
                 type="button"
@@ -350,6 +366,8 @@ export default function ProfilePage() {
               <BioEmpty onEditClick={() => setEditing(true)} />
             )}
           </div>
+
+          <QuizNudgeCard />
 
           {/* About & Interests row */}
           <div className="overview-two-col">
