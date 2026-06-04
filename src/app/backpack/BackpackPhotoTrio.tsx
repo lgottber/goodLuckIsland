@@ -10,7 +10,7 @@ export default function BackpackPhotoTrio() {
           sizes="(max-width: 768px) 100vw, 33vw"
         />
       </div>
-      <div className="backpack-photo-item backpack-photo-item--tall">
+      <div className="backpack-photo-item">
         <PictureImage
           name="/tools.gif"
           alt="Animated graphic showing a collection of tools ready for the journey ahead"

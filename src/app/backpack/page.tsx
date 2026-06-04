@@ -15,10 +15,9 @@ const BACKPACK_SECTIONS: Array<{ id: string; label: string; emoji: ReactNode; co
     label: "The 1 Question Retirement Challenge",
     emoji: <Icon name="help" size={22} />,
     color: "#e8673a",
-    tagline: "One question. One week. A lifetime of clarity.",
-    description:
-      "Each week a single powerful question helps you think more clearly about what retirement really means to you. No right answers — just honest reflection.",
-    type: "coming-soon",
+    tagline: "",
+    description: "",
+    type: "active",
   },
   {
     id: "pinwhirl",
@@ -85,6 +84,7 @@ const BACKPACK_SECTIONS: Array<{ id: string; label: string; emoji: ReactNode; co
 export default function BackpackPage() {
   const [sections, setSections] = useState(BACKPACK_SECTIONS);
   const [loadError, setLoadError] = useState(false);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchBackpackSections()
@@ -93,6 +93,10 @@ export default function BackpackPage() {
       })
       .catch(() => setLoadError(true));
   }, []);
+
+  function handleSectionSelect(id: string) {
+    setExpandedId((prev) => (prev === id ? null : id));
+  }
 
   return (
     <>
@@ -125,7 +129,7 @@ export default function BackpackPage() {
 
         <div className="backpack-content">
           <BackpackPhotoTrio />
-          <BackpackSectionGrid sections={sections} onSectionSelect={() => {}} />
+          <BackpackSectionGrid sections={sections} onSectionSelect={handleSectionSelect} expandedId={expandedId} />
         </div>
       </div>
     </>

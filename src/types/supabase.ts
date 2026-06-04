@@ -190,6 +190,7 @@ export type Database = {
           marital_status: string | null;
           net_worth: string | null;
           occupation: string | null;
+          oqrc_response: string | null;
           retired: string | null;
           retirement_date: string | null;
           unsubscribed_at: string | null;
@@ -218,6 +219,7 @@ export type Database = {
           marital_status?: string | null;
           net_worth?: string | null;
           occupation?: string | null;
+          oqrc_response?: string | null;
           retired?: string | null;
           retirement_date?: string | null;
           unsubscribed_at?: string | null;
@@ -246,6 +248,7 @@ export type Database = {
           marital_status?: string | null;
           net_worth?: string | null;
           occupation?: string | null;
+          oqrc_response?: string | null;
           retired?: string | null;
           retirement_date?: string | null;
           unsubscribed_at?: string | null;
