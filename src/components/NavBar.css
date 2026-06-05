@@ -9,8 +9,8 @@
   border-radius: 50%;
   padding: 0;
   cursor: pointer;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 3.25rem;
+  height: 3.25rem;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -27,8 +27,8 @@
 }
 
 .nav-avatar-btn--lg {
-  width: 3.25rem;
-  height: 3.25rem;
+  width: 4rem;
+  height: 4rem;
 }
 
 .nav-avatar-img {

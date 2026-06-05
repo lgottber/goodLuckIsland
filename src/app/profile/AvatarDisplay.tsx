@@ -8,7 +8,7 @@ export const AVATAR_ERAS = [
       {
         id: "fonzie",
         name: "The Fonz",
-        emoji: "🕶️",
+        image: "/avatars/fonz.png",
         bg: "#c8a45a",
         fg: "#1a1a1a",
         desc: "Happy Days",
@@ -16,7 +16,7 @@ export const AVATAR_ERAS = [
       {
         id: "farrah",
         name: "Farrah",
-        emoji: "💇",
+        image: "/avatars/farrah.png",
         bg: "#d4a843",
         fg: "#fff",
         desc: "Charlie's Angels",
@@ -24,7 +24,7 @@ export const AVATAR_ERAS = [
       {
         id: "kojak",
         name: "Kojak",
-        emoji: "🍭",
+        image: "/avatars/kojac.png",
         bg: "#5a7a9a",
         fg: "#fff",
         desc: "Kojak",
@@ -32,7 +32,7 @@ export const AVATAR_ERAS = [
       {
         id: "marcia",
         name: "Marcia Brady",
-        emoji: "🌸",
+        image: "/avatars/marsha.png",
         bg: "#e8a0b0",
         fg: "#fff",
         desc: "The Brady Bunch",
@@ -40,7 +40,7 @@ export const AVATAR_ERAS = [
       {
         id: "archie",
         name: "Archie Bunker",
-        emoji: "📺",
+        image: "/avatars/archie.png",
         bg: "#8b6355",
         fg: "#fff",
         desc: "All in the Family",
@@ -48,7 +48,7 @@ export const AVATAR_ERAS = [
       {
         id: "laverne",
         name: "Laverne",
-        emoji: "🎳",
+        image: "/avatars/laverne.png",
         bg: "#7a5c9a",
         fg: "#fff",
         desc: "Laverne & Shirley",
@@ -56,7 +56,7 @@ export const AVATAR_ERAS = [
       {
         id: "hawkeye",
         name: "Hawkeye Pierce",
-        emoji: "🏥",
+        image: "/avatars/hawkeye.png",
         bg: "#4a7a5a",
         fg: "#fff",
         desc: "M*A*S*H",
@@ -64,7 +64,7 @@ export const AVATAR_ERAS = [
       {
         id: "starsky",
         name: "Starsky",
-        emoji: "🚗",
+        image: "/avatars/starsky.png",
         bg: "#c84a3a",
         fg: "#fff",
         desc: "Starsky & Hutch",
@@ -78,7 +78,7 @@ export const AVATAR_ERAS = [
       {
         id: "ferris",
         name: "Ferris Bueller",
-        emoji: "😎",
+        image: "/avatars/ferris.png",
         bg: "#e8673a",
         fg: "#fff",
         desc: "Ferris Bueller's Day Off",
@@ -86,7 +86,7 @@ export const AVATAR_ERAS = [
       {
         id: "macgyver",
         name: "MacGyver",
-        emoji: "🔧",
+        image: "/avatars/macguyver.png",
         bg: "#5a8a6a",
         fg: "#fff",
         desc: "MacGyver",
@@ -94,7 +94,7 @@ export const AVATAR_ERAS = [
       {
         id: "mallory",
         name: "Mallory Keaton",
-        emoji: "💅",
+        image: "/avatars/mallory.png",
         bg: "#d4789a",
         fg: "#fff",
         desc: "Family Ties",
@@ -102,7 +102,7 @@ export const AVATAR_ERAS = [
       {
         id: "magnum",
         name: "Magnum P.I.",
-        emoji: "🥸",
+        image: "/avatars/magnum.png",
         bg: "#c87840",
         fg: "#fff",
         desc: "Magnum P.I.",
@@ -110,7 +110,7 @@ export const AVATAR_ERAS = [
       {
         id: "claire",
         name: "Claire Huxtable",
-        emoji: "⚖️",
+        image: "/avatars/claire.png",
         bg: "#5a6a9a",
         fg: "#fff",
         desc: "The Cosby Show",
@@ -118,7 +118,7 @@ export const AVATAR_ERAS = [
       {
         id: "marty",
         name: "Marty McFly",
-        emoji: "⏰",
+        image: "/avatars/marty.png",
         bg: "#e8b030",
         fg: "#1a1a1a",
         desc: "Back to the Future",
@@ -126,7 +126,7 @@ export const AVATAR_ERAS = [
       {
         id: "sam",
         name: "Sam Malone",
-        emoji: "🍺",
+        image: "/avatars/sam.png",
         bg: "#7a5a3a",
         fg: "#fff",
         desc: "Cheers",
@@ -134,7 +134,7 @@ export const AVATAR_ERAS = [
       {
         id: "indiana",
         name: "Indiana Jones",
-        emoji: "🪖",
+        image: "/avatars/indiana.png",
         bg: "#8a6a3a",
         fg: "#fff",
         desc: "Raiders of the Lost Ark",
@@ -148,7 +148,7 @@ export const AVATAR_ERAS = [
       {
         id: "elaine",
         name: "Elaine Benes",
-        emoji: "💃",
+        image: "/avatars/elaine.png",
         bg: "#9a7aba",
         fg: "#fff",
         desc: "Seinfeld",
@@ -156,7 +156,7 @@ export const AVATAR_ERAS = [
       {
         id: "carlton",
         name: "Carlton Banks",
-        emoji: "🕺",
+        image: "/avatars/carlton.png",
         bg: "#3a6a9a",
         fg: "#fff",
         desc: "Fresh Prince",
@@ -164,7 +164,7 @@ export const AVATAR_ERAS = [
       {
         id: "rachel",
         name: "Rachel Green",
-        emoji: "✂️",
+        image: "/avatars/rachel.png",
         bg: "#e8a860",
         fg: "#fff",
         desc: "Friends",
@@ -172,23 +172,23 @@ export const AVATAR_ERAS = [
       {
         id: "mulder",
         name: "Fox Mulder",
-        emoji: "🛸",
+        image: "/avatars/fox.png",
         bg: "#4a5a7a",
         fg: "#fff",
         desc: "The X-Files",
       },
       {
-        id: "homer",
-        name: "Homer Simpson",
-        emoji: "🍩",
-        bg: "#e8c830",
-        fg: "#1a1a1a",
-        desc: "The Simpsons",
+        id: "anderson",
+        name: "Mr. Anderson",
+        image: "/avatars/anderson.png",
+        bg: "#1a1a2e",
+        fg: "#fff",
+        desc: "The Matrix",
       },
       {
         id: "buffy",
         name: "Buffy Summers",
-        emoji: "🪓",
+        image: "/avatars/buffy.png",
         bg: "#c84870",
         fg: "#fff",
         desc: "Buffy the Vampire Slayer",
@@ -196,7 +196,7 @@ export const AVATAR_ERAS = [
       {
         id: "kramer",
         name: "Kramer",
-        emoji: "🚪",
+        image: "/avatars/kramer.png",
         bg: "#c8783a",
         fg: "#fff",
         desc: "Seinfeld",
@@ -204,7 +204,7 @@ export const AVATAR_ERAS = [
       {
         id: "ross",
         name: "Ross Geller",
-        emoji: "🦕",
+        image: "/avatars/ross.png",
         bg: "#8a7a6a",
         fg: "#fff",
         desc: "Friends",
@@ -218,7 +218,7 @@ export const AVATAR_ERAS = [
       {
         id: "tony",
         name: "Tony Soprano",
-        emoji: "🦢",
+        image: "/avatars/tony.png",
         bg: "#5a5a6a",
         fg: "#fff",
         desc: "The Sopranos",
@@ -226,7 +226,7 @@ export const AVATAR_ERAS = [
       {
         id: "carrie",
         name: "Carrie Bradshaw",
-        emoji: "👠",
+        image: "/avatars/carrie.png",
         bg: "#d47898",
         fg: "#fff",
         desc: "Sex and the City",
@@ -234,7 +234,7 @@ export const AVATAR_ERAS = [
       {
         id: "mcdreamy",
         name: "Dr. McDreamy",
-        emoji: "🩺",
+        image: "/avatars/mcdreamy.png",
         bg: "#5a8aaa",
         fg: "#fff",
         desc: "Grey's Anatomy",
@@ -242,7 +242,7 @@ export const AVATAR_ERAS = [
       {
         id: "michael",
         name: "Michael Scott",
-        emoji: "📋",
+        image: "/avatars/michael.png",
         bg: "#7a9aba",
         fg: "#fff",
         desc: "The Office",
@@ -250,7 +250,7 @@ export const AVATAR_ERAS = [
       {
         id: "jack",
         name: "Jack Shephard",
-        emoji: "✈️",
+        image: "/avatars/jack.png",
         bg: "#4a7a5a",
         fg: "#fff",
         desc: "Lost",
@@ -258,7 +258,7 @@ export const AVATAR_ERAS = [
       {
         id: "don",
         name: "Don Draper",
-        emoji: "🥃",
+        image: "/avatars/don.png",
         bg: "#6a5a4a",
         fg: "#fff",
         desc: "Mad Men",
@@ -266,7 +266,7 @@ export const AVATAR_ERAS = [
       {
         id: "miranda",
         name: "Miranda Priestly",
-        emoji: "👒",
+        image: "/avatars/miranda.png",
         bg: "#3a3a4a",
         fg: "#fff",
         desc: "The Devil Wears Prada",
@@ -274,7 +274,7 @@ export const AVATAR_ERAS = [
       {
         id: "walter",
         name: "Walter White",
-        emoji: "🧪",
+        image: "/avatars/walter.png",
         bg: "#7a8a6a",
         fg: "#fff",
         desc: "Breaking Bad",
@@ -283,8 +283,12 @@ export const AVATAR_ERAS = [
   },
 ];
 
-function applyAvatarVars(el: HTMLDivElement | null, size: number, borderColor: string, bg: string | null) {
-  if (!el) return;
+function applyAvatarVars(
+  el: HTMLDivElement,
+  size: number,
+  borderColor: string,
+  bg: string | null,
+) {
   el.style.setProperty("--avatar-size", `${size}px`);
   el.style.setProperty("--avatar-border", borderColor);
   if (bg) el.style.setProperty("background", bg);
@@ -306,41 +310,35 @@ export default function AvatarDisplay({
   const allChars = AVATAR_ERAS.flatMap((e) => e.characters);
   const char = allChars.find((c) => c.id === avatarId);
 
+  const setPhotoVars = (el: HTMLDivElement | null) => {
+    if (el) applyAvatarVars(el, size, borderColor, null);
+  };
+  const setCharVars = (el: HTMLDivElement | null) => {
+    if (el) applyAvatarVars(el, size, borderColor, char?.bg ?? null);
+  };
+  const setInitialsVars = (el: HTMLDivElement | null) => {
+    if (el) {
+      applyAvatarVars(el, size, borderColor, "var(--navy)");
+      el.style.setProperty("--avatar-initials-size", `${size * 0.3}px`);
+    }
+  };
+
   if (avatarUrl) {
     return (
-      <div
-        className="avatar-display"
-        ref={(el) => applyAvatarVars(el, size, borderColor, null)}
-      >
+      <div className="avatar-display" ref={setPhotoVars}>
         <PictureImage name={avatarUrl} alt="User profile avatar photo" className="avatar-display-img" sizes="(max-width: 768px) 80px, 120px" />
       </div>
     );
   }
   if (char) {
     return (
-      <div
-        className="avatar-display avatar-display--char"
-        ref={(el) => {
-          applyAvatarVars(el, size, borderColor, char.bg);
-          if (el) {
-            el.style.setProperty("--avatar-emoji-size", `${size * 0.42}px`);
-          }
-        }}
-      >
-        <span className="avatar-display-emoji">{char.emoji}</span>
+      <div className="avatar-display avatar-display--char" ref={setCharVars}>
+        <img src={char.image} alt={char.name} className="avatar-display-img" />
       </div>
     );
   }
   return (
-    <div
-      className="avatar-display"
-      ref={(el) => {
-        applyAvatarVars(el, size, borderColor, "var(--navy)");
-        if (el) {
-          el.style.setProperty("--avatar-initials-size", `${size * 0.3}px`);
-        }
-      }}
-    >
+    <div className="avatar-display" ref={setInitialsVars}>
       <span className="avatar-display-initials">{initials}</span>
     </div>
   );

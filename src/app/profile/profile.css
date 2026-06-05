@@ -271,9 +271,7 @@ body {
   border-radius: 50px;
   padding: 0.55rem 1.35rem;
   font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   font-family: var(--sans);
@@ -711,9 +709,7 @@ body {
   border-radius: 50px;
   padding: 0.7rem 1.75rem;
   font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
 }
@@ -880,6 +876,7 @@ body {
 }
 
 .avatar-era-tab {
+  flex: 1;
   background: none;
   border: none;
   cursor: pointer;
@@ -960,8 +957,8 @@ body {
 }
 
 .avatar-character-face {
-  width: 4.5rem;
-  height: 4.5rem;
+  width: 12.5rem;
+  height: 12.5rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -974,10 +971,11 @@ body {
 .avatar-character-btn:hover .avatar-character-face {
   transform: scale(1.06);
 }
-
-.avatar-emoji {
-  font-size: 2rem;
-  line-height: 1;
+.avatar-char-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
 }
 
 .avatar-selected-check {
@@ -1166,10 +1164,6 @@ body {
   object-fit: cover;
 }
 
-.avatar-display-emoji {
-  font-size: var(--avatar-emoji-size, 44px);
-  line-height: 1;
-}
 
 .avatar-display-initials {
   color: #fff;

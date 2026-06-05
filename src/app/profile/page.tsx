@@ -14,6 +14,7 @@ import InterestsList from "./InterestsList";
 import InterestsEmpty from "./InterestsEmpty";
 import { createUser, fetchProfile, upsertProfile } from "../../lib/profileApi";
 import QuizNudgeCard from "../quiz/QuizNudgeCard";
+import type { Tables } from "../../types/supabase";
 import { downloadProfileDataCsv } from "../../lib/exportUtils";
 import ProfileMetaItem from "./ProfileMetaItem";
 import InfoRow from "./InfoRow";
@@ -53,27 +54,6 @@ const INITIAL_USER = {
   netWorth: "",
 };
 
-const DB_TO_STATE: Record<string, keyof typeof INITIAL_USER> = {
-  first_name: "firstName",
-  last_name: "lastName",
-  email: "email",
-  username: "username",
-  location: "location",
-  bio: "bio",
-  mantra: "mantra",
-  interests: "interests",
-  occupation: "occupation",
-  education: "education",
-  retired: "retired",
-  retirement_date: "retirementDate",
-  marital_status: "maritalStatus",
-  divorced: "divorced",
-  kids: "kids",
-  home_paid_off: "homePaidOff",
-  working_income: "workingIncome",
-  net_worth: "netWorth",
-  avatar_id: "avatarId",
-};
 
 // ─── Main Profile Page ────────────────────────────────────────────────────────
 export default function ProfilePage() {
@@ -102,14 +82,29 @@ export default function ProfilePage() {
 
     function applySupabaseFields(
       prev: typeof INITIAL_USER,
-      data: Record<string, unknown>,
+      data: Tables<"users">,
     ) {
-      const merged: typeof INITIAL_USER = { ...prev };
-      for (const [dbKey, stateKey] of Object.entries(DB_TO_STATE)) {
-        Object.assign(merged, { [stateKey]: data[dbKey] ?? prev[stateKey] });
-      }
       return {
-        ...merged,
+        ...prev,
+        firstName: data.first_name ?? prev.firstName,
+        lastName: data.last_name ?? prev.lastName,
+        email: data.email ?? prev.email,
+        username: data.username ?? prev.username,
+        location: data.location ?? prev.location,
+        bio: data.bio ?? prev.bio,
+        mantra: data.mantra ?? prev.mantra,
+        interests: data.interests ?? prev.interests,
+        occupation: data.occupation ?? prev.occupation,
+        education: data.education ?? prev.education,
+        retired: data.retired ?? prev.retired,
+        retirementDate: data.retirement_date ?? prev.retirementDate,
+        maritalStatus: data.marital_status ?? prev.maritalStatus,
+        divorced: data.divorced ?? prev.divorced,
+        kids: data.kids ?? prev.kids,
+        homePaidOff: data.home_paid_off ?? prev.homePaidOff,
+        workingIncome: data.working_income ?? prev.workingIncome,
+        netWorth: data.net_worth ?? prev.netWorth,
+        avatarId: data.avatar_id ?? prev.avatarId,
         age: data.age != null ? String(data.age) : prev.age,
         yearsInOccupation:
           data.years_in_occupation != null
@@ -234,7 +229,7 @@ export default function ProfilePage() {
         />
       )}
 
-      <NavBar activePage="profile" largeAvatar />
+      <NavBar activePage="profile" largeAvatar avatarId={user.avatarId} />
 
       <div className="profile-page">
         {/* ── BANNER ── */}
@@ -255,25 +250,24 @@ export default function ProfilePage() {
         {/* ── PROFILE HEADER ── */}
         <div className="profile-header-wrap">
           <div className="profile-header">
-            <div className="profile-header-left">
-              <div className="profile-avatar-wrap">
-                <AvatarDisplay
-                  avatarId={user.avatarId}
-                  avatarUrl={user.avatarUrl}
-                  initials={initials}
-                  size={120}
-                />
-                <button
-                  type="button"
-                  className="avatar-edit-btn"
-                  onClick={() => setPickingAvatar(true)}
-                  title="Change avatar"
-                >
-                  <Icon name="camera" size={12} />
-                </button>
-              </div>
+            <div className="profile-avatar-wrap">
+              <AvatarDisplay
+                avatarId={user.avatarId}
+                avatarUrl={user.avatarUrl}
+                initials={initials}
+                size={180}
+              />
+              <button
+                type="button"
+                className="avatar-edit-btn"
+                onClick={() => setPickingAvatar(true)}
+                title="Change avatar"
+              >
+                <Icon name="camera" size={12} />
+              </button>
+            </div>
 
-              <div className="profile-header-info">
+            <div className="profile-header-info">
                 <h1>
                   {user.firstName} {user.lastName}
                 </h1>
@@ -298,7 +292,6 @@ export default function ProfilePage() {
                   )}
                 </div>
               </div>
-            </div>
 
             <div className="profile-header-actions">
               {flash && (
