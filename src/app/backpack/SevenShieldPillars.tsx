@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import ShieldPillarNode from "./ShieldPillarNode";
 import PillarItem from "./PillarItem";
+import OneQuestionDrawer from "./OneQuestionDrawer";
 
 const PILLARS = [
   {
@@ -77,6 +78,10 @@ const PILLARS = [
   },
 ];
 
+const CUSTOM_DRAWERS: Record<string, ReactNode> = {
+  "one-question": <OneQuestionDrawer />,
+};
+
 export default function SevenShieldPillars() {
   const [openId, setOpenId] = useState<string | null>(null);
 
@@ -112,6 +117,7 @@ export default function SevenShieldPillars() {
             pillar={pillar}
             isOpen={openId === pillar.id}
             onToggle={toggle}
+            customDrawer={CUSTOM_DRAWERS[pillar.id]}
           />
         ))}
       </div>

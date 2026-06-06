@@ -1,3 +1,4 @@
+import { type ReactNode } from "react";
 import Icon from "../../components/Icon";
 import type { IconName } from "../../components/Icon";
 
@@ -15,12 +16,23 @@ export default function PillarItem({
   pillar,
   isOpen,
   onToggle,
+  customDrawer,
 }: {
   pillar: Pillar;
   isOpen: boolean;
   onToggle: (id: string) => void;
+  customDrawer?: ReactNode;
 }) {
   const drawerId = `pillar-drawer-${pillar.id}`;
+  const drawerContent: ReactNode = customDrawer ?? (
+    <>
+      <p className="pillar-definition">{pillar.definition}</p>
+      <p className="pillar-chapter">
+        <Icon name="book" size={11} />
+        {pillar.chapter}
+      </p>
+    </>
+  );
 
   return (
     <div
@@ -58,11 +70,7 @@ export default function PillarItem({
         aria-hidden={!isOpen}
       >
         <div className="pillar-drawer-inner">
-          <p className="pillar-definition">{pillar.definition}</p>
-          <p className="pillar-chapter">
-            <Icon name="book" size={11} />
-            {pillar.chapter}
-          </p>
+          {drawerContent}
         </div>
       </div>
     </div>
