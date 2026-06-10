@@ -78,9 +78,7 @@ const PILLARS = [
   },
 ];
 
-const CUSTOM_DRAWERS: Record<string, ReactNode> = {
-  "one-question": <OneQuestionDrawer />,
-};
+const ACTIVE_PILLAR_IDS = new Set(["one-question"]);
 
 export default function SevenShieldPillars() {
   const [openId, setOpenId] = useState<string | null>(null);
@@ -88,6 +86,10 @@ export default function SevenShieldPillars() {
   function toggle(id: string) {
     setOpenId((prev) => (prev === id ? null : id));
   }
+
+  const customDrawers: Record<string, ReactNode> = {
+    "one-question": <OneQuestionDrawer />,
+  };
 
   return (
     <section className="seven-shield-section">
@@ -117,7 +119,8 @@ export default function SevenShieldPillars() {
             pillar={pillar}
             isOpen={openId === pillar.id}
             onToggle={toggle}
-            customDrawer={CUSTOM_DRAWERS[pillar.id]}
+            customDrawer={customDrawers[pillar.id]}
+            comingSoon={!ACTIVE_PILLAR_IDS.has(pillar.id)}
           />
         ))}
       </div>

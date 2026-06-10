@@ -1,3 +1,5 @@
+"use client";
+
 import { type ReactNode } from "react";
 import Icon from "../../components/Icon";
 import type { IconName } from "../../components/Icon";
@@ -17,11 +19,13 @@ export default function PillarItem({
   isOpen,
   onToggle,
   customDrawer,
+  comingSoon,
 }: {
   pillar: Pillar;
   isOpen: boolean;
   onToggle: (id: string) => void;
   customDrawer?: ReactNode;
+  comingSoon?: boolean;
 }) {
   const drawerId = `pillar-drawer-${pillar.id}`;
   const drawerContent: ReactNode = customDrawer ?? (
@@ -36,7 +40,7 @@ export default function PillarItem({
 
   return (
     <div
-      className={`pillar-item${isOpen ? " pillar-item--open" : ""}`}
+      className={`pillar-item${isOpen ? " pillar-item--open" : ""}${comingSoon ? " pillar-item--coming-soon" : ""}`}
       role="listitem"
       ref={(el) => {
         if (el) el.style.setProperty("--pillar-color", pillar.color);
@@ -55,6 +59,7 @@ export default function PillarItem({
             <Icon name={pillar.iconName} size={15} />
           </span>
           <span className="pillar-title">{pillar.title}</span>
+          {comingSoon && <span className="pillar-coming-soon-badge">Coming Soon</span>}
           <span className="pillar-chevron" aria-hidden="true" />
         </button>
         <input
