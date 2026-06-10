@@ -1,109 +1,14 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { ReactNode } from "react";
 import NavBar from "../../components/NavBarDynamic";
 import BackpackPhotoTrio from "./BackpackPhotoTrio";
-import BackpackSectionGrid from "./BackpackSectionGrid";
-import { fetchBackpackSections } from "../../lib/backpackApi";
-import Icon from "../../components/Icon";
+import SevenShieldPillars from "./SevenShieldPillars";
 import "./backpack.css";
 
-const BACKPACK_SECTIONS: Array<{ id: string; label: string; emoji: ReactNode; color: string; tagline: string; description: string; type: string }> = [
-  {
-    id: "challenge",
-    label: "The 1 Question Retirement Challenge",
-    emoji: <Icon name="help" size={22} />,
-    color: "#e8673a",
-    tagline: "One question. One week. A lifetime of clarity.",
-    description:
-      "Each week a single powerful question helps you think more clearly about what retirement really means to you. No right answers — just honest reflection.",
-    type: "coming-soon",
-  },
-  {
-    id: "pinwhirl",
-    label: "The Pinwhirl Tool",
-    emoji: <Icon name="rotate" size={22} />,
-    color: "#2e8b7a",
-    tagline: "Spin your priorities into focus.",
-    description:
-      "A guided self-assessment that helps you visualize the different dimensions of your retirement life — financial, social, physical, purposeful — and where you stand today.",
-    type: "coming-soon",
-  },
-  {
-    id: "values",
-    label: "Values & Beliefs",
-    emoji: <Icon name="compass" size={22} />,
-    color: "#1e2d5a",
-    tagline: "Know what you stand for before you stand down.",
-    description:
-      "Retirement is a chance to live more aligned with what you truly value. This section helps you identify, articulate, and commit to the values that will guide your next chapter.",
-    type: "coming-soon",
-  },
-  {
-    id: "purpose",
-    label: "Finding Your Purpose",
-    emoji: <Icon name="lightbulb" size={22} />,
-    color: "#7a5a9a",
-    tagline: "What gets you out of bed when work doesn't?",
-    description:
-      "Purpose doesn't retire when you do. This section guides you through exercises to discover what gives your life meaning beyond your career identity.",
-    type: "coming-soon",
-  },
-  {
-    id: "skills",
-    label: "New Skills",
-    emoji: <Icon name="wrench" size={22} />,
-    color: "#5a8a6a",
-    tagline: "Life skills for the chapter ahead.",
-    description:
-      "From cooking to budgeting to technology to health management — retirement comes with a new set of everyday skills worth developing. Explore what's worth learning next.",
-    type: "coming-soon",
-  },
-  {
-    id: "refinement",
-    label: "Refinement",
-    emoji: <Icon name="sparkle" size={22} />,
-    color: "#c87840",
-    tagline: "Bringing it all together.",
-    description:
-      "You've reflected, you've explored, you've grown. This section helps you synthesize everything into a clear, personal retirement vision you can actually live.",
-    type: "coming-soon",
-  },
-  {
-    id: "giveback",
-    label: "Giveback & Share",
-    emoji: <Icon name="hands" size={22} />,
-    color: "#3a6a9a",
-    tagline: "Share your story. Give back. Pay it forward.",
-    description:
-      "Your journey matters. This section invites you to share your experiences with the collective, mentor others just starting out, and find ways to contribute beyond yourself.",
-    type: "coming-soon",
-  },
-];
-
 export default function BackpackPage() {
-  const [sections, setSections] = useState(BACKPACK_SECTIONS);
-  const [loadError, setLoadError] = useState(false);
-
-  useEffect(() => {
-    fetchBackpackSections()
-      .then((data) => {
-        if (data.length) setSections(data);
-      })
-      .catch(() => setLoadError(true));
-  }, []);
-
   return (
     <>
       <NavBar activePage="backpack" largeAvatar />
 
       <div className="backpack-page">
-        {loadError && (
-          <p className="backpack-load-error">
-            Could not load your backpack data. Showing default content.
-          </p>
-        )}
         {/* ── HEADER ── */}
         <div className="backpack-header">
           <p className="backpack-eyebrow">Good Luck Island Collective</p>
@@ -125,7 +30,7 @@ export default function BackpackPage() {
 
         <div className="backpack-content">
           <BackpackPhotoTrio />
-          <BackpackSectionGrid sections={sections} onSectionSelect={() => {}} />
+          <SevenShieldPillars />
         </div>
       </div>
     </>
