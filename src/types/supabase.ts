@@ -129,6 +129,69 @@ export type Database = {
         };
         Relationships: [];
       };
+      one_question_answers: {
+        Row: {
+          answer: string;
+          created_at: string | null;
+          id: string;
+          question_index: number;
+          updated_at: string | null;
+          user_id: string;
+        };
+        Insert: {
+          answer: string;
+          created_at?: string | null;
+          id?: string;
+          question_index: number;
+          updated_at?: string | null;
+          user_id: string;
+        };
+        Update: {
+          answer?: string;
+          created_at?: string | null;
+          id?: string;
+          question_index?: number;
+          updated_at?: string | null;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      users_seven_step_process: {
+        Row: {
+          id: number;
+          user_id: string;
+          one_question_challenge: boolean;
+          wayfair_tool: boolean;
+          values_and_beliefs: boolean;
+          finding_your_purpose: boolean;
+          new_skills: boolean;
+          retirement: boolean;
+          give_back_step: boolean;
+        };
+        Insert: {
+          id?: number;
+          user_id: string;
+          one_question_challenge?: boolean;
+          wayfair_tool?: boolean;
+          values_and_beliefs?: boolean;
+          finding_your_purpose?: boolean;
+          new_skills?: boolean;
+          retirement?: boolean;
+          give_back_step?: boolean;
+        };
+        Update: {
+          id?: number;
+          user_id?: string;
+          one_question_challenge?: boolean;
+          wayfair_tool?: boolean;
+          values_and_beliefs?: boolean;
+          finding_your_purpose?: boolean;
+          new_skills?: boolean;
+          retirement?: boolean;
+          give_back_step?: boolean;
+        };
+        Relationships: [];
+      };
       episodes: {
         Row: {
           created_at: string | null;
