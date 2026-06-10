@@ -1,5 +1,3 @@
-"use client";
-
 import NavBar from "../../components/NavBarDynamic";
 import BackpackPhotoTrio from "./BackpackPhotoTrio";
 import SevenShieldPillars from "./SevenShieldPillars";

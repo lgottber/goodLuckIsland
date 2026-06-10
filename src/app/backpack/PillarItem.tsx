@@ -20,46 +20,40 @@ export default function PillarItem({
   isOpen: boolean;
   onToggle: (id: string) => void;
 }) {
+  const drawerId = `pillar-drawer-${pillar.id}`;
+
   return (
     <div
       className={`pillar-item${isOpen ? " pillar-item--open" : ""}`}
       role="listitem"
+      ref={(el) => {
+        if (el) el.style.setProperty("--pillar-color", pillar.color);
+      }}
     >
-      <button
-        type="button"
-        className="pillar-header"
-        onClick={() => onToggle(pillar.id)}
-        aria-expanded={isOpen}
-      >
-        <span
-          className="pillar-num-badge"
-          ref={(el) => {
-            if (el) el.style.setProperty("background", pillar.color);
-          }}
+      <div className="pillar-row">
+        <button
+          type="button"
+          className="pillar-header"
+          onClick={() => onToggle(pillar.id)}
+          aria-expanded={isOpen}
+          aria-controls={drawerId}
         >
-          {pillar.num}
-        </span>
-        <span
-          className="pillar-icon"
-          ref={(el) => {
-            if (el) el.style.setProperty("color", pillar.color);
-          }}
-        >
-          <Icon name={pillar.iconName} size={15} />
-        </span>
-        <span className="pillar-title">{pillar.title}</span>
-        <span className="pillar-header-right">
-          <input
-            type="checkbox"
-            className="pillar-checkbox"
-            disabled
-            aria-label={`${pillar.title} completed`}
-            onClick={(e) => e.stopPropagation()}
-          />
+          <span className="pillar-num-badge">{pillar.num}</span>
+          <span className="pillar-icon">
+            <Icon name={pillar.iconName} size={15} />
+          </span>
+          <span className="pillar-title">{pillar.title}</span>
           <span className="pillar-chevron" aria-hidden="true" />
-        </span>
-      </button>
+        </button>
+        <input
+          type="checkbox"
+          className="pillar-checkbox"
+          disabled
+          aria-label={`${pillar.title} completed`}
+        />
+      </div>
       <div
+        id={drawerId}
         className={`pillar-drawer${isOpen ? " pillar-drawer--open" : ""}`}
         aria-hidden={!isOpen}
       >

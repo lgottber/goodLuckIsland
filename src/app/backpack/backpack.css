@@ -146,312 +146,6 @@ body {
   transform: scale(1.04);
 }
 
-/* ── Section grid ── */
-.backpack-section-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.4rem;
-}
-
-.backpack-section-card {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  padding: 0;
-  border-radius: 20px;
-  background: #fff;
-  border: none;
-  box-shadow: 0 2px 16px rgba(30, 45, 90, 0.07);
-  cursor: pointer;
-  text-align: left;
-  transition:
-    transform 0.18s,
-    box-shadow 0.18s;
-  width: 100%;
-  overflow: hidden;
-}
-.backpack-section-card:hover:not(.coming-soon) {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 36px rgba(30, 45, 90, 0.13);
-}
-.backpack-section-card.coming-soon {
-  opacity: 0.55;
-  cursor: default;
-}
-
-/* Color accent top bar */
-.backpack-card-accent {
-  height: 0.3125rem;
-  background: var(--section-color, var(--navy));
-  width: 100%;
-}
-
-.backpack-card-body {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1.4rem 1.4rem 1.25rem;
-  flex: 1;
-}
-.backpack-section-num {
-  font-size: 0.6rem;
-  font-weight: 700;
-  color: rgba(30, 45, 90, 0.3);
-  letter-spacing: 0.08em;
-  min-width: 1.375rem;
-  flex-shrink: 0;
-  padding-top: 0.2rem;
-}
-.backpack-section-emoji {
-  font-size: 1.6rem;
-  line-height: 1;
-  flex-shrink: 0;
-}
-.backpack-section-info {
-  flex: 1;
-  min-width: 0;
-}
-.backpack-section-title {
-  font-family: var(--serif);
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--navy);
-  margin-bottom: 0.3rem;
-  line-height: 1.3;
-}
-.backpack-section-tagline {
-  font-size: 0.78rem;
-  color: var(--muted);
-  line-height: 1.55;
-  font-style: italic;
-}
-
-.backpack-card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1.4rem 1.1rem;
-  border-top: 1px solid rgba(30, 45, 90, 0.06);
-}
-.backpack-section-arrow {
-  font-size: 0.95rem;
-  color: var(--section-color, var(--coral));
-  font-weight: 700;
-  transition: transform 0.15s;
-}
-.backpack-section-card:hover:not(.coming-soon) .backpack-section-arrow {
-  transform: translateX(4px);
-}
-.backpack-coming-soon {
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(30, 45, 90, 0.45);
-  background: var(--cream, #f0ebe0);
-  border-radius: 20px;
-  padding: 0.25rem 0.7rem;
-  white-space: nowrap;
-}
-.backpack-card-cta {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--section-color, var(--coral));
-  letter-spacing: 0.03em;
-}
-
-/* ── Detail card ── */
-.backpack-detail-card {
-  background: #fff;
-  border-radius: 24px;
-  padding: 2.5rem;
-  box-shadow: 0 2px 20px rgba(30, 45, 90, 0.07);
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
-}
-.backpack-section-nav {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-.backpack-back-btn {
-  background: none;
-  border: none;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--teal);
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  transition: opacity 0.15s;
-}
-.backpack-back-btn:hover {
-  opacity: 0.7;
-}
-.backpack-section-breadcrumb {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--navy);
-  opacity: 0.45;
-  padding-left: 0.75rem;
-  border-left: 1.5px solid var(--cream-dk, #e6dfd2);
-}
-
-/* ── Challenge card ── */
-.challenge-card {
-  background: var(--navy);
-  color: #fff;
-  border-radius: 20px;
-  padding: 2.5rem;
-  position: relative;
-  overflow: hidden;
-}
-.challenge-card::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 13.75rem;
-  height: 13.75rem;
-  background: radial-gradient(
-    circle at bottom right,
-    rgba(46, 139, 122, 0.22),
-    transparent 70%
-  );
-  pointer-events: none;
-}
-.challenge-week-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--teal);
-  background: rgba(46, 139, 122, 0.15);
-  border-radius: 20px;
-  padding: 0.3rem 0.9rem;
-  margin-bottom: 1.5rem;
-}
-.challenge-question {
-  font-family: var(--serif);
-  font-size: clamp(1.4rem, 3vw, 1.95rem);
-  font-weight: 700;
-  font-style: italic;
-  line-height: 1.35;
-  margin-bottom: 1rem;
-  position: relative;
-  z-index: 1;
-}
-.challenge-prompt {
-  font-size: 0.88rem;
-  color: rgba(255, 255, 255, 0.6);
-  line-height: 1.75;
-  position: relative;
-  z-index: 1;
-}
-
-/* ── Challenge photo banner ── */
-.challenge-photo-banner {
-  border-radius: 16px;
-  overflow: hidden;
-  height: 12.5rem;
-}
-.challenge-photo-banner img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 40%;
-  display: block;
-}
-
-/* ── Reflection ── */
-.challenge-reflection {
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-}
-.challenge-reflection-label {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--navy);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.challenge-textarea {
-  width: 100%;
-  border: 1.5px solid var(--cream-dk, #e6dfd2);
-  border-radius: 14px;
-  padding: 1.1rem 1.25rem;
-  font-family: var(--sans);
-  font-size: 0.92rem;
-  color: var(--navy);
-  background: var(--cream);
-  resize: vertical;
-  outline: none;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
-  line-height: 1.75;
-  box-sizing: border-box;
-}
-.challenge-textarea:focus {
-  border-color: var(--teal);
-  box-shadow: 0 0 0 3px rgba(46, 139, 122, 0.1);
-}
-.challenge-reflection-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-.challenge-reflection-hint {
-  font-size: 0.76rem;
-  color: var(--muted);
-}
-.btn-save {
-  background: var(--coral, #e8673a);
-  color: #fff;
-  border: none;
-  border-radius: 50px;
-  padding: 0.65rem 1.6rem;
-  font-size: 0.82rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition:
-    opacity 0.2s,
-    transform 0.15s;
-  letter-spacing: 0.02em;
-}
-.btn-save:hover:not(:disabled) {
-  opacity: 0.88;
-  transform: translateY(-1px);
-}
-.btn-save:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
-
-/* ── Archive note ── */
-.challenge-archive-note {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.85rem;
-  background: var(--cream);
-  border-radius: 14px;
-  padding: 1.1rem 1.4rem;
-  font-size: 0.83rem;
-  color: var(--muted);
-  line-height: 1.65;
-  border: 1.5px solid var(--cream-dk, #e6dfd2);
-}
-
 /* ── 7Shield Pillars section ── */
 .seven-shield-section {
   background: #fff;
@@ -576,22 +270,27 @@ body {
   border-bottom: none;
 }
 
+.pillar-row {
+  display: flex;
+  align-items: center;
+  transition: background 0.15s;
+}
+
+.pillar-row:hover,
+.pillar-item--open .pillar-row {
+  background: rgba(240, 235, 224, 0.55);
+}
+
 .pillar-header {
-  width: 100%;
+  flex: 1;
   display: flex;
   align-items: center;
   gap: 0.7rem;
   padding: 1rem 1.25rem;
-  background: none;
+  background: transparent;
   border: none;
   cursor: pointer;
   text-align: left;
-  transition: background 0.15s;
-}
-
-.pillar-header:hover,
-.pillar-item--open .pillar-header {
-  background: rgba(240, 235, 224, 0.55);
 }
 
 .pillar-num-badge {
@@ -605,12 +304,14 @@ body {
   font-weight: 700;
   color: #fff;
   flex-shrink: 0;
+  background: var(--pillar-color, var(--navy));
 }
 
 .pillar-icon {
   flex-shrink: 0;
   display: flex;
   align-items: center;
+  color: var(--pillar-color, var(--navy));
 }
 
 .pillar-title {
@@ -622,19 +323,13 @@ body {
   line-height: 1.35;
 }
 
-.pillar-header-right {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-shrink: 0;
-}
-
 .pillar-checkbox {
   width: 1rem;
   height: 1rem;
   accent-color: var(--teal);
   cursor: not-allowed;
   flex-shrink: 0;
+  margin-right: 1.25rem;
 }
 
 .pillar-chevron {
@@ -693,12 +388,6 @@ body {
   .backpack-photo-item--tall {
     height: 11.25rem;
   }
-  .backpack-section-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .backpack-detail-card {
-    padding: 1.75rem;
-  }
   .backpack-progress-strip {
     margin: -1rem 1.5rem 0;
   }
@@ -720,15 +409,6 @@ body {
   .backpack-photo-item,
   .backpack-photo-item--tall {
     height: 8.75rem;
-  }
-  .backpack-section-grid {
-    grid-template-columns: 1fr;
-  }
-  .backpack-detail-card {
-    padding: 1.25rem;
-  }
-  .challenge-card {
-    padding: 1.5rem;
   }
   .backpack-progress-strip {
     margin: -1rem 1rem 0;
