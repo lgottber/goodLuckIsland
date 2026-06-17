@@ -113,8 +113,10 @@ body {
 /* ── Content ── */
 .backpack-content {
   max-width: 68.75rem;
-  margin: 0 auto;
+  margin: 2rem auto 0;
   padding: 2rem 2rem 6rem;
+  position: relative;
+  z-index: 3;
 }
 
 /* ── Photo trio ── */
@@ -464,15 +466,16 @@ body {
 }
 @media (max-width: 40rem) {
   .backpack-photo-trio {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     grid-template-rows: auto;
   }
   .backpack-photo-item:last-child {
-    display: none;
+    display: block;
   }
   .backpack-photo-item,
   .backpack-photo-item--tall {
-    height: 8.75rem;
+    height: auto;
+    aspect-ratio: 16 / 9;
   }
   .backpack-progress-strip {
     margin: -1rem 1rem 0;
