@@ -6,12 +6,14 @@ import { setSupabaseTokenGetter } from "../lib/supabase";
 import styles from "./SupabaseAuthSync.module.css";
 
 export function SupabaseAuthSync() {
-  const { getIdTokenClaims } = useAuth0();
+  const { getIdTokenClaims, getAccessTokenSilently } = useAuth0();
   const [tokenError, setTokenError] = useState(false);
 
   useEffect(() => {
     const getToken = async () => {
       try {
+        // Silently refreshes the session if the token is expired
+        await getAccessTokenSilently();
         const claims = await getIdTokenClaims();
         return claims?.__raw ?? null;
       } catch {
@@ -20,7 +22,7 @@ export function SupabaseAuthSync() {
       }
     };
     setSupabaseTokenGetter(getToken);
-  }, [getIdTokenClaims]);
+  }, [getIdTokenClaims, getAccessTokenSilently]);
 
   if (tokenError) {
     return (
