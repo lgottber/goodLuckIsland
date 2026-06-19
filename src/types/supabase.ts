@@ -129,6 +129,80 @@ export type Database = {
         };
         Relationships: [];
       };
+      pinwirl_answer_options: {
+        Row: {
+          created_at: string;
+          id: string;
+          option_text: string;
+          order_index: number;
+          question_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          option_text: string;
+          order_index: number;
+          question_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          option_text?: string;
+          order_index?: number;
+          question_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "pinwirl_answer_options_question_id_fkey";
+            columns: ["question_id"];
+            isOneToOne: false;
+            referencedRelation: "pinwirl_questions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      pinwirl_questions: {
+        Row: {
+          created_at: string;
+          external_id: string;
+          hint: string | null;
+          id: string;
+          order_index: number;
+          question_text: string;
+          question_type: "scale" | "narrative" | "radio" | "select" | "number" | "text";
+          required: boolean;
+          scale_max: string | null;
+          scale_min: string | null;
+          section: string;
+        };
+        Insert: {
+          created_at?: string;
+          external_id: string;
+          hint?: string | null;
+          id?: string;
+          order_index: number;
+          question_text: string;
+          question_type: "scale" | "narrative" | "radio" | "select" | "number" | "text";
+          required?: boolean;
+          scale_max?: string | null;
+          scale_min?: string | null;
+          section: string;
+        };
+        Update: {
+          created_at?: string;
+          external_id?: string;
+          hint?: string | null;
+          id?: string;
+          order_index?: number;
+          question_text?: string;
+          question_type?: "scale" | "narrative" | "radio" | "select" | "number" | "text";
+          required?: boolean;
+          scale_max?: string | null;
+          scale_min?: string | null;
+          section?: string;
+        };
+        Relationships: [];
+      };
       one_question_answers: {
         Row: {
           answer: string;

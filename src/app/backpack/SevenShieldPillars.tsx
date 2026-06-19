@@ -17,9 +17,9 @@ const PILLARS = [
     chapter: "Chapter 1 — Awakening the Question",
   },
   {
-    id: "wayfair",
+    id: "pinwirl",
     num: 2,
-    title: "The Wayfair Tool",
+    title: "The Pinwirl Tool",
     color: "#2e8b7a",
     iconName: "rotate" as const,
     definition:
