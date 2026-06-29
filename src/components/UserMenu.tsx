@@ -4,6 +4,8 @@ import { AVATAR_ERAS } from "../app/profile/AvatarDisplay";
 import NavDropdown from "./NavDropdown";
 import PictureImage from "./PictureImage";
 
+export type ExportStatus = "idle" | "exporting" | "done" | "error";
+
 export default function UserMenu({
   user,
   initials,

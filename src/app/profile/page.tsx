@@ -17,6 +17,7 @@ import { createUser, fetchProfile, upsertProfile } from "../../lib/profileApi";
 import QuizNudgeCard from "../quiz/QuizNudgeCard";
 import type { Tables } from "../../types/supabase";
 import { downloadProfileDataCsv } from "../../lib/exportUtils";
+import type { ResetStatus } from "./types";
 import ProfileMetaItem from "./ProfileMetaItem";
 import InfoRow from "./InfoRow";
 import ProfileInfoEmpty from "./ProfileInfoEmpty";
@@ -131,7 +132,7 @@ export default function ProfilePage() {
   const [editing, setEditing] = useState(false);
   const [pickingAvatar, setPickingAvatar] = useState(false);
   const [saved, triggerSaved] = useSubmitFeedback(2000);
-  const [resetStatus, setResetStatus] = useState("idle"); // idle | sending | sent | error
+  const [resetStatus, setResetStatus] = useState<ResetStatus>("idle");
   const [exportStatus, setExportStatus] = useState("idle"); // idle | exporting | done | error
 
   async function handlePasswordReset() {

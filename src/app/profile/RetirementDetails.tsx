@@ -1,11 +1,10 @@
 import Field from "./Field";
 import Icon from "./Icon";
+import type { ProfileForm, SetField } from "./types";
 
 const RETIRED = "Yes, I'm retired";
 
-type FormState = { retired: string; retirementDate: string };
-
-export default function RetirementDetails({ form, set }: { form: FormState; set: (key: string, val: unknown) => void }) {
+export default function RetirementDetails({ form, set }: { form: Pick<ProfileForm, "retired" | "retirementDate">; set: SetField }) {
   const isRetired = form.retired === RETIRED;
   return (
     <>
