@@ -2,8 +2,7 @@
 
 import OqrcIntroSlide from "./OqrcIntroSlide";
 import OqrcQuestionSlide from "./OqrcQuestionSlide";
-
-type Question = { label: string; placeholder: string };
+import type { OneQuestion } from "../../lib/oneQuestionApi";
 
 export default function OqrcAssessmentView({
   slide,
@@ -18,7 +17,7 @@ export default function OqrcAssessmentView({
 }: {
   slide: number;
   answers: string[];
-  questions: Question[];
+  questions: OneQuestion[];
   incompleteError: boolean;
   saveError: boolean;
   saving: boolean;

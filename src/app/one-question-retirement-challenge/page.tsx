@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import NavBar from "../../components/NavBarDynamic";
 import OqrcCompletedView from "./OqrcCompletedView";
 import OqrcAssessmentView from "./OqrcAssessmentView";
+import type { OneQuestion } from "../../lib/oneQuestionApi";
 import {
   fetchOneQuestions,
   fetchOneQuestionAnswers,
@@ -21,7 +22,7 @@ export default function OneQuestionRetirementChallengePage() {
   const progressFillRef = useRef<HTMLDivElement>(null);
 
   const [slide, setSlide] = useState(0);
-  const [questions, setQuestions] = useState<{ label: string; placeholder: string }[]>([]);
+  const [questions, setQuestions] = useState<OneQuestion[]>([]);
   const [answers, setAnswers] = useState<string[]>([]);
   const [completed, setCompleted] = useState(false);
   const [dataLoading, setDataLoading] = useState(true);
@@ -47,7 +48,14 @@ export default function OneQuestionRetirementChallengePage() {
           fetchOneQuestionCompleted(userId),
         ]);
         setQuestions(qs);
-        setAnswers(saved);
+        setAnswers(
+          saved.map((answer, i) => {
+            if (!answer && qs[i].question_type === "scale") {
+              return qs[i].scale_min || "1";
+            }
+            return answer;
+          }),
+        );
         setCompleted(done);
       } catch {
         setLoadError(true);
@@ -83,7 +91,7 @@ export default function OneQuestionRetirementChallengePage() {
       return;
     }
 
-    if (answers[slide - 1].trim() === "") {
+    if (questions[slide - 1].required && answers[slide - 1].trim() === "") {
       setIncompleteError(true);
       return;
     }

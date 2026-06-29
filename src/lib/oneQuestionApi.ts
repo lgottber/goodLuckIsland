@@ -1,16 +1,52 @@
 import { supabase } from "./supabase";
 
-export async function fetchOneQuestions(): Promise<
-  { label: string; placeholder: string }[]
-> {
-  const { data, error } = await supabase
-    .from("one_questions")
-    .select("content")
-    .order("index", { ascending: true });
+export type QuestionType = "text" | "scale" | "radio" | "select" | "number";
 
-  if (error) throw error;
+export interface OneQuestion {
+  id: string;
+  index: number | null;
+  content: string;
+  question_type: QuestionType;
+  hint: string | null;
+  required: boolean;
+  scale_min: string | null;
+  scale_max: string | null;
+  options: string[];
+}
 
-  return (data ?? []).map((q) => ({ label: q.content, placeholder: "" }));
+export async function fetchOneQuestions(): Promise<OneQuestion[]> {
+  const [qRes, oRes] = await Promise.all([
+    supabase
+      .from("one_questions")
+      .select("*")
+      .order("index", { ascending: true, nullsFirst: false }),
+    supabase
+      .from("one_question_answer_options")
+      .select("*")
+      .order("order_index"),
+  ]);
+  if (qRes.error) throw qRes.error;
+  if (oRes.error) throw oRes.error;
+
+  const optsByQ = (oRes.data ?? []).reduce<Record<string, string[]>>(
+    (acc, o) => {
+      (acc[o.question_id] ??= []).push(o.option_text);
+      return acc;
+    },
+    {},
+  );
+
+  return (qRes.data ?? []).map((q) => ({
+    id: q.id,
+    index: q.index,
+    content: q.content,
+    question_type: q.question_type ?? "text",
+    hint: q.hint,
+    required: q.required ?? true,
+    scale_min: q.scale_min,
+    scale_max: q.scale_max,
+    options: optsByQ[q.id] ?? [],
+  }));
 }
 
 export async function fetchOneQuestionAnswers(
