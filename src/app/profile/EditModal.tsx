@@ -5,8 +5,7 @@ import BasicInfoTab from "./BasicInfoTab";
 import LifeCareerTab from "./LifeCareerTab";
 import RetirementTab from "./RetirementTab";
 import FinancesTab from "./FinancesTab";
-import ModalNextButton from "./ModalNextButton";
-import ModalSaveButton from "./ModalSaveButton";
+import ModalActionButton from "./ModalActionButton";
 
 const MODAL_TABS = ["Basic Info", "Life & Career", "Retirement", "Finances"];
 
@@ -106,11 +105,12 @@ export default function EditModal({ user, onSave, onClose }: { user: ProfileForm
             Cancel
           </button>
           {tabIdx < MODAL_TABS.length - 1 ? (
-            <ModalNextButton
-              onNext={() => setActiveTab(MODAL_TABS[tabIdx + 1])}
+            <ModalActionButton
+              label="Next →"
+              onClick={() => setActiveTab(MODAL_TABS[tabIdx + 1])}
             />
           ) : (
-            <ModalSaveButton onSave={() => onSave(form)} />
+            <ModalActionButton label="Save Changes" onClick={() => onSave(form)} />
           )}
         </div>
       </div>
