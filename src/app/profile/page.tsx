@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSubmitFeedback } from "../../hooks/useSubmitFeedback";
 import { useAuth0 as useAuth0User } from "@auth0/auth0-react";
 import NavBar from "../../components/NavBarDynamic";
 import AvatarDisplay from "./AvatarDisplay";
@@ -129,7 +130,7 @@ export default function ProfilePage() {
   const [initError, setInitError] = useState(false);
   const [editing, setEditing] = useState(false);
   const [pickingAvatar, setPickingAvatar] = useState(false);
-  const [saved, setSaved] = useState(true);
+  const [saved, triggerSaved] = useSubmitFeedback(2000);
   const [resetStatus, setResetStatus] = useState("idle"); // idle | sending | sent | error
   const [exportStatus, setExportStatus] = useState("idle"); // idle | exporting | done | error
 
@@ -191,19 +192,18 @@ export default function ProfilePage() {
   const initials =
     `${user.firstName?.[0] ?? "?"}${user.lastName?.[0] ?? "?"}`.toUpperCase();
 
-  function persistProfile(updated: typeof INITIAL_USER) {
+  async function persistProfile(updated: typeof INITIAL_USER) {
     if (!auth0User) {
       throw new Error("persistProfile called without an authenticated user");
     }
-    upsertProfile(auth0User.sub ?? "", updated);
+    await upsertProfile(auth0User.sub ?? "", updated);
   }
 
   async function handleSave(updated: typeof INITIAL_USER) {
     setUser(updated);
     setEditing(false);
-    setSaved(false);
-    persistProfile(updated);
-    setTimeout(() => setSaved(true), 2000);
+    await persistProfile(updated);
+    triggerSaved();
   }
 
   function handleAvatarSelect(id: string) {

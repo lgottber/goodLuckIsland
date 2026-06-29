@@ -58,6 +58,7 @@ export async function exportProfileData(
   return data;
 }
 
+
 export async function upsertProfile(userId: string, updated: ProfileUpdate) {
   const { error } = await supabase.from("users").upsert({
     id: userId,
