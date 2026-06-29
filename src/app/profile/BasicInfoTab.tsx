@@ -2,7 +2,7 @@ import { KeyboardEvent } from "react";
 import Field from "./Field";
 import InterestTagList from "./InterestTagList";
 
-type FormState = { firstName: string; lastName: string; username: string; age: string; email: string; location: string; address: string; bio: string; interests: string[] };
+type FormState = { firstName: string; lastName: string; username: string; age: string; email: string; location: string; address: string; bio: string; mantra: string; interests: string[] };
 
 export default function BasicInfoTab({
   form,
@@ -88,6 +88,15 @@ export default function BasicInfoTab({
       <div className="modal-section-label modal-section-label--spaced">
         About You
       </div>
+      <Field label="Mantra" hint={`${(form.mantra || "").length} / 120 characters`}>
+        <input
+          type="text"
+          value={form.mantra}
+          onChange={(e) => set("mantra", e.target.value)}
+          placeholder="Enter your mantra..."
+          maxLength={120}
+        />
+      </Field>
       <Field label="Bio" hint={`${(form.bio || "").length} / 300 characters`}>
         <textarea
           value={form.bio}

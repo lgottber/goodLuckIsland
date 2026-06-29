@@ -1,13 +1,13 @@
 import type { EventContext, PagesFunction } from '@cloudflare/workers-types';
 
 interface Env {
-  ANALYTICS: AnalyticsEngineDataset;
+  AnalyticsEngineDataset: AnalyticsEngineDataset;
 }
 
 async function emit(context: EventContext<Env, string, Record<string, unknown>>) {
   const url = new URL(context.request.url);
 
-  context.env.ANALYTICS?.writeDataPoint({
+  context.env.AnalyticsEngineDataset?.writeDataPoint({
     indexes: [],
     blobs: [url.hostname, url.pathname],
     doubles: [],

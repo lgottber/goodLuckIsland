@@ -4,5 +4,5 @@ compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".vercel/output/static"
 
 [[analytics_engine_datasets]]
-binding = "ANALYTICS"
+binding = "AnalyticsEngineDataset"
 dataset = "good_luck_island_events"

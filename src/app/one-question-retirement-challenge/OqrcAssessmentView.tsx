@@ -32,11 +32,11 @@ export default function OqrcAssessmentView({
     <>
       {slide === 0 && <OqrcIntroSlide />}
 
-      {slide > 0 && (
+      {slide > 0 && questions[idx] && (
         <OqrcQuestionSlide
           idx={idx}
           question={questions[idx]}
-          answer={answers[idx]}
+          answer={answers[idx] ?? ""}
           incompleteError={incompleteError}
           onUpdate={(v) => onUpdateAnswer(idx, v)}
         />

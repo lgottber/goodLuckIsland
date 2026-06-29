@@ -4,6 +4,7 @@ import { useState, type ReactNode } from "react";
 import ShieldPillarNode from "./ShieldPillarNode";
 import PillarItem from "./PillarItem";
 import OneQuestionDrawer from "./OneQuestionDrawer";
+import PinwirlDrawer from "./PinwirlDrawer";
 
 const PILLARS = [
   {
@@ -78,7 +79,7 @@ const PILLARS = [
   },
 ];
 
-const ACTIVE_PILLAR_IDS = new Set(["one-question"]);
+const ACTIVE_PILLAR_IDS = new Set(["one-question", "pinwirl"]);
 
 export default function SevenShieldPillars() {
   const [openId, setOpenId] = useState<string | null>(null);
@@ -89,6 +90,7 @@ export default function SevenShieldPillars() {
 
   const customDrawers: Record<string, ReactNode> = {
     "one-question": <OneQuestionDrawer />,
+    "pinwirl": <PinwirlDrawer />,
   };
 
   return (

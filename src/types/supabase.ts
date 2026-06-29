@@ -245,19 +245,42 @@ export type Database = {
         };
         Relationships: [];
       };
+      one_questions: {
+        Row: {
+          content: string;
+          created_at: string;
+          id: string;
+          index: number | null;
+        };
+        Insert: {
+          content?: string;
+          created_at?: string;
+          id?: string;
+          index?: number | null;
+        };
+        Update: {
+          content?: string;
+          created_at?: string;
+          id?: string;
+          index?: number | null;
+        };
+        Relationships: [];
+      };
       one_question_answers: {
         Row: {
           answer: string;
           created_at: string | null;
           id: string;
+          question_id: string | null;
           question_index: number;
           updated_at: string | null;
           user_id: string;
         };
         Insert: {
-          answer: string;
+          answer?: string;
           created_at?: string | null;
           id?: string;
+          question_id?: string | null;
           question_index: number;
           updated_at?: string | null;
           user_id: string;
@@ -266,11 +289,20 @@ export type Database = {
           answer?: string;
           created_at?: string | null;
           id?: string;
+          question_id?: string | null;
           question_index?: number;
           updated_at?: string | null;
           user_id?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "one_question_answers_question_id_fkey";
+            columns: ["question_id"];
+            isOneToOne: false;
+            referencedRelation: "one_questions";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       users_seven_step_process: {
         Row: {
