@@ -129,19 +129,158 @@ export type Database = {
         };
         Relationships: [];
       };
+      pinwirl_answers: {
+        Row: {
+          id: string;
+          user_id: string;
+          question_id: string | null;
+          answer: string;
+          created_at: string | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          question_id?: string | null;
+          answer?: string;
+          created_at?: string | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          question_id?: string | null;
+          answer?: string;
+          created_at?: string | null;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "pinwirl_answers_question_id_fkey";
+            columns: ["question_id"];
+            isOneToOne: false;
+            referencedRelation: "pinwirl_questions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "pinwirl_answers_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      pinwirl_answer_options: {
+        Row: {
+          created_at: string;
+          id: string;
+          option_text: string;
+          order_index: number;
+          question_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          option_text: string;
+          order_index: number;
+          question_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          option_text?: string;
+          order_index?: number;
+          question_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "pinwirl_answer_options_question_id_fkey";
+            columns: ["question_id"];
+            isOneToOne: false;
+            referencedRelation: "pinwirl_questions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      pinwirl_questions: {
+        Row: {
+          created_at: string;
+          external_id: string;
+          hint: string | null;
+          id: string;
+          order_index: number;
+          question_text: string;
+          question_type: "scale" | "narrative" | "radio" | "select" | "number" | "text";
+          required: boolean;
+          scale_max: string | null;
+          scale_min: string | null;
+          section: string;
+        };
+        Insert: {
+          created_at?: string;
+          external_id: string;
+          hint?: string | null;
+          id?: string;
+          order_index: number;
+          question_text: string;
+          question_type: "scale" | "narrative" | "radio" | "select" | "number" | "text";
+          required?: boolean;
+          scale_max?: string | null;
+          scale_min?: string | null;
+          section: string;
+        };
+        Update: {
+          created_at?: string;
+          external_id?: string;
+          hint?: string | null;
+          id?: string;
+          order_index?: number;
+          question_text?: string;
+          question_type?: "scale" | "narrative" | "radio" | "select" | "number" | "text";
+          required?: boolean;
+          scale_max?: string | null;
+          scale_min?: string | null;
+          section?: string;
+        };
+        Relationships: [];
+      };
+      one_questions: {
+        Row: {
+          content: string;
+          created_at: string;
+          id: string;
+          index: number | null;
+        };
+        Insert: {
+          content?: string;
+          created_at?: string;
+          id?: string;
+          index?: number | null;
+        };
+        Update: {
+          content?: string;
+          created_at?: string;
+          id?: string;
+          index?: number | null;
+        };
+        Relationships: [];
+      };
       one_question_answers: {
         Row: {
           answer: string;
           created_at: string | null;
           id: string;
+          question_id: string | null;
           question_index: number;
           updated_at: string | null;
           user_id: string;
         };
         Insert: {
-          answer: string;
+          answer?: string;
           created_at?: string | null;
           id?: string;
+          question_id?: string | null;
           question_index: number;
           updated_at?: string | null;
           user_id: string;
@@ -150,11 +289,20 @@ export type Database = {
           answer?: string;
           created_at?: string | null;
           id?: string;
+          question_id?: string | null;
           question_index?: number;
           updated_at?: string | null;
           user_id?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "one_question_answers_question_id_fkey";
+            columns: ["question_id"];
+            isOneToOne: false;
+            referencedRelation: "one_questions";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       users_seven_step_process: {
         Row: {

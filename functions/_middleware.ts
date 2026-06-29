@@ -1,7 +1,7 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
 
 interface Env {
-  ANALYTICS: AnalyticsEngineDataset;
+  AnalyticsEngineDataset: AnalyticsEngineDataset;
 }
 
 const SESSION_COOKIE_NAME = 'gli_session';
@@ -38,7 +38,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
   const sessionId = await generateSessionId(ip, country, date);
 
-  context.env.ANALYTICS?.writeDataPoint({
+  context.env.AnalyticsEngineDataset?.writeDataPoint({
     indexes: [sessionId],
     blobs: [date],
     doubles: [1],

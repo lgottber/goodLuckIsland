@@ -1,13 +1,29 @@
 import { supabase } from "./supabase";
 
-export async function fetchOneQuestionAnswers(userId: string): Promise<string[]> {
+export async function fetchOneQuestions(): Promise<
+  { label: string; placeholder: string }[]
+> {
+  const { data, error } = await supabase
+    .from("one_questions")
+    .select("content")
+    .order("index", { ascending: true });
+
+  if (error) throw error;
+
+  return (data ?? []).map((q) => ({ label: q.content, placeholder: "" }));
+}
+
+export async function fetchOneQuestionAnswers(
+  userId: string,
+  total: number,
+): Promise<string[]> {
   const { data } = await supabase
     .from("one_question_answers")
     .select("question_index, answer")
     .eq("user_id", userId)
     .order("question_index", { ascending: true });
 
-  const result = Array(8).fill("");
+  const result = Array(total).fill("");
   for (const row of data ?? []) {
     result[row.question_index - 1] = row.answer;
   }

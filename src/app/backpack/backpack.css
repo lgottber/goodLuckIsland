@@ -447,6 +447,29 @@ body {
   transform: translateY(-1px);
 }
 
+.btn-pillar-start {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--pillar-color, var(--teal));
+  color: #fff;
+  border-radius: 50px;
+  padding: 0.6rem 1.5rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  align-self: flex-start;
+  transition:
+    opacity 0.2s,
+    transform 0.15s;
+}
+
+.btn-pillar-start:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
 /* ── Responsive ── */
 @media (max-width: 60rem) {
   .backpack-photo-item--tall {

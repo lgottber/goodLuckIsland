@@ -7,6 +7,7 @@ import NavBar from "../../components/NavBarDynamic";
 import OqrcCompletedView from "./OqrcCompletedView";
 import OqrcAssessmentView from "./OqrcAssessmentView";
 import {
+  fetchOneQuestions,
   fetchOneQuestionAnswers,
   fetchOneQuestionCompleted,
   saveOneQuestionAnswers,
@@ -14,62 +15,20 @@ import {
 } from "../../lib/oneQuestionApi";
 import "./one-question.css";
 
-const TOTAL = 8;
-
-const QUESTIONS: { label: string; placeholder: string }[] = [
-  {
-    label:
-      "How would you describe your personal lifestyle goals and priorities in retirement? You know, the things which you saved and sacrificed for all these years to ensure. Take your time — there are no wrong answers.",
-    placeholder:
-      "Picture yourself in that moment. In your own words, write your answer as if you were saying it out loud...",
-  },
-  {
-    label: "About how much time did you take to answer the challenge question?",
-    placeholder: "e.g. A few seconds, a couple of minutes...",
-  },
-  {
-    label:
-      "Which of the following answers best describes your thoughts when attempting to answer this challenge question?",
-    placeholder: "Describe your thoughts...",
-  },
-  {
-    label:
-      "When you think back to your answer, does this feel like you've explained your goals and priorities well enough for that advisor to create a customized, comprehensive, and holistic financial plan for the remainder of your life's success? Because in many cases that advisor is likely to move forward with what you just said.",
-    placeholder: "Share your honest reflection...",
-  },
-  {
-    label:
-      "When you answered this challenge question, did you use any of the following commonly heard answers? (or similar) — be honest ;) Here was the question again: What will your personal lifestyle goals and priorities be in retirement? You know, what you saved and sacrificed all these years to ensure?",
-    placeholder:
-      "List any common answers you may have used, e.g. travel, never run out of money, spend time with family, security, comfort...",
-  },
-  {
-    label: "Which industry do/did you work in?",
-    placeholder: "e.g. Healthcare, Finance, Education, Manufacturing...",
-  },
-  {
-    label: "What is your estimated net worth? Ballpark.",
-    placeholder: "e.g. Under $500K, $500K–$1M, $1M–$2M, $2M+...",
-  },
-  {
-    label:
-      "After taking this simple assessment, do you feel that you may need to spend some more time thinking about the topic of retirement life? To improve your own clarity and articulate your goals with more intentionality and specificity?",
-    placeholder: "Share your honest thoughts...",
-  },
-];
-
 export default function OneQuestionRetirementChallengePage() {
   const { isAuthenticated, isLoading: authLoading, user } = useAuth0();
   const router = useRouter();
   const progressFillRef = useRef<HTMLDivElement>(null);
 
   const [slide, setSlide] = useState(0);
-  const [answers, setAnswers] = useState<string[]>(Array(TOTAL).fill(""));
+  const [questions, setQuestions] = useState<{ label: string; placeholder: string }[]>([]);
+  const [answers, setAnswers] = useState<string[]>([]);
   const [completed, setCompleted] = useState(false);
   const [dataLoading, setDataLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [incompleteError, setIncompleteError] = useState(false);
   const [saveError, setSaveError] = useState(false);
+  const [loadError, setLoadError] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -82,12 +41,16 @@ export default function OneQuestionRetirementChallengePage() {
     const userId = user.sub;
     async function load() {
       try {
+        const qs = await fetchOneQuestions();
         const [saved, done] = await Promise.all([
-          fetchOneQuestionAnswers(userId),
+          fetchOneQuestionAnswers(userId, qs.length),
           fetchOneQuestionCompleted(userId),
         ]);
+        setQuestions(qs);
         setAnswers(saved);
         setCompleted(done);
+      } catch {
+        setLoadError(true);
       } finally {
         setDataLoading(false);
       }
@@ -95,8 +58,9 @@ export default function OneQuestionRetirementChallengePage() {
     load();
   }, [isAuthenticated, user]);
 
+  const total = questions.length;
   const answeredCount = answers.filter((a) => a.trim() !== "").length;
-  const progressPct = Math.round((answeredCount / TOTAL) * 100);
+  const progressPct = total > 0 ? Math.round((answeredCount / total) * 100) : 0;
 
   useEffect(() => {
     if (progressFillRef.current) {
@@ -130,7 +94,7 @@ export default function OneQuestionRetirementChallengePage() {
     setSaveError(false);
     try {
       await saveOneQuestionAnswers(user.sub, answers);
-      if (slide === TOTAL) {
+      if (slide === total) {
         await markOneQuestionComplete(user.sub);
         setCompleted(true);
       } else {
@@ -163,6 +127,19 @@ export default function OneQuestionRetirementChallengePage() {
 
   if (!isAuthenticated) return null;
 
+  if (loadError) {
+    return (
+      <>
+        <NavBar activePage="backpack" largeAvatar />
+        <div className="oqrc-page">
+          <div className="oqrc-inner">
+            <p className="oqrc-error">Failed to load questions. Please refresh and try again.</p>
+          </div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <NavBar activePage="backpack" largeAvatar />
@@ -178,18 +155,18 @@ export default function OneQuestionRetirementChallengePage() {
                 <div className="oqrc-progress-fill" ref={progressFillRef} />
               </div>
               <span className="oqrc-progress-label">
-                {answeredCount} of {TOTAL} answered
+                {answeredCount} of {total} answered
               </span>
             </div>
           </div>
 
           {completed ? (
-            <OqrcCompletedView questions={QUESTIONS} answers={answers} />
+            <OqrcCompletedView questions={questions} answers={answers} />
           ) : (
             <OqrcAssessmentView
               slide={slide}
               answers={answers}
-              questions={QUESTIONS}
+              questions={questions}
               incompleteError={incompleteError}
               saveError={saveError}
               saving={saving}

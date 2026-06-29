@@ -10,13 +10,13 @@ export async function POST(request: Request) {
     );
     const { event, properties } = body;
 
-    env.ANALYTICS.writeDataPoint({
+    env.AnalyticsEngineDataset.writeDataPoint({
       blobs: [event, properties?.page ?? ""],
       doubles: [1],
       indexes: [event],
     });
   } catch {
-    // ANALYTICS binding is unavailable outside the Cloudflare runtime (local next dev).
+    // AnalyticsEngineDataset binding is unavailable outside the Cloudflare runtime (local next dev).
     // Silently ignore so analytics never breaks the app.
   }
 
