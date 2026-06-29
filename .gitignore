@@ -43,6 +43,7 @@ node_modules
 # misc
 .DS_Store
 *.pem
+*.webp
 
 # debug
 npm-debug.log*
