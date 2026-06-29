@@ -6,18 +6,9 @@ import LifeCareerTab from "./LifeCareerTab";
 import RetirementTab from "./RetirementTab";
 import FinancesTab from "./FinancesTab";
 import ModalActionButton from "./ModalActionButton";
+import type { ProfileForm } from "./types";
 
 const MODAL_TABS = ["Basic Info", "Life & Career", "Retirement", "Finances"];
-
-type ProfileForm = {
-  firstName: string; lastName: string; username: string; age: string; email: string;
-  location: string; address: string; bio: string; interests: string[];
-  occupation: string; yearsInOccupation: string; education: string;
-  maritalStatus: string; divorced: string; kids: string; homePaidOff: string;
-  workingIncome: string; netWorth: string; retired: string; retirementDate: string;
-  avatarUrl: string; avatarId: string; mantra: string; memberSince: string;
-  stats: { articlesRead: number; podcastsListened: number; savedItems: number; daysActive: number };
-};
 
 export default function EditModal({ user, onSave, onClose }: { user: ProfileForm; onSave: (form: ProfileForm) => void | Promise<void>; onClose: () => void }) {
   const [form, setForm] = useState<ProfileForm>({ ...user });

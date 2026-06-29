@@ -1,10 +1,9 @@
 import Field from "./Field";
 import Select from "./Select";
 import YesNo from "./YesNo";
+import type { ProfileForm } from "./types";
 
-type FormState = { occupation: string; yearsInOccupation: string; education: string; maritalStatus: string; divorced: string; kids: string; homePaidOff: string };
-
-export default function LifeCareerTab({ form, set }: { form: FormState; set: (key: string, val: unknown) => void }) {
+export default function LifeCareerTab({ form, set }: { form: Pick<ProfileForm, "occupation" | "yearsInOccupation" | "education" | "maritalStatus" | "divorced" | "kids" | "homePaidOff">; set: (key: string, val: unknown) => void }) {
   return (
     <div className="edit-modal-body">
       <div className="modal-section-label">Career</div>

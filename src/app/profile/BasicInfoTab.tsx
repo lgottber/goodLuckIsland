@@ -1,8 +1,7 @@
 import { KeyboardEvent } from "react";
 import Field from "./Field";
 import InterestTagList from "./InterestTagList";
-
-type FormState = { firstName: string; lastName: string; username: string; age: string; email: string; location: string; address: string; bio: string; mantra: string; interests: string[] };
+import type { ProfileForm } from "./types";
 
 export default function BasicInfoTab({
   form,
@@ -12,7 +11,7 @@ export default function BasicInfoTab({
   addInterest,
   removeInterest,
 }: {
-  form: FormState;
+  form: Pick<ProfileForm, "firstName" | "lastName" | "username" | "age" | "email" | "location" | "address" | "bio" | "mantra" | "interests">;
   set: (key: string, val: unknown) => void;
   interestInput: string;
   setInterestInput: (v: string) => void;
