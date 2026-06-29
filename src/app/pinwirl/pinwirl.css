@@ -479,6 +479,16 @@
   letter-spacing: 0.08em;
 }
 
+.pw-result-band--needs-attention  { color: #ff7b7b; }
+.pw-result-band--developing        { color: #ffd073; }
+.pw-result-band--building-strength { color: #a8e6df; }
+.pw-result-band--strong            { color: #ffffff; }
+
+.pw-result-bar-fill--needs-attention  { background: #ff7b7b; }
+.pw-result-bar-fill--developing        { background: #ffd073; }
+.pw-result-bar-fill--building-strength { background: #a8e6df; }
+.pw-result-bar-fill--strong            { background: #ffffff; }
+
 .pw-result-score {
   font-size: 1.05rem;
   font-weight: 800;

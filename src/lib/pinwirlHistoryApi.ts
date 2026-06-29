@@ -1,4 +1,5 @@
 import { supabase } from "./supabase";
+import type { Json } from "../types/supabase";
 import type { DimensionScores } from "./pinwirlScoring";
 
 export type PinwirlResult = {
@@ -6,6 +7,27 @@ export type PinwirlResult = {
   taken_at: string;
   scores: DimensionScores;
 };
+
+function jsonToScores(json: Json): DimensionScores {
+  const obj: { [key: string]: Json | undefined } =
+    typeof json === "object" && json !== null && !Array.isArray(json)
+      ? json
+      : {};
+  function getNum(key: string): number {
+    const v = obj[key];
+    return typeof v === "number" ? v : 0;
+  }
+  return {
+    Physical: getNum("Physical"),
+    Emotional: getNum("Emotional"),
+    Intellectual: getNum("Intellectual"),
+    Spiritual: getNum("Spiritual"),
+    Social: getNum("Social"),
+    Environmental: getNum("Environmental"),
+    "Purpose / Vision / Mission": getNum("Purpose / Vision / Mission"),
+    Financial: getNum("Financial"),
+  };
+}
 
 export async function fetchPinwirlHistory(userId: string): Promise<PinwirlResult[]> {
   const { data, error } = await supabase
@@ -18,7 +40,7 @@ export async function fetchPinwirlHistory(userId: string): Promise<PinwirlResult
   return (data ?? []).map((row) => ({
     id: row.id,
     taken_at: row.taken_at,
-    scores: row.scores as DimensionScores,
+    scores: jsonToScores(row.scores),
   }));
 }
 

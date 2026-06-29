@@ -47,7 +47,16 @@ export function computeScores(
   answers: Record<string, string | number>,
   questions: ScorableQuestion[],
 ): DimensionScores {
-  const result = {} as DimensionScores;
+  const result: DimensionScores = {
+    Physical: 0,
+    Emotional: 0,
+    Intellectual: 0,
+    Spiritual: 0,
+    Social: 0,
+    Environmental: 0,
+    "Purpose / Vision / Mission": 0,
+    Financial: 0,
+  };
 
   for (const dim of DIMENSIONS) {
     const scaleQs = questions.filter(

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import NavBar from "../../components/NavBarDynamic";
-import Icon from "../../components/Icon";
+import LegalCard from "./LegalCard";
 import "./legal.css";
 
 const LEGAL_SECTIONS = [
@@ -42,21 +42,14 @@ export default function LegalPage() {
 
         <div className="legal-cards">
           {LEGAL_SECTIONS.map((section) => (
-            <Link key={section.href} href={section.href} className="legal-card">
-              <div className="legal-card-icon">
-                <Icon name={section.icon} size={28} />
-              </div>
-              <div className="legal-card-body">
-                <h2 className="legal-card-title">{section.title}</h2>
-                <p className="legal-card-desc">{section.description}</p>
-                <span className="legal-card-updated">
-                  Last updated: {section.updated}
-                </span>
-              </div>
-              <div className="legal-card-arrow">
-                <Icon name="arrow-right" size={16} />
-              </div>
-            </Link>
+            <LegalCard
+              key={section.href}
+              href={section.href}
+              icon={section.icon}
+              title={section.title}
+              description={section.description}
+              updated={section.updated}
+            />
           ))}
         </div>
 

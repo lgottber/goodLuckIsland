@@ -71,10 +71,7 @@ export async function updateNotificationPrefs(
 }
 
 // Stub — implementation deferred until the deletion endpoint is ready.
-export async function deleteAccountFromSupabase(
-  _userId: string,
-  _accessToken: string,
-): Promise<void> {
+export async function deleteAccountFromSupabase(): Promise<void> {
   throw new Error("Account deletion is not yet available. Please contact hello@goodluckislandcollective.com to request account deletion.");
 }
 

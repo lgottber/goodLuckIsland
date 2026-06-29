@@ -225,7 +225,7 @@ export default function ProfilePage() {
     setDeleting(true);
     setDeleteError(null);
     try {
-      await deleteAccountFromSupabase(auth0User.sub, "");
+      await deleteAccountFromSupabase();
       logout({ logoutParams: { returnTo: window.location.origin } });
     } catch (err) {
       setDeleteError(err instanceof Error ? err.message : "Something went wrong. Please try again.");

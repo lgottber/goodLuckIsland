@@ -2,11 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { DimensionScores } from "../../lib/pinwirlScoring";
-import { DIMENSIONS, scoreBand, scoreColor } from "../../lib/pinwirlScoring";
+import { DIMENSIONS, scoreBand } from "../../lib/pinwirlScoring";
 import { fetchRecommendations } from "./recommendations";
 import type { RecommendationsMap } from "./recommendations";
 import { fetchPinwirlHistory } from "../../lib/pinwirlHistoryApi";
 import type { PinwirlResult } from "../../lib/pinwirlHistoryApi";
+import DimensionRow from "./DimensionRow";
+import PinwirlHistory from "./PinwirlHistory";
 
 interface Props {
   scores: DimensionScores;
@@ -40,7 +42,7 @@ export default function PinwirlResults({ scores, userId, onRetake }: Props) {
     DIMENSIONS.reduce((sum, dim) => sum + scores[dim], 0) / DIMENSIONS.length,
   );
 
-  const pastResults = history.slice(1); // exclude current (just submitted)
+  const pastResults = history.slice(1);
 
   return (
     <div className="pw-results" ref={captureRef}>
@@ -53,40 +55,22 @@ export default function PinwirlResults({ scores, userId, onRetake }: Props) {
         </div>
         <p className="pw-results-intro">
           Here&apos;s how you scored across the 8 dimensions of a well-lived
-          retirement. Your scores reflect your self-assessment today — they&apos;re a
-          starting point, not a verdict.
+          retirement. Your scores reflect your self-assessment today —
+          they&apos;re a starting point, not a verdict.
         </p>
       </div>
 
       <div className="pw-results-bars">
-        {DIMENSIONS.map((dim, i) => {
-          const score = scores[dim];
-          const band = scoreBand(score);
-          const color = scoreColor(score);
-          const blurb = recommendations?.[dim]?.[band];
-          return (
-            <div
-              key={dim}
-              className="pw-result-row"
-              style={{ "--bar-delay": String(i * 80) } as React.CSSProperties}
-            >
-              <div className="pw-result-row-header">
-                <span className="pw-result-dim">{dim}</span>
-                <div className="pw-result-right">
-                  <span className="pw-result-band" style={{ color }}>{band}</span>
-                  <span className="pw-result-score">{score}</span>
-                </div>
-              </div>
-              <div className="pw-result-bar-track">
-                <div
-                  className="pw-result-bar-fill"
-                  style={{ width: `${score}%`, background: color }}
-                />
-              </div>
-              {blurb && <p className="pw-result-blurb">{blurb}</p>}
-            </div>
-          );
-        })}
+        {DIMENSIONS.map((dim, i) => (
+          <DimensionRow
+            key={dim}
+            dim={dim}
+            score={scores[dim]}
+            band={scoreBand(scores[dim])}
+            index={i}
+            blurb={recommendations?.[dim]?.[scoreBand(scores[dim])]}
+          />
+        ))}
       </div>
 
       <div className="pw-results-actions">
@@ -103,29 +87,7 @@ export default function PinwirlResults({ scores, userId, onRetake }: Props) {
         </button>
       </div>
 
-      {pastResults.length > 0 && (
-        <div className="pw-results-history">
-          <h3 className="pw-results-history-title">Past Assessments</h3>
-          {pastResults.map((r) => {
-            const past = r.scores as DimensionScores;
-            const pastOverall = Math.round(
-              DIMENSIONS.reduce((sum, dim) => sum + (past[dim] ?? 0), 0) / DIMENSIONS.length,
-            );
-            return (
-              <div key={r.id} className="pw-history-row">
-                <span className="pw-history-date">
-                  {new Date(r.taken_at).toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-                </span>
-                <span className="pw-history-overall">Overall: {pastOverall}</span>
-              </div>
-            );
-          })}
-        </div>
-      )}
+      {pastResults.length > 0 && <PinwirlHistory results={pastResults} />}
     </div>
   );
 }

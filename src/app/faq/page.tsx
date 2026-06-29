@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import NavBar from "../../components/NavBarDynamic";
-import Icon from "../../components/Icon";
+import FaqItem from "./FaqItem";
 import "./faq.css";
 
 const FAQS = [
@@ -91,32 +91,15 @@ export default function FaqPage() {
         </div>
 
         <div className="faq-list">
-          {FAQS.map((item) => {
-            const isOpen = openId === item.id;
-            return (
-              <div
-                key={item.id}
-                className={`faq-item${isOpen ? " faq-item--open" : ""}`}
-              >
-                <button
-                  type="button"
-                  className="faq-question"
-                  onClick={() => toggle(item.id)}
-                  aria-expanded={isOpen}
-                >
-                  <span>{item.question}</span>
-                  <span className="faq-icon">
-                    <Icon name={isOpen ? "minus" : "plus"} size={16} />
-                  </span>
-                </button>
-                {isOpen && (
-                  <div className="faq-answer">
-                    <p>{item.answer}</p>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+          {FAQS.map((item) => (
+            <FaqItem
+              key={item.id}
+              question={item.question}
+              answer={item.answer}
+              isOpen={openId === item.id}
+              onToggle={() => toggle(item.id)}
+            />
+          ))}
         </div>
 
         <div className="faq-cta-band">
