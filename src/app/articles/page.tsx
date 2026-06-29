@@ -4,11 +4,8 @@ import { useEffect, useState } from "react";
 import { fetchArticles, fetchEpisodes } from "../../lib/articlesApi";
 import type { Article, Episode } from "../../lib/articlesApi";
 import NavBar from "../../components/NavBarDynamic";
-import Icon from "../../components/Icon";
-import FilterTabs from "../../components/FilterTabs";
-import ArticlesTab from "./ArticlesTab";
-import PodcastTab from "./PodcastTab";
 import VideoModal from "./VideoModal";
+import ArticlesContent from "./ArticlesContent";
 import "./articles.css";
 
 export default function ArticlesPage() {
@@ -39,8 +36,8 @@ export default function ArticlesPage() {
     loadData();
   }, []);
 
-  let featured = null;
-  const filtered = [];
+  let featured: Article | null = null;
+  const filtered: Article[] = [];
   for (const a of allArticles) {
     if (a.featured) {
       featured = a;
@@ -79,40 +76,19 @@ export default function ArticlesPage() {
         )}
 
         {!loading && !loadError && (
-          <>
-            {/* ── TAB SWITCHER ── */}
-            <FilterTabs
-              containerClass="content-tabs"
-              buttonClass="content-tab"
-              items={[
-                { label: <><Icon name="book" size={14} /> Articles</>, value: "articles" },
-                { label: <><Icon name="film" size={14} /> Podcast</>, value: "podcast" },
-              ]}
-              active={activeTab}
-              onChange={setActiveTab}
-            />
-
-            {/* ── ARTICLES TAB ── */}
-            {activeTab === "articles" && (
-              <ArticlesTab
-                activeCategory={activeCategory}
-                setActiveCategory={setActiveCategory}
-                featured={featured}
-                filtered={filtered}
-              />
-            )}
-
-            {/* ── PODCAST TAB ── */}
-            {activeTab === "podcast" && (
-              <PodcastTab
-                podcastFeatured={podcastFeatured}
-                podcastRest={podcastRest}
-                featuredPlaying={featuredPlaying}
-                setFeaturedPlaying={setFeaturedPlaying}
-                setModalEpisode={setModalEpisode}
-              />
-            )}
-          </>
+          <ArticlesContent
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            activeCategory={activeCategory}
+            setActiveCategory={setActiveCategory}
+            featured={featured}
+            filtered={filtered}
+            podcastFeatured={podcastFeatured}
+            podcastRest={podcastRest}
+            featuredPlaying={featuredPlaying}
+            setFeaturedPlaying={setFeaturedPlaying}
+            setModalEpisode={setModalEpisode}
+          />
         )}
       </div>
 
