@@ -451,6 +451,7 @@ export type Database = {
           mantra: string | null;
           marital_status: string | null;
           net_worth: string | null;
+          notifications_email: boolean;
           occupation: string | null;
           retired: string | null;
           retirement_date: string | null;
@@ -479,6 +480,7 @@ export type Database = {
           mantra?: string | null;
           marital_status?: string | null;
           net_worth?: string | null;
+          notifications_email?: boolean;
           occupation?: string | null;
           retired?: string | null;
           retirement_date?: string | null;
@@ -507,6 +509,7 @@ export type Database = {
           mantra?: string | null;
           marital_status?: string | null;
           net_worth?: string | null;
+          notifications_email?: boolean;
           occupation?: string | null;
           retired?: string | null;
           retirement_date?: string | null;

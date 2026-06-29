@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { SupabaseAuthSync } from "../components/SupabaseAuthSync";
 import { BlockedGuard } from "../components/BlockedGuard";
+import SessionGuard from "../components/SessionGuard";
 import { AUTH0_DOMAIN, AUTH0_CLIENT_ID } from "../lib/auth0";
 
 // @auth0/auth0-spa-js contains browser-only module chunks that webpack cannot
@@ -25,6 +26,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       domain={AUTH0_DOMAIN}
       clientId={AUTH0_CLIENT_ID}
       cacheLocation="localstorage"
+      useRefreshTokens={true}
       authorizationParams={{
         redirect_uri:
           typeof window !== "undefined"
@@ -36,6 +38,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       }}
     >
       <SupabaseAuthSync />
+      <SessionGuard />
       <BlockedGuard>{children}</BlockedGuard>
     </Auth0Provider>
   );

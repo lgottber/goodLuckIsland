@@ -13,7 +13,9 @@ import BioDisplay from "./BioDisplay";
 import BioEmpty from "./BioEmpty";
 import InterestsList from "./InterestsList";
 import InterestsEmpty from "./InterestsEmpty";
-import { createUser, fetchProfile, upsertProfile } from "../../lib/profileApi";
+import { createUser, fetchProfile, upsertProfile, updateNotificationPrefs, deleteAccountFromSupabase } from "../../lib/profileApi";
+import NotificationPrefsModal from "./NotificationPrefsModal";
+import DeleteAccountModal from "./DeleteAccountModal";
 import QuizNudgeCard from "../quiz/QuizNudgeCard";
 import type { Tables } from "../../types/supabase";
 import { downloadProfileDataCsv } from "../../lib/exportUtils";
@@ -59,8 +61,9 @@ const INITIAL_USER = {
 
 // ─── Main Profile Page ────────────────────────────────────────────────────────
 export default function ProfilePage() {
-  const { user: auth0User } = useAuth0User();
+  const { user: auth0User, logout } = useAuth0User();
   const [user, setUser] = useState(INITIAL_USER);
+  const [notificationsEmail, setNotificationsEmail] = useState(true);
 
   // Seed from Auth0 then overlay saved profile from Supabase
   useEffect(() => {
@@ -123,6 +126,7 @@ export default function ProfilePage() {
         return;
       }
       setUser((prev) => applySupabaseFields(prev, data));
+      setNotificationsEmail(data.notifications_email);
     }
 
     setUser(applyAuth0Fields);
@@ -134,6 +138,11 @@ export default function ProfilePage() {
   const [saved, triggerSaved] = useSubmitFeedback(2000);
   const [resetStatus, setResetStatus] = useState<ResetStatus>("idle");
   const [exportStatus, setExportStatus] = useState("idle"); // idle | exporting | done | error
+  const [showNotifPrefs, setShowNotifPrefs] = useState(false);
+  const [notifSaving, setNotifSaving] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   async function handlePasswordReset() {
     if (!auth0User?.email) {
@@ -200,6 +209,30 @@ export default function ProfilePage() {
     await upsertProfile(auth0User.sub ?? "", updated);
   }
 
+  async function handleToggleEmail(enabled: boolean) {
+    if (!auth0User?.sub) return;
+    setNotifSaving(true);
+    try {
+      await updateNotificationPrefs(auth0User.sub, enabled);
+      setNotificationsEmail(enabled);
+    } finally {
+      setNotifSaving(false);
+    }
+  }
+
+  async function handleDeleteAccount() {
+    if (!auth0User?.sub) return;
+    setDeleting(true);
+    setDeleteError(null);
+    try {
+      await deleteAccountFromSupabase(auth0User.sub, "");
+      logout({ logoutParams: { returnTo: window.location.origin } });
+    } catch (err) {
+      setDeleteError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+      setDeleting(false);
+    }
+  }
+
   async function handleSave(updated: typeof INITIAL_USER) {
     setUser(updated);
     setEditing(false);
@@ -227,6 +260,22 @@ export default function ProfilePage() {
           currentAvatar={user.avatarId}
           onSelect={handleAvatarSelect}
           onClose={() => setPickingAvatar(false)}
+        />
+      )}
+      {showNotifPrefs && (
+        <NotificationPrefsModal
+          emailEnabled={notificationsEmail}
+          saving={notifSaving}
+          onToggleEmail={handleToggleEmail}
+          onClose={() => setShowNotifPrefs(false)}
+        />
+      )}
+      {showDeleteConfirm && (
+        <DeleteAccountModal
+          deleting={deleting}
+          error={deleteError}
+          onConfirm={handleDeleteAccount}
+          onClose={() => { setShowDeleteConfirm(false); setDeleteError(null); }}
         />
       )}
 
@@ -313,6 +362,20 @@ export default function ProfilePage() {
                 disabled={resetStatus === "sending" || resetStatus === "sent"}
               >
                 {resetStatus === "sending" ? "Sending…" : "Reset Password"}
+              </button>
+              <button
+                type="button"
+                className="btn-ghost-sm"
+                onClick={() => setShowNotifPrefs(true)}
+              >
+                Notifications
+              </button>
+              <button
+                type="button"
+                className="btn-ghost-sm btn-ghost-sm--danger"
+                onClick={() => setShowDeleteConfirm(true)}
+              >
+                Delete Account
               </button>
               <button
                 type="button"
