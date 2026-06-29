@@ -6,7 +6,7 @@ import LifeCareerTab from "./LifeCareerTab";
 import RetirementTab from "./RetirementTab";
 import FinancesTab from "./FinancesTab";
 import ModalActionButton from "./ModalActionButton";
-import type { ProfileForm } from "./types";
+import type { ProfileForm, SetField } from "./types";
 
 const MODAL_TABS = ["Basic Info", "Life & Career", "Retirement", "Finances"];
 
@@ -15,7 +15,13 @@ export default function EditModal({ user, onSave, onClose }: { user: ProfileForm
   const [activeTab, setActiveTab] = useState("Basic Info");
   const [interestInput, setInterestInput] = useState("");
 
-  const set = (key: string, val: unknown) => setForm((f) => ({ ...f, [key]: val }));
+  const set: SetField = <K extends keyof ProfileForm>(key: K, val: ProfileForm[K]) => {
+    setForm((prev) => {
+      const next: ProfileForm = { ...prev };
+      next[key] = val;
+      return next;
+    });
+  };
 
   const addInterest = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && interestInput.trim()) {

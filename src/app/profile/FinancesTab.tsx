@@ -1,9 +1,9 @@
 import Field from "./Field";
 import Select from "./Select";
 import Icon from "./Icon";
-import type { ProfileForm } from "./types";
+import type { ProfileForm, SetField } from "./types";
 
-export default function FinancesTab({ form, set }: { form: Pick<ProfileForm, "workingIncome" | "netWorth">; set: (key: string, val: unknown) => void }) {
+export default function FinancesTab({ form, set }: { form: Pick<ProfileForm, "workingIncome" | "netWorth">; set: SetField }) {
   return (
     <div className="edit-modal-body">
       <div className="modal-section-label">Financial Overview</div>

@@ -1,10 +1,10 @@
 import Field from "./Field";
 import RetirementDetails from "./RetirementDetails";
-import type { ProfileForm } from "./types";
+import type { ProfileForm, SetField } from "./types";
 
 const RETIRED = "Yes, I'm retired";
 
-export default function RetirementTab({ form, set }: { form: Pick<ProfileForm, "retired" | "retirementDate">; set: (key: string, val: unknown) => void }) {
+export default function RetirementTab({ form, set }: { form: Pick<ProfileForm, "retired" | "retirementDate">; set: SetField }) {
 
   return (
     <div className="edit-modal-body">

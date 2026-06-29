@@ -4,6 +4,8 @@ import type { ProfileUpdate } from "../../lib/profileApi";
 // Derived from ProfileUpdate (which references Tables<"users">) so it stays in sync with the schema.
 type ToFormString<T> = NonNullable<T> extends string[] ? string[] : string;
 
+export type SetField = <K extends keyof ProfileForm>(key: K, val: ProfileForm[K]) => void;
+
 export type ProfileForm = {
   [K in keyof ProfileUpdate]: ToFormString<ProfileUpdate[K]>;
 } & {
