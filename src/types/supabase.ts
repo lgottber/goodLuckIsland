@@ -281,6 +281,57 @@ export type Database = {
           },
         ];
       };
+      pinwirl_recommendations: {
+        Row: {
+          id: string;
+          dimension: string;
+          band: string;
+          body: string;
+          sort_order: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          dimension: string;
+          band: string;
+          body: string;
+          sort_order?: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          dimension?: string;
+          band?: string;
+          body?: string;
+          sort_order?: number;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      pinwirl_results: {
+        Row: {
+          id: string;
+          user_id: string;
+          taken_at: string;
+          scores: Json;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          taken_at?: string;
+          scores: Json;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          taken_at?: string;
+          scores?: Json;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
       one_questions: {
         Row: {
           content: string;
