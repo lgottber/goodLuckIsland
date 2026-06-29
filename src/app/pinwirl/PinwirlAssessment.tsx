@@ -1,24 +1,36 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { SURVEY_QUESTIONS } from "./questions";
 import QuestionBlock from "./QuestionBlock";
+import { fetchPinwirlQuestions, submitPinwirlAnswers, toSurveyQuestion } from "../../lib/pinwirlApi";
+import type { PinwirlQuestionRow } from "../../lib/pinwirlApi";
 
 const PAGE_SIZE = 4;
-const TOTAL_PAGES = Math.ceil(SURVEY_QUESTIONS.length / PAGE_SIZE);
 
 type Answers = Record<string, string | number>;
 
-export default function PinwirlAssessment() {
+interface Props {
+  userId: string;
+}
+
+export default function PinwirlAssessment({ userId }: Props) {
   const [page, setPage] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
+  const [questions, setQuestions] = useState<PinwirlQuestionRow[]>([]);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
   const progressRef = useRef<HTMLDivElement>(null);
 
-  const pageQuestions = SURVEY_QUESTIONS.slice(
-    page * PAGE_SIZE,
-    (page + 1) * PAGE_SIZE,
-  );
-  const isLastPage = page === TOTAL_PAGES - 1;
+  useEffect(() => {
+    fetchPinwirlQuestions().then(setQuestions).catch(console.error);
+  }, []);
+
+  const totalPages = Math.ceil(questions.length / PAGE_SIZE);
+  const pageQuestions = questions
+    .slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
+    .map(toSurveyQuestion);
+  const isLastPage = page === totalPages - 1;
 
   const isPageComplete = pageQuestions
     .filter((q) => q.required)
@@ -30,10 +42,10 @@ export default function PinwirlAssessment() {
     });
 
   useEffect(() => {
-    if (progressRef.current) {
-      progressRef.current.style.width = `${((page + 1) / TOTAL_PAGES) * 100}%`;
+    if (progressRef.current && totalPages > 0) {
+      progressRef.current.style.width = `${((page + 1) / totalPages) * 100}%`;
     }
-  }, [page]);
+  }, [page, totalPages]);
 
   function setAnswer(id: string, value: string | number) {
     setAnswers((prev) => ({ ...prev, [id]: value }));
@@ -49,12 +61,38 @@ export default function PinwirlAssessment() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  async function handleSubmit() {
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      await submitPinwirlAnswers(userId, answers, questions);
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  if (submitted) {
+    return (
+      <div className="pw-assessment pw-assessment--done">
+        <h1>Thank you!</h1>
+        <p>Your assessment has been submitted.</p>
+      </div>
+    );
+  }
+
+  if (questions.length === 0) {
+    return <div className="pw-assessment pw-assessment--loading" />;
+  }
+
   return (
     <div className="pw-assessment">
       <div className="pw-assessment-header">
         <p className="pw-eyebrow">Pinwirl Tool — Step II</p>
         <h1>The Pinwirl Assessment</h1>
-        <span className="pw-page-counter">{page + 1} of {TOTAL_PAGES}</span>
+        <span className="pw-page-counter">{page + 1} of {totalPages}</span>
       </div>
 
       <div className="pw-progress-bar-wrap">
@@ -64,7 +102,7 @@ export default function PinwirlAssessment() {
       <div className="pw-questions-list">
         {pageQuestions.map((q, idx) => {
           const globalIdx = page * PAGE_SIZE + idx;
-          const prevQ = globalIdx > 0 ? SURVEY_QUESTIONS[globalIdx - 1] : null;
+          const prevQ = globalIdx > 0 ? questions[globalIdx - 1] : null;
           const showSection = !prevQ || prevQ.section !== q.section;
 
           return (
@@ -78,6 +116,10 @@ export default function PinwirlAssessment() {
           );
         })}
       </div>
+
+      {submitError && (
+        <p className="pw-error">{submitError}</p>
+      )}
 
       <div className="pw-nav">
         {page > 0 && (
@@ -98,9 +140,10 @@ export default function PinwirlAssessment() {
           <button
             type="button"
             className="pw-btn pw-btn--submit"
-            disabled={!isPageComplete}
+            onClick={handleSubmit}
+            disabled={!isPageComplete || submitting}
           >
-            Submit
+            {submitting ? "Submitting…" : "Submit"}
           </button>
         )}
       </div>

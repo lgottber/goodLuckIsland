@@ -1,7 +1,45 @@
 import { supabase } from "./supabase";
 import type { Tables } from "../types/supabase";
+import type { SurveyQuestion } from "../app/pinwirl/questions";
 
 export type PinwirlQuestionRow = Tables<"pinwirl_questions"> & { options: string[] };
+
+export function toSurveyQuestion(q: PinwirlQuestionRow): SurveyQuestion {
+  return {
+    id: q.external_id,
+    section: q.section,
+    text: q.question_text,
+    type: q.question_type,
+    required: q.required,
+    options: q.options,
+    hint: q.hint ?? undefined,
+    scaleMin: q.scale_min ?? undefined,
+    scaleMax: q.scale_max ?? undefined,
+  };
+}
+
+export async function submitPinwirlAnswers(
+  userId: string,
+  answers: Record<string, string | number>,
+  questions: PinwirlQuestionRow[],
+): Promise<void> {
+  const uuidByExternalId = new Map(questions.map((q) => [q.external_id, q.id]));
+
+  const rows = Object.entries(answers)
+    .map(([externalId, value]) => {
+      const questionId = uuidByExternalId.get(externalId);
+      if (!questionId) return null;
+      return {
+        user_id: userId,
+        question_id: questionId,
+        answer: String(value),
+      };
+    })
+    .filter((r): r is NonNullable<typeof r> => r !== null);
+
+  const { error } = await supabase.from("pinwirl_answers").insert(rows);
+  if (error) throw error;
+}
 
 export async function fetchPinwirlQuestions(): Promise<PinwirlQuestionRow[]> {
   const [questionsResult, optionsResult] = await Promise.all([

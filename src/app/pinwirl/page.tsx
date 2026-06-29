@@ -14,12 +14,14 @@ export default function PinwirlPage() {
   const [started, setStarted] = useState(false);
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      router.replace("/auth/login?returnTo=/pinwirl");
+    if (!isLoading && (!isAuthenticated || !user)) {
+      router.replace("/");
     }
-  }, [isAuthenticated, isLoading, router]);
+  }, [isAuthenticated, isLoading, user, router]);
 
-  if (isLoading || !isAuthenticated) return null;
+  if (isLoading || !isAuthenticated || !user) return null;
+
+  const userId = user.sub ?? user.email ?? "";
 
   return (
     <>
@@ -27,7 +29,7 @@ export default function PinwirlPage() {
 
       <div className="pinwirl-page">
         {started ? (
-          <PinwirlAssessment />
+          <PinwirlAssessment userId={userId} />
         ) : (
           <PinwirlIntro username={user?.nickname} onStart={() => setStarted(true)} />
         )}

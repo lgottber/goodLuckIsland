@@ -129,6 +129,48 @@ export type Database = {
         };
         Relationships: [];
       };
+      pinwirl_answers: {
+        Row: {
+          id: string;
+          user_id: string;
+          question_id: string | null;
+          answer: string;
+          created_at: string | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          question_id?: string | null;
+          answer?: string;
+          created_at?: string | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          question_id?: string | null;
+          answer?: string;
+          created_at?: string | null;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "pinwirl_answers_question_id_fkey";
+            columns: ["question_id"];
+            isOneToOne: false;
+            referencedRelation: "pinwirl_questions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "pinwirl_answers_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       pinwirl_answer_options: {
         Row: {
           created_at: string;
