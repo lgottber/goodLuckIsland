@@ -16,3 +16,5 @@ export async function fetchBackpackSections() {
     type: s.type,
   }));
 }
+
+export type BackpackSection = Awaited<ReturnType<typeof fetchBackpackSections>>[number];

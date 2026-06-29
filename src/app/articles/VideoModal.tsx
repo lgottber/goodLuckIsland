@@ -1,7 +1,6 @@
 import Modal from "../../components/Modal";
 import Icon from "../../components/Icon";
-
-type Episode = { id: number; num: string; title: string; desc: string | null; date: string | null; duration: string | null; youtubeId: string | null; thumbnail: string | null };
+import type { Episode } from "../../lib/articlesApi";
 
 export default function VideoModal({ episode, onClose }: { episode: Episode; onClose: () => void }) {
   return (

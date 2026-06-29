@@ -2,8 +2,7 @@ import FeaturedVideoPlayer from "./FeaturedVideoPlayer";
 import EpisodeCard from "./EpisodeCard";
 import { ClockIcon } from "../../components/Icons";
 import Icon from "../../components/Icon";
-
-type Episode = { id: number; num: string; title: string; desc: string | null; date: string | null; duration: string | null; youtubeId: string | null; thumbnail: string | null };
+import type { Episode } from "../../lib/articlesApi";
 
 export default function PodcastTab({
   podcastFeatured,

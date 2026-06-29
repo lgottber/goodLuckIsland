@@ -1,6 +1,5 @@
 import ArticleCard from "./ArticleCard";
-
-type Article = { id: number; category: string; title: string; excerpt: string | null; date: string | null; readTime: string | null; image: string | null; featured?: boolean };
+import type { Article } from "../../lib/articlesApi";
 
 export default function ArticleGrid({ articles }: { articles: Article[] }) {
   if (articles.length === 0) {

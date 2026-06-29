@@ -35,3 +35,6 @@ export async function fetchArticles() {
     featured: a.featured,
   }));
 }
+
+export type Episode = Awaited<ReturnType<typeof fetchEpisodes>>[number];
+export type Article = Awaited<ReturnType<typeof fetchArticles>>[number];

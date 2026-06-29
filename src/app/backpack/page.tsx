@@ -5,9 +5,8 @@ import NavBar from "../../components/NavBarDynamic";
 import BackpackPhotoTrio from "./BackpackPhotoTrio";
 import BackpackSectionGrid from "./BackpackSectionGrid";
 import { fetchBackpackSections } from "../../lib/backpackApi";
+import type { BackpackSection } from "../../lib/backpackApi";
 import "./backpack.css";
-
-type BackpackSection = Awaited<ReturnType<typeof fetchBackpackSections>>[number];
 
 export default function BackpackPage() {
   const [sections, setSections] = useState<BackpackSection[]>([]);

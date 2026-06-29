@@ -5,6 +5,7 @@ import FilterTabs from "../../components/FilterTabs";
 import ArticleGrid from "./ArticleGrid";
 import FeaturedArticle from "./FeaturedArticle";
 import PullQuoteBand from "./PullQuoteBand";
+import type { Article } from "../../lib/articlesApi";
 
 const CATEGORIES = [
   "All",
@@ -13,8 +14,6 @@ const CATEGORIES = [
   "Clear Thinking",
   "Financial Independence",
 ];
-
-type Article = { id: number; category: string; title: string; excerpt: string | null; date: string | null; readTime: string | null; image: string | null; featured?: boolean };
 
 export default function ArticlesTab({
   activeCategory,

@@ -1,7 +1,6 @@
 import { PlayIcon } from "../../components/Icons";
 import PictureImage from "../../components/PictureImage";
-
-type Episode = { id: number; num: string; title: string; desc: string | null; date: string | null; duration: string | null; youtubeId: string | null; thumbnail: string | null };
+import type { Episode } from "../../lib/articlesApi";
 
 export default function EpisodeCard({ ep, onPlay }: { ep: Episode; onPlay: () => void }) {
   return (

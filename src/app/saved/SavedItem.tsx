@@ -10,7 +10,7 @@ const TAG_COLORS: Record<string, string> = {
   "Financial Independence": "teal",
 };
 
-type SavedItemData = { id: number; image: string; type: string; tag: string; date: string; readTime: string; title: string; excerpt: string };
+export type SavedItemData = { id: number; image: string; type: string; tag: string; date: string; readTime: string; title: string; excerpt: string };
 
 export default function SavedItem({ item }: { item: SavedItemData }) {
   return (
