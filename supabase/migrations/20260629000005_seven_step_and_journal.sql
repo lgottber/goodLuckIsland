@@ -1,7 +1,3 @@
--- Add unique constraint on user_id to allow upsert-by-user for seven step process
-ALTER TABLE public.users_seven_step_process
-  ADD CONSTRAINT users_seven_step_process_user_id_key UNIQUE (user_id);
-
 -- RLS for users_seven_step_process
 ALTER TABLE public.users_seven_step_process ENABLE ROW LEVEL SECURITY;
 
