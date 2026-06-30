@@ -219,6 +219,121 @@
   border-color: var(--teal);
 }
 
+/* ── Hint ── */
+.oqrc-hint {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ── Number input ── */
+.oqrc-number-input {
+  width: 100%;
+  max-width: 12rem;
+  background: #fff;
+  border: 1.5px solid var(--cream-dk);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-family: var(--sans);
+  font-size: 1rem;
+  color: #374151;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.oqrc-number-input:focus {
+  outline: none;
+  border-color: var(--teal);
+}
+
+/* ── Scale ── */
+.oqrc-scale-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.oqrc-scale-input {
+  width: 100%;
+  accent-color: var(--teal);
+  height: 6px;
+  cursor: pointer;
+}
+
+.oqrc-scale-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.oqrc-scale-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--teal);
+}
+
+/* ── Radio ── */
+.oqrc-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.oqrc-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: #374151;
+  cursor: pointer;
+  padding: 0.6rem 0.85rem;
+  border: 1.5px solid var(--cream-dk);
+  border-radius: 8px;
+  background: #fff;
+  transition: border-color 0.15s;
+}
+
+.oqrc-radio-label:has(.oqrc-radio-input:checked) {
+  border-color: var(--teal);
+  background: rgba(var(--teal-rgb, 0, 128, 128), 0.04);
+}
+
+.oqrc-radio-input {
+  accent-color: var(--teal);
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+/* ── Select ── */
+.oqrc-select {
+  width: 100%;
+  background: #fff;
+  border: 1.5px solid var(--cream-dk);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: #374151;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7280' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.oqrc-select:focus {
+  outline: none;
+  border-color: var(--teal);
+}
+
 .oqrc-error {
   font-family: var(--sans);
   font-size: 0.87rem;

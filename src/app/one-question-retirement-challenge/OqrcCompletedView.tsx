@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import OqrcAnswerItem from "./OqrcAnswerItem";
-
-type Question = { label: string; placeholder: string };
+import type { OneQuestion } from "../../lib/oneQuestionApi";
 
 export default function OqrcCompletedView({
   questions,
   answers,
 }: {
-  questions: Question[];
+  questions: OneQuestion[];
   answers: string[];
 }) {
   return (
@@ -25,9 +24,9 @@ export default function OqrcCompletedView({
       </Link>
       {questions.map((q, i) => (
         <OqrcAnswerItem
-          key={i}
+          key={q.id}
           num={i + 1}
-          label={q.label}
+          label={q.content}
           answer={answers[i]}
         />
       ))}
