@@ -30,7 +30,7 @@ export default function OqrcCompletedView({
         <a
           href={`mailto:hello@goodluckislandcollective.com?subject=My 1QRC Reflections&body=${encodeURIComponent(
             questions
-              .map((q, i) => `Q${i + 1}: ${q.label}\nA: ${answers[i] ?? ""}`)
+              .map((q, i) => `Q${i + 1}: ${q.content}\nA: ${answers[i] ?? ""}`)
               .join("\n\n"),
           )}`}
           className="oqrc-completed-share"
