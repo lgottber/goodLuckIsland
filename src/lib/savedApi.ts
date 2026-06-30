@@ -16,10 +16,12 @@ export async function toggleSave(
     .maybeSingle();
 
   if (data) {
-    await supabase.from("saved_items").delete().eq("id", data.id);
+    const { error } = await supabase.from("saved_items").delete().eq("id", data.id);
+    if (error) throw error;
     return false;
   }
-  await supabase.from("saved_items").insert({ user_id: userId, item_type: itemType, item_id: itemId });
+  const { error } = await supabase.from("saved_items").insert({ user_id: userId, item_type: itemType, item_id: itemId });
+  if (error) throw error;
   return true;
 }
 
