@@ -18,3 +18,21 @@ export async function fetchBackpackSections() {
 }
 
 export type BackpackSection = Awaited<ReturnType<typeof fetchBackpackSections>>[number];
+
+export async function fetchBackpackSectionBySlug(slug: string): Promise<BackpackSection | null> {
+  const { data } = await supabase
+    .from("backpack_sections")
+    .select("*")
+    .eq("slug", slug)
+    .single();
+  if (!data) return null;
+  return {
+    id: data.slug,
+    label: data.label,
+    emoji: data.emoji,
+    color: data.color,
+    tagline: data.tagline,
+    description: data.description,
+    type: data.type,
+  };
+}

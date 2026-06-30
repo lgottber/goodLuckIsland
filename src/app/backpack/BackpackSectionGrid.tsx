@@ -1,7 +1,12 @@
 import BackpackSectionCard from "./BackpackSectionCard";
 import type { BackpackSection } from "../../lib/backpackApi";
 
-export default function BackpackSectionGrid({ sections, onSectionSelect }: { sections: BackpackSection[]; onSectionSelect: (id: string) => void }) {
+interface Props {
+  sections: BackpackSection[];
+  lockedIndices: Set<number>;
+}
+
+export default function BackpackSectionGrid({ sections, lockedIndices }: Props) {
   return (
     <div className="backpack-section-grid">
       {sections.map((section, i) => (
@@ -9,7 +14,7 @@ export default function BackpackSectionGrid({ sections, onSectionSelect }: { sec
           key={section.id}
           section={section}
           index={i}
-          onSelect={onSectionSelect}
+          locked={lockedIndices.has(i)}
         />
       ))}
     </div>

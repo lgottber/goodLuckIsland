@@ -5,6 +5,8 @@ import ShieldPillarNode from "./ShieldPillarNode";
 import PillarItem from "./PillarItem";
 import OneQuestionDrawer from "./OneQuestionDrawer";
 import PinwirlDrawer from "./PinwirlDrawer";
+import type { UserProgress } from "../../lib/sevenStepApi";
+import { SLUG_TO_STEP } from "../../lib/sevenStepApi";
 
 const PILLARS = [
   {
@@ -81,7 +83,7 @@ const PILLARS = [
 
 const ACTIVE_PILLAR_IDS = new Set(["one-question", "pinwirl"]);
 
-export default function SevenShieldPillars() {
+export default function SevenShieldPillars({ progress }: { progress: UserProgress | null }) {
   const [openId, setOpenId] = useState<string | null>(null);
 
   function toggle(id: string) {
@@ -115,16 +117,23 @@ export default function SevenShieldPillars() {
       </div>
 
       <div className="pillar-accordion" role="list">
-        {PILLARS.map((pillar) => (
-          <PillarItem
-            key={pillar.id}
-            pillar={pillar}
-            isOpen={openId === pillar.id}
-            onToggle={toggle}
-            customDrawer={customDrawers[pillar.id]}
-            comingSoon={!ACTIVE_PILLAR_IDS.has(pillar.id)}
-          />
-        ))}
+        {PILLARS.map((pillar) => {
+          const stepKey = SLUG_TO_STEP[pillar.id];
+          const isComplete = stepKey !== undefined && progress !== null
+            ? progress[stepKey]
+            : false;
+          return (
+            <PillarItem
+              key={pillar.id}
+              pillar={pillar}
+              isOpen={openId === pillar.id}
+              isComplete={isComplete}
+              onToggle={toggle}
+              customDrawer={customDrawers[pillar.id]}
+              comingSoon={!ACTIVE_PILLAR_IDS.has(pillar.id)}
+            />
+          );
+        })}
       </div>
     </section>
   );

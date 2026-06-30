@@ -1,36 +1,40 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 import NavBar from "../../components/NavBarDynamic";
 import BackpackContent from "./BackpackContent";
 import { fetchBackpackSections } from "../../lib/backpackApi";
 import type { BackpackSection } from "../../lib/backpackApi";
+import { fetchUserProgress } from "../../lib/sevenStepApi";
+import type { UserProgress } from "../../lib/sevenStepApi";
 import "./backpack.css";
 
 export default function BackpackPage() {
+  const { user } = useAuth0();
+  const userId = user?.sub ?? "";
+
   const [sections, setSections] = useState<BackpackSection[]>([]);
+  const [progress, setProgress] = useState<UserProgress | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
 
   useEffect(() => {
     fetchBackpackSections()
-      .then((data) => {
-        setSections(data);
-        setLoading(false);
-      })
-      .catch(() => {
-        setLoadError(true);
-        setLoading(false);
-      });
+      .then((data) => { setSections(data); setLoading(false); })
+      .catch(() => { setLoadError(true); setLoading(false); });
   }, []);
 
+  useEffect(() => {
+    if (!userId) return;
+    fetchUserProgress(userId).then(setProgress).catch(() => {});
+  }, [userId]);
 
   return (
     <>
       <NavBar activePage="backpack" largeAvatar />
 
       <div className="backpack-page">
-        {/* ── HEADER ── */}
         <div className="backpack-header">
           <p className="backpack-eyebrow">Good Luck Island Collective</p>
           <h1>My Backpack</h1>
@@ -48,7 +52,9 @@ export default function BackpackPage() {
           </p>
         )}
 
-        {!loading && !loadError && <BackpackContent sections={sections} />}
+        {!loading && !loadError && (
+          <BackpackContent sections={sections} progress={progress} />
+        )}
       </div>
     </>
   );

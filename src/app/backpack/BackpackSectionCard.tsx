@@ -1,15 +1,32 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import BackpackComingSoonBadge from "./BackpackComingSoonBadge";
 import BackpackCardCta from "./BackpackCardCta";
+import BackpackCardLocked from "./BackpackCardLocked";
 import type { BackpackSection } from "../../lib/backpackApi";
 
-export default function BackpackSectionCard({ section, index, onSelect }: { section: BackpackSection; index: number; onSelect: (id: string) => void }) {
+interface Props {
+  section: BackpackSection;
+  index: number;
+  locked?: boolean;
+}
+
+export default function BackpackSectionCard({ section, index, locked = false }: Props) {
+  const router = useRouter();
+  const isComingSoon = section.type === "coming-soon";
+  const isDisabled = isComingSoon || locked;
+
+  function handleClick() {
+    if (!isDisabled) router.push(`/steps/${section.id}`);
+  }
+
   return (
     <button
       type="button"
-      className={`backpack-section-card ${
-        section.type === "coming-soon" ? "coming-soon" : ""
-      }`}
-      onClick={() => section.type !== "coming-soon" && onSelect(section.id)}
+      className={`backpack-section-card${isComingSoon ? " coming-soon" : ""}${locked ? " backpack-section-card--locked" : ""}`}
+      onClick={handleClick}
+      disabled={isDisabled}
       ref={(el) => {
         if (el) el.style.setProperty("--section-color", section.color);
       }}
@@ -26,8 +43,10 @@ export default function BackpackSectionCard({ section, index, onSelect }: { sect
         </div>
       </div>
       <div className="backpack-card-footer">
-        {section.type === "coming-soon" ? (
+        {isComingSoon ? (
           <BackpackComingSoonBadge />
+        ) : locked ? (
+          <BackpackCardLocked />
         ) : (
           <BackpackCardCta />
         )}

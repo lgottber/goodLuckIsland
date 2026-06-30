@@ -1,0 +1,63 @@
+.step-celebration {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.step-celebration-burst {
+  position: relative;
+  width: 160px;
+  height: 160px;
+}
+
+.step-celebration-particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  animation: celebrationBurst 0.9s ease-out both;
+}
+
+.step-celebration-particle--0  { background: #e8673a; animation-delay: 0ms;   transform-origin: 0 80px;  transform: rotate(0deg); }
+.step-celebration-particle--1  { background: #2e8b7a; animation-delay: 40ms;  transform-origin: 0 80px;  transform: rotate(30deg); }
+.step-celebration-particle--2  { background: #1e2d5a; animation-delay: 80ms;  transform-origin: 0 80px;  transform: rotate(60deg); }
+.step-celebration-particle--3  { background: #7a5a9a; animation-delay: 0ms;   transform-origin: 0 80px;  transform: rotate(90deg); }
+.step-celebration-particle--4  { background: #c87840; animation-delay: 40ms;  transform-origin: 0 80px;  transform: rotate(120deg); }
+.step-celebration-particle--5  { background: #5a8a6a; animation-delay: 80ms;  transform-origin: 0 80px;  transform: rotate(150deg); }
+.step-celebration-particle--6  { background: #e8673a; animation-delay: 20ms;  transform-origin: 0 60px;  transform: rotate(180deg); }
+.step-celebration-particle--7  { background: #2e8b7a; animation-delay: 60ms;  transform-origin: 0 60px;  transform: rotate(210deg); }
+.step-celebration-particle--8  { background: #1e2d5a; animation-delay: 100ms; transform-origin: 0 60px;  transform: rotate(240deg); }
+.step-celebration-particle--9  { background: #7a5a9a; animation-delay: 20ms;  transform-origin: 0 60px;  transform: rotate(270deg); }
+.step-celebration-particle--10 { background: #c87840; animation-delay: 60ms;  transform-origin: 0 60px;  transform: rotate(300deg); }
+.step-celebration-particle--11 { background: #5a8a6a; animation-delay: 100ms; transform-origin: 0 60px;  transform: rotate(330deg); }
+
+@keyframes celebrationBurst {
+  0%   { opacity: 1; transform: rotate(var(--r, 0deg)) translateY(0) scale(1); }
+  70%  { opacity: 1; }
+  100% { opacity: 0; transform: rotate(var(--r, 0deg)) translateY(-120px) scale(0.4); }
+}
+
+.step-celebration-message {
+  margin-top: 1rem;
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--navy);
+  animation: celebrationFadeIn 0.4s ease-out 0.3s both;
+  background: white;
+  padding: 12px 28px;
+  border-radius: 50px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes celebrationFadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1); }
+}
