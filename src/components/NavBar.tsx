@@ -13,6 +13,7 @@ import MobileUserSection from "./MobileUserSection";
 import MobileGuestAuth from "./MobileGuestAuth";
 import { useClickOutside } from "../hooks/useClickOutside";
 import { fetchProfile } from "../lib/profileApi";
+import NotificationBell from "./NotificationBell";
 import "./NavBar.css";
 
 export default function NavBar({
@@ -80,15 +81,18 @@ export default function NavBar({
     : (user?.email?.[0]?.toUpperCase() ?? "?");
 
   const avatarAuthSection = user ? (
-    <UserMenu
-      user={user}
-      initials={initials}
-      avatarId={avatarId}
-      largeAvatar={largeAvatar}
-      dropdownOpen={dropdownOpen}
-      setDropdownOpen={setDropdownOpen}
-      dropdownRef={dropdownRef}
-    />
+    <div className="nav-auth-user">
+      {user.sub && <NotificationBell userId={user.sub} />}
+      <UserMenu
+        user={user}
+        initials={initials}
+        avatarId={avatarId}
+        largeAvatar={largeAvatar}
+        dropdownOpen={dropdownOpen}
+        setDropdownOpen={setDropdownOpen}
+        dropdownRef={dropdownRef}
+      />
+    </div>
   ) : (
     <GuestAuthButtons />
   );

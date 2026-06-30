@@ -1,3 +1,10 @@
+/* ── Nav auth area (bell + avatar) ── */
+.nav-auth-user {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
 /* ── User avatar dropdown ── */
 .nav-user-menu {
   position: relative;
