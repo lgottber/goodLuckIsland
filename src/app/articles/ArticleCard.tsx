@@ -1,7 +1,14 @@
 import PictureImage from "../../components/PictureImage";
+import BookmarkButton from "./BookmarkButton";
 import type { Article } from "../../lib/articlesApi";
 
-export default function ArticleCard({ article }: { article: Article }) {
+interface Props {
+  article: Article;
+  userId: string;
+  isSaved: boolean;
+}
+
+export default function ArticleCard({ article, userId, isSaved }: Props) {
   return (
     <div className="article-card">
       <div className="article-card-img">
@@ -11,6 +18,14 @@ export default function ArticleCard({ article }: { article: Article }) {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         <span className="article-card-tag">{article.category}</span>
+        {userId && (
+          <BookmarkButton
+            userId={userId}
+            itemType="article"
+            itemId={article.id}
+            initialSaved={isSaved}
+          />
+        )}
       </div>
       <div className="article-card-body">
         <div className="article-card-meta">

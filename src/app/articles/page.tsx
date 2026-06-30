@@ -1,14 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 import { fetchArticles, fetchEpisodes } from "../../lib/articlesApi";
 import type { Article, Episode } from "../../lib/articlesApi";
+import { fetchSavedIds } from "../../lib/savedApi";
 import NavBar from "../../components/NavBarDynamic";
+import SearchBar from "./SearchBar";
 import VideoModal from "./VideoModal";
 import ArticlesContent from "./ArticlesContent";
 import "./articles.css";
 
 export default function ArticlesPage() {
+  const { user } = useAuth0();
+  const userId = user?.sub ?? "";
+
   const [activeTab, setActiveTab] = useState("articles");
   const [activeCategory, setActiveCategory] = useState("All");
   const [featuredPlaying, setFeaturedPlaying] = useState(false);
@@ -17,6 +23,11 @@ export default function ArticlesPage() {
   const [allArticles, setAllArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
+  const [sort, setSort] = useState<"newest" | "a-z">("newest");
+  const [view, setView] = useState<"grid" | "list">("grid");
+  const [durationFilter, setDurationFilter] = useState("all");
+  const [savedArticleIds, setSavedArticleIds] = useState(new Set<number>());
+  const [savedEpisodeIds, setSavedEpisodeIds] = useState(new Set<number>());
 
   useEffect(() => {
     async function loadData() {
@@ -35,6 +46,23 @@ export default function ArticlesPage() {
     }
     loadData();
   }, []);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("articles-view");
+    if (stored === "list" || stored === "grid") setView(stored);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("articles-view", view);
+  }, [view]);
+
+  useEffect(() => {
+    if (!userId) return;
+    fetchSavedIds(userId).then(({ articles, episodes: eps }) => {
+      setSavedArticleIds(articles);
+      setSavedEpisodeIds(eps);
+    }).catch(() => {});
+  }, [userId]);
 
   let featured: Article | null = null;
   const filtered: Article[] = [];
@@ -56,7 +84,6 @@ export default function ArticlesPage() {
       <NavBar activePage="articles" largeAvatar />
 
       <div className="articles-page">
-        {/* ── HEADER ── */}
         <div className="articles-header">
           <span className="articles-header-eyebrow">Member Content</span>
           <h1>Podcasts &amp; Articles</h1>
@@ -65,6 +92,7 @@ export default function ArticlesPage() {
             preparing for retirement — focused on whole-life wellness, clear
             thinking, and intentional choices.
           </p>
+          <SearchBar />
         </div>
 
         {loading && <p className="articles-loading">Loading content…</p>}
@@ -88,11 +116,19 @@ export default function ArticlesPage() {
             featuredPlaying={featuredPlaying}
             setFeaturedPlaying={setFeaturedPlaying}
             setModalEpisode={setModalEpisode}
+            sort={sort}
+            setSort={setSort}
+            view={view}
+            setView={setView}
+            durationFilter={durationFilter}
+            setDurationFilter={setDurationFilter}
+            userId={userId}
+            savedArticleIds={savedArticleIds}
+            savedEpisodeIds={savedEpisodeIds}
           />
         )}
       </div>
 
-      {/* ── VIDEO MODAL ── */}
       {modalEpisode && (
         <VideoModal
           episode={modalEpisode}

@@ -58,6 +58,30 @@ export type Database = {
         };
         Relationships: [];
       };
+      saved_items: {
+        Row: {
+          id: string;
+          user_id: string;
+          item_type: string;
+          item_id: number;
+          created_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          item_type: string;
+          item_id: number;
+          created_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          item_type?: string;
+          item_id?: number;
+          created_at?: string | null;
+        };
+        Relationships: [];
+      };
       articles: {
         Row: {
           category: string;

@@ -16,6 +16,15 @@ export type ArticlesContentProps = {
   featuredPlaying: boolean;
   setFeaturedPlaying: (v: boolean) => void;
   setModalEpisode: (ep: Episode | null) => void;
+  sort: "newest" | "a-z";
+  setSort: (s: "newest" | "a-z") => void;
+  view: "grid" | "list";
+  setView: (v: "grid" | "list") => void;
+  durationFilter: string;
+  setDurationFilter: (v: string) => void;
+  userId: string;
+  savedArticleIds: Set<number>;
+  savedEpisodeIds: Set<number>;
 };
 
 export default function ArticlesContent({
@@ -30,6 +39,15 @@ export default function ArticlesContent({
   featuredPlaying,
   setFeaturedPlaying,
   setModalEpisode,
+  sort,
+  setSort,
+  view,
+  setView,
+  durationFilter,
+  setDurationFilter,
+  userId,
+  savedArticleIds,
+  savedEpisodeIds,
 }: ArticlesContentProps) {
   return (
     <>
@@ -49,6 +67,12 @@ export default function ArticlesContent({
           setActiveCategory={setActiveCategory}
           featured={featured}
           filtered={filtered}
+          sort={sort}
+          setSort={setSort}
+          view={view}
+          setView={setView}
+          userId={userId}
+          savedArticleIds={savedArticleIds}
         />
       )}
       {activeTab === "podcast" && podcastFeatured && (
@@ -58,6 +82,10 @@ export default function ArticlesContent({
           featuredPlaying={featuredPlaying}
           setFeaturedPlaying={setFeaturedPlaying}
           setModalEpisode={setModalEpisode}
+          durationFilter={durationFilter}
+          setDurationFilter={setDurationFilter}
+          userId={userId}
+          savedEpisodeIds={savedEpisodeIds}
         />
       )}
     </>

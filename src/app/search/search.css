@@ -1,0 +1,93 @@
+body {
+  font-family: var(--sans);
+  background: var(--cream);
+  color: var(--navy);
+  margin: 0;
+}
+
+.search-page {
+  min-height: 100vh;
+  background: var(--cream);
+  padding-top: var(--nav-height);
+}
+
+.search-header {
+  background: var(--navy);
+  color: #fff;
+  padding: 3rem 2rem 2.5rem;
+  text-align: center;
+  border-radius: var(--page-header-radius);
+  margin-bottom: 2.5rem;
+}
+
+.search-back-link {
+  display: inline-block;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  margin-bottom: 1rem;
+}
+
+.search-back-link:hover {
+  color: #fff;
+}
+
+.search-heading {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700;
+  margin: 0 0 1.5rem;
+}
+
+.search-count {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 1rem 0 0;
+}
+
+.search-loading,
+.search-prompt,
+.search-empty {
+  text-align: center;
+  color: var(--navy);
+  opacity: 0.5;
+  padding: 4rem 2rem;
+}
+
+.search-results {
+  max-width: 68.75rem;
+  margin: 0 auto;
+  padding: 0 2rem 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.search-section-title {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid rgba(30, 45, 90, 0.1);
+}
+
+.search-article-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1.5rem;
+}
+
+.search-episode-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1.25rem;
+}
+
+.search-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
