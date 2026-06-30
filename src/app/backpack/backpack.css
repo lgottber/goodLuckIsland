@@ -110,11 +110,109 @@ body {
   white-space: nowrap;
 }
 
+/* ── Dashboard tabs ── */
+.backpack-tabs {
+  display: flex;
+  gap: 0.25rem;
+  max-width: 68.75rem;
+  margin: 0 auto;
+  padding: 0 2rem;
+  border-bottom: 2px solid rgba(30, 45, 90, 0.1);
+}
+
+.backpack-tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--navy);
+  opacity: 0.5;
+  cursor: pointer;
+  transition: opacity 0.15s, border-color 0.15s;
+}
+
+.backpack-tab:hover {
+  opacity: 0.8;
+}
+
+.backpack-tab.active {
+  opacity: 1;
+  border-bottom-color: var(--teal);
+  color: var(--teal);
+}
+
 /* ── Content ── */
 .backpack-content {
   max-width: 68.75rem;
   margin: 0 auto;
   padding: 2rem 2rem 6rem;
+}
+
+/* ── Assessments tab ── */
+.backpack-assessments {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.backpack-assess-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(30, 45, 90, 0.07);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.backpack-assess-eyebrow {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin: 0;
+}
+
+.backpack-assess-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0;
+}
+
+.backpack-assess-status {
+  font-size: 0.8rem;
+  color: var(--navy);
+  opacity: 0.5;
+  margin: 0;
+}
+
+.backpack-assess-status--done {
+  color: var(--teal);
+  opacity: 1;
+}
+
+.backpack-assess-link {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--teal);
+  text-decoration: none;
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.backpack-assess-link:hover {
+  text-decoration: underline;
+}
+
+/* ── Saved tab ── */
+.backpack-saved-tab {
+  margin-top: 1rem;
 }
 
 /* ── Section grid ── */
