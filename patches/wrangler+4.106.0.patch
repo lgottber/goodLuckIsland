@@ -1,13 +1,13 @@
 diff --git a/node_modules/wrangler/wrangler-dist/cli.js b/node_modules/wrangler/wrangler-dist/cli.js
-index 8da7c4f..1423bc0 100644
+index 7dd3ec0..23e7260 100644
 --- a/node_modules/wrangler/wrangler-dist/cli.js
 +++ b/node_modules/wrangler/wrangler-dist/cli.js
-@@ -182135,7 +182135,7 @@ async function captureGlobalException(e10) {
+@@ -230498,7 +230498,7 @@ async function captureGlobalException(e9) {
  }
  async function closeSentry() {
    {
--    await close();
-+    // await close();
+-    await close2();
++    // await close2();
    }
  }
- var import_undici11, sentryReportingAllowed, makeSentry10Transport, disabledDefaultIntegrations;
+ var import_undici14, sentryReportingAllowed, makeSentry10Transport, disabledDefaultIntegrations;

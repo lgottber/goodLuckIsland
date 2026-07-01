@@ -10,14 +10,14 @@ const TAG_COLORS: Record<string, string> = {
   "Financial Independence": "teal",
 };
 
-type SavedItemData = { id: number; image: string; type: string; tag: string; date: string; readTime: string; title: string; excerpt: string };
+export type SavedItemData = { id: string; image: string | null; type: string; tag: string; date: string; readTime: string; title: string; excerpt: string };
 
 export default function SavedItem({ item }: { item: SavedItemData }) {
   return (
     <div className="saved-item">
       <div className="saved-item-img">
         <PictureImage
-          name={item.image}
+          name={item.image ?? undefined}
           alt={`Cover image for saved ${item.type}: ${item.title}`}
           sizes="(max-width: 768px) 100vw, 25vw"
         />

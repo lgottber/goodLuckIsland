@@ -1,0 +1,124 @@
+body {
+  background: var(--cream);
+}
+
+.privacy-page {
+  padding-top: var(--nav-height);
+  padding-bottom: 6rem;
+}
+
+.privacy-header {
+  text-align: center;
+  padding: 4rem 2rem 3rem;
+  max-width: 52rem;
+  margin: 0 auto;
+}
+
+.privacy-eyebrow {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 1rem;
+}
+
+.privacy-header h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+}
+
+.privacy-updated {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* ── BODY ── */
+.privacy-body {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.privacy-section h2 {
+  font-family: var(--sans);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 0.75rem;
+}
+
+.privacy-section h3 {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin: 1rem 0 0.5rem;
+}
+
+.privacy-section p {
+  font-size: 0.975rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin: 0 0 0.75rem;
+}
+
+.privacy-section p:last-child {
+  margin-bottom: 0;
+}
+
+.privacy-section ul {
+  margin: 0.5rem 0 0.75rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.privacy-section li {
+  font-size: 0.975rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.privacy-section a {
+  color: var(--teal);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.privacy-section a:hover {
+  text-decoration: underline;
+}
+
+/* ── FOOTER LINKS ── */
+.privacy-footer-links {
+  display: flex;
+  gap: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--cream-dk);
+  flex-wrap: wrap;
+}
+
+.privacy-footer-links a {
+  font-size: 0.875rem;
+  color: var(--teal);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.privacy-footer-links a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 40rem) {
+  .privacy-body {
+    padding: 0 1.25rem;
+  }
+}

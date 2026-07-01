@@ -11,17 +11,33 @@ export default function OqrcCompletedView({
   questions: OneQuestion[];
   answers: string[];
 }) {
+  const answered = answers.filter((a) => a && a.trim() !== "").length;
+
   return (
     <div className="oqrc-completed">
-      <div className="oqrc-completed-badge" aria-hidden="true">
-        ✓
-      </div>
+      <div className="oqrc-completed-badge" aria-hidden="true">✓</div>
+      <h2 className="oqrc-completed-heading">
+        You answered {answered} of {questions.length} questions
+      </h2>
       <p className="oqrc-completed-note">
-        Challenge complete. Your answers are saved below.
+        These reflections are saved to your backpack. Return to them anytime —
+        honest answers today make for better decisions tomorrow.
       </p>
-      <Link href="/backpack" className="oqrc-back-link">
-        ← Back to My Backpack
-      </Link>
+      <div className="oqrc-completed-actions">
+        <Link href="/backpack" className="oqrc-completed-cta">
+          Continue to My Backpack
+        </Link>
+        <a
+          href={`mailto:hello@goodluckislandcollective.com?subject=My 1QRC Reflections&body=${encodeURIComponent(
+            questions
+              .map((q, i) => `Q${i + 1}: ${q.content}\nA: ${answers[i] ?? ""}`)
+              .join("\n\n"),
+          )}`}
+          className="oqrc-completed-share"
+        >
+          Share with a Coach
+        </a>
+      </div>
       {questions.map((q, i) => (
         <OqrcAnswerItem
           key={q.id}

@@ -5,27 +5,23 @@ import BasicInfoTab from "./BasicInfoTab";
 import LifeCareerTab from "./LifeCareerTab";
 import RetirementTab from "./RetirementTab";
 import FinancesTab from "./FinancesTab";
-import ModalNextButton from "./ModalNextButton";
-import ModalSaveButton from "./ModalSaveButton";
+import ModalActionButton from "./ModalActionButton";
+import type { ProfileForm, SetField } from "./types";
 
 const MODAL_TABS = ["Basic Info", "Life & Career", "Retirement", "Finances"];
-
-type ProfileForm = {
-  firstName: string; lastName: string; username: string; age: string; email: string;
-  location: string; address: string; bio: string; interests: string[];
-  occupation: string; yearsInOccupation: string; education: string;
-  maritalStatus: string; divorced: string; kids: string; homePaidOff: string;
-  workingIncome: string; netWorth: string; retired: string; retirementDate: string;
-  avatarUrl: string; avatarId: string; mantra: string; memberSince: string;
-  stats: { articlesRead: number; podcastsListened: number; savedItems: number; daysActive: number };
-};
 
 export default function EditModal({ user, onSave, onClose }: { user: ProfileForm; onSave: (form: ProfileForm) => void | Promise<void>; onClose: () => void }) {
   const [form, setForm] = useState<ProfileForm>({ ...user });
   const [activeTab, setActiveTab] = useState("Basic Info");
   const [interestInput, setInterestInput] = useState("");
 
-  const set = (key: string, val: unknown) => setForm((f) => ({ ...f, [key]: val }));
+  const set: SetField = <K extends keyof ProfileForm>(key: K, val: ProfileForm[K]) => {
+    setForm((prev) => {
+      const next: ProfileForm = { ...prev };
+      next[key] = val;
+      return next;
+    });
+  };
 
   const addInterest = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && interestInput.trim()) {
@@ -106,11 +102,12 @@ export default function EditModal({ user, onSave, onClose }: { user: ProfileForm
             Cancel
           </button>
           {tabIdx < MODAL_TABS.length - 1 ? (
-            <ModalNextButton
-              onNext={() => setActiveTab(MODAL_TABS[tabIdx + 1])}
+            <ModalActionButton
+              label="Next →"
+              onClick={() => setActiveTab(MODAL_TABS[tabIdx + 1])}
             />
           ) : (
-            <ModalSaveButton onSave={() => onSave(form)} />
+            <ModalActionButton label="Save Changes" onClick={() => onSave(form)} />
           )}
         </div>
       </div>

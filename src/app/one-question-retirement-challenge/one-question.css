@@ -425,12 +425,60 @@
   margin: 0 auto 1rem;
 }
 
+.oqrc-completed-heading {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--navy);
+  text-align: center;
+  margin: 0 0 0.75rem;
+}
+
 .oqrc-completed-note {
   font-family: var(--sans);
   font-size: 0.95rem;
   color: var(--muted);
   text-align: center;
-  margin: 0 0 1.25rem;
+  line-height: 1.7;
+  margin: 0 0 1.5rem;
+}
+
+.oqrc-completed-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.oqrc-completed-cta {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  background: var(--navy);
+  color: var(--cream);
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.15s;
+}
+
+.oqrc-completed-cta:hover {
+  background: var(--teal);
+}
+
+.oqrc-completed-share {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--teal);
+  text-decoration: none;
+}
+
+.oqrc-completed-share:hover {
+  text-decoration: underline;
 }
 
 .oqrc-back-link {

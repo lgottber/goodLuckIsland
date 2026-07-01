@@ -9,7 +9,7 @@ export type IconName =
   | "brain" | "map" | "users" | "flag" | "palette" | "leaf"
   | "activity" | "trending-up" | "hourglass" | "heart"
   | "zap" | "wrench" | "sparkle" | "hands" | "user" | "backpack"
-  | "logout" | "rotate";
+  | "logout" | "rotate" | "plus" | "minus" | "bell";
 
 export default function Icon({ name, size = 16 }: { name: IconName; size?: number }) {
   const icons: Record<IconName, ReactElement> = {
@@ -296,6 +296,21 @@ export default function Icon({ name, size = 16 }: { name: IconName; size?: numbe
       <>
         <polyline points="23 4 23 10 17 10" />
         <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+      </>
+    ),
+    plus: (
+      <>
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <line x1="5" y1="12" x2="19" y2="12" />
+      </>
+    ),
+    minus: (
+      <line x1="5" y1="12" x2="19" y2="12" />
+    ),
+    bell: (
+      <>
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
       </>
     ),
   };

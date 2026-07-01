@@ -1,5 +1,3 @@
-"use client";
-
 import { type ReactNode } from "react";
 import Icon from "../../components/Icon";
 import type { IconName } from "../../components/Icon";
@@ -17,12 +15,14 @@ type Pillar = {
 export default function PillarItem({
   pillar,
   isOpen,
+  isComplete,
   onToggle,
   customDrawer,
   comingSoon,
 }: {
   pillar: Pillar;
   isOpen: boolean;
+  isComplete?: boolean;
   onToggle: (id: string) => void;
   customDrawer?: ReactNode;
   comingSoon?: boolean;
@@ -65,7 +65,8 @@ export default function PillarItem({
         <input
           type="checkbox"
           className="pillar-checkbox"
-          disabled
+          checked={isComplete ?? false}
+          readOnly
           aria-label={`${pillar.title} completed`}
         />
       </div>

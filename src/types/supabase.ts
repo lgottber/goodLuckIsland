@@ -58,6 +58,60 @@ export type Database = {
         };
         Relationships: [];
       };
+      notifications: {
+        Row: {
+          id: string;
+          user_id: string;
+          type: string;
+          title: string;
+          body: string;
+          read: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          type: string;
+          title: string;
+          body: string;
+          read?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          type?: string;
+          title?: string;
+          body?: string;
+          read?: boolean;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      saved_items: {
+        Row: {
+          id: string;
+          user_id: string;
+          item_type: string;
+          item_id: number;
+          created_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          item_type: string;
+          item_id: number;
+          created_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          item_type?: string;
+          item_id?: number;
+          created_at?: string | null;
+        };
+        Relationships: [];
+      };
       articles: {
         Row: {
           category: string;
@@ -281,6 +335,57 @@ export type Database = {
           },
         ];
       };
+      pinwirl_recommendations: {
+        Row: {
+          id: string;
+          dimension: string;
+          band: string;
+          body: string;
+          sort_order: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          dimension: string;
+          band: string;
+          body: string;
+          sort_order?: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          dimension?: string;
+          band?: string;
+          body?: string;
+          sort_order?: number;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      pinwirl_results: {
+        Row: {
+          id: string;
+          user_id: string;
+          taken_at: string;
+          scores: Json;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          taken_at?: string;
+          scores: Json;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          taken_at?: string;
+          scores?: Json;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
       one_questions: {
         Row: {
           content: string;
@@ -354,6 +459,111 @@ export type Database = {
             referencedColumns: ["id"];
           },
         ];
+      };
+      journal_entries: {
+        Row: {
+          id: string;
+          user_id: string;
+          step_slug: string;
+          body: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          step_slug: string;
+          body?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          step_slug?: string;
+          body?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      past_person_answers: {
+        Row: {
+          id: string;
+          user_id: string;
+          question_key: string;
+          answer: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          question_key: string;
+          answer?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          question_key?: string;
+          answer?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      past_person_questions: {
+        Row: {
+          id: string;
+          key: string;
+          text: string;
+          placeholder: string;
+          sort_order: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          key: string;
+          text: string;
+          placeholder?: string;
+          sort_order?: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          key?: string;
+          text?: string;
+          placeholder?: string;
+          sort_order?: number;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      reflections: {
+        Row: {
+          id: string;
+          step_slug: string;
+          body: string;
+          sort_order: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          step_slug: string;
+          body: string;
+          sort_order?: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          step_slug?: string;
+          body?: string;
+          sort_order?: number;
+          created_at?: string;
+        };
+        Relationships: [];
       };
       users_seven_step_process: {
         Row: {
@@ -451,6 +661,7 @@ export type Database = {
           mantra: string | null;
           marital_status: string | null;
           net_worth: string | null;
+          notifications_email: boolean;
           occupation: string | null;
           retired: string | null;
           retirement_date: string | null;
@@ -479,6 +690,7 @@ export type Database = {
           mantra?: string | null;
           marital_status?: string | null;
           net_worth?: string | null;
+          notifications_email?: boolean;
           occupation?: string | null;
           retired?: string | null;
           retirement_date?: string | null;
@@ -507,6 +719,7 @@ export type Database = {
           mantra?: string | null;
           marital_status?: string | null;
           net_worth?: string | null;
+          notifications_email?: boolean;
           occupation?: string | null;
           retired?: string | null;
           retirement_date?: string | null;

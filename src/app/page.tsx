@@ -258,9 +258,10 @@ export default function HomePage() {
           </div>
           <nav className="footer-nav-row" aria-label="Footer navigation">
             <Link href="/about">About</Link>
-            <a href="#">Resources</a>
-            <a href="#">Contact</a>
-            <a href="#">Privacy</a>
+            <Link href="/faq">FAQ</Link>
+            <Link href="/contact">Contact</Link>
+            <Link href="/privacy-policy">Privacy</Link>
+            <Link href="/terms">Terms</Link>
           </nav>
           <div className="social-row">
             <a href="#" className="social-link" aria-label="YouTube">

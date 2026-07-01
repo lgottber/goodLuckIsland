@@ -1,6 +1,8 @@
 import { supabase } from "./supabase";
 import type { Tables } from "../types/supabase";
 import type { SurveyQuestion } from "../app/pinwirl/questions";
+import { computeScores } from "./pinwirlScoring";
+import type { DimensionScores } from "./pinwirlScoring";
 
 export type PinwirlQuestionRow = Tables<"pinwirl_questions"> & { options: string[] };
 
@@ -22,7 +24,7 @@ export async function submitPinwirlAnswers(
   userId: string,
   answers: Record<string, string | number>,
   questions: PinwirlQuestionRow[],
-): Promise<void> {
+): Promise<DimensionScores> {
   const uuidByExternalId = new Map(questions.map((q) => [q.external_id, q.id]));
 
   const rows = Object.entries(answers)
@@ -39,6 +41,15 @@ export async function submitPinwirlAnswers(
 
   const { error } = await supabase.from("pinwirl_answers").insert(rows);
   if (error) throw error;
+
+  const scores = computeScores(answers, questions);
+
+  const { error: resultsError } = await supabase
+    .from("pinwirl_results")
+    .insert({ user_id: userId, scores });
+  if (resultsError) throw resultsError;
+
+  return scores;
 }
 
 export async function fetchPinwirlQuestions(): Promise<PinwirlQuestionRow[]> {

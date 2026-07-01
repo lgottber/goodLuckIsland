@@ -1,0 +1,105 @@
+.session-guard-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(18, 26, 50, 0.72);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: sgFadeIn 0.2s ease;
+}
+
+.session-guard-modal {
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 420px;
+  padding: 2.25rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.session-guard-eyebrow {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin: 0;
+}
+
+.session-guard-modal h2 {
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.2;
+  margin: 0;
+}
+
+.session-guard-body {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.session-guard-body strong {
+  color: var(--coral);
+  font-weight: 700;
+}
+
+.session-guard-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.session-guard-btn-primary {
+  flex: 1;
+  padding: 0.8rem 1.25rem;
+  background: var(--navy);
+  color: var(--cream);
+  border: none;
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.session-guard-btn-primary:hover {
+  background: var(--teal);
+}
+
+.session-guard-btn-ghost {
+  flex: 1;
+  padding: 0.8rem 1.25rem;
+  background: transparent;
+  color: var(--muted);
+  border: 1.5px solid var(--cream-dk);
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.session-guard-btn-ghost:hover {
+  border-color: var(--muted);
+  color: var(--navy);
+}
+
+@keyframes sgFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

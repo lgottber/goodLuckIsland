@@ -1,9 +1,16 @@
 import { PlayIcon } from "../../components/Icons";
 import PictureImage from "../../components/PictureImage";
+import BookmarkButton from "./BookmarkButton";
+import type { Episode } from "../../lib/articlesApi";
 
-type Episode = { id: number; num: string; title: string; desc: string | null; date: string | null; duration: string | null; youtubeId: string | null; thumbnail: string | null };
+interface Props {
+  ep: Episode;
+  onPlay: () => void;
+  userId: string;
+  isSaved: boolean;
+}
 
-export default function EpisodeCard({ ep, onPlay }: { ep: Episode; onPlay: () => void }) {
+export default function EpisodeCard({ ep, onPlay, userId, isSaved }: Props) {
   return (
     <div className="episode-card" onClick={onPlay}>
       <div className="episode-thumb">
@@ -18,6 +25,14 @@ export default function EpisodeCard({ ep, onPlay }: { ep: Episode; onPlay: () =>
           </button>
         </div>
         <span className="episode-duration-badge">{ep.duration}</span>
+        {userId && (
+          <BookmarkButton
+            userId={userId}
+            itemType="episode"
+            itemId={ep.id}
+            initialSaved={isSaved}
+          />
+        )}
       </div>
       <div className="episode-body">
         <div className="episode-body-meta">

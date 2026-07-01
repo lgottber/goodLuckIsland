@@ -1,8 +1,14 @@
 import ArticleCard from "./ArticleCard";
+import type { Article } from "../../lib/articlesApi";
 
-type Article = { id: number; category: string; title: string; excerpt: string | null; date: string | null; readTime: string | null; image: string | null; featured?: boolean };
+interface Props {
+  articles: Article[];
+  userId: string;
+  savedArticleIds: Set<number>;
+  view: "grid" | "list";
+}
 
-export default function ArticleGrid({ articles }: { articles: Article[] }) {
+export default function ArticleGrid({ articles, userId, savedArticleIds, view }: Props) {
   if (articles.length === 0) {
     return (
       <p className="articles-grid-empty">
@@ -11,9 +17,14 @@ export default function ArticleGrid({ articles }: { articles: Article[] }) {
     );
   }
   return (
-    <div className="articles-grid">
+    <div className={`articles-grid${view === "list" ? " articles-grid--list" : ""}`}>
       {articles.map((article) => (
-        <ArticleCard key={article.id} article={article} />
+        <ArticleCard
+          key={article.id}
+          article={article}
+          userId={userId}
+          isSaved={savedArticleIds.has(article.id)}
+        />
       ))}
     </div>
   );

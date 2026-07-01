@@ -58,6 +58,23 @@ export async function exportProfileData(
   return data;
 }
 
+
+export async function updateNotificationPrefs(
+  userId: string,
+  emailEnabled: boolean,
+): Promise<void> {
+  const { error } = await supabase
+    .from("users")
+    .update({ notifications_email: emailEnabled })
+    .eq("id", userId);
+  if (error) throw new Error(error.message);
+}
+
+// Stub — implementation deferred until the deletion endpoint is ready.
+export async function deleteAccountFromSupabase(): Promise<void> {
+  throw new Error("Account deletion is not yet available. Please contact hello@goodluckislandcollective.com to request account deletion.");
+}
+
 export async function upsertProfile(userId: string, updated: ProfileUpdate) {
   const { error } = await supabase.from("users").upsert({
     id: userId,

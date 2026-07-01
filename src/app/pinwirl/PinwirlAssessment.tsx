@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import QuestionBlock from "./QuestionBlock";
 import { fetchPinwirlQuestions, submitPinwirlAnswers, toSurveyQuestion } from "../../lib/pinwirlApi";
 import type { PinwirlQuestionRow } from "../../lib/pinwirlApi";
+import PinwirlResults from "./PinwirlResults";
+import type { DimensionScores } from "../../lib/pinwirlScoring";
 
 const PAGE_SIZE = 4;
 
@@ -20,6 +22,7 @@ export default function PinwirlAssessment({ userId }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [scores, setScores] = useState<DimensionScores | null>(null);
   const progressRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -65,7 +68,8 @@ export default function PinwirlAssessment({ userId }: Props) {
     setSubmitting(true);
     setSubmitError(null);
     try {
-      await submitPinwirlAnswers(userId, answers, questions);
+      const result = await submitPinwirlAnswers(userId, answers, questions);
+      setScores(result);
       setSubmitted(true);
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
@@ -74,12 +78,19 @@ export default function PinwirlAssessment({ userId }: Props) {
     }
   }
 
-  if (submitted) {
+  if (submitted && scores) {
     return (
-      <div className="pw-assessment pw-assessment--done">
-        <h1>Thank you!</h1>
-        <p>Your assessment has been submitted.</p>
-      </div>
+      <PinwirlResults
+        scores={scores}
+        userId={userId}
+        onRetake={() => {
+          setSubmitted(false);
+          setScores(null);
+          setAnswers({});
+          setPage(0);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
+      />
     );
   }
 

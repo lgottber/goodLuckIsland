@@ -1,7 +1,6 @@
 import PictureImage from "../../components/PictureImage";
 import Icon from "../../components/Icon";
-
-type Article = { id: number; category: string; title: string; excerpt: string | null; date: string | null; readTime: string | null; image: string | null; featured?: boolean };
+import type { Article } from "../../lib/articlesApi";
 
 export default function FeaturedArticle({ featured }: { featured: Article }) {
   return (

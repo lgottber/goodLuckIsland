@@ -1,8 +1,7 @@
 import Link from "next/link";
 import SavedItem from "./SavedItem";
 import Icon from "../../components/Icon";
-
-type SavedItemData = { id: number; image: string; type: string; tag: string; date: string; readTime: string; title: string; excerpt: string };
+import type { SavedItemData } from "./SavedItem";
 
 export default function SavedList({ items }: { items: SavedItemData[] }) {
   if (items.length === 0) {
