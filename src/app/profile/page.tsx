@@ -239,9 +239,9 @@ export default function ProfilePage() {
   }
 
   async function handleSave(updated: typeof INITIAL_USER) {
-    setUser(updated);
     setEditing(false);
     await persistProfile(updated);
+    setUser(updated);
     triggerSaved();
   }
 
