@@ -36,7 +36,7 @@ const INITIAL_USER = {
   avatarUrl: "",
   avatarId: "",
   bio: "",
-  mantra: "enter your mantra here",
+  mantra: "Peace of mind, planned for.",
   memberSince: "",
   interests: new Array<string>(),
   stats: {

@@ -16,10 +16,10 @@ body {
 .backpack-header {
   background: url("/backpack.jpg") center 30% / cover no-repeat;
   color: #fff;
-  padding: 4rem 2rem 5.5rem;
+  padding: 4rem 2rem 3rem;
   text-align: center;
   position: relative;
-  overflow: visible;
+  overflow: hidden;
   border-radius: var(--page-header-radius);
   margin-bottom: 3rem;
 }
@@ -149,6 +149,8 @@ body {
   max-width: 68.75rem;
   margin: 0 auto;
   padding: 2rem 2rem 6rem;
+  position: relative;
+  z-index: 1;
 }
 
 /* ── Assessments tab ── */
@@ -331,19 +333,25 @@ body {
 .backpack-photo-trio {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 200px;
+  grid-template-rows: 300px;
   gap: 1rem;
   margin-bottom: 2.5rem;
   align-items: end;
+  overflow: hidden;
 }
 .backpack-photo-item {
   border-radius: 18px;
   overflow: hidden;
-  height: 11.25rem;
+  height: 280px;
 }
 .backpack-photo-item--tall {
-  height: 13.75rem;
+  height: 300px;
   align-self: center;
+}
+.backpack-photo-item picture {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 .backpack-photo-item img {
   width: 100%;
@@ -705,7 +713,7 @@ body {
   }
   .backpack-photo-item,
   .backpack-photo-item--tall {
-    height: 8.75rem;
+    height: 180px;
   }
   .backpack-progress-strip {
     margin: -1rem 1rem 0;
