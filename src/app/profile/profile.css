@@ -212,6 +212,91 @@ body {
   margin-left: auto;
 }
 
+/* ── Settings dropdown ── */
+.profile-actions-menu {
+  position: relative;
+}
+
+.profile-actions-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  color: var(--navy);
+  border: 1.5px solid rgba(30, 45, 90, 0.3);
+  border-radius: 50px;
+  padding: 0.55rem 1.2rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  font-family: var(--sans);
+  opacity: 0.75;
+  transition: all 0.2s;
+}
+
+.profile-actions-trigger:hover {
+  border-color: var(--navy);
+  opacity: 1;
+}
+
+.profile-actions-trigger-icon {
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.profile-actions-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background: #fff;
+  border: 1.5px solid rgba(30, 45, 90, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(30, 45, 90, 0.12);
+  min-width: 180px;
+  z-index: 100;
+  padding: 0.4rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-actions-item {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 0.65rem 1.1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--navy);
+  cursor: pointer;
+  font-family: var(--sans);
+  transition: background 0.15s;
+  width: 100%;
+}
+
+.profile-actions-item:hover {
+  background: var(--cream);
+}
+
+.profile-actions-item:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.profile-actions-item--danger {
+  color: var(--coral);
+}
+
+.profile-actions-item--danger:hover {
+  background: rgba(232, 103, 58, 0.07);
+}
+
+.profile-actions-divider {
+  height: 1px;
+  background: rgba(30, 45, 90, 0.08);
+  margin: 0.3rem 0;
+}
+
 .saved-flash {
   font-size: 0.78rem;
   color: var(--teal);
@@ -1060,17 +1145,10 @@ body {
     padding-bottom: 0;
   }
 
-  .profile-header-actions .btn-ghost-sm,
+  .profile-actions-trigger,
   .profile-header-actions .btn-cta-outline {
-    font-size: 0.61rem;
-    padding: 0.43rem 0.94rem;
-  }
-
-  .profile-header-actions .btn-ghost-sm {
-    background: var(--navy);
-    color: #fff;
-    border-color: var(--navy);
-    opacity: 1;
+    font-size: 0.72rem;
+    padding: 0.45rem 1rem;
   }
 
   .profile-header-actions .btn-cta-outline {
