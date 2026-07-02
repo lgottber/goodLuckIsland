@@ -191,7 +191,7 @@ export default function ProfilePage() {
     }
   }
 
-  const flash = !saved
+  const flash = saved
     ? { message: "Saved!", error: false }
     : resetStatus === "sent"
     ? { message: "Reset email sent!", error: false }
