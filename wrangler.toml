@@ -26,4 +26,4 @@ dataset = "good_luck_island_events"
 [[d1_databases]]
 binding = "DB"
 database_name = "good-luck-db"
-database_id = "TODO-fill-in-after-wrangler-d1-create"
+database_id = "b8a212cf-be15-4baa-a2f2-b9c86a3908e0"
