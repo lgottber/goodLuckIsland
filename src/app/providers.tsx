@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { SupabaseAuthSync } from "../components/SupabaseAuthSync";
+import { AuthTokenSync } from "../components/AuthTokenSync";
 import { BlockedGuard } from "../components/BlockedGuard";
 import SessionGuard from "../components/SessionGuard";
 import { AUTH0_DOMAIN, AUTH0_CLIENT_ID } from "../lib/auth0";
@@ -37,7 +37,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         router.replace(appState?.returnTo ?? "/");
       }}
     >
-      <SupabaseAuthSync />
+      <AuthTokenSync />
       <SessionGuard />
       <BlockedGuard>{children}</BlockedGuard>
     </Auth0Provider>

@@ -1,4 +1,4 @@
-import { supabase } from "./supabase";
+import { apiFetch, apiFetchVoid } from "./apiClient";
 import type { Tables } from "../types/supabase";
 
 // age and yearsInOccupation are strings in form state, parsed to numbers before saving
@@ -26,83 +26,50 @@ export type ProfileUpdate = {
   avatarId: Tables<"users">["avatar_id"];
 };
 
+// userId kept in the signature for call-site compatibility, but the
+// server always writes to the verified member's own row now -- this
+// value is never trusted or sent.
 export async function createUser(userId: string, email: string) {
-  const { error } = await supabase.from("users").insert({
-    id: userId,
-    email: email,
+  await apiFetchVoid("/profile/create", {
+    method: "POST",
+    body: JSON.stringify({ email }),
   });
-  // 23505 = unique_violation — user already exists, nothing to do
-  if (error && error.code !== "23505") throw new Error(error.message);
 }
 
 export async function fetchProfile(
-  userId: string,
+  _userId: string,
 ): Promise<Tables<"users"> | null> {
-  const { data } = await supabase
-    .from("users")
-    .select("*")
-    .eq("id", userId)
-    .single();
-  return data;
+  return apiFetch<Tables<"users"> | null>("/profile");
 }
 
 export async function exportProfileData(
-  userId: string,
+  _userId: string,
 ): Promise<Tables<"users">> {
-  const { data, error } = await supabase
-    .from("users")
-    .select("*")
-    .eq("id", userId)
-    .single();
-  if (error) throw new Error(error.message);
-  return data;
+  const profile = await apiFetch<Tables<"users"> | null>("/profile");
+  if (!profile) throw new Error("Profile not found");
+  return profile;
 }
-
 
 export async function updateNotificationPrefs(
   userId: string,
   emailEnabled: boolean,
 ): Promise<void> {
-  const { error } = await supabase
-    .from("users")
-    .update({ notifications_email: emailEnabled })
-    .eq("id", userId);
-  if (error) throw new Error(error.message);
+  await apiFetchVoid("/profile/notifications", {
+    method: "PATCH",
+    body: JSON.stringify({ emailEnabled }),
+  });
 }
 
 // Stub — implementation deferred until the deletion endpoint is ready.
 export async function deleteAccountFromSupabase(): Promise<void> {
-  throw new Error("Account deletion is not yet available. Please contact hello@goodluckislandcollective.com to request account deletion.");
+  throw new Error(
+    "Account deletion is not yet available. Please contact hello@goodluckislandcollective.com to request account deletion.",
+  );
 }
 
 export async function upsertProfile(userId: string, updated: ProfileUpdate) {
-  const { error } = await supabase.from("users").upsert({
-    id: userId,
-    email: updated.email,
-    first_name: updated.firstName,
-    last_name: updated.lastName,
-    username: updated.username,
-    location: updated.location,
-    bio: updated.bio,
-    mantra: updated.mantra,
-    interests: updated.interests,
-    age: updated.age !== "" ? parseInt(updated.age, 10) : null,
-    occupation: updated.occupation,
-    years_in_occupation:
-      updated.yearsInOccupation !== ""
-        ? parseInt(updated.yearsInOccupation, 10)
-        : null,
-    education: updated.education,
-    retired: updated.retired,
-    retirement_date: updated.retirementDate,
-    marital_status: updated.maritalStatus,
-    divorced: updated.divorced,
-    kids: updated.kids,
-    home_paid_off: updated.homePaidOff,
-    working_income: updated.workingIncome,
-    net_worth: updated.netWorth,
-    avatar_id: updated.avatarId,
-    updated_at: new Date().toISOString(),
+  await apiFetchVoid("/profile", {
+    method: "PUT",
+    body: JSON.stringify(updated),
   });
-  if (error) throw new Error(error.message);
 }

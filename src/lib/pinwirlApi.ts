@@ -1,10 +1,22 @@
-import { supabase } from "./supabase";
-import type { Tables } from "../types/supabase";
+import { apiFetch, apiFetchVoid } from "./apiClient";
 import type { SurveyQuestion } from "../app/pinwirl/questions";
 import { computeScores } from "./pinwirlScoring";
 import type { DimensionScores } from "./pinwirlScoring";
 
-export type PinwirlQuestionRow = Tables<"pinwirl_questions"> & { options: string[] };
+export type PinwirlQuestionRow = {
+  id: string;
+  external_id: string;
+  section: string;
+  question_text: string;
+  question_type: "scale" | "narrative" | "radio" | "select" | "number" | "text";
+  required: boolean;
+  hint: string | null;
+  scale_min: string | null;
+  scale_max: string | null;
+  order_index: number;
+  weight: number;
+  options: string[];
+};
 
 export function toSurveyQuestion(q: PinwirlQuestionRow): SurveyQuestion {
   return {
@@ -31,46 +43,20 @@ export async function submitPinwirlAnswers(
     .map(([externalId, value]) => {
       const questionId = uuidByExternalId.get(externalId);
       if (!questionId) return null;
-      return {
-        user_id: userId,
-        question_id: questionId,
-        answer: String(value),
-      };
+      return { questionId, answer: String(value) };
     })
     .filter((r): r is NonNullable<typeof r> => r !== null);
 
-  const { error } = await supabase.from("pinwirl_answers").insert(rows);
-  if (error) throw error;
-
   const scores = computeScores(answers, questions);
 
-  const { error: resultsError } = await supabase
-    .from("pinwirl_results")
-    .insert({ user_id: userId, scores });
-  if (resultsError) throw resultsError;
+  await apiFetchVoid("/pinwirl/answers", {
+    method: "POST",
+    body: JSON.stringify({ rows, scores }),
+  });
 
   return scores;
 }
 
 export async function fetchPinwirlQuestions(): Promise<PinwirlQuestionRow[]> {
-  const [questionsResult, optionsResult] = await Promise.all([
-    supabase.from("pinwirl_questions").select("*").order("order_index"),
-    supabase.from("pinwirl_answer_options").select("*").order("order_index"),
-  ]);
-
-  if (questionsResult.error) throw questionsResult.error;
-  if (optionsResult.error) throw optionsResult.error;
-
-  const optionsByQuestion = (optionsResult.data ?? []).reduce<Record<string, string[]>>(
-    (acc, opt) => {
-      (acc[opt.question_id] ??= []).push(opt.option_text);
-      return acc;
-    },
-    {},
-  );
-
-  return (questionsResult.data ?? []).map((q) => ({
-    ...q,
-    options: optionsByQuestion[q.id] ?? [],
-  }));
+  return apiFetch<PinwirlQuestionRow[]>("/pinwirl/questions");
 }

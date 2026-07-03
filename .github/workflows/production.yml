@@ -49,12 +49,18 @@ jobs:
         env:
           NEXT_PUBLIC_AUTH0_DOMAIN: ${{ secrets.NEXT_PUBLIC_AUTH0_DOMAIN }}
           NEXT_PUBLIC_AUTH0_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_AUTH0_CLIENT_ID }}
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN: ${{ secrets.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN }}
           NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN: ${{ secrets.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN }}
           NEXT_PUBLIC_SHOPIFY_COLLECTION_ID: ${{ secrets.NEXT_PUBLIC_SHOPIFY_COLLECTION_ID }}
 
+      # TODO(d1-migration): the D1 binding in wrangler.toml still has a
+      # placeholder database_id (needs `wrangler d1 create good-luck-db`
+      # with an authenticated session first). Once real, confirm whether
+      # this Pages project's production/preview D1 binding needs to be
+      # set via the Cloudflare dashboard's Pages project settings rather
+      # than purely through wrangler.toml -- Pages environment-scoped
+      # bindings have historically worked differently from plain Workers,
+      # and that couldn't be verified without dashboard access here.
       - name: Deploy to Cloudflare Pages (production)
         run: npm run deploy:production
         env:

@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getDb, nowIso } from "../../../lib/db.server";
 
 export const runtime = "edge";
 
@@ -9,18 +9,15 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL("/unsubscribe?error=1", request.url));
   }
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  );
-
-  const { error } = await supabase
-    .from("users")
-    .update({ unsubscribed_at: new Date().toISOString() })
-    .eq("id", id)
-    .is("unsubscribed_at", null);
-
-  if (error) {
+  const db = getDb();
+  try {
+    await db
+      .prepare(
+        "UPDATE users SET unsubscribed_at = ? WHERE id = ? AND unsubscribed_at IS NULL",
+      )
+      .bind(nowIso(), id)
+      .run();
+  } catch {
     return NextResponse.redirect(new URL("/unsubscribe?error=1", request.url));
   }
 

@@ -49,6 +49,10 @@ export default [
         "error",
         { assertionStyle: "never" },
       ],
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_" },
+      ],
       "react/react-in-jsx-scope": "off",
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
@@ -58,14 +62,6 @@ export default [
       "image-src/image-src-snake-case": "error",
       "react/forbid-dom-props": ["error", { forbid: ["style"] }],
       "react/forbid-component-props": ["error", { forbid: ["style"] }],
-    },
-  },
-  {
-    // The Proxy target in supabase.ts requires a type assertion — TypeScript has no
-    // alternative for giving a Proxy a different return type than its target object.
-    files: ["src/lib/supabase.ts"],
-    rules: {
-      "@typescript-eslint/consistent-type-assertions": "off",
     },
   },
   {

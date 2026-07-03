@@ -1,4 +1,4 @@
-import { supabase } from "./supabase";
+import { apiFetch, apiFetchVoid } from "./apiClient";
 
 export type JournalEntry = {
   id: string;
@@ -7,17 +7,16 @@ export type JournalEntry = {
   updated_at: string;
 };
 
+// userId kept in the signature for call-site compatibility, but the
+// server verifies identity itself from the Auth0 token now -- this value
+// is never trusted or sent.
 export async function fetchJournalEntry(
   userId: string,
   stepSlug: string,
 ): Promise<JournalEntry | null> {
-  const { data } = await supabase
-    .from("journal_entries")
-    .select("id, step_slug, body, updated_at")
-    .eq("user_id", userId)
-    .eq("step_slug", stepSlug)
-    .single();
-  return data;
+  return apiFetch<JournalEntry | null>(
+    `/journal?stepSlug=${encodeURIComponent(stepSlug)}`,
+  );
 }
 
 export async function saveJournalEntry(
@@ -25,11 +24,10 @@ export async function saveJournalEntry(
   stepSlug: string,
   body: string,
 ): Promise<void> {
-  const { error } = await supabase.from("journal_entries").upsert(
-    { user_id: userId, step_slug: stepSlug, body, updated_at: new Date().toISOString() },
-    { onConflict: "user_id,step_slug" },
-  );
-  if (error) throw new Error(error.message);
+  await apiFetchVoid("/journal", {
+    method: "POST",
+    body: JSON.stringify({ stepSlug, body }),
+  });
 }
 
 export type PastPersonQuestion = {
@@ -39,26 +37,16 @@ export type PastPersonQuestion = {
   sort_order: number;
 };
 
-export async function fetchPastPersonQuestions(): Promise<PastPersonQuestion[]> {
-  const { data } = await supabase
-    .from("past_person_questions")
-    .select("key, text, placeholder, sort_order")
-    .order("sort_order");
-  return data ?? [];
+export async function fetchPastPersonQuestions(): Promise<
+  PastPersonQuestion[]
+> {
+  return apiFetch<PastPersonQuestion[]>("/journal/past-person/questions");
 }
 
 export async function fetchPastPersonAnswers(
-  userId: string,
+  _userId: string,
 ): Promise<Record<string, string>> {
-  const { data } = await supabase
-    .from("past_person_answers")
-    .select("question_key, answer")
-    .eq("user_id", userId);
-  const map: Record<string, string> = {};
-  for (const row of data ?? []) {
-    map[row.question_key] = row.answer;
-  }
-  return map;
+  return apiFetch<Record<string, string>>("/journal/past-person");
 }
 
 export async function savePastPersonAnswer(
@@ -66,9 +54,8 @@ export async function savePastPersonAnswer(
   questionKey: string,
   answer: string,
 ): Promise<void> {
-  const { error } = await supabase.from("past_person_answers").upsert(
-    { user_id: userId, question_key: questionKey, answer, updated_at: new Date().toISOString() },
-    { onConflict: "user_id,question_key" },
-  );
-  if (error) throw new Error(error.message);
+  await apiFetchVoid("/journal/past-person", {
+    method: "POST",
+    body: JSON.stringify({ questionKey, answer }),
+  });
 }

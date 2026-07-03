@@ -1,5 +1,4 @@
-import { supabase } from "./supabase";
-import type { Json } from "../types/supabase";
+import { apiFetch } from "./apiClient";
 import type { DimensionScores } from "./pinwirlScoring";
 
 export type PinwirlResult = {
@@ -8,11 +7,13 @@ export type PinwirlResult = {
   scores: DimensionScores;
 };
 
-function jsonToScores(json: Json): DimensionScores {
-  const obj: { [key: string]: Json | undefined } =
-    typeof json === "object" && json !== null && !Array.isArray(json)
-      ? json
-      : {};
+type RawResult = {
+  id: string;
+  taken_at: string;
+  scores: Record<string, unknown>;
+};
+
+function jsonToScores(obj: Record<string, unknown>): DimensionScores {
   function getNum(key: string): number {
     const v = obj[key];
     return typeof v === "number" ? v : 0;
@@ -29,15 +30,11 @@ function jsonToScores(json: Json): DimensionScores {
   };
 }
 
-export async function fetchPinwirlHistory(userId: string): Promise<PinwirlResult[]> {
-  const { data, error } = await supabase
-    .from("pinwirl_results")
-    .select("id, taken_at, scores")
-    .eq("user_id", userId)
-    .order("taken_at", { ascending: false });
-
-  if (error) throw new Error(error.message);
-  return (data ?? []).map((row) => ({
+export async function fetchPinwirlHistory(
+  _userId: string,
+): Promise<PinwirlResult[]> {
+  const rows = await apiFetch<RawResult[]>("/pinwirl/history");
+  return rows.map((row) => ({
     id: row.id,
     taken_at: row.taken_at,
     scores: jsonToScores(row.scores),
@@ -48,5 +45,7 @@ export const RETAKE_INTERVAL_MS = 90 * 24 * 60 * 60 * 1000;
 
 export function isDueForRetake(history: PinwirlResult[]): boolean {
   if (history.length === 0) return false;
-  return Date.now() - new Date(history[0].taken_at).getTime() > RETAKE_INTERVAL_MS;
+  return (
+    Date.now() - new Date(history[0].taken_at).getTime() > RETAKE_INTERVAL_MS
+  );
 }

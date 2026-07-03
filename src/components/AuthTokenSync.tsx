@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { setSupabaseTokenGetter } from "../lib/supabase";
-import styles from "./SupabaseAuthSync.module.css";
+import { setAuthTokenGetter } from "../lib/apiClient";
+import styles from "./AuthTokenSync.module.css";
 
-export function SupabaseAuthSync() {
+export function AuthTokenSync() {
   const { getIdTokenClaims, getAccessTokenSilently } = useAuth0();
   const [tokenError, setTokenError] = useState(false);
 
@@ -21,7 +21,7 @@ export function SupabaseAuthSync() {
         return null;
       }
     };
-    setSupabaseTokenGetter(getToken);
+    setAuthTokenGetter(getToken);
   }, [getIdTokenClaims, getAccessTokenSilently]);
 
   if (tokenError) {

@@ -1,8 +1,11 @@
-import { supabase } from "../../lib/supabase";
+import { apiFetch } from "../../lib/apiClient";
 import { DIMENSIONS } from "../../lib/pinwirlScoring";
 import type { DimensionKey, ScoreBand } from "../../lib/pinwirlScoring";
 
-export type RecommendationsMap = Record<DimensionKey, Record<ScoreBand, string>>;
+export type RecommendationsMap = Record<
+  DimensionKey,
+  Record<ScoreBand, string>
+>;
 
 const DIMENSION_SET = new Set<string>(DIMENSIONS);
 const BAND_SET = new Set<string>([
@@ -30,12 +33,9 @@ function emptyBands(): Record<ScoreBand, string> {
 }
 
 export async function fetchRecommendations(): Promise<RecommendationsMap> {
-  const { data, error } = await supabase
-    .from("pinwirl_recommendations")
-    .select("dimension, band, body")
-    .order("sort_order");
-
-  if (error) throw new Error(error.message);
+  const data = await apiFetch<
+    { dimension: string; band: string; body: string }[]
+  >("/pinwirl/recommendations");
 
   const map: RecommendationsMap = {
     Physical: emptyBands(),

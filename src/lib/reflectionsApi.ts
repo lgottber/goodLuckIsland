@@ -1,10 +1,9 @@
-import { supabase } from "./supabase";
+import { apiFetch } from "./apiClient";
 
-export async function fetchStepReflections(stepSlug: string): Promise<string[]> {
-  const { data } = await supabase
-    .from("reflections")
-    .select("body")
-    .eq("step_slug", stepSlug)
-    .order("sort_order");
-  return (data ?? []).map((r) => r.body);
+export async function fetchStepReflections(
+  stepSlug: string,
+): Promise<string[]> {
+  return apiFetch<string[]>(
+    `/reflections?stepSlug=${encodeURIComponent(stepSlug)}`,
+  );
 }
