@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { AuthTokenSync } from "../components/AuthTokenSync";
 import { BlockedGuard } from "../components/BlockedGuard";
+import { PendingDeletionNotice } from "../components/PendingDeletionNotice";
 import SessionGuard from "../components/SessionGuard";
 import { AUTH0_DOMAIN, AUTH0_CLIENT_ID } from "../lib/auth0";
 
@@ -39,7 +40,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
     >
       <AuthTokenSync />
       <SessionGuard />
-      <BlockedGuard>{children}</BlockedGuard>
+      <PendingDeletionNotice>
+        <BlockedGuard>{children}</BlockedGuard>
+      </PendingDeletionNotice>
     </Auth0Provider>
   );
 }

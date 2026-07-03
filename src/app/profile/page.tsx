@@ -13,7 +13,8 @@ import BioDisplay from "./BioDisplay";
 import BioEmpty from "./BioEmpty";
 import InterestsList from "./InterestsList";
 import InterestsEmpty from "./InterestsEmpty";
-import { createUser, fetchProfile, upsertProfile, updateNotificationPrefs, deleteAccountFromSupabase } from "../../lib/profileApi";
+import { createUser, fetchProfile, upsertProfile, updateNotificationPrefs, deleteAccount } from "../../lib/profileApi";
+import { setPendingAccountDeletion } from "../../lib/pendingAccountDeletion";
 import NotificationPrefsModal from "./NotificationPrefsModal";
 import DeleteAccountModal from "./DeleteAccountModal";
 import QuizNudgeCard from "../quiz/QuizNudgeCard";
@@ -143,6 +144,7 @@ export default function ProfilePage() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [deletionScheduled, setDeletionScheduled] = useState(false);
 
   async function handlePasswordReset() {
     if (!auth0User?.email) {
@@ -225,7 +227,9 @@ export default function ProfilePage() {
     setDeleting(true);
     setDeleteError(null);
     try {
-      await deleteAccountFromSupabase();
+      await deleteAccount();
+      setPendingAccountDeletion();
+      setDeletionScheduled(true);
       logout({ logoutParams: { returnTo: window.location.origin } });
     } catch (err) {
       setDeleteError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
@@ -274,6 +278,7 @@ export default function ProfilePage() {
         <DeleteAccountModal
           deleting={deleting}
           error={deleteError}
+          scheduled={deletionScheduled}
           onConfirm={handleDeleteAccount}
           onClose={() => { setShowDeleteConfirm(false); setDeleteError(null); }}
         />

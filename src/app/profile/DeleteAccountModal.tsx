@@ -7,16 +7,39 @@ import Icon from "./Icon";
 export default function DeleteAccountModal({
   deleting,
   error,
+  scheduled,
   onConfirm,
   onClose,
 }: {
   deleting: boolean;
   error: string | null;
+  scheduled: boolean;
   onConfirm: () => void;
   onClose: () => void;
 }) {
   const [confirmText, setConfirmText] = useState("");
   const confirmed = confirmText === "DELETE";
+
+  if (scheduled) {
+    return (
+      <Modal
+        backdropClassName="delete-modal-backdrop"
+        contentClassName="delete-modal"
+        onClose={() => {}}
+      >
+        <div className="delete-modal-header">
+          <h2>Account Scheduled for Deletion</h2>
+        </div>
+        <div className="delete-modal-body">
+          <p className="delete-modal-warning">
+            Your account has been scheduled for deletion at midnight tonight.
+            If you change your mind, simply log back in before then and
+            we&apos;ll automatically cancel the deletion.
+          </p>
+        </div>
+      </Modal>
+    );
+  }
 
   return (
     <Modal
@@ -33,8 +56,10 @@ export default function DeleteAccountModal({
 
       <div className="delete-modal-body">
         <p className="delete-modal-warning">
-          This will permanently delete your profile, assessment results, journal
-          entries, and all saved content. <strong>This cannot be undone.</strong>
+          Deleting your account will remove your profile, assessment results,
+          journal entries, and all saved content. Your account will be
+          scheduled for deletion at midnight tonight — if you change your
+          mind, simply log back in before then to cancel it.
         </p>
 
         <p className="delete-modal-instruction">

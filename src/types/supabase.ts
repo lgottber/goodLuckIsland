@@ -654,6 +654,7 @@ export type Database = {
           home_paid_off: string | null;
           id: string;
           interests: string[] | null;
+          is_deleted: boolean;
           kids: string | null;
           last_login: string | null;
           last_name: string | null;
@@ -683,6 +684,7 @@ export type Database = {
           home_paid_off?: string | null;
           id: string;
           interests?: string[] | null;
+          is_deleted?: boolean;
           kids?: string | null;
           last_login?: string | null;
           last_name?: string | null;
@@ -712,6 +714,7 @@ export type Database = {
           home_paid_off?: string | null;
           id?: string;
           interests?: string[] | null;
+          is_deleted?: boolean;
           kids?: string | null;
           last_login?: string | null;
           last_name?: string | null;

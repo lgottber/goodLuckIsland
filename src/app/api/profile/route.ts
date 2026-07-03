@@ -34,6 +34,7 @@ interface UserRow {
   net_worth: string | null;
   avatar_id: string | null;
   notifications_email: number;
+  is_deleted: number;
   created_at: string;
   updated_at: string | null;
 }
@@ -67,6 +68,7 @@ function mapUser(row: UserRow) {
     ...row,
     interests: parseJson<string[] | null>(row.interests, null),
     notifications_email: toBool(row.notifications_email),
+    is_deleted: toBool(row.is_deleted),
   };
 }
 
@@ -80,7 +82,20 @@ export async function GET(request: NextRequest) {
     .prepare("SELECT * FROM users WHERE id = ?")
     .bind(member.sub)
     .first<UserRow>();
-  return NextResponse.json(row ? mapUser(row) : null);
+  if (!row) return NextResponse.json(null);
+
+  // Reaching this endpoint authenticated is the "logged back in" signal --
+  // cancel a pending account deletion (see POST /api/delete-account) rather
+  // than requiring a separate un-delete action from the client.
+  if (toBool(row.is_deleted)) {
+    await db
+      .prepare("UPDATE users SET is_deleted = 0 WHERE id = ?")
+      .bind(member.sub)
+      .run();
+    row.is_deleted = 0;
+  }
+
+  return NextResponse.json(mapUser(row));
 }
 
 // Same allowlist of columns as the pre-migration upsertProfile -- never

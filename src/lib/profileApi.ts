@@ -60,11 +60,11 @@ export async function updateNotificationPrefs(
   });
 }
 
-// Stub — implementation deferred until the deletion endpoint is ready.
-export async function deleteAccountFromSupabase(): Promise<void> {
-  throw new Error(
-    "Account deletion is not yet available. Please contact hello@goodluckislandcollective.com to request account deletion.",
-  );
+// Soft delete -- the account isn't removed immediately, see
+// POST /api/delete-account. Logging back in before the nightly purge
+// runs cancels it (GET /api/profile resets the flag).
+export async function deleteAccount(): Promise<void> {
+  await apiFetchVoid("/delete-account", { method: "POST" });
 }
 
 export async function upsertProfile(userId: string, updated: ProfileUpdate) {
