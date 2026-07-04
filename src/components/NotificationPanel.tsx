@@ -4,9 +4,11 @@ import NotificationItem from "./NotificationItem";
 export default function NotificationPanel({
   notifications,
   onMarkAllRead,
+  onDismiss,
 }: {
   notifications: Notification[];
   onMarkAllRead: () => void;
+  onDismiss: (id: string) => void;
 }) {
   const hasUnread = notifications.some((n) => !n.read);
 
@@ -24,7 +26,9 @@ export default function NotificationPanel({
         {notifications.length === 0 ? (
           <p className="notif-empty">You&apos;re all caught up!</p>
         ) : (
-          notifications.map((n) => <NotificationItem key={n.id} notification={n} />)
+          notifications.map((n) => (
+            <NotificationItem key={n.id} notification={n} onDismiss={onDismiss} />
+          ))
         )}
       </div>
     </div>

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Icon from "./Icon";
 import NotificationPanel from "./NotificationPanel";
-import { fetchNotifications, markAllRead } from "../lib/notificationsApi";
+import { fetchNotifications, markAllRead, dismissNotification } from "../lib/notificationsApi";
 import type { Notification } from "../lib/notificationsApi";
 import { useClickOutside } from "../hooks/useClickOutside";
 import "./notification-bell.css";
@@ -30,6 +30,11 @@ export default function NotificationBell({ userId }: { userId: string }) {
       .catch(() => null);
   }
 
+  function handleDismiss(id: string) {
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
+    dismissNotification(userId, id).catch(() => null);
+  }
+
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
@@ -47,7 +52,13 @@ export default function NotificationBell({ userId }: { userId: string }) {
           </span>
         )}
       </button>
-      {open && <NotificationPanel notifications={notifications} onMarkAllRead={handleMarkAllRead} />}
+      {open && (
+        <NotificationPanel
+          notifications={notifications}
+          onMarkAllRead={handleMarkAllRead}
+          onDismiss={handleDismiss}
+        />
+      )}
     </div>
   );
 }

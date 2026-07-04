@@ -7,22 +7,9 @@ pages_build_output_dir = ".vercel/output/static"
 binding = "AnalyticsEngineDataset"
 dataset = "good_luck_island_events"
 
-# TODO(d1-migration): same "good-luck-db" database as goodLuckAdmin's
-# wrangler.jsonc -- both apps share one D1 database, exactly as they
-# share one Supabase Postgres instance today. Replace database_id with
-# the real id once `npx wrangler d1 create good-luck-db` has been run
-# (see goodLuckAdmin/wrangler.jsonc for that TODO). Schema/migrations
-# are NOT owned here -- they live in goodLuckAdmin/migrations/ and are
-# applied with `wrangler d1 migrations apply good-luck-db --remote`
-# from that repo, so no migrations_dir is set on this binding.
-#
-# This binding only reaches Pages Functions (server-side API routes
-# under src/app/api/), not the statically-delivered pages themselves --
-# Cloudflare Pages' static output has no server runtime to bind into.
-# Every src/lib/*Api.ts call that currently talks to Supabase directly
-# from the browser needs a Pages Function route added under
-# src/app/api/ that reads this binding, per Phase 3 of the migration
-# plan.
+# Shared with goodLuckAdmin's good-luck-db (same database_id) -- both apps
+# read/write the same D1 database, per the migration plan in that repo's
+# wrangler.jsonc. Only `notifications` is queried from this app so far.
 [[d1_databases]]
 binding = "DB"
 database_name = "good-luck-db"

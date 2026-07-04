@@ -5,9 +5,23 @@ function formatDate(iso: string): string {
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
-export default function NotificationItem({ notification }: { notification: Notification }) {
+export default function NotificationItem({
+  notification,
+  onDismiss,
+}: {
+  notification: Notification;
+  onDismiss: (id: string) => void;
+}) {
   return (
     <div className={`notif-item${notification.read ? "" : " notif-item--unread"}`}>
+      <button
+        type="button"
+        className="notif-item-dismiss"
+        aria-label="Dismiss notification"
+        onClick={() => onDismiss(notification.id)}
+      >
+        ×
+      </button>
       <p className="notif-item-title">{notification.title}</p>
       <p className="notif-item-body">{notification.body}</p>
       <span className="notif-item-date">{formatDate(notification.created_at)}</span>

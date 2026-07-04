@@ -18,3 +18,13 @@ export async function fetchNotifications(
 export async function markAllRead(_userId: string): Promise<void> {
   await apiFetchVoid("/notifications/read-all", { method: "POST" });
 }
+
+export async function dismissNotification(
+  _userId: string,
+  id: string,
+): Promise<void> {
+  await apiFetchVoid("/notifications/dismiss", {
+    method: "POST",
+    body: JSON.stringify({ id }),
+  });
+}

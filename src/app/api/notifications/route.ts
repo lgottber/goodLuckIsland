@@ -19,11 +19,14 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const db = getDb();
+  const now = new Date().toISOString();
   const { results } = await db
     .prepare(
-      "SELECT id, type, title, body, read, created_at FROM notifications WHERE user_id = ? ORDER BY created_at DESC LIMIT 30",
+      `SELECT id, type, title, body, read, created_at FROM notifications
+       WHERE user_id = ? AND hidden_at IS NULL AND (expires_at IS NULL OR expires_at > ?)
+       ORDER BY created_at DESC LIMIT 30`,
     )
-    .bind(member.sub)
+    .bind(member.sub, now)
     .all<NotificationRow>();
 
   return NextResponse.json(
