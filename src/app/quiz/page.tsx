@@ -13,6 +13,7 @@ import {
   ArchetypeId,
 } from "./quizData";
 import "./quiz.css";
+import { trackEvent } from "../../lib/analyticsApi";
 
 type Phase = "intro" | "quiz" | "result";
 
@@ -35,6 +36,7 @@ export default function QuizPage() {
     setResultId(archetypeId);
     setPhase("result");
     localStorage.setItem("quiz_archetype", archetypeId);
+    trackEvent("quiz_completed", { archetype: archetypeId });
   }
 
   function handleBack() {
@@ -46,13 +48,21 @@ export default function QuizPage() {
     setCurrentIndex(0);
     setResultId(null);
     setPhase("intro");
+    trackEvent("quiz_retaken");
   }
 
   return (
     <>
       <NavBarDynamic largeAvatar />
       <div className="quiz-page">
-        {phase === "intro" && <QuizIntro onStart={() => setPhase("quiz")} />}
+        {phase === "intro" && (
+          <QuizIntro
+            onStart={() => {
+              trackEvent("quiz_started");
+              setPhase("quiz");
+            }}
+          />
+        )}
 
         {phase === "quiz" && (
           <QuizCardSection

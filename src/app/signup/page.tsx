@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import "./signup.css";
 import PictureImage from "../../components/PictureImage";
+import { trackEvent } from "../../lib/analyticsApi";
 
 const PRIVACY_POLICY = `Welcome to Good Luck Island 🌴
 
@@ -27,6 +28,7 @@ export default function SignupPage() {
 
   function handleCreateAccount() {
     if (!agreed) return;
+    trackEvent("signup_started");
     loginWithRedirect({
       authorizationParams: { screen_hint: "signup" },
       appState: { returnTo: "/profile" },

@@ -2,15 +2,13 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
+import { trackEvent } from "../lib/analyticsApi";
 
 export function PageViewTracker() {
   const pathname = usePathname();
 
   useEffect(() => {
-    fetch("/api/track", {
-      method: "POST",
-      body: JSON.stringify({ event: "page_view", properties: { page: pathname } }),
-    }).catch(() => {});
+    trackEvent("page_view", { page: pathname });
   }, [pathname]);
 
   return null;

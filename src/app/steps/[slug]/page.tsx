@@ -16,6 +16,7 @@ import {
   markStepComplete,
   SLUG_TO_STEP,
 } from "../../../lib/sevenStepApi";
+import { trackEvent } from "../../../lib/analyticsApi";
 import "./step.css";
 
 export default function StepPage() {
@@ -58,6 +59,7 @@ export default function StepPage() {
       await markStepComplete(userId, stepKey);
       setIsComplete(true);
       setShowCelebration(true);
+      trackEvent("step_completed", { step: stepKey });
     } finally {
       setCompleting(false);
     }

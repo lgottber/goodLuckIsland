@@ -6,6 +6,7 @@ import { fetchPinwirlQuestions, submitPinwirlAnswers, toSurveyQuestion } from ".
 import type { PinwirlQuestionRow } from "../../lib/pinwirlApi";
 import PinwirlResults from "./PinwirlResults";
 import type { DimensionScores } from "../../lib/pinwirlScoring";
+import { trackEvent } from "../../lib/analyticsApi";
 
 const PAGE_SIZE = 4;
 
@@ -71,6 +72,7 @@ export default function PinwirlAssessment({ userId }: Props) {
       const result = await submitPinwirlAnswers(userId, answers, questions);
       setScores(result);
       setSubmitted(true);
+      trackEvent("pinwirl_submitted");
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
@@ -84,6 +86,7 @@ export default function PinwirlAssessment({ userId }: Props) {
         scores={scores}
         userId={userId}
         onRetake={() => {
+          trackEvent("pinwirl_retaken");
           setSubmitted(false);
           setScores(null);
           setAnswers({});

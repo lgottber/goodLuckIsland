@@ -9,6 +9,7 @@ import { fetchPinwirlHistory } from "../../lib/pinwirlHistoryApi";
 import type { PinwirlResult } from "../../lib/pinwirlHistoryApi";
 import DimensionRow from "./DimensionRow";
 import PinwirlHistory from "./PinwirlHistory";
+import { trackEvent } from "../../lib/analyticsApi";
 
 interface Props {
   scores: DimensionScores;
@@ -25,6 +26,7 @@ export default function PinwirlResults({ scores, userId, onRetake }: Props) {
   useEffect(() => {
     fetchRecommendations().then(setRecommendations).catch(console.error);
     fetchPinwirlHistory(userId).then(setHistory).catch(() => {});
+    trackEvent("pinwirl_results_viewed");
   }, [userId]);
 
   async function handleDownloadPdf() {
@@ -33,6 +35,7 @@ export default function PinwirlResults({ scores, userId, onRetake }: Props) {
     try {
       const { downloadResultsPdf } = await import("./PinwirlPdfExport");
       await downloadResultsPdf(captureRef.current);
+      trackEvent("pinwirl_pdf_downloaded");
     } finally {
       setDownloading(false);
     }

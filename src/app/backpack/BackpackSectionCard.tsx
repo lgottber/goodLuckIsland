@@ -5,6 +5,7 @@ import BackpackComingSoonBadge from "./BackpackComingSoonBadge";
 import BackpackCardCta from "./BackpackCardCta";
 import BackpackCardLocked from "./BackpackCardLocked";
 import type { BackpackSection } from "../../lib/backpackApi";
+import { trackEvent } from "../../lib/analyticsApi";
 
 interface Props {
   section: BackpackSection;
@@ -18,7 +19,9 @@ export default function BackpackSectionCard({ section, index, locked = false }: 
   const isDisabled = isComingSoon || locked;
 
   function handleClick() {
-    if (!isDisabled) router.push(`/steps/${section.id}`);
+    if (isDisabled) return;
+    trackEvent("backpack_section_opened", { section: section.id });
+    router.push(`/steps/${section.id}`);
   }
 
   return (

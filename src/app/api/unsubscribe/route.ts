@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { getRequestContext } from "@cloudflare/next-on-pages";
 import { getDb, nowIso } from "../../../lib/db.server";
 
 export const runtime = "edge";
@@ -19,6 +20,17 @@ export async function GET(request: NextRequest) {
       .run();
   } catch {
     return NextResponse.redirect(new URL("/unsubscribe?error=1", request.url));
+  }
+
+  try {
+    const { env } = getRequestContext<CloudflareEnv>();
+    env.AnalyticsEngineDataset.writeDataPoint({
+      blobs: ["unsubscribed", JSON.stringify({})],
+      doubles: [1],
+      indexes: ["unsubscribed"],
+    });
+  } catch {
+    // AnalyticsEngineDataset binding is unavailable outside the Cloudflare runtime (local next dev).
   }
 
   return NextResponse.redirect(new URL("/unsubscribe?success=1", request.url));

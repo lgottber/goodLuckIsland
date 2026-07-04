@@ -3,6 +3,7 @@
 import { type MouseEvent, useState } from "react";
 import Icon from "../../components/Icon";
 import { toggleSave } from "../../lib/savedApi";
+import { trackEvent } from "../../lib/analyticsApi";
 
 interface Props {
   userId: string;
@@ -22,6 +23,7 @@ export default function BookmarkButton({ userId, itemType, itemId, initialSaved 
     try {
       const nowSaved = await toggleSave(userId, itemType, itemId);
       setSaved(nowSaved);
+      trackEvent(nowSaved ? "item_saved" : "item_unsaved", { itemType, itemId });
     } finally {
       setLoading(false);
     }

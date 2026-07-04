@@ -3,6 +3,7 @@
 import Link from "next/link";
 import OqrcAnswerItem from "./OqrcAnswerItem";
 import type { OneQuestion } from "../../lib/oneQuestionApi";
+import { trackEvent } from "../../lib/analyticsApi";
 
 export default function OqrcCompletedView({
   questions,
@@ -34,6 +35,7 @@ export default function OqrcCompletedView({
               .join("\n\n"),
           )}`}
           className="oqrc-completed-share"
+          onClick={() => trackEvent("oqrc_shared_with_coach")}
         >
           Share with a Coach
         </a>
