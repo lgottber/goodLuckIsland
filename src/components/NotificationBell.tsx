@@ -6,6 +6,7 @@ import NotificationPanel from "./NotificationPanel";
 import { fetchNotifications, markAllRead, dismissNotification } from "../lib/notificationsApi";
 import type { Notification } from "../lib/notificationsApi";
 import { useClickOutside } from "../hooks/useClickOutside";
+import { trackEvent } from "../lib/analyticsApi";
 import "./notification-bell.css";
 
 export default function NotificationBell({ userId }: { userId: string }) {
@@ -21,18 +22,25 @@ export default function NotificationBell({ userId }: { userId: string }) {
   }, [userId]);
 
   function handleOpen() {
-    setOpen((prev) => !prev);
+    setOpen((prev) => {
+      if (!prev) trackEvent("notifications_opened");
+      return !prev;
+    });
   }
 
   function handleMarkAllRead() {
     markAllRead(userId)
-      .then(() => setNotifications((prev) => prev.map((n) => ({ ...n, read: true }))))
+      .then(() => {
+        setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+        trackEvent("notifications_marked_all_read");
+      })
       .catch(() => null);
   }
 
   function handleDismiss(id: string) {
     setNotifications((prev) => prev.filter((n) => n.id !== id));
     dismissNotification(userId, id).catch(() => null);
+    trackEvent("notification_dismissed");
   }
 
   const unreadCount = notifications.filter((n) => !n.read).length;

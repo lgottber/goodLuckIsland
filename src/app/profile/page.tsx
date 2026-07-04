@@ -20,6 +20,7 @@ import DeleteAccountModal from "./DeleteAccountModal";
 import QuizNudgeCard from "../quiz/QuizNudgeCard";
 import type { Tables } from "../../types/supabase";
 import { downloadProfileDataCsv } from "../../lib/exportUtils";
+import { trackEvent } from "../../lib/analyticsApi";
 import type { ResetStatus } from "./types";
 import ProfileMetaItem from "./ProfileMetaItem";
 import InfoRow from "./InfoRow";
@@ -168,6 +169,7 @@ export default function ProfilePage() {
         },
       );
       setResetStatus(res.ok ? "sent" : "error");
+      if (res.ok) trackEvent("password_reset_requested");
     } catch {
       setResetStatus("error");
     }
@@ -186,6 +188,7 @@ export default function ProfilePage() {
     try {
       await downloadProfileDataCsv(auth0User.sub);
       setExportStatus("done");
+      trackEvent("profile_data_exported");
       setTimeout(() => setExportStatus("idle"), 3000);
     } catch {
       setExportStatus("error");
@@ -218,6 +221,7 @@ export default function ProfilePage() {
     try {
       await updateNotificationPrefs(auth0User.sub, enabled);
       setNotificationsEmail(enabled);
+      trackEvent("notification_prefs_changed", { emailEnabled: enabled });
     } finally {
       setNotifSaving(false);
     }
@@ -231,6 +235,7 @@ export default function ProfilePage() {
       await deleteAccount();
       setPendingAccountDeletion();
       setDeletionScheduled(true);
+      trackEvent("account_deletion_requested");
       logout({ logoutParams: { returnTo: window.location.origin } });
     } catch (err) {
       setDeleteError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
@@ -243,12 +248,14 @@ export default function ProfilePage() {
     await persistProfile(updated);
     setUser(updated);
     triggerSaved();
+    trackEvent("profile_saved");
   }
 
   function handleAvatarSelect(id: string) {
     const updated = { ...user, avatarId: id, avatarUrl: "" };
     setUser(updated);
     persistProfile(updated);
+    trackEvent("avatar_changed", { avatarId: id });
   }
 
   return (

@@ -14,6 +14,7 @@ import {
   saveOneQuestionAnswers,
   markOneQuestionComplete,
 } from "../../lib/oneQuestionApi";
+import { trackEvent } from "../../lib/analyticsApi";
 import "./one-question.css";
 
 export default function OneQuestionRetirementChallengePage() {
@@ -87,6 +88,7 @@ export default function OneQuestionRetirementChallengePage() {
 
   async function handleContinue() {
     if (slide === 0) {
+      trackEvent("oqrc_started");
       setSlide(1);
       return;
     }
@@ -105,6 +107,7 @@ export default function OneQuestionRetirementChallengePage() {
       if (slide === total) {
         await markOneQuestionComplete(user.sub);
         setCompleted(true);
+        trackEvent("oqrc_completed");
       } else {
         setSlide((s) => s + 1);
       }
