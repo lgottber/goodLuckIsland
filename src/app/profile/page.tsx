@@ -24,6 +24,7 @@ import type { ResetStatus } from "./types";
 import ProfileMetaItem from "./ProfileMetaItem";
 import InfoRow from "./InfoRow";
 import ProfileInfoEmpty from "./ProfileInfoEmpty";
+import ProfileActionsMenu from "./ProfileActionsMenu";
 import "./profile.css";
 
 const INITIAL_USER = {
@@ -36,7 +37,7 @@ const INITIAL_USER = {
   avatarUrl: "",
   avatarId: "",
   bio: "",
-  mantra: "enter your mantra here",
+  mantra: "Peace of mind, planned for.",
   memberSince: "",
   interests: new Array<string>(),
   stats: {
@@ -191,7 +192,7 @@ export default function ProfilePage() {
     }
   }
 
-  const flash = !saved
+  const flash = saved
     ? { message: "Saved!", error: false }
     : resetStatus === "sent"
     ? { message: "Reset email sent!", error: false }
@@ -238,9 +239,9 @@ export default function ProfilePage() {
   }
 
   async function handleSave(updated: typeof INITIAL_USER) {
-    setUser(updated);
     setEditing(false);
     await persistProfile(updated);
+    setUser(updated);
     triggerSaved();
   }
 
@@ -352,36 +353,15 @@ export default function ProfilePage() {
               {flash && (
                 <FlashMessage message={flash.message} error={flash.error} />
               )}
-              <button
-                type="button"
-                className="btn-ghost-sm"
-                onClick={handleExportData}
-                disabled={exportStatus === "exporting"}
-              >
-                {exportLabel()}
-              </button>
-              <button
-                type="button"
-                className="btn-ghost-sm"
-                onClick={handlePasswordReset}
-                disabled={resetStatus === "sending" || resetStatus === "sent"}
-              >
-                {resetStatus === "sending" ? "Sending…" : "Reset Password"}
-              </button>
-              <button
-                type="button"
-                className="btn-ghost-sm"
-                onClick={() => setShowNotifPrefs(true)}
-              >
-                Notifications
-              </button>
-              <button
-                type="button"
-                className="btn-ghost-sm btn-ghost-sm--danger"
-                onClick={() => setShowDeleteConfirm(true)}
-              >
-                Delete Account
-              </button>
+              <ProfileActionsMenu
+                exportStatus={exportStatus}
+                exportLabel={exportLabel}
+                onExport={handleExportData}
+                resetStatus={resetStatus}
+                onResetPassword={handlePasswordReset}
+                onNotifications={() => setShowNotifPrefs(true)}
+                onDeleteAccount={() => setShowDeleteConfirm(true)}
+              />
               <button
                 type="button"
                 className="btn-cta-outline"
