@@ -39,7 +39,7 @@ export default function SavedItem({ item }: { item: SavedItemData }) {
         <h3 className="saved-item-title">{item.title}</h3>
         <p className="saved-item-excerpt">{item.excerpt}</p>
         <div className="saved-item-footer">
-          <Link href="/articles" className="saved-item-cta">
+          <Link href={item.type === "podcast" ? "/articles?tab=podcast" : "/articles"} className="saved-item-cta">
             <SavedItemCta type={item.type} />
           </Link>
           <button type="button" className="saved-item-remove">

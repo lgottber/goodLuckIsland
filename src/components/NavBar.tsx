@@ -7,13 +7,13 @@ import { useAuth0 } from "@auth0/auth0-react";
 import NavGateModal from "./NavGateModal";
 import UserMenu from "./UserMenu";
 import GuestAuthButtons from "./GuestAuthButtons";
-import MobileArticlesLink from "./MobileArticlesLink";
-import MobileArticlesGatedButton from "./MobileArticlesGatedButton";
+import MobileContentLink from "./MobileContentLink";
 import MobileUserSection from "./MobileUserSection";
 import MobileGuestAuth from "./MobileGuestAuth";
 import { useClickOutside } from "../hooks/useClickOutside";
 import { fetchProfile } from "../lib/profileApi";
 import NotificationBell from "./NotificationBell";
+import { CONTENT_NAV_KEYS } from "../lib/contentNavLinks";
 import "./NavBar.css";
 
 export default function NavBar({
@@ -132,16 +132,14 @@ export default function NavBar({
             <Link
               href="/articles"
               className={[
-                activePage === "articles" || activePage === "podcast"
-                  ? "active"
-                  : "",
+                CONTENT_NAV_KEYS.includes(activePage) ? "active" : "",
                 !user ? "nav-link-gated" : "",
               ]
                 .filter(Boolean)
                 .join(" ")}
               onClick={handleGatedClick}
             >
-              Podcasts &amp; Articles
+              Membership Content
             </Link>
           </div>
           <div className="nav-auth">{authSection ?? avatarAuthSection}</div>
@@ -164,14 +162,11 @@ export default function NavBar({
         <Link href="/shop" onClick={() => setMobileOpen(false)}>
           Shop
         </Link>
-        {user ? (
-          <MobileArticlesLink setMobileOpen={setMobileOpen} />
-        ) : (
-          <MobileArticlesGatedButton
-            setMobileOpen={setMobileOpen}
-            setShowGate={setShowGate}
-          />
-        )}
+        <MobileContentLink
+          loggedIn={!!user}
+          setMobileOpen={setMobileOpen}
+          setShowGate={setShowGate}
+        />
         {user ? (
           <MobileUserSection setMobileOpen={setMobileOpen} />
         ) : (

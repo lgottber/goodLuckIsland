@@ -41,3 +41,16 @@ export function newId(): string {
 export function nowIso(): string {
   return new Date().toISOString();
 }
+
+// For public, admin-managed content endpoints with no per-user variance
+// (articles, episodes, pinwirl questions, etc.) -- served from Cloudflare's
+// edge cache for `seconds`, then revalidated in the background while still
+// serving the last good response for up to `staleSeconds` more.
+export function publicCacheHeaders(
+  seconds: number,
+  staleSeconds: number,
+): HeadersInit {
+  return {
+    "Cache-Control": `public, max-age=0, s-maxage=${seconds}, stale-while-revalidate=${staleSeconds}`,
+  };
+}

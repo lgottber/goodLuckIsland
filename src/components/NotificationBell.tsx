@@ -22,10 +22,9 @@ export default function NotificationBell({ userId }: { userId: string }) {
   }, [userId]);
 
   function handleOpen() {
-    setOpen((prev) => {
-      if (!prev) trackEvent("notifications_opened");
-      return !prev;
-    });
+    const next = !open;
+    setOpen(next);
+    if (next) trackEvent("notifications_opened");
   }
 
   function handleMarkAllRead() {
