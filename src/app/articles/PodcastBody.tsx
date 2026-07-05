@@ -7,13 +7,7 @@ import Pagination from "../../components/Pagination";
 import { ClockIcon } from "../../components/Icons";
 import Icon from "../../components/Icon";
 import type { Episode } from "../../lib/articlesApi";
-
-const DURATION_FILTERS = [
-  { label: "All", value: "all" },
-  { label: "Under 30 min", value: "short" },
-  { label: "30–60 min", value: "medium" },
-  { label: "Over 60 min", value: "long" },
-];
+import { DURATION_FILTERS } from "../../lib/durationFilter";
 
 interface Props {
   featured: Episode;
@@ -41,16 +35,20 @@ export default function PodcastBody({
   return (
     <div className="podcast-tab-wrapper">
       <div className="podcast-subscribe-row">
-        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
-          <button type="button" className="podcast-sub-btn">
-            Subscribe on YouTube
-          </button>
+        <a
+          href="https://youtube.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="podcast-sub-btn"
+        >
+          Subscribe on YouTube
         </a>
-        <button type="button" className="podcast-sub-btn">
-          Apple Podcasts
+        {/* No show URLs yet -- disabled instead of a dead-looking link. Wire up once available. */}
+        <button type="button" className="podcast-sub-btn" disabled aria-disabled="true">
+          Apple Podcasts (Coming Soon)
         </button>
-        <button type="button" className="podcast-sub-btn">
-          Spotify
+        <button type="button" className="podcast-sub-btn" disabled aria-disabled="true">
+          Spotify (Coming Soon)
         </button>
       </div>
 

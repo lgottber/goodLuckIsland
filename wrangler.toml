@@ -22,3 +22,23 @@ dataset = "good_luck_island_events"
 binding = "DB"
 database_name = "good-luck-db"
 database_id = "b8a212cf-be15-4baa-a2f2-b9c86a3908e0"
+
+# General anti-spam net applied to every /api/* request in
+# src/middleware.ts, keyed by client IP. Not endpoint-specific -- just
+# catches bulk/bot floods across the whole API surface.
+[[ratelimits]]
+name = "API_RATE_LIMITER"
+namespace_id = "1101"
+[ratelimits.simple]
+limit = 120
+period = 60
+
+# Stricter limit for the fully-anonymous endpoints that need no session
+# at all (unsubscribe links, analytics beacons) -- see
+# src/app/api/unsubscribe/route.ts and src/app/api/track/route.ts.
+[[ratelimits]]
+name = "ANON_RATE_LIMITER"
+namespace_id = "1102"
+[ratelimits.simple]
+limit = 20
+period = 60

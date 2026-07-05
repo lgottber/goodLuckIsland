@@ -76,10 +76,9 @@ export default function VideosBody({
                   href={`https://www.youtube.com/watch?v=${featured.youtubeId}`}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="btn-youtube"
                 >
-                  <button type="button" className="btn-youtube">
-                    Open on YouTube
-                  </button>
+                  Open on YouTube
                 </a>
               </div>
             </div>

@@ -31,10 +31,9 @@ export default function VideoModal({ video, onClose }: { video: Video; onClose: 
           href={`https://www.youtube.com/watch?v=${video.youtubeId}`}
           target="_blank"
           rel="noopener noreferrer"
+          className="video-modal-yt"
         >
-          <button type="button" className="video-modal-yt">
-            Open on YouTube
-          </button>
+          Open on YouTube
         </a>
       </div>
     </Modal>

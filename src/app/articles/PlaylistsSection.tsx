@@ -23,12 +23,22 @@ export default function PlaylistsSection({ playlists, userId, savedEpisodeIds }:
 
   useEffect(() => {
     if (!selectedId) return;
+    let cancelled = false;
     setDetailLoading(true);
     setDetailError(false);
     fetchPlaylist(selectedId)
-      .then(setDetail)
-      .catch(() => setDetailError(true))
-      .finally(() => setDetailLoading(false));
+      .then((result) => {
+        if (!cancelled) setDetail(result);
+      })
+      .catch(() => {
+        if (!cancelled) setDetailError(true);
+      })
+      .finally(() => {
+        if (!cancelled) setDetailLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [selectedId]);
 
   if (selectedId) {

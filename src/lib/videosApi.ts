@@ -1,4 +1,5 @@
 import { apiFetch } from "./apiClient";
+import { createCachedFetcher } from "./clientCache";
 
 export type Video = {
   id: number;
@@ -11,8 +12,10 @@ export type Video = {
   thumbnail: string | null;
 };
 
+const cachedVideos = createCachedFetcher<Video[]>();
+
 export async function fetchVideos(): Promise<Video[]> {
-  return apiFetch<Video[]>("/content/videos");
+  return cachedVideos("videos", () => apiFetch<Video[]>("/content/videos"));
 }
 
 export async function fetchVideosByIds(ids: number[]): Promise<Video[]> {
