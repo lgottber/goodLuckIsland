@@ -5,6 +5,7 @@ import { useSubmitFeedback } from "../../hooks/useSubmitFeedback";
 import { useAuth0 as useAuth0User } from "@auth0/auth0-react";
 import NavBar from "../../components/NavBarDynamic";
 import AvatarDisplay from "./AvatarDisplay";
+import ProfileBadges from "./ProfileBadges";
 import AvatarPickerModal from "./AvatarPickerModal";
 import EditModal from "./EditModal";
 import Icon from "./Icon";
@@ -45,12 +46,6 @@ const INITIAL_USER = {
   mantra: "Peace of mind, planned for.",
   memberSince: "",
   interests: new Array<string>(),
-  stats: {
-    articlesRead: 0,
-    podcastsListened: 0,
-    savedItems: 0,
-    daysActive: 0,
-  },
   age: "",
   occupation: "",
   yearsInOccupation: "",
@@ -412,29 +407,8 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* ── STATS STRIP ── */}
-        <div className="profile-stats-wrap">
-          <div className="profile-stats-row">
-            <div className="profile-stat">
-              <div className="profile-stat-num">{user.stats.articlesRead}</div>
-              <div className="profile-stat-label">Articles Read</div>
-            </div>
-            <div className="profile-stat">
-              <div className="profile-stat-num">
-                {user.stats.podcastsListened}
-              </div>
-              <div className="profile-stat-label">Podcasts</div>
-            </div>
-            <div className="profile-stat">
-              <div className="profile-stat-num">{user.stats.savedItems}</div>
-              <div className="profile-stat-label">Saved Items</div>
-            </div>
-            <div className="profile-stat">
-              <div className="profile-stat-num">{user.stats.daysActive}</div>
-              <div className="profile-stat-label">Days Active</div>
-            </div>
-          </div>
-        </div>
+        {/* ── BADGES ── */}
+        <ProfileBadges userId={auth0User?.sub ?? ""} />
 
         {/* ── CONTENT ── */}
         <div className="profile-content">

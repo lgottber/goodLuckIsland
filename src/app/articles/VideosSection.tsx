@@ -1,16 +1,22 @@
 import { useEffect, useState } from "react";
 import VideosBody from "./VideosBody";
 import VideoModal from "./VideoModal";
+import { markContentViewed } from "../../lib/badgesApi";
 import type { Video } from "../../lib/videosApi";
 import { matchesDurationFilter } from "../../lib/durationFilter";
 
 const PAGE_SIZE = 12;
 
-export default function VideosSection({ videos }: { videos: Video[] }) {
+export default function VideosSection({ videos, userId }: { videos: Video[]; userId: string }) {
   const [featuredPlaying, setFeaturedPlaying] = useState(false);
   const [modalVideo, setModalVideo] = useState<Video | null>(null);
   const [durationFilter, setDurationFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
+
+  function handlePlayVideo(video: Video) {
+    if (userId) markContentViewed("video", video.id);
+    setModalVideo(video);
+  }
 
   useEffect(() => {
     setCurrentPage(1);
@@ -36,7 +42,7 @@ export default function VideosSection({ videos }: { videos: Video[] }) {
         visibleVideos={pageVideos}
         featuredPlaying={featuredPlaying}
         setFeaturedPlaying={setFeaturedPlaying}
-        onPlayVideo={setModalVideo}
+        onPlayVideo={handlePlayVideo}
         durationFilter={durationFilter}
         setDurationFilter={setDurationFilter}
         currentPage={currentPage}

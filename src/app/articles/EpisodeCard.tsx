@@ -1,6 +1,7 @@
 import Icon from "../../components/Icon";
 import PictureImage from "../../components/PictureImage";
 import BookmarkButton from "./BookmarkButton";
+import { markContentViewed } from "../../lib/badgesApi";
 import type { Episode } from "../../lib/articlesApi";
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
 
 export default function EpisodeCard({ ep, userId, isSaved }: Props) {
   function handleClick() {
+    if (userId) markContentViewed("episode", ep.id);
     if (ep.podcastUrl) globalThis.open(ep.podcastUrl, "_blank", "noopener,noreferrer");
   }
 

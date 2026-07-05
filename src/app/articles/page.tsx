@@ -141,7 +141,7 @@ export default function ArticlesPage() {
           <PodcastSection episodes={episodes} userId={userId} savedEpisodeIds={savedEpisodeIds} />
         )}
         {!loading && !loadError && activeTab === "videos" && (
-          <VideosSection videos={videos} />
+          <VideosSection videos={videos} userId={userId} />
         )}
         {!loading && !loadError && activeTab === "playlists" && (
           <PlaylistsSection playlists={playlists} userId={userId} savedEpisodeIds={savedEpisodeIds} />

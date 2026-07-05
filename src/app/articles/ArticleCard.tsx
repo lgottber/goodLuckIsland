@@ -1,5 +1,6 @@
 import PictureImage from "../../components/PictureImage";
 import BookmarkButton from "./BookmarkButton";
+import { markContentViewed } from "../../lib/badgesApi";
 import type { Article } from "../../lib/articlesApi";
 
 interface Props {
@@ -35,7 +36,11 @@ export default function ArticleCard({ article, userId, isSaved }: Props) {
         </div>
         <h3 className="article-card-title">{article.title}</h3>
         <p className="article-card-excerpt">{article.excerpt}</p>
-        <button type="button" className="article-card-read">
+        <button
+          type="button"
+          className="article-card-read"
+          onClick={() => userId && markContentViewed("article", article.id)}
+        >
           Read More
         </button>
       </div>

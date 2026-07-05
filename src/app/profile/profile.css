@@ -424,6 +424,38 @@ body {
   margin-top: 0.4rem;
 }
 
+.profile-badges-row {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 1.25rem 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.profile-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 5rem;
+  text-align: center;
+}
+
+.profile-badge-img {
+  width: 3.5rem;
+  height: 3.5rem;
+  object-fit: contain;
+}
+
+.profile-badge-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+  margin-top: 0.4rem;
+}
+
 /* ── CONTENT ── */
 .profile-content {
   max-width: 80rem;
