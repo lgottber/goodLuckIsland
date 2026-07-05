@@ -679,6 +679,26 @@ body {
   box-shadow: 0 6px 20px rgba(232, 103, 58, 0.3);
 }
 
+.contact-submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
+.contact-form-error {
+  font-size: 0.8rem;
+  color: var(--coral-dk);
+}
+
+.contact-form-success {
+  justify-content: center;
+  align-items: flex-start;
+  font-family: var(--serif);
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  color: var(--navy);
+}
+
 /* ── FOOTER BAND ── */
 .about-footer-band {
   background: var(--cream-dk);
