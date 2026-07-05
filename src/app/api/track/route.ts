@@ -1,4 +1,5 @@
 import { getRequestContext } from "@cloudflare/next-on-pages";
+import { verifyMember } from "../../../lib/auth.server";
 
 export const runtime = "edge";
 
@@ -9,9 +10,10 @@ export async function POST(request: Request) {
       await request.text(),
     );
     const { event, properties } = body;
+    const member = await verifyMember(request).catch(() => null);
 
     env.AnalyticsEngineDataset.writeDataPoint({
-      blobs: [event, JSON.stringify(properties ?? {})],
+      blobs: [event, JSON.stringify(properties ?? {}), member?.sub ?? ""],
       doubles: [1],
       indexes: [event],
     });
