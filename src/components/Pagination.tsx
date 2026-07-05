@@ -1,25 +1,10 @@
 import "./pagination.css";
+import { getPageWindow } from "../lib/pageWindow";
 
 interface Props {
   currentPage: number;
   totalPages: number;
   onChange: (page: number) => void;
-}
-
-function getPageWindow(current: number, total: number): (number | "…")[] {
-  const pages: (number | "…")[] = [];
-  const window = 1;
-
-  for (let p = 1; p <= total; p++) {
-    const isEdge = p === 1 || p === total;
-    const isNearCurrent = Math.abs(p - current) <= window;
-    if (isEdge || isNearCurrent) {
-      pages.push(p);
-    } else if (pages[pages.length - 1] !== "…") {
-      pages.push("…");
-    }
-  }
-  return pages;
 }
 
 export default function Pagination({ currentPage, totalPages, onChange }: Props) {

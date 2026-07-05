@@ -10,6 +10,7 @@
     "deploy:production": "wrangler pages deploy .vercel/output/static --project-name good-luck-island --branch main",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "test": "vitest run",
     "format": "prettier --write .",
     "postinstall": "patch-package",
     "format:check": "prettier --check .",
@@ -45,6 +46,7 @@
     "patch-package": "^8.0.1",
     "prettier": "^3.0.0",
     "typescript": "6.0.2",
+    "vitest": "^4.1.9",
     "wrangler": "^4.85.0"
   }
 }

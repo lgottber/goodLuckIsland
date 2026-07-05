@@ -1,4 +1,5 @@
 import { apiFetch } from "./apiClient";
+import { createCachedFetcher } from "./clientCache";
 
 export type Episode = {
   id: number;
@@ -22,12 +23,15 @@ export type Article = {
   featured: boolean;
 };
 
+const cachedEpisodes = createCachedFetcher<Episode[]>();
+const cachedArticles = createCachedFetcher<Article[]>();
+
 export async function fetchEpisodes(): Promise<Episode[]> {
-  return apiFetch<Episode[]>("/content/episodes");
+  return cachedEpisodes("episodes", () => apiFetch<Episode[]>("/content/episodes"));
 }
 
 export async function fetchArticles(): Promise<Article[]> {
-  return apiFetch<Article[]>("/content/articles");
+  return cachedArticles("articles", () => apiFetch<Article[]>("/content/articles"));
 }
 
 export async function fetchArticlesByIds(ids: number[]): Promise<Article[]> {
