@@ -6,7 +6,7 @@ A self-help education platform for Gen X professionals.
 
 - **Framework**: Next.js (TypeScript)
 - **Auth**: Auth0
-- **Database**: Supabase
+- **Database**: Cloudflare D1 (shared with the goodLuckAdmin repo)
 - **Infrastructure**: Cloudflare Pages (deployed via Wrangler)
 - **IaC**: Terraform (Cloudflare provider)
 
