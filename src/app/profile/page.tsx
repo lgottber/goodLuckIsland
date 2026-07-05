@@ -26,6 +26,10 @@ import ProfileMetaItem from "./ProfileMetaItem";
 import InfoRow from "./InfoRow";
 import ProfileInfoEmpty from "./ProfileInfoEmpty";
 import ProfileActionsMenu from "./ProfileActionsMenu";
+import ContactForm, { ContactFormData } from "../about/ContactForm";
+import ContactFormSuccess from "../about/ContactFormSuccess";
+import { ApiError } from "../../lib/apiClient";
+import { submitTestimonial } from "../../lib/testimonialsApi";
 import "./profile.css";
 
 const INITIAL_USER = {
@@ -147,6 +151,34 @@ export default function ProfilePage() {
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [deletionScheduled, setDeletionScheduled] = useState(false);
+  const [contactForm, setContactForm] = useState<ContactFormData>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    message: "",
+  });
+  const [contactSubmitting, setContactSubmitting] = useState(false);
+  const [contactSubmitted, setContactSubmitted] = useState(false);
+  const [contactError, setContactError] = useState("");
+
+  async function handleContactSubmit() {
+    if (!contactForm.email || !contactForm.message || contactSubmitting) return;
+    setContactSubmitting(true);
+    setContactError("");
+    try {
+      await submitTestimonial(contactForm);
+      setContactSubmitted(true);
+      setContactForm({ firstName: "", lastName: "", email: "", message: "" });
+    } catch (err) {
+      setContactError(
+        err instanceof ApiError && err.status === 429
+          ? "You've submitted a few of these already — please try again later."
+          : "Something went wrong sending your message. Please try again.",
+      );
+    } finally {
+      setContactSubmitting(false);
+    }
+  }
 
   async function handlePasswordReset() {
     if (!auth0User?.email) {
@@ -459,6 +491,26 @@ export default function ProfilePage() {
                 <InterestsEmpty onEditClick={() => setEditing(true)} />
               )}
             </div>
+          </div>
+
+          {/* Contact Nick card */}
+          <div className="profile-card profile-card--contact">
+            <h3>Send Nick a Message</h3>
+            <p>
+              Have a question, an idea, or just want to say hello? Drop Nick a
+              message below.
+            </p>
+            {contactSubmitted ? (
+              <ContactFormSuccess />
+            ) : (
+              <ContactForm
+                formData={contactForm}
+                onChange={setContactForm}
+                submitting={contactSubmitting}
+                error={contactError}
+                onSubmit={handleContactSubmit}
+              />
+            )}
           </div>
         </div>
       </div>

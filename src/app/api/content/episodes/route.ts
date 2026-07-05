@@ -15,9 +15,9 @@ interface EpisodeRow {
 }
 
 // Matches the shape src/lib/articlesApi.ts's fetchEpisodes/
-// fetchEpisodesByIds return -- CMS-only columns (tags, status, etc.) are
-// deliberately not exposed here since no current consumer reads them
-// from this endpoint.
+// fetchEpisodesByIds expect -- CMS-only columns (tags, status, etc.) are
+// deliberately not exposed here since no current consumer reads them from
+// this endpoint.
 function mapEpisode(ep: EpisodeRow) {
   return {
     id: ep.id,
