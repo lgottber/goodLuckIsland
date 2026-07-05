@@ -96,14 +96,11 @@ svg {
   background: rgba(255, 255, 255, 0.15);
   color: #fff;
 }
-.video-modal-embed {
-  aspect-ratio: 16/9;
-  background: #000;
-}
-.video-modal-embed iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
+.video-modal-desc {
+  padding: 0 1.5rem 1.25rem;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.9rem;
+  line-height: 1.6;
 }
 .video-modal-footer {
   padding: 1.25rem 1.5rem;
@@ -116,11 +113,11 @@ svg {
   font-size: 0.78rem;
   color: rgba(255, 255, 255, 0.6);
 }
-.video-modal-yt {
+.video-modal-listen {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: #ff0000;
+  background: var(--coral);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -129,8 +126,8 @@ svg {
   font-weight: 700;
   transition: background 0.2s;
 }
-.video-modal-yt:hover {
-  background: #cc0000;
+.video-modal-listen:hover {
+  background: var(--coral-dk);
 }
 @media (max-width: 37.5rem) {
   .video-modal {
