@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getDb } from "../../../../lib/db.server";
+import { getDb, publicCacheHeaders } from "../../../../lib/db.server";
 
 export const runtime = "edge";
 
@@ -11,5 +11,7 @@ export async function GET() {
       "SELECT dimension, band, body FROM pinwirl_recommendations ORDER BY sort_order",
     )
     .all<{ dimension: string; band: string; body: string }>();
-  return NextResponse.json(results ?? []);
+  return NextResponse.json(results ?? [], {
+    headers: publicCacheHeaders(300, 3600),
+  });
 }

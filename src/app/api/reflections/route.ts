@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "../../../lib/db.server";
+import { getDb, publicCacheHeaders } from "../../../lib/db.server";
 
 export const runtime = "edge";
 
@@ -20,5 +20,7 @@ export async function GET(request: NextRequest) {
     )
     .bind(stepSlug)
     .all<{ body: string }>();
-  return NextResponse.json((results ?? []).map((r) => r.body));
+  return NextResponse.json((results ?? []).map((r) => r.body), {
+    headers: publicCacheHeaders(300, 3600),
+  });
 }

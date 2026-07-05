@@ -1,50 +1,65 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchArticles, fetchEpisodes } from "../../lib/articlesApi";
 import type { Article, Episode } from "../../lib/articlesApi";
+import { fetchVideos } from "../../lib/videosApi";
+import type { Video } from "../../lib/videosApi";
+import { fetchPlaylists } from "../../lib/playlistsApi";
+import type { Playlist } from "../../lib/playlistsApi";
 import { fetchSavedIds } from "../../lib/savedApi";
 import NavBar from "../../components/NavBarDynamic";
 import SearchBar from "./SearchBar";
-import VideoModal from "./VideoModal";
-import ArticlesContent from "./ArticlesContent";
+import FilterTabs from "../../components/FilterTabs";
+import ArticlesTab from "./ArticlesTab";
+import PodcastSection from "./PodcastSection";
+import VideosSection from "./VideosSection";
+import PlaylistsSection from "./PlaylistsSection";
 import "./articles.css";
+import "./playlists.css";
+
+const VALID_TABS = ["articles", "podcast", "videos", "playlists"];
+
+const CONTENT_TABS = [
+  { label: "Articles", value: "articles" },
+  { label: "Podcast", value: "podcast" },
+  { label: "Videos", value: "videos" },
+  { label: "Playlists", value: "playlists" },
+];
 
 export default function ArticlesPage() {
   const { user } = useAuth0();
   const userId = user?.sub ?? "";
+  const searchParams = useSearchParams();
 
-  const [activeTab, setActiveTab] = useState("articles");
+  const [activeTab, setActiveTab] = useState(() => {
+    const tab = searchParams.get("tab");
+    return tab && VALID_TABS.includes(tab) ? tab : "articles";
+  });
   const [activeCategory, setActiveCategory] = useState("All");
-  const [featuredPlaying, setFeaturedPlaying] = useState(false);
-  const [modalEpisode, setModalEpisode] = useState<Episode | null>(null);
-  const [episodes, setEpisodes] = useState<Episode[]>([]);
   const [allArticles, setAllArticles] = useState<Article[]>([]);
+  const [episodes, setEpisodes] = useState<Episode[]>([]);
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
   const [sort, setSort] = useState<"newest" | "a-z">("newest");
   const [view, setView] = useState<"grid" | "list">("grid");
-  const [durationFilter, setDurationFilter] = useState("all");
   const [savedArticleIds, setSavedArticleIds] = useState(new Set<number>());
   const [savedEpisodeIds, setSavedEpisodeIds] = useState(new Set<number>());
 
   useEffect(() => {
-    async function loadData() {
-      try {
-        const [fetchedEpisodes, articles] = await Promise.all([
-          fetchEpisodes(),
-          fetchArticles(),
-        ]);
-        setEpisodes(fetchedEpisodes);
+    Promise.all([fetchArticles(), fetchEpisodes(), fetchVideos(), fetchPlaylists()])
+      .then(([articles, eps, vids, pls]) => {
         setAllArticles(articles);
-      } catch {
-        setLoadError(true);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadData();
+        setEpisodes(eps);
+        setVideos(vids);
+        setPlaylists(pls);
+      })
+      .catch(() => setLoadError(true))
+      .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -76,9 +91,6 @@ export default function ArticlesPage() {
     }
   }
 
-  const podcastFeatured = episodes[0];
-  const podcastRest = episodes.slice(1);
-
   return (
     <>
       <NavBar activePage="articles" largeAvatar />
@@ -86,14 +98,22 @@ export default function ArticlesPage() {
       <div className="articles-page">
         <div className="articles-header">
           <span className="articles-header-eyebrow">Member Content</span>
-          <h1>Podcasts &amp; Articles</h1>
+          <h1>Membership Content</h1>
           <p>
-            Honest conversations and thoughtful reading for Gen X professionals
-            preparing for retirement — focused on whole-life wellness, clear
-            thinking, and intentional choices.
+            Articles, podcast episodes, videos, and curated playlists for Gen X
+            professionals preparing for retirement — focused on whole-life
+            wellness, clear thinking, and intentional choices.
           </p>
           <SearchBar />
         </div>
+
+        <FilterTabs
+          containerClass="content-tabs"
+          buttonClass="content-tab"
+          items={CONTENT_TABS}
+          active={activeTab}
+          onChange={setActiveTab}
+        />
 
         {loading && <p className="articles-loading">Loading content…</p>}
 
@@ -103,38 +123,30 @@ export default function ArticlesPage() {
           </p>
         )}
 
-        {!loading && !loadError && (
-          <ArticlesContent
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
+        {!loading && !loadError && activeTab === "articles" && (
+          <ArticlesTab
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
             featured={featured}
             filtered={filtered}
-            podcastFeatured={podcastFeatured}
-            podcastRest={podcastRest}
-            featuredPlaying={featuredPlaying}
-            setFeaturedPlaying={setFeaturedPlaying}
-            setModalEpisode={setModalEpisode}
             sort={sort}
             setSort={setSort}
             view={view}
             setView={setView}
-            durationFilter={durationFilter}
-            setDurationFilter={setDurationFilter}
             userId={userId}
             savedArticleIds={savedArticleIds}
-            savedEpisodeIds={savedEpisodeIds}
           />
         )}
+        {!loading && !loadError && activeTab === "podcast" && (
+          <PodcastSection episodes={episodes} userId={userId} savedEpisodeIds={savedEpisodeIds} />
+        )}
+        {!loading && !loadError && activeTab === "videos" && (
+          <VideosSection videos={videos} />
+        )}
+        {!loading && !loadError && activeTab === "playlists" && (
+          <PlaylistsSection playlists={playlists} userId={userId} savedEpisodeIds={savedEpisodeIds} />
+        )}
       </div>
-
-      {modalEpisode && (
-        <VideoModal
-          episode={modalEpisode}
-          onClose={() => setModalEpisode(null)}
-        />
-      )}
     </>
   );
 }

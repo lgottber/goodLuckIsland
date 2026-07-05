@@ -10,6 +10,23 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL("/unsubscribe?error=1", request.url));
   }
 
+  // Extra, stricter throttle on top of the general API_RATE_LIMITER in
+  // src/middleware.ts -- this link needs no session at all, so it's an
+  // easy target for mass-unsubscribe abuse if someone enumerates ids.
+  try {
+    const { env } = getRequestContext<CloudflareEnv>();
+    const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
+    const { success } = await env.ANON_RATE_LIMITER.limit({
+      key: `unsubscribe:${ip}`,
+    });
+    if (!success) {
+      return NextResponse.redirect(new URL("/unsubscribe?error=1", request.url));
+    }
+  } catch {
+    // ANON_RATE_LIMITER binding is unavailable outside the Cloudflare
+    // runtime (local next dev) -- don't block requests locally.
+  }
+
   const db = getDb();
   try {
     await db

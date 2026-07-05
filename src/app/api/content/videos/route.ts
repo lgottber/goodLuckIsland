@@ -3,31 +3,29 @@ import { getDb, publicCacheHeaders } from "../../../../lib/db.server";
 
 export const runtime = "edge";
 
-interface EpisodeRow {
+interface VideoRow {
   id: number;
   num: string | null;
   title: string;
   description: string | null;
   date: string | null;
   duration: string | null;
-  podcast_url: string | null;
+  youtube_id: string | null;
   thumbnail: string | null;
 }
 
-// Matches the shape src/lib/articlesApi.ts's fetchEpisodes/
-// fetchEpisodesByIds return -- CMS-only columns (tags, status, etc.) are
-// deliberately not exposed here since no current consumer reads them
-// from this endpoint.
-function mapEpisode(ep: EpisodeRow) {
+// CMS-only columns (tags, status, etc.) are deliberately not exposed
+// here since no current consumer reads them from this endpoint.
+function mapVideo(v: VideoRow) {
   return {
-    id: ep.id,
-    num: ep.num,
-    title: ep.title,
-    desc: ep.description,
-    date: ep.date,
-    duration: ep.duration,
-    podcastUrl: ep.podcast_url,
-    thumbnail: ep.thumbnail,
+    id: v.id,
+    num: v.num,
+    title: v.title,
+    desc: v.description,
+    date: v.date,
+    duration: v.duration,
+    youtubeId: v.youtube_id,
+    thumbnail: v.thumbnail,
   };
 }
 
@@ -45,18 +43,18 @@ export async function GET(request: NextRequest) {
     if (ids.length === 0) return NextResponse.json([]);
     const placeholders = ids.map(() => "?").join(",");
     const { results } = await db
-      .prepare(`SELECT * FROM episodes WHERE id IN (${placeholders})`)
+      .prepare(`SELECT * FROM videos WHERE id IN (${placeholders})`)
       .bind(...ids)
-      .all<EpisodeRow>();
-    return NextResponse.json((results ?? []).map(mapEpisode), {
+      .all<VideoRow>();
+    return NextResponse.json((results ?? []).map(mapVideo), {
       headers: publicCacheHeaders(300, 3600),
     });
   }
 
   const { results } = await db
-    .prepare("SELECT * FROM episodes ORDER BY sort_order")
-    .all<EpisodeRow>();
-  return NextResponse.json((results ?? []).map(mapEpisode), {
+    .prepare("SELECT * FROM videos ORDER BY sort_order")
+    .all<VideoRow>();
+  return NextResponse.json((results ?? []).map(mapVideo), {
     headers: publicCacheHeaders(300, 3600),
   });
 }

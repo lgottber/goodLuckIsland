@@ -11,7 +11,7 @@ export default function SavedList({ items }: { items: SavedItemData[] }) {
         <h3>Nothing saved yet</h3>
         <p>Bookmark articles and podcast episodes to find them here.</p>
         <Link href="/articles" className="saved-empty-cta">
-          Browse Podcasts &amp; Articles
+          Browse Articles
         </Link>
       </div>
     );

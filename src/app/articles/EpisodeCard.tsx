@@ -1,18 +1,21 @@
-import { PlayIcon } from "../../components/Icons";
+import Icon from "../../components/Icon";
 import PictureImage from "../../components/PictureImage";
 import BookmarkButton from "./BookmarkButton";
 import type { Episode } from "../../lib/articlesApi";
 
 interface Props {
   ep: Episode;
-  onPlay: () => void;
   userId: string;
   isSaved: boolean;
 }
 
-export default function EpisodeCard({ ep, onPlay, userId, isSaved }: Props) {
+export default function EpisodeCard({ ep, userId, isSaved }: Props) {
+  function handleClick() {
+    if (ep.podcastUrl) globalThis.open(ep.podcastUrl, "_blank", "noopener,noreferrer");
+  }
+
   return (
-    <div className="episode-card" onClick={onPlay}>
+    <div className="episode-card" onClick={handleClick}>
       <div className="episode-thumb">
         <PictureImage
           name={ep.thumbnail ?? undefined}
@@ -21,7 +24,7 @@ export default function EpisodeCard({ ep, onPlay, userId, isSaved }: Props) {
         />
         <div className="episode-thumb-overlay">
           <button type="button" className="episode-thumb-play">
-            <PlayIcon size={16} />
+            <Icon name="headphones" size={16} />
           </button>
         </div>
         <span className="episode-duration-badge">{ep.duration}</span>
@@ -42,7 +45,7 @@ export default function EpisodeCard({ ep, onPlay, userId, isSaved }: Props) {
         <h3 className="episode-body-title">{ep.title}</h3>
         <p className="episode-body-desc">{ep.desc}</p>
         <div className="episode-body-watch">
-          <PlayIcon size={12} /> Watch Episode
+          <Icon name="headphones" size={12} /> Listen to Episode
         </div>
       </div>
     </div>
