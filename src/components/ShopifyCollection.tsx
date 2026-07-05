@@ -38,18 +38,25 @@ export default function ShopifyCollection() {
 
   async function ShopifyBuyInit() {
     if (initializedRef.current) return;
+
+    const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
+    const token = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN;
+    const collectionId = process.env.NEXT_PUBLIC_SHOPIFY_COLLECTION_ID;
+
+    if (!domain || !token || !collectionId) {
+      console.error("ShopifyCollection: missing required env vars (NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN, NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN, NEXT_PUBLIC_SHOPIFY_COLLECTION_ID)");
+      return;
+    }
+
     initializedRef.current = true;
 
-    const client = window.ShopifyBuy.buildClient({
-      domain: process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN!,
-      storefrontAccessToken: process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN!,
-    });
+    try {
+      const client = window.ShopifyBuy.buildClient({ domain, storefrontAccessToken: token });
+      const ui = await window.ShopifyBuy.UI.onReady(client);
 
-    const ui = await window.ShopifyBuy.UI.onReady(client);
-
-    if (abortedRef.current) return;
-    ui.createComponent("collection", {
-      id: process.env.NEXT_PUBLIC_SHOPIFY_COLLECTION_ID!,
+      if (abortedRef.current) return;
+      ui.createComponent("collection", {
+        id: collectionId,
       node: collectionRef.current,
       moneyFormat: "%24%7B%7Bamount%7D%7D",
       options: {
@@ -221,6 +228,10 @@ export default function ShopifyCollection() {
         },
       },
     });
+    } catch (err) {
+      console.error("ShopifyCollection: SDK initialization failed", err);
+      initializedRef.current = false;
+    }
   }
 
   useEffect(() => {

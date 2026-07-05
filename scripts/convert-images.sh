@@ -28,7 +28,7 @@ to_snake_case() {
 # Step 1: Rename all image files to snake_case.
 echo ""
 echo "==> Renaming files to snake_case..."
-find "$PUBLIC_DIR" -maxdepth 1 -type f \( \
+find "$PUBLIC_DIR" -maxdepth 2 -type f \( \
   -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" \
   -o -iname "*.gif" -o -iname "*.webp" \
 \) | while read -r img; do
@@ -48,7 +48,7 @@ done
 # GIFs are skipped — animated GIFs cannot be losslessly represented as a single PNG.
 echo ""
 echo "==> Converting non-PNG images to PNG..."
-find "$PUBLIC_DIR" -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.jpeg" \) | while read -r img; do
+find "$PUBLIC_DIR" -maxdepth 2 -type f \( -iname "*.jpg" -o -iname "*.jpeg" \) | while read -r img; do
   base="${img%.*}"
   png="${base}.png"
   echo "    $img -> $png"
@@ -59,7 +59,7 @@ done
 # Step 3: Delete all existing webp files.
 echo ""
 echo "==> Deleting existing WebP files..."
-find "$PUBLIC_DIR" -maxdepth 1 -type f -iname "*.webp" | while read -r webp; do
+find "$PUBLIC_DIR" -maxdepth 2 -type f -iname "*.webp" | while read -r webp; do
   echo "    Removing $webp"
   rm "$webp"
 done
@@ -69,7 +69,7 @@ done
 # ImageMagick is used as a fallback.
 echo ""
 echo "==> Creating WebP copies..."
-find "$PUBLIC_DIR" -maxdepth 1 -type f \( -iname "*.png" -o -iname "*.gif" \) | while read -r img; do
+find "$PUBLIC_DIR" -maxdepth 2 -type f \( -iname "*.png" -o -iname "*.gif" \) | while read -r img; do
   base="${img%.*}"
   webp="${base}.webp"
   ext="${img##*.}"

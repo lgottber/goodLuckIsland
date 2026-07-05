@@ -90,9 +90,14 @@ export default function SevenShieldPillars({ progress }: { progress: UserProgres
     setOpenId((prev) => (prev === id ? null : id));
   }
 
+  const allComplete =
+    progress !== null &&
+    Object.values(progress).length === 7 &&
+    Object.values(progress).every(Boolean);
+
   const customDrawers: Record<string, ReactNode> = {
     "one-question": <OneQuestionDrawer />,
-    "pinwirl": <PinwirlDrawer />,
+    "pinwirl": <PinwirlDrawer canEdit={allComplete} />,
   };
 
   return (

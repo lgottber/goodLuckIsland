@@ -50,7 +50,7 @@ export default function QuizPage() {
 
   return (
     <>
-      <NavBarDynamic />
+      <NavBarDynamic largeAvatar />
       <div className="quiz-page">
         {phase === "intro" && <QuizIntro onStart={() => setPhase("quiz")} />}
 

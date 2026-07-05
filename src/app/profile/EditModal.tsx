@@ -101,13 +101,12 @@ export default function EditModal({ user, onSave, onClose }: { user: ProfileForm
           <button type="button" className="btn-cancel" onClick={onClose}>
             Cancel
           </button>
-          {tabIdx < MODAL_TABS.length - 1 ? (
+          <ModalActionButton label="Save Changes" onClick={() => onSave(form)} />
+          {tabIdx < MODAL_TABS.length - 1 && (
             <ModalActionButton
               label="Next →"
               onClick={() => setActiveTab(MODAL_TABS[tabIdx + 1])}
             />
-          ) : (
-            <ModalActionButton label="Save Changes" onClick={() => onSave(form)} />
           )}
         </div>
       </div>

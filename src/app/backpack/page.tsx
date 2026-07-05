@@ -5,8 +5,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useRouter } from "next/navigation";
 import NavBar from "../../components/NavBarDynamic";
 import BackpackContent from "./BackpackContent";
-import { fetchBackpackSections } from "../../lib/backpackApi";
-import type { BackpackSection } from "../../lib/backpackApi";
 import { fetchUserProgress } from "../../lib/sevenStepApi";
 import type { UserProgress } from "../../lib/sevenStepApi";
 import "./backpack.css";
@@ -16,10 +14,9 @@ export default function BackpackPage() {
   const userId = user?.sub ?? "";
   const router = useRouter();
 
-  const [sections, setSections] = useState<BackpackSection[]>([]);
   const [progress, setProgress] = useState<UserProgress | null>(null);
   const [loading, setLoading] = useState(true);
-  const [loadError, setLoadError] = useState(false);
+  const [loadError] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -28,9 +25,7 @@ export default function BackpackPage() {
   }, [authLoading, isAuthenticated, router]);
 
   useEffect(() => {
-    fetchBackpackSections()
-      .then((data) => { setSections(data); setLoading(false); })
-      .catch(() => { setLoadError(true); setLoading(false); });
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -61,7 +56,7 @@ export default function BackpackPage() {
         )}
 
         {!loading && !loadError && (
-          <BackpackContent sections={sections} progress={progress} />
+          <BackpackContent progress={progress} />
         )}
       </div>
     </>
