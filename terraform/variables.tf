@@ -63,18 +63,6 @@ variable "next_public_auth0_client_id" {
   sensitive   = true
 }
 
-variable "next_public_supabase_url" {
-  description = "Supabase project URL"
-  type        = string
-  sensitive   = true
-}
-
-variable "next_public_supabase_anon_key" {
-  description = "Supabase anonymous (public) API key"
-  type        = string
-  sensitive   = true
-}
-
 variable "next_public_shopify_store_domain" {
   description = "Shopify storefront domain (e.g. your-store.myshopify.com)"
   type        = string
