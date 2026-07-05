@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getDb } from "../../../../../lib/db.server";
+import { getDb, publicCacheHeaders } from "../../../../../lib/db.server";
 
 export const runtime = "edge";
 
@@ -79,10 +79,13 @@ export async function GET(
     .filter((ep): ep is EpisodeRow => ep !== undefined)
     .map(mapEpisode);
 
-  return NextResponse.json({
-    id: playlist.id,
-    name: playlist.name,
-    description: playlist.description,
-    episodes,
-  });
+  return NextResponse.json(
+    {
+      id: playlist.id,
+      name: playlist.name,
+      description: playlist.description,
+      episodes,
+    },
+    { headers: publicCacheHeaders(300, 3600) },
+  );
 }

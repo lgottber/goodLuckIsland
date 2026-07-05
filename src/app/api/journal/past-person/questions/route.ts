@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getDb } from "../../../../../lib/db.server";
+import { getDb, publicCacheHeaders } from "../../../../../lib/db.server";
 
 export const runtime = "edge";
 
@@ -12,5 +12,7 @@ export async function GET() {
       "SELECT key, text, placeholder, sort_order FROM past_person_questions ORDER BY sort_order",
     )
     .all();
-  return NextResponse.json(results ?? []);
+  return NextResponse.json(results ?? [], {
+    headers: publicCacheHeaders(300, 3600),
+  });
 }

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getDb, toBool } from "../../../../lib/db.server";
+import { getDb, publicCacheHeaders, toBool } from "../../../../lib/db.server";
 
 export const runtime = "edge";
 
@@ -43,5 +43,7 @@ export async function GET() {
     options: optionsByQuestion[q.id] ?? [],
   }));
 
-  return NextResponse.json(questions);
+  return NextResponse.json(questions, {
+    headers: publicCacheHeaders(300, 3600),
+  });
 }

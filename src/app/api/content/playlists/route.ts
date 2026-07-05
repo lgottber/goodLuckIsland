@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getDb } from "../../../../lib/db.server";
+import { getDb, publicCacheHeaders } from "../../../../lib/db.server";
 
 export const runtime = "edge";
 
@@ -23,5 +23,7 @@ export async function GET() {
   const { results } = await db
     .prepare("SELECT * FROM playlists ORDER BY created_at ASC")
     .all<PlaylistRow>();
-  return NextResponse.json((results ?? []).map(mapPlaylist));
+  return NextResponse.json((results ?? []).map(mapPlaylist), {
+    headers: publicCacheHeaders(300, 3600),
+  });
 }
