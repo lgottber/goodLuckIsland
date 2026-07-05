@@ -1,11 +1,15 @@
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import PictureImage from "../../components/PictureImage";
 import Icon from "../../components/Icon";
 import FilterTabs from "../../components/FilterTabs";
+import Pagination from "../../components/Pagination";
 import ArticleGrid from "./ArticleGrid";
 import FeaturedArticle from "./FeaturedArticle";
 import PullQuoteBand from "./PullQuoteBand";
 import type { Article } from "../../lib/articlesApi";
+
+const PAGE_SIZE = 12;
 
 const CATEGORIES = [
   "All",
@@ -46,6 +50,17 @@ export default function ArticlesTab({
   savedArticleIds,
 }: Props) {
   const sorted = sortArticles(filtered, sort);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeCategory, sort]);
+
+  const totalPages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
+  const pageArticles = sorted.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE,
+  );
 
   return (
     <>
@@ -128,10 +143,16 @@ export default function ArticlesTab({
         {activeCategory === "All" && <PullQuoteBand />}
 
         <ArticleGrid
-          articles={sorted}
+          articles={pageArticles}
           userId={userId}
           savedArticleIds={savedArticleIds}
           view={view}
+        />
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onChange={setCurrentPage}
         />
 
         <div className="newsletter-strip">

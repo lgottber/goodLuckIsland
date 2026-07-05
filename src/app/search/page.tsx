@@ -25,7 +25,6 @@ export default function SearchPage() {
   const [savedArticleIds, setSavedArticleIds] = useState(new Set<number>());
   const [savedEpisodeIds, setSavedEpisodeIds] = useState(new Set<number>());
   const [loading, setLoading] = useState(true);
-  const [playingEpisode, setPlayingEpisode] = useState<Episode | null>(null);
 
   useEffect(() => {
     Promise.all([fetchArticles(), fetchEpisodes()])
@@ -70,7 +69,7 @@ export default function SearchPage() {
       <div className="search-page">
         <div className="search-header">
           <Link href="/articles" className="search-back-link">
-            ← Back to Podcasts &amp; Articles
+            ← Back to Articles
           </Link>
           <h1 className="search-heading">Search</h1>
           <SearchBar />
@@ -97,7 +96,6 @@ export default function SearchPage() {
                 episodes={matchedEpisodes}
                 userId={userId}
                 savedEpisodeIds={savedEpisodeIds}
-                onPlay={setPlayingEpisode}
               />
             )}
             {totalResults === 0 && (
@@ -112,13 +110,6 @@ export default function SearchPage() {
           <p className="search-prompt">Enter a keyword above to search articles and podcasts.</p>
         )}
       </div>
-
-      {playingEpisode && (
-        <div
-          className="search-modal-backdrop"
-          onClick={() => setPlayingEpisode(null)}
-        />
-      )}
     </>
   );
 }
