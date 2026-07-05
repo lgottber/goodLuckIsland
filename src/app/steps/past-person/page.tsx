@@ -10,6 +10,7 @@ import {
   savePastPersonAnswer,
 } from "../../../lib/journalApi";
 import type { PastPersonQuestion } from "../../../lib/journalApi";
+import { trackEvent } from "../../../lib/analyticsApi";
 import PastPersonQuestionCard from "./PastPersonQuestion";
 import "./past-person.css";
 
@@ -45,6 +46,7 @@ export default function PastPersonPage() {
         ),
       );
       setSaveStatus("saved");
+      trackEvent("past_person_saved");
     } catch {
       setSaveStatus("error");
     }

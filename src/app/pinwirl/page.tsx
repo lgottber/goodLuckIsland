@@ -7,6 +7,7 @@ import NavBar from "../../components/NavBarDynamic";
 import PinwirlIntro from "./PinwirlIntro";
 import PinwirlAssessment from "./PinwirlAssessment";
 import "./pinwirl.css";
+import { trackEvent } from "../../lib/analyticsApi";
 
 export default function PinwirlPage() {
   const { isAuthenticated, isLoading, user } = useAuth0();
@@ -31,7 +32,13 @@ export default function PinwirlPage() {
         {started ? (
           <PinwirlAssessment userId={userId} />
         ) : (
-          <PinwirlIntro username={user?.nickname} onStart={() => setStarted(true)} />
+          <PinwirlIntro
+            username={user?.nickname}
+            onStart={() => {
+              trackEvent("pinwirl_started");
+              setStarted(true);
+            }}
+          />
         )}
       </div>
     </>

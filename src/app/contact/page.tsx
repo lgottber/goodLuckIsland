@@ -5,6 +5,7 @@ import Link from "next/link";
 import NavBar from "../../components/NavBarDynamic";
 import Icon from "../../components/Icon";
 import { useSubmitFeedback } from "../../hooks/useSubmitFeedback";
+import { trackEvent } from "../../lib/analyticsApi";
 import SubmitLabel from "../about/SubmitLabel";
 import "./contact.css";
 
@@ -19,6 +20,7 @@ export default function ContactPage() {
 
   function handleSubmit() {
     if (!formData.email || !formData.message) return;
+    trackEvent("contact_form_submitted");
     triggerSubmitted();
     setFormData({ firstName: "", lastName: "", email: "", message: "" });
   }

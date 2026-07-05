@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { fetchJournalEntry, saveJournalEntry } from "../lib/journalApi";
+import { trackEvent } from "../lib/analyticsApi";
 import { useDebounce } from "../hooks/useDebounce";
 import "./journal-entry.css";
 
@@ -16,9 +17,11 @@ export default function JournalEntry({ userId, stepSlug }: Props) {
   const [isDirty, setIsDirty] = useState(false);
   const debouncedBody = useDebounce(body, 500);
   const loadedRef = useRef(false);
+  const trackedRef = useRef(false);
 
   useEffect(() => {
     loadedRef.current = false;
+    trackedRef.current = false;
     setBody("");
     setIsDirty(false);
     setStatus("idle");
@@ -34,7 +37,13 @@ export default function JournalEntry({ userId, stepSlug }: Props) {
     if (!isDirty || !userId || !loadedRef.current) return;
     setStatus("saving");
     saveJournalEntry(userId, stepSlug, debouncedBody)
-      .then(() => setStatus("saved"))
+      .then(() => {
+        setStatus("saved");
+        if (!trackedRef.current) {
+          trackedRef.current = true;
+          trackEvent("journal_entry_saved", { stepSlug });
+        }
+      })
       .catch(() => setStatus("error"));
   }, [debouncedBody, userId, stepSlug, isDirty]);
 
