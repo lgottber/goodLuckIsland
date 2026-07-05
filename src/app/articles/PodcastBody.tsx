@@ -1,7 +1,9 @@
-import FeaturedVideoPlayer from "./FeaturedVideoPlayer";
+import FeaturedEpisode from "./FeaturedEpisode";
+import ListenButton from "./ListenButton";
 import EpisodeCard from "./EpisodeCard";
 import BookmarkButton from "./BookmarkButton";
 import FilterTabs from "../../components/FilterTabs";
+import Pagination from "../../components/Pagination";
 import { ClockIcon } from "../../components/Icons";
 import Icon from "../../components/Icon";
 import type { Episode } from "../../lib/articlesApi";
@@ -13,47 +15,29 @@ const DURATION_FILTERS = [
   { label: "Over 60 min", value: "long" },
 ];
 
-function parseMins(duration: string | null): number {
-  if (!duration) return 0;
-  const h = duration.match(/(\d+)h/);
-  const m = duration.match(/(\d+)\s*min/);
-  return (h ? parseInt(h[1], 10) * 60 : 0) + (m ? parseInt(m[1], 10) : 0);
-}
-
-function matchesDuration(ep: Episode, filter: string): boolean {
-  if (filter === "all") return true;
-  const mins = parseMins(ep.duration);
-  if (filter === "short") return mins < 30;
-  if (filter === "medium") return mins >= 30 && mins <= 60;
-  if (filter === "long") return mins > 60;
-  return true;
-}
-
 interface Props {
-  podcastFeatured: Episode;
-  podcastRest: Episode[];
-  featuredPlaying: boolean;
-  setFeaturedPlaying: (v: boolean) => void;
-  setModalEpisode: (ep: Episode | null) => void;
-  durationFilter: string;
-  setDurationFilter: (v: string) => void;
+  featured: Episode;
+  visibleEpisodes: Episode[];
   userId: string;
   savedEpisodeIds: Set<number>;
+  durationFilter: string;
+  setDurationFilter: (v: string) => void;
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
 }
 
-export default function PodcastTab({
-  podcastFeatured,
-  podcastRest,
-  featuredPlaying,
-  setFeaturedPlaying,
-  setModalEpisode,
-  durationFilter,
-  setDurationFilter,
+export default function PodcastBody({
+  featured,
+  visibleEpisodes,
   userId,
   savedEpisodeIds,
+  durationFilter,
+  setDurationFilter,
+  currentPage,
+  totalPages,
+  onPageChange,
 }: Props) {
-  const visibleEpisodes = podcastRest.filter((ep) => matchesDuration(ep, durationFilter));
-
   return (
     <div className="podcast-tab-wrapper">
       <div className="podcast-subscribe-row">
@@ -75,48 +59,29 @@ export default function PodcastTab({
           <p className="podcast-featured-label"><Icon name="film" size={14} /> Latest Episode</p>
           <div className="featured-episode">
             <div className="featured-video-side">
-              <FeaturedVideoPlayer
-                episode={podcastFeatured}
-                playing={featuredPlaying}
-                onPlay={() => setFeaturedPlaying(true)}
-              />
+              <FeaturedEpisode episode={featured} />
             </div>
 
             <div className="featured-info">
               <div className="featured-meta">
                 <span className="ep-badge">Podcast</span>
-                <span className="ep-num">{podcastFeatured.num}</span>
-                <span className="ep-date">{podcastFeatured.date}</span>
+                <span className="ep-num">{featured.num}</span>
+                <span className="ep-date">{featured.date}</span>
               </div>
-              <h2 className="featured-title">{podcastFeatured.title}</h2>
-              <p className="featured-desc">{podcastFeatured.desc}</p>
+              <h2 className="featured-title">{featured.title}</h2>
+              <p className="featured-desc">{featured.desc}</p>
               <div className="featured-duration">
                 <ClockIcon />
-                {podcastFeatured.duration}
+                {featured.duration}
               </div>
               <div className="featured-actions">
-                <button
-                  type="button"
-                  className="btn-watch"
-                  onClick={() => setFeaturedPlaying(true)}
-                >
-                  Watch Episode
-                </button>
-                <a
-                  href={`https://www.youtube.com/watch?v=${podcastFeatured.youtubeId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <button type="button" className="btn-youtube">
-                    Open on YouTube
-                  </button>
-                </a>
+                {featured.podcastUrl && <ListenButton url={featured.podcastUrl} />}
                 {userId && (
                   <BookmarkButton
                     userId={userId}
                     itemType="episode"
-                    itemId={podcastFeatured.id}
-                    initialSaved={savedEpisodeIds.has(podcastFeatured.id)}
+                    itemId={featured.id}
+                    initialSaved={savedEpisodeIds.has(featured.id)}
                   />
                 )}
               </div>
@@ -140,7 +105,6 @@ export default function PodcastTab({
               <EpisodeCard
                 key={ep.id}
                 ep={ep}
-                onPlay={() => setModalEpisode(ep)}
                 userId={userId}
                 isSaved={savedEpisodeIds.has(ep.id)}
               />
@@ -149,6 +113,11 @@ export default function PodcastTab({
           {visibleEpisodes.length === 0 && (
             <p className="podcast-empty">No episodes match this duration filter.</p>
           )}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onChange={onPageChange}
+          />
         </div>
       </div>
     </div>

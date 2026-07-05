@@ -1,0 +1,105 @@
+.featured-playlist {
+  background: #fff;
+  border-radius: 24px;
+  padding: 2.5rem;
+  box-shadow: 0 8px 40px rgba(30, 45, 90, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  margin-bottom: 2rem;
+}
+.featured-playlist-title {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 2.5vw, 2.25rem);
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.2;
+  margin: 0;
+}
+.featured-playlist-desc {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin: 0;
+  max-width: 60ch;
+}
+.featured-playlist .btn-read {
+  align-self: flex-start;
+}
+
+.playlists-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+@media (max-width: 900px) {
+  .playlists-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.playlist-card {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 1.6rem;
+  box-shadow: 0 2px 16px rgba(30, 45, 90, 0.06);
+  transition: all 0.25s;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+.playlist-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 36px rgba(30, 45, 90, 0.13);
+}
+.playlist-card-title {
+  font-family: var(--serif);
+  color: var(--navy);
+  font-size: 1.2rem;
+  margin: 0 0 0.5rem;
+}
+.playlist-card-desc {
+  font-family: var(--sans);
+  color: var(--navy);
+  opacity: 0.75;
+  font-size: 0.92rem;
+  margin: 0 0 0.9rem;
+}
+.playlist-card-count {
+  display: inline-block;
+  background: var(--teal);
+  color: #fff;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.7rem;
+  border-radius: 50px;
+}
+
+.playlist-back-link {
+  display: inline-block;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 1.5rem;
+  font-family: var(--sans);
+  color: var(--teal);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.playlist-detail-header {
+  margin-bottom: 2rem;
+}
+.playlist-detail-desc {
+  font-family: var(--sans);
+  color: var(--navy);
+  opacity: 0.8;
+  max-width: 60ch;
+}

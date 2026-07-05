@@ -171,7 +171,7 @@ export default function AboutPage() {
                     Get the Book
                   </button>
                 </Link>
-                <Link href="/podcast">
+                <Link href="/articles?tab=podcast">
                   <button type="button" className="btn-nicholas-ghost">
                     Listen to the Podcast
                   </button>
@@ -239,7 +239,7 @@ export default function AboutPage() {
               </div>
               <div className="contact-detail">
                 <div className="contact-detail-icon"><Icon name="mic" size={18} /></div>{" "}
-                <Link href="/podcast" className="contact-detail-link">
+                <Link href="/articles?tab=podcast" className="contact-detail-link">
                   Listen to the Podcast
                 </Link>
               </div>

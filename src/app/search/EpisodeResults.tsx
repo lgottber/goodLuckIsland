@@ -6,10 +6,9 @@ interface Props {
   episodes: Episode[];
   userId: string;
   savedEpisodeIds: Set<number>;
-  onPlay: (ep: Episode) => void;
 }
 
-export default function EpisodeResults({ episodes, userId, savedEpisodeIds, onPlay }: Props) {
+export default function EpisodeResults({ episodes, userId, savedEpisodeIds }: Props) {
   return (
     <SearchSection title="Podcast Episodes">
       <div className="search-episode-grid">
@@ -17,7 +16,6 @@ export default function EpisodeResults({ episodes, userId, savedEpisodeIds, onPl
           <EpisodeCard
             key={ep.id}
             ep={ep}
-            onPlay={() => onPlay(ep)}
             userId={userId}
             isSaved={savedEpisodeIds.has(ep.id)}
           />

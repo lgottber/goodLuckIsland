@@ -7,7 +7,7 @@ export type Episode = {
   desc: string | null;
   date: string | null;
   duration: string | null;
-  youtubeId: string | null;
+  podcastUrl: string | null;
   thumbnail: string | null;
 };
 
