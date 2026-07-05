@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "../../../../lib/db.server";
+import { getDb, publicCacheHeaders } from "../../../../lib/db.server";
 
 export const runtime = "edge";
 
@@ -48,11 +48,15 @@ export async function GET(request: NextRequest) {
       .prepare(`SELECT * FROM episodes WHERE id IN (${placeholders})`)
       .bind(...ids)
       .all<EpisodeRow>();
-    return NextResponse.json((results ?? []).map(mapEpisode));
+    return NextResponse.json((results ?? []).map(mapEpisode), {
+      headers: publicCacheHeaders(300, 3600),
+    });
   }
 
   const { results } = await db
     .prepare("SELECT * FROM episodes ORDER BY sort_order")
     .all<EpisodeRow>();
-  return NextResponse.json((results ?? []).map(mapEpisode));
+  return NextResponse.json((results ?? []).map(mapEpisode), {
+    headers: publicCacheHeaders(300, 3600),
+  });
 }
