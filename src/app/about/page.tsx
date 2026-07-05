@@ -5,9 +5,11 @@ import Link from "next/link";
 import NavBar from "../../components/NavBarDynamic";
 import PictureImage from "../../components/PictureImage";
 import TestimonialCard from "./TestimonialCard";
-import { useSubmitFeedback } from "../../hooks/useSubmitFeedback";
+import ContactForm from "./ContactForm";
+import ContactFormSuccess from "./ContactFormSuccess";
+import { ApiError } from "../../lib/apiClient";
+import { submitTestimonial } from "../../lib/testimonialsApi";
 import Icon from "../../components/Icon";
-import SubmitLabel from "./SubmitLabel";
 import "./about.css";
 
 const TESTIMONIALS = [
@@ -41,12 +43,27 @@ export default function AboutPage() {
     email: "",
     message: "",
   });
-  const [submitted, triggerSubmitted] = useSubmitFeedback(3500);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = () => {
-    if (!formData.email || !formData.message) return;
-    triggerSubmitted();
-    setFormData({ firstName: "", lastName: "", email: "", message: "" });
+  const handleSubmit = async () => {
+    if (!formData.email || !formData.message || submitting) return;
+    setSubmitting(true);
+    setError("");
+    try {
+      await submitTestimonial(formData);
+      setSubmitted(true);
+      setFormData({ firstName: "", lastName: "", email: "", message: "" });
+    } catch (err) {
+      setError(
+        err instanceof ApiError && err.status === 429
+          ? "You've submitted a few of these already — please try again later."
+          : "Something went wrong sending your message. Please try again.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -252,51 +269,17 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="contact-form">
-            <div className="contact-form-row">
-              <input
-                className="contact-input"
-                placeholder="First name"
-                value={formData.firstName}
-                onChange={(e) =>
-                  setFormData({ ...formData, firstName: e.target.value })
-                }
-              />
-              <input
-                className="contact-input"
-                placeholder="Last name"
-                value={formData.lastName}
-                onChange={(e) =>
-                  setFormData({ ...formData, lastName: e.target.value })
-                }
-              />
-            </div>
-            <input
-              className="contact-input"
-              type="email"
-              placeholder="Email address"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
+          {submitted ? (
+            <ContactFormSuccess />
+          ) : (
+            <ContactForm
+              formData={formData}
+              onChange={setFormData}
+              submitting={submitting}
+              error={error}
+              onSubmit={handleSubmit}
             />
-            <textarea
-              className="contact-textarea"
-              placeholder="Your message..."
-              rows={6}
-              value={formData.message}
-              onChange={(e) =>
-                setFormData({ ...formData, message: e.target.value })
-              }
-            />
-            <button
-              type="button"
-              className="contact-submit"
-              onClick={handleSubmit}
-            >
-              <SubmitLabel submitted={submitted} />
-            </button>
-          </div>
+          )}
         </div>
 
         {/* ── FOOTER BAND — Canva style ── */}
