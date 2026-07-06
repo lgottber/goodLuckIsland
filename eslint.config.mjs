@@ -10,13 +10,11 @@ import imageSrcSnakeCasePlugin from "./custom_lint_rules/image-src-snake-case.mj
 export default [
   {
     ignores: [
-      "supabase/**",
       "node_modules/**",
       "out/**",
       ".next/**",
       ".history/**",
       "next-env.d.ts",
-      "src/types/supabase.ts",
     ],
   },
   {

@@ -19,7 +19,7 @@ import { setPendingAccountDeletion } from "../../lib/pendingAccountDeletion";
 import NotificationPrefsModal from "./NotificationPrefsModal";
 import DeleteAccountModal from "./DeleteAccountModal";
 import QuizNudgeCard from "../quiz/QuizNudgeCard";
-import type { Tables } from "../../types/supabase";
+import type { Tables } from "../../types/db";
 import { downloadProfileDataCsv } from "../../lib/exportUtils";
 import { trackEvent } from "../../lib/analyticsApi";
 import type { ResetStatus } from "./types";
@@ -67,7 +67,7 @@ export default function ProfilePage() {
   const [user, setUser] = useState(INITIAL_USER);
   const [notificationsEmail, setNotificationsEmail] = useState(true);
 
-  // Seed from Auth0 then overlay saved profile from Supabase
+  // Seed from Auth0 then overlay saved profile from D1
   useEffect(() => {
     if (!auth0User) return;
     const a0 = auth0User;
@@ -87,7 +87,7 @@ export default function ProfilePage() {
       };
     }
 
-    function applySupabaseFields(
+    function applyDbFields(
       prev: typeof INITIAL_USER,
       data: Tables<"users">,
     ) {
@@ -127,7 +127,7 @@ export default function ProfilePage() {
         await createUser(a0.sub ?? "", a0.email ?? "");
         return;
       }
-      setUser((prev) => applySupabaseFields(prev, data));
+      setUser((prev) => applyDbFields(prev, data));
       setNotificationsEmail(data.notifications_email);
     }
 

@@ -80,7 +80,7 @@ export default function PrivacyPolicyPage() {
           <section className="privacy-section">
             <h2>4. Data Storage and Security</h2>
             <p>
-              Your data is stored in Supabase (a PostgreSQL-based cloud database)
+              Your data is stored in Cloudflare D1 (a SQLite-based cloud database)
               hosted on infrastructure in the United States. Data is encrypted at
               rest and in transit. Authentication credentials are managed by
               Auth0, which maintains SOC 2 Type II compliance.
@@ -134,10 +134,9 @@ export default function PrivacyPolicyPage() {
             <p>We use the following third-party services, each of which has its own privacy policy:</p>
             <ul>
               <li><strong>Auth0</strong> — authentication and session management</li>
-              <li><strong>Supabase</strong> — database and file storage</li>
               <li><strong>Shopify</strong> — book sales and payment processing</li>
               <li><strong>YouTube</strong> — podcast and video hosting</li>
-              <li><strong>Cloudflare</strong> — hosting and content delivery</li>
+              <li><strong>Cloudflare</strong> — hosting, content delivery, and database storage (D1)</li>
             </ul>
           </section>
 

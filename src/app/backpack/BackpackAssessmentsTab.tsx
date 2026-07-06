@@ -1,5 +1,9 @@
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import type { UserProgress } from "../../lib/sevenStepApi";
+import { fetchAssignedAssessments } from "../../lib/assessmentsApi";
+import type { AssignedAssessment } from "../../lib/assessmentsApi";
+import AssignedAssessmentCard from "./AssignedAssessmentCard";
 
 interface Props {
   progress: UserProgress | null;
@@ -8,6 +12,11 @@ interface Props {
 export default function BackpackAssessmentsTab({ progress }: Props) {
   const oqrcDone = progress?.one_question_challenge ?? false;
   const pinwirlDone = progress?.wayfair_tool ?? false;
+  const [assigned, setAssigned] = useState<AssignedAssessment[]>([]);
+
+  useEffect(() => {
+    fetchAssignedAssessments().then(setAssigned).catch(() => {});
+  }, []);
 
   return (
     <div className="backpack-assessments">
@@ -32,6 +41,10 @@ export default function BackpackAssessmentsTab({ progress }: Props) {
           {pinwirlDone ? "View Results" : "Take Assessment →"}
         </Link>
       </div>
+
+      {assigned.map((a) => (
+        <AssignedAssessmentCard key={a.id} assessment={a} />
+      ))}
     </div>
   );
 }

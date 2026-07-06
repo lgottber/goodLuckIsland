@@ -8,8 +8,7 @@ export function getDb(): D1Database {
 // D1/SQLite has no boolean type -- columns are stored as 0/1 integers.
 // Convert at the app boundary so responses keep the same shape callers
 // already depend on (Tables<"users">.notifications_email, etc. are typed
-// as real booleans in the generated Supabase types this app still uses
-// as its wire format).
+// as real booleans in src/types/db.ts, this app's wire-format type source).
 export function toBool(value: unknown): boolean {
   return value === 1 || value === true;
 }

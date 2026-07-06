@@ -1,5 +1,5 @@
 import { apiFetch, apiFetchVoid } from "./apiClient";
-import type { Tables } from "../types/supabase";
+import type { Tables } from "../types/db";
 
 // age and yearsInOccupation are strings in form state, parsed to numbers before saving
 export type ProfileUpdate = {
