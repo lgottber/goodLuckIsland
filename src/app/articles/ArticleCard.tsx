@@ -1,6 +1,7 @@
 import PictureImage from "../../components/PictureImage";
 import BookmarkButton from "./BookmarkButton";
 import type { Article } from "../../lib/articlesApi";
+import { trackEvent } from "../../lib/analyticsApi";
 
 interface Props {
   article: Article;
@@ -35,7 +36,11 @@ export default function ArticleCard({ article, userId, isSaved }: Props) {
         </div>
         <h3 className="article-card-title">{article.title}</h3>
         <p className="article-card-excerpt">{article.excerpt}</p>
-        <button type="button" className="article-card-read">
+        <button
+          type="button"
+          className="article-card-read"
+          onClick={() => trackEvent("content_viewed", { contentType: "article", contentId: article.id })}
+        >
           Read More
         </button>
       </div>
