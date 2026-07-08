@@ -488,13 +488,6 @@ body {
   transform: translateY(-3px);
 }
 
-.shield-pillar-num {
-  font-size: 0.5rem;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: 0.02em;
-}
-
 .shield-pillar-icon {
   display: flex;
   align-items: center;
@@ -579,13 +572,10 @@ body {
   line-height: 1.35;
 }
 
-.pillar-checkbox {
-  width: 1rem;
-  height: 1rem;
-  accent-color: var(--teal);
-  cursor: not-allowed;
-  flex-shrink: 0;
-  margin-right: 1.25rem;
+.pillar-title--complete {
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+  color: rgba(30, 45, 90, 0.5);
 }
 
 .pillar-coming-soon-badge {
