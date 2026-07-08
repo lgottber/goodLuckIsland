@@ -14,6 +14,9 @@ import BioEmpty from "./BioEmpty";
 import InterestsList from "./InterestsList";
 import InterestsEmpty from "./InterestsEmpty";
 import { createUser, fetchProfile, upsertProfile, updateNotificationPrefs, deleteAccount } from "../../lib/profileApi";
+import { fetchUserProgress } from "../../lib/sevenStepApi";
+import type { UserProgress } from "../../lib/sevenStepApi";
+import BackpackDashboardSection from "./BackpackDashboardSection";
 import { setPendingAccountDeletion } from "../../lib/pendingAccountDeletion";
 import NotificationPrefsModal from "./NotificationPrefsModal";
 import DeleteAccountModal from "./DeleteAccountModal";
@@ -71,6 +74,7 @@ export default function ProfilePage() {
   const { user: auth0User, logout } = useAuth0User();
   const [user, setUser] = useState(INITIAL_USER);
   const [notificationsEmail, setNotificationsEmail] = useState(true);
+  const [progress, setProgress] = useState<UserProgress | null>(null);
 
   // Seed from Auth0 then overlay saved profile from Supabase
   useEffect(() => {
@@ -138,6 +142,7 @@ export default function ProfilePage() {
 
     setUser(applyAuth0Fields);
     loadProfile().catch(() => setInitError(true));
+    fetchUserProgress(a0.sub ?? "").then(setProgress).catch(() => {});
   }, [auth0User]);
   const [initError, setInitError] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -449,6 +454,8 @@ export default function ProfilePage() {
           </div>
 
           <QuizNudgeCard />
+
+          <BackpackDashboardSection progress={progress} />
 
           {/* About & Interests row */}
           <div className="overview-two-col">
