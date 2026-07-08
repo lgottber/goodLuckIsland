@@ -475,6 +475,7 @@ body {
 
 .pillar-item {
   border-bottom: 1.5px solid var(--cream-dk, #e6dfd2);
+  scroll-margin-top: var(--nav-height);
 }
 
 .pillar-item:last-child {
