@@ -18,7 +18,6 @@ interface Props {
   visibleVideos: Video[];
   featuredPlaying: boolean;
   setFeaturedPlaying: (v: boolean) => void;
-  onPlayVideo: (v: Video) => void;
   durationFilter: string;
   setDurationFilter: (v: string) => void;
   currentPage: number;
@@ -31,7 +30,6 @@ export default function VideosBody({
   visibleVideos,
   featuredPlaying,
   setFeaturedPlaying,
-  onPlayVideo,
   durationFilter,
   setDurationFilter,
   currentPage,
@@ -98,7 +96,7 @@ export default function VideosBody({
           </div>
           <div className="episodes-grid">
             {visibleVideos.map((v) => (
-              <VideoCard key={v.id} video={v} onPlay={() => onPlayVideo(v)} />
+              <VideoCard key={v.id} video={v} />
             ))}
           </div>
           {visibleVideos.length === 0 && (
