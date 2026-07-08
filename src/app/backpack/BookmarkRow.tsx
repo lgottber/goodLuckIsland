@@ -12,7 +12,7 @@ export default function BookmarkRow({
       <span className="bm-row-title">{item.title}</span>
       {item.date && <span className="bm-row-date">{item.date}</span>}
       <span className={`bm-row-type bm-row-type--${item.type}`}>
-        {item.type === "podcast" ? "Podcast" : "Article"}
+        {item.type === "podcast" ? "Podcast" : item.type === "video" ? "Video" : "Article"}
       </span>
       <button
         type="button"

@@ -1,9 +1,16 @@
 import Link from "next/link";
 import { PlayIcon } from "../../components/Icons";
 import PictureImage from "../../components/PictureImage";
+import BookmarkButton from "./BookmarkButton";
 import type { Video } from "../../lib/videosApi";
 
-export default function VideoCard({ video }: { video: Video }) {
+interface Props {
+  video: Video;
+  userId?: string;
+  isSaved?: boolean;
+}
+
+export default function VideoCard({ video, userId, isSaved }: Props) {
   return (
     <Link href={`/videos/${video.id}`} className="episode-card">
       <div className="episode-thumb">
@@ -18,6 +25,14 @@ export default function VideoCard({ video }: { video: Video }) {
           </span>
         </div>
         <span className="episode-duration-badge">{video.duration}</span>
+        {userId && (
+          <BookmarkButton
+            userId={userId}
+            itemType="video"
+            itemId={video.id}
+            initialSaved={isSaved ?? false}
+          />
+        )}
       </div>
       <div className="episode-body">
         <div className="episode-body-meta">
