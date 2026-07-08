@@ -47,7 +47,7 @@ export default function BackpackSavedTab() {
         <p className="bm-empty">Could not load your saved items. Please try again later.</p>
       )}
       {!loading && !fetchError && items.length === 0 && (
-        <p className="bm-empty">Nothing saved yet — bookmark articles and podcast episodes to find them here.</p>
+        <p className="bm-empty">Nothing saved yet — bookmark articles, podcast episodes, and videos to find them here.</p>
       )}
       {!loading && !fetchError && items.length > 0 && (
         <div className="bm-list">

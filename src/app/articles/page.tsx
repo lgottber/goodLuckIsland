@@ -49,6 +49,7 @@ export default function ArticlesPage() {
   const [view, setView] = useState<"grid" | "list">("grid");
   const [savedArticleIds, setSavedArticleIds] = useState(new Set<number>());
   const [savedEpisodeIds, setSavedEpisodeIds] = useState(new Set<number>());
+  const [savedVideoIds, setSavedVideoIds] = useState(new Set<number>());
 
   useEffect(() => {
     Promise.all([fetchArticles(), fetchEpisodes(), fetchVideos(), fetchPlaylists()])
@@ -73,9 +74,10 @@ export default function ArticlesPage() {
 
   useEffect(() => {
     if (!userId) return;
-    fetchSavedIds(userId).then(({ articles, episodes: eps }) => {
+    fetchSavedIds(userId).then(({ articles, episodes: eps, videos }) => {
       setSavedArticleIds(articles);
       setSavedEpisodeIds(eps);
+      setSavedVideoIds(videos);
     }).catch(() => {});
   }, [userId]);
 
@@ -141,7 +143,7 @@ export default function ArticlesPage() {
           <PodcastSection episodes={episodes} userId={userId} savedEpisodeIds={savedEpisodeIds} />
         )}
         {!loading && !loadError && activeTab === "videos" && (
-          <VideosSection videos={videos} />
+          <VideosSection videos={videos} userId={userId} savedVideoIds={savedVideoIds} />
         )}
         {!loading && !loadError && activeTab === "playlists" && (
           <PlaylistsSection playlists={playlists} userId={userId} savedEpisodeIds={savedEpisodeIds} />

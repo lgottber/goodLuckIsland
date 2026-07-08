@@ -7,7 +7,7 @@ import { trackEvent } from "../../lib/analyticsApi";
 
 interface Props {
   userId: string;
-  itemType: "article" | "episode";
+  itemType: "article" | "episode" | "video";
   itemId: number;
   initialSaved: boolean;
 }

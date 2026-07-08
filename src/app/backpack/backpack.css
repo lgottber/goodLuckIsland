@@ -439,6 +439,11 @@ body {
   color: var(--teal);
 }
 
+.bm-row-type--video {
+  background: rgba(46, 139, 122, 0.85);
+  color: #fff;
+}
+
 .bm-row-remove {
   background: none;
   border: none;
