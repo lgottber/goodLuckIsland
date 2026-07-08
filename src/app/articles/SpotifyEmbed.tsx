@@ -5,6 +5,7 @@ export default function SpotifyEmbed({ episodeId, title }: { episodeId: string; 
       src={`https://open.spotify.com/embed/episode/${episodeId}?utm_source=generator`}
       title={`Listen to ${title} on Spotify`}
       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      allowFullScreen
       loading="lazy"
     />
   );
