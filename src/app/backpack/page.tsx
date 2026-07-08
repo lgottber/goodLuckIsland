@@ -7,6 +7,8 @@ import NavBar from "../../components/NavBarDynamic";
 import BackpackContent from "./BackpackContent";
 import { fetchUserProgress } from "../../lib/sevenStepApi";
 import type { UserProgress } from "../../lib/sevenStepApi";
+import { fetchUserBadges } from "../../lib/badgesApi";
+import type { EarnedBadge } from "../../lib/badgesApi";
 import "./backpack.css";
 
 export default function BackpackPage() {
@@ -15,6 +17,7 @@ export default function BackpackPage() {
   const router = useRouter();
 
   const [progress, setProgress] = useState<UserProgress | null>(null);
+  const [badges, setBadges] = useState<EarnedBadge[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError] = useState(false);
 
@@ -31,6 +34,7 @@ export default function BackpackPage() {
   useEffect(() => {
     if (!userId) return;
     fetchUserProgress(userId).then(setProgress).catch(() => {});
+    fetchUserBadges().then(setBadges).catch(() => {});
   }, [userId]);
 
   return (
@@ -56,7 +60,7 @@ export default function BackpackPage() {
         )}
 
         {!loading && !loadError && (
-          <BackpackContent progress={progress} />
+          <BackpackContent progress={progress} badges={badges} />
         )}
       </div>
     </>
