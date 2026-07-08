@@ -2,10 +2,15 @@ import Link from "next/link";
 import { PlayIcon } from "../../components/Icons";
 import PictureImage from "../../components/PictureImage";
 import type { Video } from "../../lib/videosApi";
+import { trackEvent } from "../../lib/analyticsApi";
 
 export default function VideoCard({ video }: { video: Video }) {
   return (
-    <Link href={`/videos/${video.id}`} className="episode-card">
+    <Link
+      href={`/articles/videos/${video.id}`}
+      className="episode-card"
+      onClick={() => trackEvent("content_viewed", { contentType: "video", contentId: video.id })}
+    >
       <div className="episode-thumb">
         <PictureImage
           name={video.thumbnail ?? undefined}

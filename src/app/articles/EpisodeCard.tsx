@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Icon from "../../components/Icon";
 import PictureImage from "../../components/PictureImage";
 import BookmarkButton from "./BookmarkButton";
@@ -11,14 +12,12 @@ interface Props {
 }
 
 export default function EpisodeCard({ ep, userId, isSaved }: Props) {
-  function handleClick() {
-    if (!ep.podcastUrl) return;
-    trackEvent("content_viewed", { contentType: "episode", contentId: ep.id });
-    globalThis.open(ep.podcastUrl, "_blank", "noopener,noreferrer");
-  }
-
   return (
-    <div className="episode-card" onClick={handleClick}>
+    <Link
+      href={`/articles/podcast/${ep.id}`}
+      className="episode-card"
+      onClick={() => trackEvent("content_viewed", { contentType: "episode", contentId: ep.id })}
+    >
       <div className="episode-thumb">
         <PictureImage
           name={ep.thumbnail ?? undefined}
@@ -51,6 +50,6 @@ export default function EpisodeCard({ ep, userId, isSaved }: Props) {
           <Icon name="headphones" size={12} /> Listen to Episode
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
