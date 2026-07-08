@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb, toBool } from "../../../lib/db.server";
+import { getDb } from "../../../lib/db.server";
 import { verifyMember } from "../../../lib/auth.server";
+import {
+  countStepsCompleted,
+  isEarned,
+  isImplementedMetricType,
+} from "../../../lib/badgeEvaluation";
+import type { StepProgressRow } from "../../../lib/badgeEvaluation";
 import type { BadgeMetricType } from "../../../types/badge";
 
 export const runtime = "edge";
@@ -12,46 +18,6 @@ interface BadgeRow {
   metric_type: string;
   comparator: string;
   threshold_value: number;
-}
-
-interface StepProgressRow {
-  one_question_challenge: number;
-  wayfair_tool: number;
-  values_and_beliefs: number;
-  finding_your_purpose: number;
-  new_skills: number;
-  retirement: number;
-  give_back_step: number;
-}
-
-function countStepsCompleted(row: StepProgressRow | null): number {
-  if (!row) return 0;
-  return [
-    row.one_question_challenge,
-    row.wayfair_tool,
-    row.values_and_beliefs,
-    row.finding_your_purpose,
-    row.new_skills,
-    row.retirement,
-    row.give_back_step,
-  ].filter((v) => toBool(v)).length;
-}
-
-function isEarned(value: number, comparator: string, threshold: number): boolean {
-  if (comparator === "<") return value < threshold;
-  if (comparator === ">") return value > threshold;
-  return value === threshold;
-}
-
-function isBadgeMetricType(value: string): value is BadgeMetricType {
-  return (
-    value === "steps_completed" ||
-    value === "feedback_given" ||
-    value === "assignments_completed" ||
-    value === "articles_read" ||
-    value === "videos_seen" ||
-    value === "podcasts_listened"
-  );
 }
 
 export async function GET(request: NextRequest) {
@@ -98,7 +64,8 @@ export async function GET(request: NextRequest) {
 
   const earned = (badgeRows ?? [])
     .filter((badge) => {
-      const value = isBadgeMetricType(badge.metric_type) ? metricValues[badge.metric_type] : 0;
+      if (!isImplementedMetricType(badge.metric_type)) return false;
+      const value = metricValues[badge.metric_type];
       return isEarned(value, badge.comparator, badge.threshold_value);
     })
     .map((badge) => ({ id: badge.id, name: badge.name, image_slug: badge.image_slug }));
