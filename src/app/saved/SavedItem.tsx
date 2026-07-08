@@ -10,9 +10,9 @@ const TAG_COLORS: Record<string, string> = {
   "Financial Independence": "teal",
 };
 
-export type SavedItemData = { id: string; image: string | null; type: string; tag: string; date: string; readTime: string; title: string; excerpt: string };
+export type SavedItemData = { id: string; image: string | null; type: string; tag: string; date: string; readTime: string; title: string; excerpt: string; itemType: "article" | "episode"; numericId: number };
 
-export default function SavedItem({ item }: { item: SavedItemData }) {
+export default function SavedItem({ item, onRemove }: { item: SavedItemData; onRemove?: (item: SavedItemData) => void }) {
   return (
     <div className="saved-item">
       <div className="saved-item-img">
@@ -42,7 +42,7 @@ export default function SavedItem({ item }: { item: SavedItemData }) {
           <Link href={item.type === "podcast" ? "/articles?tab=podcast" : "/articles"} className="saved-item-cta">
             <SavedItemCta type={item.type} />
           </Link>
-          <button type="button" className="saved-item-remove">
+          <button type="button" className="saved-item-remove" onClick={() => onRemove?.(item)}>
             Remove
           </button>
         </div>
