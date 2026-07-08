@@ -1623,3 +1623,72 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* ── BACKPACK ASSESSMENT TABLES ── */
+.assess-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.assess-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--cream-dk);
+}
+
+.assess-row:last-child {
+  border-bottom: none;
+}
+
+.assess-step {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  width: 3.5rem;
+  flex-shrink: 0;
+}
+
+.assess-check {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--teal);
+  width: 3.5rem;
+  flex-shrink: 0;
+}
+
+.assess-title {
+  flex: 1;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.assess-action {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--coral);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+
+.assess-action:hover {
+  opacity: 0.72;
+  text-decoration: underline;
+}
+
+.assess-action--review {
+  color: var(--teal);
+}
+
+.assess-empty {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-style: italic;
+  padding: 0.25rem 0;
+}
