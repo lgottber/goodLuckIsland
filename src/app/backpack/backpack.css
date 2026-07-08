@@ -217,6 +217,44 @@ body {
   margin-top: 1rem;
 }
 
+/* ── Badges tab ── */
+.backpack-badges-empty {
+  margin-top: 1rem;
+  color: var(--navy);
+  opacity: 0.6;
+}
+
+.backpack-badges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.backpack-badge-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(30, 45, 90, 0.07);
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  text-align: center;
+}
+
+.backpack-badge-card img {
+  width: 64px;
+  height: 64px;
+}
+
+.backpack-badge-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0;
+}
+
 /* ── Section grid ── */
 .backpack-section-grid {
   display: grid;
