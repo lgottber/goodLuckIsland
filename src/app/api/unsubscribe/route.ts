@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getRequestContext } from "@cloudflare/next-on-pages";
 import { getDb, nowIso } from "../../../lib/db.server";
+import { checkRateLimit } from "../../../lib/rate-limit.server";
 
 export const runtime = "edge";
 
@@ -10,20 +11,17 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL("/unsubscribe?error=1", request.url));
   }
 
-  // Extra, stricter throttle on top of the general API_RATE_LIMITER in
+  // Extra, stricter throttle on top of the general rate limit in
   // src/middleware.ts -- this link needs no session at all, so it's an
   // easy target for mass-unsubscribe abuse if someone enumerates ids.
   try {
-    const { env } = getRequestContext<CloudflareEnv>();
     const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
-    const { success } = await env.ANON_RATE_LIMITER.limit({
-      key: `unsubscribe:${ip}`,
-    });
+    const { success } = await checkRateLimit(`unsubscribe:${ip}`, 20, 60);
     if (!success) {
       return NextResponse.redirect(new URL("/unsubscribe?error=1", request.url));
     }
   } catch {
-    // ANON_RATE_LIMITER binding is unavailable outside the Cloudflare
+    // RATE_LIMIT_KV binding is unavailable outside the Cloudflare
     // runtime (local next dev) -- don't block requests locally.
   }
 
