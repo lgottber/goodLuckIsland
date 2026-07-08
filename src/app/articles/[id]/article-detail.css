@@ -108,3 +108,152 @@
   font-weight: 600;
   text-decoration: underline;
 }
+
+.content-detail-page {
+  padding-top: var(--nav-height);
+  min-height: 100vh;
+  background: var(--cream);
+}
+
+.content-detail-back {
+  padding: 1.5rem 2rem 0;
+  max-width: 50rem;
+  margin: 0 auto;
+}
+
+.content-detail-back-link {
+  color: var(--teal);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.content-detail-back-link:hover {
+  text-decoration: underline;
+}
+
+.content-detail-hero {
+  max-width: 50rem;
+  margin: 1.5rem auto 0;
+  padding: 0 2rem;
+}
+
+.content-detail-img {
+  width: 100%;
+  max-height: 28rem;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.content-detail-body {
+  max-width: 50rem;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.content-detail-tag {
+  display: inline-block;
+  background: var(--teal);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 0.3rem 0.875rem;
+  border-radius: 50px;
+  margin-bottom: 1rem;
+}
+
+.content-detail-title {
+  font-family: var(--serif);
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.2;
+  margin: 0 0 0.75rem;
+}
+
+.content-detail-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+  margin-bottom: 1.25rem;
+}
+
+.content-detail-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--muted);
+}
+
+.content-detail-excerpt {
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.75;
+  margin: 0 0 2rem;
+}
+
+.content-detail-cta {
+  display: inline-block;
+  color: var(--coral);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  margin-top: 1.5rem;
+}
+
+.content-detail-cta:hover {
+  text-decoration: underline;
+}
+
+/* Episode / video specific */
+.content-detail-listen-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--teal);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+}
+
+.content-detail-listen-btn:hover {
+  background: #267060;
+}
+
+.content-detail-embed {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.content-detail-embed iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.content-detail-num {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--coral);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 40rem) {
+  .content-detail-body,
+  .content-detail-back,
+  .content-detail-hero {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
