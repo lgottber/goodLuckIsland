@@ -2,6 +2,7 @@ import Icon from "../../components/Icon";
 import PictureImage from "../../components/PictureImage";
 import BookmarkButton from "./BookmarkButton";
 import type { Episode } from "../../lib/articlesApi";
+import { trackEvent } from "../../lib/analyticsApi";
 
 interface Props {
   ep: Episode;
@@ -11,7 +12,9 @@ interface Props {
 
 export default function EpisodeCard({ ep, userId, isSaved }: Props) {
   function handleClick() {
-    if (ep.podcastUrl) globalThis.open(ep.podcastUrl, "_blank", "noopener,noreferrer");
+    if (!ep.podcastUrl) return;
+    trackEvent("content_viewed", { contentType: "episode", contentId: ep.id });
+    globalThis.open(ep.podcastUrl, "_blank", "noopener,noreferrer");
   }
 
   return (

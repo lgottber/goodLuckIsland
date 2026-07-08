@@ -3,6 +3,7 @@ import VideosBody from "./VideosBody";
 import VideoModal from "./VideoModal";
 import type { Video } from "../../lib/videosApi";
 import { matchesDurationFilter } from "../../lib/durationFilter";
+import { trackEvent } from "../../lib/analyticsApi";
 
 const PAGE_SIZE = 12;
 
@@ -29,6 +30,11 @@ export default function VideosSection({ videos }: { videos: Video[] }) {
     currentPage * PAGE_SIZE,
   );
 
+  function playVideo(video: Video) {
+    trackEvent("content_viewed", { contentType: "video", contentId: video.id });
+    setModalVideo(video);
+  }
+
   return (
     <>
       <VideosBody
@@ -36,7 +42,7 @@ export default function VideosSection({ videos }: { videos: Video[] }) {
         visibleVideos={pageVideos}
         featuredPlaying={featuredPlaying}
         setFeaturedPlaying={setFeaturedPlaying}
-        onPlayVideo={setModalVideo}
+        onPlayVideo={playVideo}
         durationFilter={durationFilter}
         setDurationFilter={setDurationFilter}
         currentPage={currentPage}
