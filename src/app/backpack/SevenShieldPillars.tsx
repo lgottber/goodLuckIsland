@@ -83,6 +83,45 @@ const PILLARS = [
 
 const ACTIVE_PILLAR_IDS = new Set(["one-question", "pinwirl"]);
 
+type Pillar = (typeof PILLARS)[number];
+
+function pillarIsComplete(pillarId: string, progress: UserProgress | null): boolean {
+  const stepKey = SLUG_TO_STEP[pillarId];
+  return stepKey !== undefined && progress !== null ? progress[stepKey] : false;
+}
+
+function PillarAccordion({
+  pillars,
+  sectionIsComplete,
+  openId,
+  onToggle,
+  customDrawers,
+  activePillarIds,
+}: {
+  pillars: Pillar[];
+  sectionIsComplete: boolean;
+  openId: string | null;
+  onToggle: (id: string) => void;
+  customDrawers: Record<string, ReactNode>;
+  activePillarIds: Set<string>;
+}) {
+  return (
+    <div className="pillar-accordion" role="list">
+      {pillars.map((pillar) => (
+        <PillarItem
+          key={pillar.id}
+          pillar={pillar}
+          isOpen={openId === pillar.id}
+          isComplete={sectionIsComplete}
+          onToggle={onToggle}
+          customDrawer={customDrawers[pillar.id]}
+          comingSoon={!activePillarIds.has(pillar.id)}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function SevenShieldPillars({ progress }: { progress: UserProgress | null }) {
   const [openId, setOpenId] = useState<string | null>(null);
 
@@ -98,6 +137,16 @@ export default function SevenShieldPillars({ progress }: { progress: UserProgres
   const customDrawers: Record<string, ReactNode> = {
     "one-question": <OneQuestionDrawer />,
     "pinwirl": <PinwirlDrawer canEdit={allComplete} />,
+  };
+
+  const completedPillars = PILLARS.filter((p) => pillarIsComplete(p.id, progress));
+  const todoPillars = PILLARS.filter((p) => !pillarIsComplete(p.id, progress));
+
+  const sharedAccordionProps = {
+    openId,
+    onToggle: toggle,
+    customDrawers,
+    activePillarIds: ACTIVE_PILLAR_IDS,
   };
 
   return (
@@ -121,25 +170,23 @@ export default function SevenShieldPillars({ progress }: { progress: UserProgres
         ))}
       </div>
 
-      <div className="pillar-accordion" role="list">
-        {PILLARS.map((pillar) => {
-          const stepKey = SLUG_TO_STEP[pillar.id];
-          const isComplete = stepKey !== undefined && progress !== null
-            ? progress[stepKey]
-            : false;
-          return (
-            <PillarItem
-              key={pillar.id}
-              pillar={pillar}
-              isOpen={openId === pillar.id}
-              isComplete={isComplete}
-              onToggle={toggle}
-              customDrawer={customDrawers[pillar.id]}
-              comingSoon={!ACTIVE_PILLAR_IDS.has(pillar.id)}
-            />
-          );
-        })}
-      </div>
+      {completedPillars.length > 0 && (
+        <div className="pillar-section">
+          <h3 className="pillar-section-heading pillar-section-heading--backpack">
+            Backpack
+          </h3>
+          <PillarAccordion {...sharedAccordionProps} pillars={completedPillars} sectionIsComplete={true} />
+        </div>
+      )}
+
+      {todoPillars.length > 0 && (
+        <div className="pillar-section">
+          <h3 className="pillar-section-heading pillar-section-heading--todo">
+            To Do
+          </h3>
+          <PillarAccordion {...sharedAccordionProps} pillars={todoPillars} sectionIsComplete={false} />
+        </div>
+      )}
     </section>
   );
 }

@@ -471,6 +471,29 @@ body {
   flex-shrink: 0;
 }
 
+/* ── Pillar sections (Backpack / To Do) ── */
+.pillar-section {
+  margin-top: 1.75rem;
+}
+
+.pillar-section-heading {
+  font-family: var(--serif);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0 0 0.65rem;
+}
+
+.pillar-section-heading--backpack {
+  color: var(--teal);
+}
+
+.pillar-section-heading--todo {
+  color: var(--navy);
+  opacity: 0.45;
+}
+
 /* ── Pillar accordion ── */
 .pillar-accordion {
   display: flex;
