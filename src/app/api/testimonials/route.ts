@@ -1,8 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb, newId, nowIso } from "../../../lib/db.server";
+import { getDb, newId, nowIso, publicCacheHeaders, toBool } from "../../../lib/db.server";
 import { verifyMember } from "../../../lib/auth.server";
 
 export const runtime = "edge";
+
+interface TestimonialRow {
+  id: string;
+  name: string;
+  content: string;
+  featured: number;
+}
+
+export async function GET() {
+  const db = getDb();
+  const { results } = await db
+    .prepare(
+      "SELECT id, name, content, featured FROM testimonials WHERE status = 'approved' AND hidden = 0 ORDER BY featured DESC, display_order ASC",
+    )
+    .all<TestimonialRow>();
+  return NextResponse.json(
+    (results ?? []).map((r) => ({
+      id: r.id,
+      name: r.name,
+      content: r.content,
+      featured: toBool(r.featured),
+    })),
+    { headers: publicCacheHeaders(300, 3600) },
+  );
+}
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
