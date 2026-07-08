@@ -2,7 +2,7 @@ import { type ReactNode } from "react";
 import Icon from "../../components/Icon";
 import type { IconName } from "../../components/Icon";
 
-type Pillar = {
+export type Pillar = {
   id: string;
   num: number;
   title: string;

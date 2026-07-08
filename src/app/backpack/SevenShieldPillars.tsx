@@ -2,7 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import ShieldPillarNode from "./ShieldPillarNode";
-import PillarItem from "./PillarItem";
+import PillarSection from "./PillarSection";
 import OneQuestionDrawer from "./OneQuestionDrawer";
 import PinwirlDrawer from "./PinwirlDrawer";
 import type { UserProgress } from "../../lib/sevenStepApi";
@@ -83,43 +83,9 @@ const PILLARS = [
 
 const ACTIVE_PILLAR_IDS = new Set(["one-question", "pinwirl"]);
 
-type Pillar = (typeof PILLARS)[number];
-
 function pillarIsComplete(pillarId: string, progress: UserProgress | null): boolean {
   const stepKey = SLUG_TO_STEP[pillarId];
   return stepKey !== undefined && progress !== null ? progress[stepKey] : false;
-}
-
-function PillarAccordion({
-  pillars,
-  sectionIsComplete,
-  openId,
-  onToggle,
-  customDrawers,
-  activePillarIds,
-}: {
-  pillars: Pillar[];
-  sectionIsComplete: boolean;
-  openId: string | null;
-  onToggle: (id: string) => void;
-  customDrawers: Record<string, ReactNode>;
-  activePillarIds: Set<string>;
-}) {
-  return (
-    <div className="pillar-accordion" role="list">
-      {pillars.map((pillar) => (
-        <PillarItem
-          key={pillar.id}
-          pillar={pillar}
-          isOpen={openId === pillar.id}
-          isComplete={sectionIsComplete}
-          onToggle={onToggle}
-          customDrawer={customDrawers[pillar.id]}
-          comingSoon={!activePillarIds.has(pillar.id)}
-        />
-      ))}
-    </div>
-  );
 }
 
 export default function SevenShieldPillars({ progress }: { progress: UserProgress | null }) {
@@ -142,12 +108,7 @@ export default function SevenShieldPillars({ progress }: { progress: UserProgres
   const completedPillars = PILLARS.filter((p) => pillarIsComplete(p.id, progress));
   const todoPillars = PILLARS.filter((p) => !pillarIsComplete(p.id, progress));
 
-  const sharedAccordionProps = {
-    openId,
-    onToggle: toggle,
-    customDrawers,
-    activePillarIds: ACTIVE_PILLAR_IDS,
-  };
+  const sectionProps = { openId, onToggle: toggle, customDrawers, activePillarIds: ACTIVE_PILLAR_IDS };
 
   return (
     <section className="seven-shield-section">
@@ -171,21 +132,11 @@ export default function SevenShieldPillars({ progress }: { progress: UserProgres
       </div>
 
       {completedPillars.length > 0 && (
-        <div className="pillar-section">
-          <h3 className="pillar-section-heading pillar-section-heading--backpack">
-            Backpack
-          </h3>
-          <PillarAccordion {...sharedAccordionProps} pillars={completedPillars} sectionIsComplete={true} />
-        </div>
+        <PillarSection {...sectionProps} label="Backpack" variant="backpack" pillars={completedPillars} sectionIsComplete={true} />
       )}
 
       {todoPillars.length > 0 && (
-        <div className="pillar-section">
-          <h3 className="pillar-section-heading pillar-section-heading--todo">
-            To Do
-          </h3>
-          <PillarAccordion {...sharedAccordionProps} pillars={todoPillars} sectionIsComplete={false} />
-        </div>
+        <PillarSection {...sectionProps} label="To Do" variant="todo" pillars={todoPillars} sectionIsComplete={false} />
       )}
     </section>
   );
