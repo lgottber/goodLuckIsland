@@ -1,5 +1,5 @@
-import Link from "next/link";
 import type { UserProgress } from "../../lib/sevenStepApi";
+import AssessmentRow from "./AssessmentRow";
 
 interface Props {
   progress: UserProgress | null;
@@ -40,13 +40,7 @@ export default function BackpackDashboardSection({ progress }: Props) {
         ) : (
           <ul className="assess-list">
             {todo.map((a) => (
-              <li key={a.key} className="assess-row">
-                <span className="assess-step">{a.step}</span>
-                <span className="assess-title">{a.title}</span>
-                <Link href={a.href} className="assess-action">
-                  Start Now →
-                </Link>
-              </li>
+              <AssessmentRow key={a.key} title={a.title} href={a.href} step={a.step} completed={false} />
             ))}
           </ul>
         )}
@@ -59,13 +53,7 @@ export default function BackpackDashboardSection({ progress }: Props) {
         ) : (
           <ul className="assess-list">
             {done.map((a) => (
-              <li key={a.key} className="assess-row">
-                <span className="assess-check">✓</span>
-                <span className="assess-title">{a.title}</span>
-                <Link href={a.href} className="assess-action assess-action--review">
-                  Review
-                </Link>
-              </li>
+              <AssessmentRow key={a.key} title={a.title} href={a.href} step={a.step} completed={true} />
             ))}
           </ul>
         )}
