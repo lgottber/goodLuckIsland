@@ -1,36 +1,39 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { setAuthTokenGetter } from "../lib/apiClient";
-import styles from "./AuthTokenSync.module.css";
 
 export function AuthTokenSync() {
-  const { getIdTokenClaims, getAccessTokenSilently } = useAuth0();
-  const [tokenError, setTokenError] = useState(false);
+  const { getIdTokenClaims, getAccessTokenSilently, isAuthenticated, loginWithRedirect } =
+    useAuth0();
 
   useEffect(() => {
     const getToken = async () => {
+      // Anonymous visitors have no session to refresh -- apiFetch calls
+      // (e.g. page-view tracking, newsletter signup) fire on every page
+      // regardless of auth state, so skip the silent-auth attempt entirely
+      // rather than treating "never logged in" as a token failure.
+      if (!isAuthenticated) return null;
       try {
         // Silently refreshes the session if the token is expired
         await getAccessTokenSilently();
         const claims = await getIdTokenClaims();
         return claims?.__raw ?? null;
-      } catch {
-        setTokenError(true);
+      } catch (error) {
+        if (process.env.NODE_ENV === "development") {
+          console.error("AuthTokenSync: failed to get token", error);
+        }
+        loginWithRedirect({
+          appState: {
+            returnTo: window.location.pathname + window.location.search,
+          },
+        });
         return null;
       }
     };
     setAuthTokenGetter(getToken);
-  }, [getIdTokenClaims, getAccessTokenSilently]);
-
-  if (tokenError) {
-    return (
-      <p className={styles.tokenError}>
-        Something went wrong. Please try again later.
-      </p>
-    );
-  }
+  }, [getIdTokenClaims, getAccessTokenSilently, isAuthenticated, loginWithRedirect]);
 
   return null;
 }
