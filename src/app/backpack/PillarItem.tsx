@@ -40,6 +40,7 @@ export default function PillarItem({
 
   return (
     <div
+      id={`step-${pillar.num}`}
       className={`pillar-item${isOpen ? " pillar-item--open" : ""}${comingSoon ? " pillar-item--coming-soon" : ""}`}
       role="listitem"
       ref={(el) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, useRef, type ReactNode } from "react";
 import ShieldPillarNode from "./ShieldPillarNode";
 import PillarItem from "./PillarItem";
 import OneQuestionDrawer from "./OneQuestionDrawer";
@@ -88,6 +88,26 @@ const ACTIVE_PILLAR_IDS = new Set(["one-question", "pinwirl"]);
 
 export default function SevenShieldPillars({ progress }: { progress: UserProgress | null }) {
   const [openId, setOpenId] = useState<string | null>(null);
+  const scrollTargetRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    const match = window.location.hash.match(/^#step-(\d+)$/);
+    if (match) {
+      const num = parseInt(match[1], 10);
+      const pillar = PILLARS.find((p) => p.num === num);
+      if (pillar) {
+        scrollTargetRef.current = `step-${num}`;
+        setOpenId(pillar.id);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!scrollTargetRef.current) return;
+    const id = scrollTargetRef.current;
+    scrollTargetRef.current = null;
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [openId]);
 
   function toggle(id: string) {
     setOpenId((prev) => (prev === id ? null : id));
