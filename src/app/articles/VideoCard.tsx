@@ -1,15 +1,11 @@
+import Link from "next/link";
 import { PlayIcon } from "../../components/Icons";
 import PictureImage from "../../components/PictureImage";
 import type { Video } from "../../lib/videosApi";
 
-interface Props {
-  video: Video;
-  onPlay: () => void;
-}
-
-export default function VideoCard({ video, onPlay }: Props) {
+export default function VideoCard({ video }: { video: Video }) {
   return (
-    <div className="episode-card" onClick={onPlay}>
+    <Link href={`/videos/${video.id}`} className="episode-card">
       <div className="episode-thumb">
         <PictureImage
           name={video.thumbnail ?? undefined}
@@ -17,9 +13,9 @@ export default function VideoCard({ video, onPlay }: Props) {
           sizes="(max-width: 768px) 100vw, 33vw"
         />
         <div className="episode-thumb-overlay">
-          <button type="button" className="episode-thumb-play">
+          <span className="episode-thumb-play">
             <PlayIcon size={16} />
-          </button>
+          </span>
         </div>
         <span className="episode-duration-badge">{video.duration}</span>
       </div>
@@ -34,6 +30,6 @@ export default function VideoCard({ video, onPlay }: Props) {
           <PlayIcon size={12} /> Watch Video
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

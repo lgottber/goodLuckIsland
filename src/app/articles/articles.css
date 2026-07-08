@@ -753,6 +753,7 @@ body {
   transition: all 0.25s;
   display: flex;
   flex-direction: column;
+  text-decoration: none;
 }
 .episode-card:hover {
   background: rgba(255, 255, 255, 0.08);
