@@ -1,3 +1,4 @@
+import Link from "next/link";
 import PictureImage from "../../components/PictureImage";
 import BookmarkButton from "./BookmarkButton";
 import type { Article } from "../../lib/articlesApi";
@@ -36,13 +37,13 @@ export default function ArticleCard({ article, userId, isSaved }: Props) {
         </div>
         <h3 className="article-card-title">{article.title}</h3>
         <p className="article-card-excerpt">{article.excerpt}</p>
-        <button
-          type="button"
+        <Link
+          href={`/articles/${article.id}`}
           className="article-card-read"
           onClick={() => trackEvent("content_viewed", { contentType: "article", contentId: article.id })}
         >
           Read More
-        </button>
+        </Link>
       </div>
     </div>
   );

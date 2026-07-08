@@ -22,7 +22,11 @@ const dmSans = DMSans({
 });
 
 export const metadata: Metadata = {
-  title: "Good Luck Island Collective",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://goodluckislandcollective.com"),
+  title: {
+    template: "%s | Good Luck Island Collective",
+    default: "Good Luck Island Collective",
+  },
   description: "A self-help education platform for Gen X professionals",
 };
 
