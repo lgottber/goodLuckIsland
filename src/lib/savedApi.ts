@@ -27,3 +27,13 @@ export async function fetchSavedContent(
 ): Promise<SavedItemData[]> {
   return apiFetch<SavedItemData[]>("/saved");
 }
+
+export async function removeSaved(
+  itemType: "article" | "episode",
+  numericId: number,
+): Promise<void> {
+  await apiFetch<boolean>("/saved/toggle", {
+    method: "POST",
+    body: JSON.stringify({ itemType, itemId: numericId }),
+  });
+}
