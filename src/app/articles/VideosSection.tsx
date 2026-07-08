@@ -5,7 +5,7 @@ import { matchesDurationFilter } from "../../lib/durationFilter";
 
 const PAGE_SIZE = 12;
 
-export default function VideosSection({ videos }: { videos: Video[] }) {
+export default function VideosSection({ videos, userId, savedVideoIds }: { videos: Video[]; userId?: string; savedVideoIds?: Set<number> }) {
   const [featuredPlaying, setFeaturedPlaying] = useState(false);
   const [durationFilter, setDurationFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,6 +38,8 @@ export default function VideosSection({ videos }: { videos: Video[] }) {
       currentPage={currentPage}
       totalPages={totalPages}
       onPageChange={setCurrentPage}
+      userId={userId}
+      savedVideoIds={savedVideoIds}
     />
   );
 }

@@ -7,6 +7,6 @@ export type SavedItemData = {
   readTime: string;
   title: string;
   excerpt: string;
-  itemType: "article" | "episode";
+  itemType: "article" | "episode" | "video";
   numericId: number;
 };
