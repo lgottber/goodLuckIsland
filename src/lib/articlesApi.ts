@@ -10,6 +10,7 @@ export type Episode = {
   duration: string | null;
   podcastUrl: string | null;
   thumbnail: string | null;
+  score: number;
 };
 
 export type Article = {
@@ -21,6 +22,7 @@ export type Article = {
   readTime: string | null;
   image: string | null;
   featured: boolean;
+  score: number;
 };
 
 const cachedEpisodes = createCachedFetcher<Episode[]>();

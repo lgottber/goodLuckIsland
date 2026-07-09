@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getRequestContext } from "@cloudflare/next-on-pages";
+import { checkRateLimit } from "./lib/rate-limit.server";
 
 // Next.js middleware always runs on the edge runtime -- unlike route
 // handlers, it doesn't take (and errors on) an explicit `runtime` export.
@@ -10,9 +10,8 @@ export const config = {
 
 export default async function middleware(request: NextRequest) {
   try {
-    const { env } = getRequestContext<CloudflareEnv>();
     const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
-    const { success } = await env.API_RATE_LIMITER.limit({ key: ip });
+    const { success } = await checkRateLimit(`api:${ip}`, 120, 60);
     if (!success) {
       return NextResponse.json(
         { error: "Too many requests. Please slow down and try again shortly." },
@@ -20,7 +19,7 @@ export default async function middleware(request: NextRequest) {
       );
     }
   } catch {
-    // API_RATE_LIMITER binding is unavailable outside the Cloudflare runtime
+    // RATE_LIMIT_KV binding is unavailable outside the Cloudflare runtime
     // (local next dev) -- don't block requests locally.
   }
 
