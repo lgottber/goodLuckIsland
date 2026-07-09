@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, type ReactNode } from "react";
 import ShieldPillarNode from "./ShieldPillarNode";
-import PillarItem from "./PillarItem";
+import PillarSection from "./PillarSection";
 import OneQuestionDrawer from "./OneQuestionDrawer";
 import PinwirlDrawer from "./PinwirlDrawer";
 import type { UserProgress } from "../../lib/sevenStepApi";
@@ -86,6 +86,11 @@ const PILLARS: Pillar[] = [
 
 const ACTIVE_PILLAR_IDS = new Set(["one-question", "pinwirl"]);
 
+function pillarIsComplete(pillarId: string, progress: UserProgress | null): boolean {
+  const stepKey = SLUG_TO_STEP[pillarId];
+  return stepKey !== undefined && progress !== null ? progress[stepKey] : false;
+}
+
 export default function SevenShieldPillars({ progress }: { progress: UserProgress | null }) {
   const [openId, setOpenId] = useState<string | null>(null);
   const scrollTargetRef = useRef<string | null>(null);
@@ -123,6 +128,11 @@ export default function SevenShieldPillars({ progress }: { progress: UserProgres
     "pinwirl": <PinwirlDrawer canEdit={allComplete} />,
   };
 
+  const completedPillars = PILLARS.filter((p) => pillarIsComplete(p.id, progress));
+  const todoPillars = PILLARS.filter((p) => !pillarIsComplete(p.id, progress));
+
+  const sectionProps = { openId, onToggle: toggle, customDrawers, activePillarIds: ACTIVE_PILLAR_IDS };
+
   return (
     <section className="seven-shield-section">
       <div className="seven-shield-header">
@@ -144,25 +154,13 @@ export default function SevenShieldPillars({ progress }: { progress: UserProgres
         ))}
       </div>
 
-      <div className="pillar-accordion" role="list">
-        {PILLARS.map((pillar) => {
-          const stepKey = SLUG_TO_STEP[pillar.id];
-          const isComplete = stepKey !== undefined && progress !== null
-            ? progress[stepKey]
-            : false;
-          return (
-            <PillarItem
-              key={pillar.id}
-              pillar={pillar}
-              isOpen={openId === pillar.id}
-              isComplete={isComplete}
-              onToggle={toggle}
-              customDrawer={customDrawers[pillar.id]}
-              comingSoon={!ACTIVE_PILLAR_IDS.has(pillar.id)}
-            />
-          );
-        })}
-      </div>
+      {completedPillars.length > 0 && (
+        <PillarSection {...sectionProps} label="Backpack" variant="backpack" pillars={completedPillars} sectionIsComplete={true} />
+      )}
+
+      {todoPillars.length > 0 && (
+        <PillarSection {...sectionProps} label="To Do" variant="todo" pillars={todoPillars} sectionIsComplete={false} />
+      )}
     </section>
   );
 }
