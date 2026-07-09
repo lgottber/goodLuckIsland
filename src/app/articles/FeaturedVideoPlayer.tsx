@@ -1,15 +1,15 @@
 import { PlayIcon } from "../../components/Icons";
 import PictureImage from "../../components/PictureImage";
+import TrackedYouTubeEmbed from "../../components/TrackedYouTubeEmbed";
 import type { Video } from "../../lib/videosApi";
 
 export default function FeaturedVideoPlayer({ video, playing, onPlay }: { video: Video; playing: boolean; onPlay: () => void }) {
-  if (playing) {
+  if (playing && video.youtubeId) {
     return (
-      <iframe
-        src={`https://www.youtube.com/embed/${video.youtubeId}?autoplay=1`}
+      <TrackedYouTubeEmbed
+        videoId={video.id}
+        youtubeId={video.youtubeId}
         title={video.title}
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
       />
     );
   }
