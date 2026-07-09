@@ -1,40 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import NavBar from "../../components/NavBarDynamic";
 import PictureImage from "../../components/PictureImage";
-import TestimonialCard from "./TestimonialCard";
+import StoriesSection from "./StoriesSection";
 import ContactForm from "./ContactForm";
 import ContactFormSuccess from "./ContactFormSuccess";
 import { ApiError } from "../../lib/apiClient";
-import { submitTestimonial } from "../../lib/testimonialsApi";
+import { submitTestimonial, fetchApprovedTestimonials, type ApprovedTestimonial } from "../../lib/testimonialsApi";
 import Icon from "../../components/Icon";
 import "./about.css";
-
-const TESTIMONIALS = [
-  {
-    id: 1,
-    style: "light",
-    text: "I've read a lot of retirement content over the years. Most of it made me feel anxious. Good Luck Island Collective was the first place that made me feel like I was actually being prepared — not sold to.",
-    name: "Sandra M., 54 — Chicago, IL",
-    avatar: null,
-  },
-  {
-    id: 2,
-    style: "dark",
-    text: "Nicholas has a way of cutting through the noise that I've never encountered anywhere else. The book changed how I talk to my financial advisor. The podcast changed how I think about what I actually want.\n\nI didn't know I was missing this kind of guidance until I found it.",
-    name: "David K., 58 — Austin, TX",
-    avatar: null,
-  },
-  {
-    id: 3,
-    style: "light",
-    text: "I forwarded three articles to my husband and said 'this is exactly what I've been trying to say.' The content here puts words to things I've been feeling for years. That's rare.",
-    name: "Renée T., 51 — Portland, OR",
-    avatar: null,
-  },
-];
 
 export default function AboutPage() {
   const [formData, setFormData] = useState({
@@ -46,6 +22,11 @@ export default function AboutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const [testimonials, setTestimonials] = useState<ApprovedTestimonial[]>([]);
+
+  useEffect(() => {
+    fetchApprovedTestimonials().then(setTestimonials).catch(() => {});
+  }, []);
 
   const handleSubmit = async () => {
     if (!formData.email || !formData.message || submitting) return;
@@ -218,20 +199,7 @@ export default function AboutPage() {
         </div>
 
         {/* ── POSITIVE STORIES — Canva style ── */}
-        <div className="stories-section">
-          <PictureImage
-            className="stories-hero-img"
-            name="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=1400&q=70"
-            alt="Lush forest landscape with sunlight filtering through tall trees, representing positive life stories"
-            sizes="100vw"
-          />
-          <div className="stories-inner">
-            <h2 className="stories-title">Positive Stories</h2>
-            {TESTIMONIALS.map((t) => (
-              <TestimonialCard key={t.id} testimonial={t} />
-            ))}
-          </div>
-        </div>
+        {testimonials.length > 0 && <StoriesSection testimonials={testimonials} />}
 
         {/* ── CONTACT ── */}
         <div className="contact-section">
