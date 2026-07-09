@@ -1,5 +1,6 @@
 import Modal from "../../components/Modal";
 import Icon from "../../components/Icon";
+import TrackedYouTubeEmbed from "../../components/TrackedYouTubeEmbed";
 import type { Video } from "../../lib/videosApi";
 
 export default function VideoModal({ video, onClose }: { video: Video; onClose: () => void }) {
@@ -16,12 +17,13 @@ export default function VideoModal({ video, onClose }: { video: Video; onClose: 
         </button>
       </div>
       <div className="video-modal-embed">
-        <iframe
-          src={`https://www.youtube.com/embed/${video.youtubeId}?autoplay=1`}
-          title={video.title}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
+        {video.youtubeId && (
+          <TrackedYouTubeEmbed
+            videoId={video.id}
+            youtubeId={video.youtubeId}
+            title={video.title}
+          />
+        )}
       </div>
       <div className="video-modal-footer">
         <span className="video-modal-meta">
