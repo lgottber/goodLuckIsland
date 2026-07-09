@@ -12,7 +12,8 @@ import SearchBar from "../articles/SearchBar";
 import ArticleResults from "./ArticleResults";
 import EpisodeResults from "./EpisodeResults";
 import SearchResultsMeta from "./SearchResultsMeta";
-import type { SearchSortOption } from "./SearchResultsMeta";
+import { sortSearchResults } from "./searchSort";
+import type { SearchSortOption } from "./searchSort";
 import "./search.css";
 
 export default function SearchPage() {
@@ -63,10 +64,8 @@ export default function SearchPage() {
       )
     : [];
 
-  const sortedArticles =
-    sortBy === "popular" ? [...matchedArticles].sort((a, b) => b.score - a.score) : matchedArticles;
-  const sortedEpisodes =
-    sortBy === "popular" ? [...matchedEpisodes].sort((a, b) => b.score - a.score) : matchedEpisodes;
+  const sortedArticles = sortSearchResults(matchedArticles, sortBy);
+  const sortedEpisodes = sortSearchResults(matchedEpisodes, sortBy);
 
   const totalResults = matchedArticles.length + matchedEpisodes.length;
 

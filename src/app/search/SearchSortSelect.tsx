@@ -1,8 +1,5 @@
-export type SearchSortOption = "relevance" | "popular";
-
-function isSearchSortOption(value: string): value is SearchSortOption {
-  return value === "relevance" || value === "popular";
-}
+import { SEARCH_SORT_OPTIONS, isSearchSortOption } from "./searchSort";
+import type { SearchSortOption } from "./searchSort";
 
 export default function SearchSortSelect({
   sortBy,
@@ -21,8 +18,11 @@ export default function SearchSortSelect({
           if (isSearchSortOption(e.target.value)) onSortChange(e.target.value);
         }}
       >
-        <option value="relevance">Relevance</option>
-        <option value="popular">Most Popular</option>
+        {SEARCH_SORT_OPTIONS.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
       </select>
     </label>
   );
