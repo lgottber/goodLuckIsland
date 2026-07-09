@@ -12,6 +12,7 @@ interface ArticleRow {
   read_time: string | null;
   image: string | null;
   featured: number;
+  score: number;
 }
 
 function mapArticle(a: ArticleRow) {
@@ -24,6 +25,7 @@ function mapArticle(a: ArticleRow) {
     readTime: a.read_time,
     image: a.image,
     featured: toBool(a.featured),
+    score: a.score,
   };
 }
 
