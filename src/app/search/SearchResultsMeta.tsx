@@ -1,5 +1,5 @@
 import SearchSortSelect from "./SearchSortSelect";
-import type { SearchSortOption } from "./SearchSortSelect";
+import type { SearchSortOption } from "./searchSort";
 
 export type { SearchSortOption };
 
