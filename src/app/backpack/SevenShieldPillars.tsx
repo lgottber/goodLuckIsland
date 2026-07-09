@@ -96,15 +96,21 @@ export default function SevenShieldPillars({ progress }: { progress: UserProgres
   const scrollTargetRef = useRef<string | null>(null);
 
   useEffect(() => {
-    const match = window.location.hash.match(/^#step-(\d+)$/);
-    if (match) {
-      const num = parseInt(match[1], 10);
-      const pillar = PILLARS.find((p) => p.num === num);
-      if (pillar) {
-        scrollTargetRef.current = `step-${num}`;
-        setOpenId(pillar.id);
+    function handleHash() {
+      const match = window.location.hash.match(/^#step-(\d+)$/);
+      if (match) {
+        const num = parseInt(match[1], 10);
+        const pillar = PILLARS.find((p) => p.num === num);
+        if (pillar) {
+          scrollTargetRef.current = `step-${num}`;
+          setOpenId(pillar.id);
+        }
       }
     }
+
+    handleHash();
+    window.addEventListener("hashchange", handleHash);
+    return () => window.removeEventListener("hashchange", handleHash);
   }, []);
 
   useEffect(() => {
