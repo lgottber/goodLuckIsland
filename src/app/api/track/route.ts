@@ -1,5 +1,6 @@
 import { getRequestContext } from "@cloudflare/next-on-pages";
 import { verifyMember } from "../../../lib/auth.server";
+import { checkRateLimit } from "../../../lib/rate-limit.server";
 
 export const runtime = "edge";
 
@@ -7,11 +8,11 @@ export async function POST(request: Request) {
   try {
     const { env } = getRequestContext<CloudflareEnv>();
 
-    // Extra, stricter throttle on top of the general API_RATE_LIMITER in
+    // Extra, stricter throttle on top of the general rate limit in
     // src/middleware.ts -- this endpoint takes no auth at all, so it's the
     // easiest one for a bot to flood.
     const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
-    const { success } = await env.ANON_RATE_LIMITER.limit({ key: `track:${ip}` });
+    const { success } = await checkRateLimit(`track:${ip}`, 20, 60);
     if (!success) {
       return new Response(null, { status: 429 });
     }

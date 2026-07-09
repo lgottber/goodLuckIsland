@@ -9,6 +9,7 @@ import NavBar from "../../../components/NavBarDynamic";
 import VideoDetailContent from "./VideoDetailContent";
 import { fetchVideosByIds } from "../../../lib/videosApi";
 import type { Video } from "../../../lib/videosApi";
+import { trackEvent } from "../../../lib/analyticsApi";
 import "./video-detail.css";
 
 export default function VideoDetailPage() {
@@ -28,8 +29,12 @@ export default function VideoDetailPage() {
     }
     fetchVideosByIds([id])
       .then((videos) => {
-        if (videos.length > 0) setVideo(videos[0]);
-        else setError(true);
+        if (videos.length > 0) {
+          setVideo(videos[0]);
+          trackEvent("content_viewed", { contentType: "video", contentId: videos[0].id });
+        } else {
+          setError(true);
+        }
         setLoading(false);
       })
       .catch(() => {

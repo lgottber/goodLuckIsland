@@ -1,13 +1,13 @@
 import { type ReactNode } from "react";
 import Icon from "../../components/Icon";
-import type { IconName } from "../../components/Icon";
+import PillarLogo from "./PillarLogo";
+import type { PillarId } from "./PillarLogo";
 
 type Pillar = {
-  id: string;
+  id: PillarId;
   num: number;
   title: string;
   color: string;
-  iconName: IconName;
   definition: string;
   chapter: string;
 };
@@ -56,19 +56,14 @@ export default function PillarItem({
         >
           <span className="pillar-num-badge">{pillar.num}</span>
           <span className="pillar-icon">
-            <Icon name={pillar.iconName} size={15} />
+            <PillarLogo id={pillar.id} size={26} />
           </span>
-          <span className="pillar-title">{pillar.title}</span>
+          <span className={`pillar-title${isComplete ? " pillar-title--complete" : ""}`}>
+            {pillar.title}
+          </span>
           {comingSoon && <span className="pillar-coming-soon-badge">Coming Soon</span>}
           <span className="pillar-chevron" aria-hidden="true" />
         </button>
-        <input
-          type="checkbox"
-          className="pillar-checkbox"
-          checked={isComplete ?? false}
-          readOnly
-          aria-label={`${pillar.title} completed`}
-        />
       </div>
       <div
         id={drawerId}

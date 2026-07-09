@@ -12,6 +12,7 @@ interface EpisodeRow {
   duration: string | null;
   podcast_url: string | null;
   thumbnail: string | null;
+  score: number;
 }
 
 // Matches the shape src/lib/articlesApi.ts's fetchEpisodes/
@@ -28,6 +29,7 @@ function mapEpisode(ep: EpisodeRow) {
     duration: ep.duration,
     podcastUrl: ep.podcast_url,
     thumbnail: ep.thumbnail,
+    score: ep.score,
   };
 }
 
