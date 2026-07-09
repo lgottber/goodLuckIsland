@@ -12,6 +12,7 @@ export default function BackpackWatchHistoryTab() {
   const [history, setHistory] = useState<VideoWatchHistoryEntry[]>([]);
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     fetchVideoWatchHistory()
@@ -20,12 +21,16 @@ export default function BackpackWatchHistoryTab() {
         return fetchVideosByIds(entries.map((entry) => entry.videoId));
       })
       .then(setVideos)
-      .catch(() => {})
+      .catch(() => setError(true))
       .finally(() => setLoading(false));
   }, []);
 
   if (loading) {
     return <p className="watch-history-loading">Loading…</p>;
+  }
+
+  if (error) {
+    return <p className="watch-history-loading">Could not load watch history. Please try again later.</p>;
   }
 
   if (history.length === 0) {
