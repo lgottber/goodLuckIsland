@@ -11,6 +11,8 @@ import NavBar from "../../components/NavBarDynamic";
 import SearchBar from "../articles/SearchBar";
 import ArticleResults from "./ArticleResults";
 import EpisodeResults from "./EpisodeResults";
+import SearchResultsMeta from "./SearchResultsMeta";
+import type { SearchSortOption } from "./SearchResultsMeta";
 import "./search.css";
 
 export default function SearchPage() {
@@ -25,6 +27,7 @@ export default function SearchPage() {
   const [savedArticleIds, setSavedArticleIds] = useState(new Set<number>());
   const [savedEpisodeIds, setSavedEpisodeIds] = useState(new Set<number>());
   const [loading, setLoading] = useState(true);
+  const [sortBy, setSortBy] = useState<SearchSortOption>("relevance");
 
   useEffect(() => {
     Promise.all([fetchArticles(), fetchEpisodes()])
@@ -60,6 +63,11 @@ export default function SearchPage() {
       )
     : [];
 
+  const sortedArticles =
+    sortBy === "popular" ? [...matchedArticles].sort((a, b) => b.score - a.score) : matchedArticles;
+  const sortedEpisodes =
+    sortBy === "popular" ? [...matchedEpisodes].sort((a, b) => b.score - a.score) : matchedEpisodes;
+
   const totalResults = matchedArticles.length + matchedEpisodes.length;
 
   return (
@@ -74,9 +82,12 @@ export default function SearchPage() {
           <h1 className="search-heading">Search</h1>
           <SearchBar />
           {query && !loading && (
-            <p className="search-count">
-              {totalResults} result{totalResults !== 1 ? "s" : ""} for &ldquo;{query}&rdquo;
-            </p>
+            <SearchResultsMeta
+              totalResults={totalResults}
+              query={query}
+              sortBy={sortBy}
+              onSortChange={setSortBy}
+            />
           )}
         </div>
 
@@ -84,16 +95,16 @@ export default function SearchPage() {
 
         {!loading && query && (
           <div className="search-results">
-            {matchedArticles.length > 0 && (
+            {sortedArticles.length > 0 && (
               <ArticleResults
-                articles={matchedArticles}
+                articles={sortedArticles}
                 userId={userId}
                 savedArticleIds={savedArticleIds}
               />
             )}
-            {matchedEpisodes.length > 0 && (
+            {sortedEpisodes.length > 0 && (
               <EpisodeResults
-                episodes={matchedEpisodes}
+                episodes={sortedEpisodes}
                 userId={userId}
                 savedEpisodeIds={savedEpisodeIds}
               />
