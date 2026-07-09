@@ -11,7 +11,6 @@ export interface ApprovedTestimonial {
   id: string;
   name: string;
   content: string;
-  featured: boolean;
 }
 
 export function submitTestimonial(payload: TestimonialSubmission): Promise<void> {

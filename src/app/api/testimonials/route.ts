@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb, newId, nowIso, publicCacheHeaders, toBool } from "../../../lib/db.server";
+import { getDb, newId, nowIso, publicCacheHeaders } from "../../../lib/db.server";
 import { verifyMember } from "../../../lib/auth.server";
 
 export const runtime = "edge";
@@ -8,23 +8,17 @@ interface TestimonialRow {
   id: string;
   name: string;
   content: string;
-  featured: number;
 }
 
 export async function GET() {
   const db = getDb();
   const { results } = await db
     .prepare(
-      "SELECT id, name, content, featured FROM testimonials WHERE status = 'approved' AND hidden = 0 ORDER BY featured DESC, display_order ASC",
+      "SELECT id, name, content FROM testimonials WHERE status = 'approved' AND hidden = 0 ORDER BY featured DESC, display_order ASC",
     )
     .all<TestimonialRow>();
   return NextResponse.json(
-    (results ?? []).map((r) => ({
-      id: r.id,
-      name: r.name,
-      content: r.content,
-      featured: toBool(r.featured),
-    })),
+    (results ?? []).map((r) => ({ id: r.id, name: r.name, content: r.content })),
     { headers: publicCacheHeaders(300, 3600) },
   );
 }
