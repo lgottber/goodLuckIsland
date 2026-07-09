@@ -3,7 +3,7 @@ import Icon from "../../components/Icon";
 import PillarLogo from "./PillarLogo";
 import type { PillarId } from "./PillarLogo";
 
-type Pillar = {
+export type Pillar = {
   id: PillarId;
   num: number;
   title: string;
