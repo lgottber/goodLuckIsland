@@ -3,7 +3,6 @@ import Icon from "./Icon";
 
 const MENU_ITEMS = [
   { href: "/profile", label: "My Profile" },
-  { href: "/saved", label: "Saved Content" },
   { href: "/backpack", label: "My Backpack" },
 ];
 

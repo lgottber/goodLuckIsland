@@ -84,6 +84,8 @@ export async function GET(request: NextRequest) {
     readTime: string;
     title: string;
     excerpt: string;
+    itemType: "article" | "episode";
+    numericId: number;
   }
 
   const items: SavedItemData[] = [];
@@ -93,6 +95,8 @@ export async function GET(request: NextRequest) {
       if (a) {
         items.push({
           id: row.id,
+          itemType: "article",
+          numericId: a.id,
           type: "article",
           tag: a.category ?? "Article",
           title: a.title,
@@ -107,6 +111,8 @@ export async function GET(request: NextRequest) {
       if (e) {
         items.push({
           id: row.id,
+          itemType: "episode",
+          numericId: e.id,
           type: "podcast",
           tag: "Podcast",
           title: e.title,

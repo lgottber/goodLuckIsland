@@ -8,10 +8,7 @@ export default function MobileUserSection({ setMobileOpen }: { setMobileOpen: (v
       <Link href="/profile" onClick={() => setMobileOpen(false)}>
         <Icon name="user" size={14} /> My Profile
       </Link>
-      <Link href="/saved" onClick={() => setMobileOpen(false)}>
-        <Icon name="bookmark" size={14} /> Saved Content
-      </Link>
-      <Link href="/backpack" onClick={() => setMobileOpen(false)}>
+<Link href="/backpack" onClick={() => setMobileOpen(false)}>
         <Icon name="backpack" size={14} /> My Backpack
       </Link>
       <a href="/auth/logout"><Icon name="logout" size={14} /> Logout</a>
