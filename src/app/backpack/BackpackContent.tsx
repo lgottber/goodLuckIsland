@@ -5,21 +5,23 @@ import FilterTabs from "../../components/FilterTabs";
 import BackpackJourneyTab from "./BackpackJourneyTab";
 import BackpackAssessmentsTab from "./BackpackAssessmentsTab";
 import BackpackSavedTab from "./BackpackSavedTab";
+import BackpackWatchHistoryTab from "./BackpackWatchHistoryTab";
 import BackpackBadgesTab from "./BackpackBadgesTab";
 import type { UserProgress } from "../../lib/sevenStepApi";
 import type { EarnedBadge } from "../../lib/badgesApi";
 
-type Tab = "journey" | "assessments" | "saved" | "badges";
+type Tab = "journey" | "assessments" | "saved" | "watch-history" | "badges";
 
 const TABS: { label: string; value: Tab }[] = [
   { label: "My Journey", value: "journey" },
   { label: "Assessments", value: "assessments" },
   { label: "Saved", value: "saved" },
+  { label: "Watch History", value: "watch-history" },
   { label: "My Badges", value: "badges" },
 ];
 
 function isTab(v: string): v is Tab {
-  return v === "journey" || v === "assessments" || v === "saved" || v === "badges";
+  return v === "journey" || v === "assessments" || v === "saved" || v === "watch-history" || v === "badges";
 }
 
 interface Props {
@@ -46,6 +48,7 @@ export default function BackpackContent({ progress, badges }: Props) {
         )}
         {activeTab === "assessments" && <BackpackAssessmentsTab progress={progress} />}
         {activeTab === "saved" && <BackpackSavedTab />}
+        {activeTab === "watch-history" && <BackpackWatchHistoryTab />}
         {activeTab === "badges" && <BackpackBadgesTab badges={badges} />}
       </div>
     </>

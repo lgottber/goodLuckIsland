@@ -1,20 +1,29 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, useRef, type ReactNode } from "react";
 import ShieldPillarNode from "./ShieldPillarNode";
-import PillarItem from "./PillarItem";
+import PillarSection from "./PillarSection";
 import OneQuestionDrawer from "./OneQuestionDrawer";
 import PinwirlDrawer from "./PinwirlDrawer";
 import type { UserProgress } from "../../lib/sevenStepApi";
 import { SLUG_TO_STEP } from "../../lib/sevenStepApi";
+import type { PillarId } from "./PillarLogo";
 
-const PILLARS = [
+type Pillar = {
+  id: PillarId;
+  num: number;
+  title: string;
+  color: string;
+  definition: string;
+  chapter: string;
+};
+
+const PILLARS: Pillar[] = [
   {
     id: "one-question",
     num: 1,
     title: 'The "One Question Challenge"',
     color: "#e8673a",
-    iconName: "help" as const,
     definition:
       "Each week, one powerful question invites you to reflect more deeply on what retirement means to you personally. There are no right answers — only honest ones.",
     chapter: "Chapter 1 — Awakening the Question",
@@ -24,7 +33,6 @@ const PILLARS = [
     num: 2,
     title: "The Pinwirl Tool",
     color: "#2e8b7a",
-    iconName: "rotate" as const,
     definition:
       "A guided self-assessment that helps you map where you stand across life's key dimensions — financial, social, physical, and purposeful — giving you a clear picture of today and a compass for tomorrow.",
     chapter: "Chapter 2 — Mapping Your Terrain",
@@ -34,7 +42,6 @@ const PILLARS = [
     num: 3,
     title: "Values and Beliefs",
     color: "#1e2d5a",
-    iconName: "compass" as const,
     definition:
       "Before you can build a fulfilling retirement, you need to know what you truly stand for. This pillar helps you surface, articulate, and commit to the values that will guide your next chapter.",
     chapter: "Chapter 3 — The Core of You",
@@ -44,7 +51,6 @@ const PILLARS = [
     num: 4,
     title: "Finding your Purpose",
     color: "#7a5a9a",
-    iconName: "lightbulb" as const,
     definition:
       "Purpose doesn't retire when you do. This pillar walks you through exercises to discover what gives your life meaning beyond your career title — the 'why' that gets you out of bed.",
     chapter: "Chapter 4 — The Why Behind the What",
@@ -54,7 +60,6 @@ const PILLARS = [
     num: 5,
     title: "New Skills for Retirement Life",
     color: "#5a8a6a",
-    iconName: "wrench" as const,
     definition:
       "Retirement brings a whole new set of everyday challenges. From managing health and finances to embracing technology and new hobbies, this pillar helps you identify and develop the skills your next chapter requires.",
     chapter: "Chapter 5 — Learning Never Retires",
@@ -64,7 +69,6 @@ const PILLARS = [
     num: 6,
     title: "Retirement — Bringing it all together!",
     color: "#c87840",
-    iconName: "sparkle" as const,
     definition:
       "You've reflected, explored, and grown. Now it's time to synthesize everything you've uncovered into a cohesive, personal retirement vision — one you can live with intention and joy.",
     chapter: "Chapter 6 — Your Complete Picture",
@@ -74,7 +78,6 @@ const PILLARS = [
     num: 7,
     title: 'The "Give Back" Step',
     color: "#3a6a9a",
-    iconName: "hands" as const,
     definition:
       "Your journey and wisdom matter. This pillar invites you to share your story, mentor others just starting their path, and find ways to contribute beyond yourself — because a life well-lived is one worth passing on.",
     chapter: "Chapter 7 — The Legacy You Leave",
@@ -83,8 +86,39 @@ const PILLARS = [
 
 const ACTIVE_PILLAR_IDS = new Set(["one-question", "pinwirl"]);
 
+function pillarIsComplete(pillarId: string, progress: UserProgress | null): boolean {
+  const stepKey = SLUG_TO_STEP[pillarId];
+  return stepKey !== undefined && progress !== null ? progress[stepKey] : false;
+}
+
 export default function SevenShieldPillars({ progress }: { progress: UserProgress | null }) {
   const [openId, setOpenId] = useState<string | null>(null);
+  const scrollTargetRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    function handleHash() {
+      const match = window.location.hash.match(/^#step-(\d+)$/);
+      if (match) {
+        const num = parseInt(match[1], 10);
+        const pillar = PILLARS.find((p) => p.num === num);
+        if (pillar) {
+          scrollTargetRef.current = `step-${num}`;
+          setOpenId(pillar.id);
+        }
+      }
+    }
+
+    handleHash();
+    window.addEventListener("hashchange", handleHash);
+    return () => window.removeEventListener("hashchange", handleHash);
+  }, []);
+
+  useEffect(() => {
+    if (!scrollTargetRef.current) return;
+    const id = scrollTargetRef.current;
+    scrollTargetRef.current = null;
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [openId]);
 
   function toggle(id: string) {
     setOpenId((prev) => (prev === id ? null : id));
@@ -99,6 +133,11 @@ export default function SevenShieldPillars({ progress }: { progress: UserProgres
     "one-question": <OneQuestionDrawer />,
     "pinwirl": <PinwirlDrawer canEdit={allComplete} />,
   };
+
+  const completedPillars = PILLARS.filter((p) => pillarIsComplete(p.id, progress));
+  const todoPillars = PILLARS.filter((p) => !pillarIsComplete(p.id, progress));
+
+  const sectionProps = { openId, onToggle: toggle, customDrawers, activePillarIds: ACTIVE_PILLAR_IDS };
 
   return (
     <section className="seven-shield-section">
@@ -121,25 +160,13 @@ export default function SevenShieldPillars({ progress }: { progress: UserProgres
         ))}
       </div>
 
-      <div className="pillar-accordion" role="list">
-        {PILLARS.map((pillar) => {
-          const stepKey = SLUG_TO_STEP[pillar.id];
-          const isComplete = stepKey !== undefined && progress !== null
-            ? progress[stepKey]
-            : false;
-          return (
-            <PillarItem
-              key={pillar.id}
-              pillar={pillar}
-              isOpen={openId === pillar.id}
-              isComplete={isComplete}
-              onToggle={toggle}
-              customDrawer={customDrawers[pillar.id]}
-              comingSoon={!ACTIVE_PILLAR_IDS.has(pillar.id)}
-            />
-          );
-        })}
-      </div>
+      {completedPillars.length > 0 && (
+        <PillarSection {...sectionProps} label="Backpack" variant="backpack" pillars={completedPillars} sectionIsComplete={true} />
+      )}
+
+      {todoPillars.length > 0 && (
+        <PillarSection {...sectionProps} label="To Do" variant="todo" pillars={todoPillars} sectionIsComplete={false} />
+      )}
     </section>
   );
 }

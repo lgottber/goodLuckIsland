@@ -255,6 +255,123 @@ body {
   margin: 0;
 }
 
+/* ── Watch history tab ── */
+.watch-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.watch-history-item {
+  display: flex;
+  gap: 1rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(30, 45, 90, 0.07);
+  padding: 0.85rem;
+}
+
+.watch-history-item-thumb {
+  flex: 0 0 8rem;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.watch-history-item-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  justify-content: center;
+}
+
+.watch-history-item-title {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0;
+}
+
+
+.watch-history-item-meta {
+  display: flex;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  color: rgba(30, 45, 90, 0.5);
+}
+
+.watch-history-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.15rem;
+}
+
+.watch-history-progress-track {
+  flex: 1;
+  max-width: 12rem;
+  height: 0.4375rem;
+  background: var(--cream-dk, #e6dfd2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.watch-history-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), #3aaa96);
+  border-radius: 10px;
+}
+
+.watch-history-progress-fill--25 { width: 25%; }
+.watch-history-progress-fill--50 { width: 50%; }
+.watch-history-progress-fill--75 { width: 75%; }
+.watch-history-progress-fill--100 { width: 100%; }
+
+.watch-history-progress-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--teal);
+  white-space: nowrap;
+}
+
+.watch-history-loading {
+  text-align: center;
+  color: var(--navy);
+  opacity: 0.5;
+  padding: 3rem 2rem;
+}
+
+.watch-history-empty {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.watch-history-empty-icon {
+  color: var(--teal);
+  opacity: 0.6;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.watch-history-empty h3 {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 0.5rem;
+}
+
+.watch-history-empty p {
+  font-size: 0.9rem;
+  color: rgba(30, 45, 90, 0.55);
+  margin: 0;
+}
+
 /* ── Section grid ── */
 .backpack-section-grid {
   display: grid;
@@ -488,13 +605,6 @@ body {
   transform: translateY(-3px);
 }
 
-.shield-pillar-num {
-  font-size: 0.5rem;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: 0.02em;
-}
-
 .shield-pillar-icon {
   display: flex;
   align-items: center;
@@ -509,6 +619,29 @@ body {
   flex-shrink: 0;
 }
 
+/* ── Pillar sections (Backpack / To Do) ── */
+.pillar-section {
+  margin-top: 1.75rem;
+}
+
+.pillar-section-heading {
+  font-family: var(--serif);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0 0 0.65rem;
+}
+
+.pillar-section-heading--backpack {
+  color: var(--teal);
+}
+
+.pillar-section-heading--todo {
+  color: var(--navy);
+  opacity: 0.45;
+}
+
 /* ── Pillar accordion ── */
 .pillar-accordion {
   display: flex;
@@ -520,6 +653,7 @@ body {
 
 .pillar-item {
   border-bottom: 1.5px solid var(--cream-dk, #e6dfd2);
+  scroll-margin-top: var(--nav-height);
 }
 
 .pillar-item:last-child {
@@ -579,13 +713,10 @@ body {
   line-height: 1.35;
 }
 
-.pillar-checkbox {
-  width: 1rem;
-  height: 1rem;
-  accent-color: var(--teal);
-  cursor: not-allowed;
-  flex-shrink: 0;
-  margin-right: 1.25rem;
+.pillar-title--complete {
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+  color: rgba(30, 45, 90, 0.5);
 }
 
 .pillar-coming-soon-badge {
