@@ -131,7 +131,7 @@ export const ARCHETYPES: Record<ArchetypeId, Archetype> = {
 export const QUIZ_QUESTIONS: QuizQuestion[] = [
   {
     id: 1,
-    scene: "You've just landed on the island...",
+    scene: "Ok, picture this — you've just landed on a desert island. You're stranded, can't see anyone else around, no other islands in sight. The sand is warm, the jungle is calling...",
     image: "/quiz/q1.png",
     question: "What's your very first move?",
     answers: [
@@ -155,9 +155,9 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 2,
-    scene: "The afternoon is wide open...",
+    scene: "The sun is high, the breeze is perfect, and you've got the whole afternoon to yourself — zero obligations, zero agenda, nowhere to be.",
     image: "/quiz/q2.png",
-    question: "How do you spend your ideal free afternoon?",
+    question: "How do you spend it?",
     answers: [
       {
         text: "Working on something that's been on my mind",
@@ -183,7 +183,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 3,
-    scene: "An unexpected windfall arrives...",
+    scene: "Out of nowhere, a significant chunk of money just landed in your lap — completely unexpected, completely yours. No strings attached.",
     image: "/quiz/q3.png",
     question: "What do you do with it?",
     answers: [
@@ -211,9 +211,9 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 4,
-    scene: "You're part of a new group...",
+    scene: "You've just joined a brand new group of people — could be a club, a team, a community, whatever. Everyone's still figuring out the dynamic.",
     image: "/quiz/q4.png",
-    question: "What role do you naturally take on?",
+    question: "What role do you naturally slip into?",
     answers: [
       {
         text: "The one quietly figuring out what needs to happen",
@@ -239,9 +239,9 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 5,
-    scene: "You're picturing retirement...",
+    scene: "Forget the financial numbers for a second. Close your eyes and picture your ideal retirement — the actual day-to-day feel of it.",
     image: "/quiz/q5.png",
-    question: "What does it look like for you?",
+    question: "What does it look like?",
     answers: [
       {
         text: "Financial independence — a plan I built and trust",
@@ -267,7 +267,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 6,
-    scene: "A big decision is in front of you...",
+    scene: "A genuinely big decision is staring you down — one of those life choices that actually matters and there's no taking it back.",
     image: "/quiz/q6.png",
     question: "How do you typically make it?",
     answers: [
@@ -295,7 +295,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 7,
-    scene: "Be honest...",
+    scene: "Ok, be honest with yourself for a second. No right answers here.",
     image: "/quiz/q7.png",
     question: "How would your closest friends describe you?",
     answers: [
@@ -323,7 +323,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 8,
-    scene: "You're booking a trip...",
+    scene: "You've got the time, you've got the budget, and you're booking a trip right now. Literally anything goes.",
     image: "/quiz/q8.png",
     question: "What does your ideal vacation look like?",
     answers: [
@@ -351,9 +351,9 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 9,
-    scene: "Things go sideways...",
+    scene: "Here's a scenario that'll tell us a lot about you — you had a solid plan, you were feeling good about it, and it just completely fell apart.",
     image: "/quiz/q9.png",
-    question: "The plan just fell apart. What do you do?",
+    question: "What do you do next?",
     answers: [
       {
         text: "Pull up my notes and adapt the plan",
@@ -379,7 +379,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 10,
-    scene: "Looking further ahead...",
+    scene: "Let's zoom way out. When it's all said and done, when the people who knew you best are sitting around talking about you...",
     image: "/quiz/q10.png",
     question: "What legacy matters most to you?",
     answers: [
@@ -407,7 +407,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 11,
-    scene: "Let's talk about risk...",
+    scene: "Alright, let's get into it — everyone has a different relationship with risk, and there's no wrong answer here.",
     image: "/quiz/q11.png",
     question: "How do you relate to it?",
     answers: [
@@ -435,7 +435,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 12,
-    scene: "Someone new joins the community...",
+    scene: "A newcomer just showed up — brand new to the community, doesn't know a soul yet, looking a little unsure of where to even start.",
     image: "/quiz/q12.png",
     question: "What do you naturally do?",
     answers: [
@@ -463,7 +463,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 13,
-    scene: "You sit down to read something...",
+    scene: "You've got a quiet hour and you sit down with something to read — no one's watching, no agenda, just you and whatever sounds good.",
     image: "/quiz/q13.png",
     question: "What do you actually gravitate toward?",
     answers: [
@@ -495,7 +495,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 14,
-    scene: "Sunset on the island...",
+    scene: "The sun is starting to set on the island — warm light, the day winding down, that golden quiet before evening kicks in.",
     image: "/quiz/q14.png",
     question: "Where do you find yourself?",
     answers: [
@@ -527,9 +527,9 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 15,
-    scene: "One last question...",
+    scene: "Alright, last one — and it's a big one. Think about what's coming next for you, the chapter that's just getting started.",
     image: "/quiz/q15.png",
-    question: "How does the chapter ahead feel?",
+    question: "Honestly, how does it feel?",
     answers: [
       {
         text: "Clear — I know exactly where I'm headed",
