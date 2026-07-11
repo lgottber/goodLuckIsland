@@ -2,7 +2,11 @@
 
 import { useEffect, useRef } from "react";
 import { loadYouTubeIframeApi } from "../lib/youtubeIframeApi";
-import { recordVideoProgress } from "../lib/videoProgressApi";
+import {
+  recordVideoProgress,
+  recordVideoPlayEvent,
+  recordVideoPauseEvent,
+} from "../lib/videoProgressApi";
 import type { VideoProgressPercent } from "../lib/videoProgressApi";
 
 const PROGRESS_THRESHOLDS: VideoProgressPercent[] = [25, 50, 75, 100];
@@ -13,6 +17,7 @@ interface Props {
   youtubeId: string;
   title: string;
   autoplay?: boolean;
+  className?: string;
 }
 
 export default function TrackedYouTubeEmbed({
@@ -20,6 +25,7 @@ export default function TrackedYouTubeEmbed({
   youtubeId,
   title,
   autoplay = true,
+  className,
 }: Props) {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
@@ -61,9 +67,13 @@ export default function TrackedYouTubeEmbed({
               fireThreshold(100);
             }
             if (event.data === YT.PlayerState.PLAYING) {
+              recordVideoPlayEvent(videoId);
               stopPolling();
               pollId = setInterval(checkProgress, POLL_INTERVAL_MS);
             } else {
+              if (event.data === YT.PlayerState.PAUSED) {
+                recordVideoPauseEvent(videoId);
+              }
               stopPolling();
             }
           },
@@ -85,6 +95,7 @@ export default function TrackedYouTubeEmbed({
       title={title}
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowFullScreen
+      className={className}
     />
   );
 }
