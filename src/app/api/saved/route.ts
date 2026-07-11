@@ -6,7 +6,7 @@ export const runtime = "edge";
 
 interface SavedRow {
   id: string;
-  item_type: "article" | "episode";
+  item_type: "article" | "episode" | "video";
   item_id: number;
   created_at: string;
 }
@@ -22,6 +22,15 @@ interface ArticleRow {
 }
 
 interface EpisodeRow {
+  id: number;
+  title: string;
+  description: string | null;
+  date: string | null;
+  duration: string | null;
+  thumbnail: string | null;
+}
+
+interface VideoRow {
   id: number;
   title: string;
   description: string | null;
@@ -50,10 +59,14 @@ export async function GET(request: NextRequest) {
   const episodeIds = savedRows
     .filter((r) => r.item_type === "episode")
     .map((r) => r.item_id);
+  const videoIds = savedRows
+    .filter((r) => r.item_type === "video")
+    .map((r) => r.item_id);
 
   const noArticles: ArticleRow[] = [];
   const noEpisodes: EpisodeRow[] = [];
-  const [articleRows, episodeRows] = await Promise.all([
+  const noVideos: VideoRow[] = [];
+  const [articleRows, episodeRows, videoRows] = await Promise.all([
     articleIds.length > 0
       ? db
           .prepare(
@@ -70,10 +83,19 @@ export async function GET(request: NextRequest) {
           .bind(...episodeIds)
           .all<EpisodeRow>()
       : Promise.resolve({ results: noEpisodes }),
+    videoIds.length > 0
+      ? db
+          .prepare(
+            `SELECT * FROM videos WHERE id IN (${videoIds.map(() => "?").join(",")})`,
+          )
+          .bind(...videoIds)
+          .all<VideoRow>()
+      : Promise.resolve({ results: noVideos }),
   ]);
 
   const articleMap = new Map((articleRows.results ?? []).map((a) => [a.id, a]));
   const episodeMap = new Map((episodeRows.results ?? []).map((e) => [e.id, e]));
+  const videoMap = new Map((videoRows.results ?? []).map((v) => [v.id, v]));
 
   interface SavedItemData {
     id: string;
@@ -84,6 +106,8 @@ export async function GET(request: NextRequest) {
     readTime: string;
     title: string;
     excerpt: string;
+    itemType: "article" | "episode" | "video";
+    numericId: number;
   }
 
   const items: SavedItemData[] = [];
@@ -93,6 +117,8 @@ export async function GET(request: NextRequest) {
       if (a) {
         items.push({
           id: row.id,
+          itemType: "article",
+          numericId: a.id,
           type: "article",
           tag: a.category ?? "Article",
           title: a.title,
@@ -107,6 +133,8 @@ export async function GET(request: NextRequest) {
       if (e) {
         items.push({
           id: row.id,
+          itemType: "episode",
+          numericId: e.id,
           type: "podcast",
           tag: "Podcast",
           title: e.title,
@@ -114,6 +142,22 @@ export async function GET(request: NextRequest) {
           date: e.date ?? "",
           readTime: e.duration ?? "",
           image: e.thumbnail ?? null,
+        });
+      }
+    } else if (row.item_type === "video") {
+      const v = videoMap.get(row.item_id);
+      if (v) {
+        items.push({
+          id: row.id,
+          itemType: "video",
+          numericId: v.id,
+          type: "video",
+          tag: "Video",
+          title: v.title,
+          excerpt: v.description ?? "",
+          date: v.date ?? "",
+          readTime: v.duration ?? "",
+          image: v.thumbnail ?? null,
         });
       }
     }

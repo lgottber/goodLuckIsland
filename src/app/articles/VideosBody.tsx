@@ -1,5 +1,6 @@
 import FeaturedVideoPlayer from "./FeaturedVideoPlayer";
 import VideoCard from "./VideoCard";
+import BookmarkButton from "./BookmarkButton";
 import FilterTabs from "../../components/FilterTabs";
 import Pagination from "../../components/Pagination";
 import { ClockIcon } from "../../components/Icons";
@@ -18,12 +19,13 @@ interface Props {
   visibleVideos: Video[];
   featuredPlaying: boolean;
   setFeaturedPlaying: (v: boolean) => void;
-  onPlayVideo: (v: Video) => void;
   durationFilter: string;
   setDurationFilter: (v: string) => void;
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  userId?: string;
+  savedVideoIds?: Set<number>;
 }
 
 export default function VideosBody({
@@ -31,12 +33,13 @@ export default function VideosBody({
   visibleVideos,
   featuredPlaying,
   setFeaturedPlaying,
-  onPlayVideo,
   durationFilter,
   setDurationFilter,
   currentPage,
   totalPages,
   onPageChange,
+  userId,
+  savedVideoIds,
 }: Props) {
   return (
     <div className="podcast-tab-wrapper">
@@ -80,6 +83,14 @@ export default function VideosBody({
                 >
                   Open on YouTube
                 </a>
+                {userId && (
+                  <BookmarkButton
+                    userId={userId}
+                    itemType="video"
+                    itemId={featured.id}
+                    initialSaved={savedVideoIds?.has(featured.id) ?? false}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -98,7 +109,12 @@ export default function VideosBody({
           </div>
           <div className="episodes-grid">
             {visibleVideos.map((v) => (
-              <VideoCard key={v.id} video={v} onPlay={() => onPlayVideo(v)} />
+              <VideoCard
+                key={v.id}
+                video={v}
+                userId={userId}
+                isSaved={savedVideoIds?.has(v.id) ?? false}
+              />
             ))}
           </div>
           {visibleVideos.length === 0 && (

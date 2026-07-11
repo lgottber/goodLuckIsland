@@ -4,7 +4,7 @@ import { verifyMember } from "../../../../lib/auth.server";
 
 export const runtime = "edge";
 
-const ITEM_TYPES = new Set(["article", "episode"]);
+const ITEM_TYPES = new Set(["article", "episode", "video"]);
 
 export async function POST(request: NextRequest) {
   const member = await verifyMember(request);

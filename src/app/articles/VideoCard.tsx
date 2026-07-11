@@ -1,15 +1,23 @@
+import Link from "next/link";
 import { PlayIcon } from "../../components/Icons";
 import PictureImage from "../../components/PictureImage";
+import BookmarkButton from "./BookmarkButton";
 import type { Video } from "../../lib/videosApi";
+import { trackEvent } from "../../lib/analyticsApi";
 
 interface Props {
   video: Video;
-  onPlay: () => void;
+  userId?: string;
+  isSaved?: boolean;
 }
 
-export default function VideoCard({ video, onPlay }: Props) {
+export default function VideoCard({ video, userId, isSaved }: Props) {
   return (
-    <div className="episode-card" onClick={onPlay}>
+    <Link
+      href={`/articles/videos/${video.id}`}
+      className="episode-card"
+      onClick={() => trackEvent("content_viewed", { contentType: "video", contentId: video.id })}
+    >
       <div className="episode-thumb">
         <PictureImage
           name={video.thumbnail ?? undefined}
@@ -17,11 +25,19 @@ export default function VideoCard({ video, onPlay }: Props) {
           sizes="(max-width: 768px) 100vw, 33vw"
         />
         <div className="episode-thumb-overlay">
-          <button type="button" className="episode-thumb-play">
+          <span className="episode-thumb-play">
             <PlayIcon size={16} />
-          </button>
+          </span>
         </div>
         <span className="episode-duration-badge">{video.duration}</span>
+        {userId && (
+          <BookmarkButton
+            userId={userId}
+            itemType="video"
+            itemId={video.id}
+            initialSaved={isSaved ?? false}
+          />
+        )}
       </div>
       <div className="episode-body">
         <div className="episode-body-meta">
@@ -34,6 +50,6 @@ export default function VideoCard({ video, onPlay }: Props) {
           <PlayIcon size={12} /> Watch Video
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
