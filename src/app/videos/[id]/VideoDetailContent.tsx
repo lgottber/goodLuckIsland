@@ -1,4 +1,5 @@
 import { ClockIcon } from "../../../components/Icons";
+import TrackedYouTubeEmbed from "../../../components/TrackedYouTubeEmbed";
 import type { Video } from "../../../lib/videosApi";
 
 export default function VideoDetailContent({ video }: { video: Video }) {
@@ -11,13 +12,15 @@ export default function VideoDetailContent({ video }: { video: Video }) {
   return (
     <>
       <div className="video-detail-embed-wrap">
-        <iframe
-          src={`https://www.youtube.com/embed/${video.youtubeId}`}
-          title={video.title}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="video-detail-embed"
-        />
+        {video.youtubeId && (
+          <TrackedYouTubeEmbed
+            videoId={video.id}
+            youtubeId={video.youtubeId}
+            title={video.title}
+            autoplay={false}
+            className="video-detail-embed"
+          />
+        )}
       </div>
 
       <div className="video-detail-info">
