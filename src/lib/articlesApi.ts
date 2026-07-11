@@ -21,6 +21,7 @@ export type Article = {
   readTime: string | null;
   image: string | null;
   featured: boolean;
+  body?: string | null;
 };
 
 const cachedEpisodes = createCachedFetcher<Episode[]>();
