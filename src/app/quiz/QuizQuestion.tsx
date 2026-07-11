@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { QuizAnswer, QuizQuestion as TQuizQuestion } from "./quizData";
 import QuizAnswerItem from "./QuizAnswerItem";
 
@@ -32,6 +33,15 @@ export default function QuizQuestion({
       <p className="quiz-counter">
         Question {questionIndex + 1} of {total}
       </p>
+      <div className="quiz-scene-image-wrap">
+        <Image
+          src={question.image}
+          alt=""
+          width={160}
+          height={160}
+          className="quiz-scene-image"
+        />
+      </div>
       <p className="quiz-scene">{question.scene}</p>
       <h2 className="quiz-question-text">{question.question}</h2>
       <ul className="quiz-answers" role="list">

@@ -14,6 +14,7 @@ export type QuizAnswer = {
 export type QuizQuestion = {
   id: number;
   scene: string;
+  image: string;
   question: string;
   answers: QuizAnswer[];
 };
@@ -130,7 +131,8 @@ export const ARCHETYPES: Record<ArchetypeId, Archetype> = {
 export const QUIZ_QUESTIONS: QuizQuestion[] = [
   {
     id: 1,
-    scene: "🌴 Ok, picture this — you've just landed on a desert island. You're stranded, can't see anyone else around, no other islands in sight. The sand is warm, the jungle is calling...",
+    scene: "Ok, picture this — you've just landed on a desert island. You're stranded, can't see anyone else around, no other islands in sight. The sand is warm, the jungle is calling...",
+    image: "/quiz/q1.png",
     question: "What's your very first move?",
     answers: [
       {
@@ -153,7 +155,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 2,
-    scene: "☀️ The sun is high, the breeze is perfect, and you've got the whole afternoon to yourself — zero obligations, zero agenda, nowhere to be.",
+    scene: "The sun is high, the breeze is perfect, and you've got the whole afternoon to yourself — zero obligations, zero agenda, nowhere to be.",
+    image: "/quiz/q2.png",
     question: "How do you spend it?",
     answers: [
       {
@@ -180,7 +183,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 3,
-    scene: "💰 Out of nowhere, a significant chunk of money just landed in your lap — completely unexpected, completely yours. No strings attached.",
+    scene: "Out of nowhere, a significant chunk of money just landed in your lap — completely unexpected, completely yours. No strings attached.",
+    image: "/quiz/q3.png",
     question: "What do you do with it?",
     answers: [
       {
@@ -207,7 +211,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 4,
-    scene: "👥 You've just joined a brand new group of people — could be a club, a team, a community, whatever. Everyone's still figuring out the dynamic.",
+    scene: "You've just joined a brand new group of people — could be a club, a team, a community, whatever. Everyone's still figuring out the dynamic.",
+    image: "/quiz/q4.png",
     question: "What role do you naturally slip into?",
     answers: [
       {
@@ -234,7 +239,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 5,
-    scene: "🌅 Forget the financial numbers for a second. Close your eyes and picture your ideal retirement — the actual day-to-day feel of it.",
+    scene: "Forget the financial numbers for a second. Close your eyes and picture your ideal retirement — the actual day-to-day feel of it.",
+    image: "/quiz/q5.png",
     question: "What does it look like?",
     answers: [
       {
@@ -261,7 +267,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 6,
-    scene: "🤔 A genuinely big decision is staring you down — one of those life choices that actually matters and there's no taking it back.",
+    scene: "A genuinely big decision is staring you down — one of those life choices that actually matters and there's no taking it back.",
+    image: "/quiz/q6.png",
     question: "How do you typically make it?",
     answers: [
       {
@@ -288,7 +295,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 7,
-    scene: "🗣️ Ok, be honest with yourself for a second. No right answers here.",
+    scene: "Ok, be honest with yourself for a second. No right answers here.",
+    image: "/quiz/q7.png",
     question: "How would your closest friends describe you?",
     answers: [
       {
@@ -315,7 +323,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 8,
-    scene: "✈️ You've got the time, you've got the budget, and you're booking a trip right now. Literally anything goes.",
+    scene: "You've got the time, you've got the budget, and you're booking a trip right now. Literally anything goes.",
+    image: "/quiz/q8.png",
     question: "What does your ideal vacation look like?",
     answers: [
       {
@@ -342,7 +351,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 9,
-    scene: "⛈️ Here's a scenario that'll tell us a lot about you — you had a solid plan, you were feeling good about it, and it just completely fell apart.",
+    scene: "Here's a scenario that'll tell us a lot about you — you had a solid plan, you were feeling good about it, and it just completely fell apart.",
+    image: "/quiz/q9.png",
     question: "What do you do next?",
     answers: [
       {
@@ -369,7 +379,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 10,
-    scene: "💭 Let's zoom way out. When it's all said and done, when the people who knew you best are sitting around talking about you...",
+    scene: "Let's zoom way out. When it's all said and done, when the people who knew you best are sitting around talking about you...",
+    image: "/quiz/q10.png",
     question: "What legacy matters most to you?",
     answers: [
       {
@@ -396,7 +407,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 11,
-    scene: "📈 Alright, let's get into it — everyone has a different relationship with risk, and there's no wrong answer here.",
+    scene: "Alright, let's get into it — everyone has a different relationship with risk, and there's no wrong answer here.",
+    image: "/quiz/q11.png",
     question: "How do you relate to it?",
     answers: [
       {
@@ -423,7 +435,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 12,
-    scene: "🤝 A newcomer just showed up — brand new to the community, doesn't know a soul yet, looking a little unsure of where to even start.",
+    scene: "A newcomer just showed up — brand new to the community, doesn't know a soul yet, looking a little unsure of where to even start.",
+    image: "/quiz/q12.png",
     question: "What do you naturally do?",
     answers: [
       {
@@ -450,7 +463,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 13,
-    scene: "📚 You've got a quiet hour and you sit down with something to read — no one's watching, no agenda, just you and whatever sounds good.",
+    scene: "You've got a quiet hour and you sit down with something to read — no one's watching, no agenda, just you and whatever sounds good.",
+    image: "/quiz/q13.png",
     question: "What do you actually gravitate toward?",
     answers: [
       {
@@ -481,7 +495,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 14,
-    scene: "🌅 The sun is starting to set on the island — warm light, the day winding down, that golden quiet before evening kicks in.",
+    scene: "The sun is starting to set on the island — warm light, the day winding down, that golden quiet before evening kicks in.",
+    image: "/quiz/q14.png",
     question: "Where do you find yourself?",
     answers: [
       {
@@ -512,7 +527,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 15,
-    scene: "🔭 Alright, last one — and it's a big one. Think about what's coming next for you, the chapter that's just getting started.",
+    scene: "Alright, last one — and it's a big one. Think about what's coming next for you, the chapter that's just getting started.",
+    image: "/quiz/q15.png",
     question: "Honestly, how does it feel?",
     answers: [
       {
