@@ -9,6 +9,7 @@ import { fetchPinwirlHistory } from "../../lib/pinwirlHistoryApi";
 import type { PinwirlResult } from "../../lib/pinwirlHistoryApi";
 import DimensionRow from "./DimensionRow";
 import PinwirlHistory from "./PinwirlHistory";
+import PinwirlWheel from "./PinwirlWheel";
 import { trackEvent } from "../../lib/analyticsApi";
 
 interface Props {
@@ -62,6 +63,8 @@ export default function PinwirlResults({ scores, userId, onRetake }: Props) {
           they&apos;re a starting point, not a verdict.
         </p>
       </div>
+
+      <PinwirlWheel scores={scores} />
 
       <div className="pw-results-bars">
         {DIMENSIONS.map((dim, i) => (

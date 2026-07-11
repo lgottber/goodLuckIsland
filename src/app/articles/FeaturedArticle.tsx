@@ -1,3 +1,4 @@
+import Link from "next/link";
 import PictureImage from "../../components/PictureImage";
 import Icon from "../../components/Icon";
 import type { Article } from "../../lib/articlesApi";
@@ -22,9 +23,9 @@ export default function FeaturedArticle({ featured }: { featured: Article }) {
         </div>
         <h2 className="featured-title">{featured.title}</h2>
         <p className="featured-excerpt">{featured.excerpt}</p>
-        <button type="button" className="btn-read">
+        <Link href={`/articles/${featured.id}`} className="btn-read">
           Read Article
-        </button>
+        </Link>
       </div>
     </div>
   );

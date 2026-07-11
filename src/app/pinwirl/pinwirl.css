@@ -450,6 +450,18 @@
   margin: 0 auto;
 }
 
+/* wheel */
+.pw-wheel-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+
+.pw-wheel {
+  width: 220px;
+  height: 220px;
+}
+
 /* bars */
 .pw-results-bars {
   display: flex;
