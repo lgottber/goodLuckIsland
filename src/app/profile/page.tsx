@@ -13,10 +13,9 @@ import BioDisplay from "./BioDisplay";
 import BioEmpty from "./BioEmpty";
 import InterestsList from "./InterestsList";
 import InterestsEmpty from "./InterestsEmpty";
-import { createUser, fetchProfile, upsertProfile, updateNotificationPrefs, deleteAccount } from "../../lib/profileApi";
-import { fetchUserProgress } from "../../lib/sevenStepApi";
-import type { UserProgress } from "../../lib/sevenStepApi";
+import { createUser, upsertProfile, updateNotificationPrefs, deleteAccount } from "../../lib/profileApi";
 import BackpackDashboardSection from "./BackpackDashboardSection";
+import { useUserDataStore } from "../../lib/stores/userDataStore";
 import { setPendingAccountDeletion } from "../../lib/pendingAccountDeletion";
 import NotificationPrefsModal from "./NotificationPrefsModal";
 import DeleteAccountModal from "./DeleteAccountModal";
@@ -78,14 +77,62 @@ export default function ProfilePage() {
   const { user: auth0User, logout } = useAuth0User();
   const [user, setUser] = useState(INITIAL_USER);
   const [notificationsEmail, setNotificationsEmail] = useState(true);
-  const [progress, setProgress] = useState<UserProgress | null>(null);
+  const progress = useUserDataStore((state) => state.progress);
+  const storedProfile = useUserDataStore((state) => state.profile);
+  const profileStatus = useUserDataStore((state) => state.profileStatus);
+  const ensureProfile = useUserDataStore((state) => state.ensureProfile);
+  const ensureProgress = useUserDataStore((state) => state.ensureProgress);
+  const invalidateProfile = useUserDataStore((state) => state.invalidateProfile);
+  const setStoredProfile = useUserDataStore((state) => state.setProfile);
+  const [initError, setInitError] = useState(false);
 
-  // Seed from Auth0 then overlay saved profile from Supabase
+  function applySupabaseFields(
+    prev: typeof INITIAL_USER,
+    data: Tables<"users">,
+    picture: string | undefined,
+  ) {
+    return {
+      ...prev,
+      firstName: data.first_name ?? prev.firstName,
+      lastName: data.last_name ?? prev.lastName,
+      email: data.email ?? prev.email,
+      username: data.username ?? prev.username,
+      location: data.location ?? prev.location,
+      zipCode: data.zip_code ?? prev.zipCode,
+      city: data.city ?? prev.city,
+      state: data.state ?? prev.state,
+      bio: data.bio ?? prev.bio,
+      mantra: data.mantra ?? prev.mantra,
+      interests: data.interests ?? prev.interests,
+      occupation: data.occupation ?? prev.occupation,
+      education: data.education ?? prev.education,
+      retired: data.retired ?? prev.retired,
+      retirementDate: data.retirement_date ?? prev.retirementDate,
+      retirementDateReason: data.retirement_date_reason ?? prev.retirementDateReason,
+      maritalStatus: data.marital_status ?? prev.maritalStatus,
+      divorced: data.divorced ?? prev.divorced,
+      kids: data.kids ?? prev.kids,
+      homePaidOff: data.home_paid_off ?? prev.homePaidOff,
+      workingIncome: data.working_income ?? prev.workingIncome,
+      netWorth: data.net_worth ?? prev.netWorth,
+      avatarId: data.avatar_id ?? prev.avatarId,
+      age: data.age != null ? String(data.age) : prev.age,
+      yearsInOccupation:
+        data.years_in_occupation != null
+          ? String(data.years_in_occupation)
+          : prev.yearsInOccupation,
+      avatarUrl: data.avatar_id ? "" : (picture ?? prev.avatarUrl),
+    };
+  }
+
+  // Seed from Auth0 immediately, then trigger the shared profile/progress
+  // fetch (skipped if another consumer -- e.g. NavBar -- already loaded it
+  // this session) and overlay it once it lands.
   useEffect(() => {
     if (!auth0User) return;
     const a0 = auth0User;
 
-    function applyAuth0Fields(prev: typeof INITIAL_USER) {
+    setUser((prev) => {
       const nameParts = a0.name?.split(" ") ?? [];
       const firstName = a0.given_name ?? nameParts[0] ?? prev.firstName;
       const lastName =
@@ -98,61 +145,31 @@ export default function ProfilePage() {
         avatarUrl: a0.picture ?? prev.avatarUrl,
         username: a0.nickname ? `@${a0.nickname}` : prev.username,
       };
-    }
+    });
 
-    function applySupabaseFields(
-      prev: typeof INITIAL_USER,
-      data: Tables<"users">,
-    ) {
-      return {
-        ...prev,
-        firstName: data.first_name ?? prev.firstName,
-        lastName: data.last_name ?? prev.lastName,
-        email: data.email ?? prev.email,
-        username: data.username ?? prev.username,
-        location: data.location ?? prev.location,
-        zipCode: data.zip_code ?? prev.zipCode,
-        city: data.city ?? prev.city,
-        state: data.state ?? prev.state,
-        bio: data.bio ?? prev.bio,
-        mantra: data.mantra ?? prev.mantra,
-        interests: data.interests ?? prev.interests,
-        occupation: data.occupation ?? prev.occupation,
-        education: data.education ?? prev.education,
-        retired: data.retired ?? prev.retired,
-        retirementDate: data.retirement_date ?? prev.retirementDate,
-        retirementDateReason: data.retirement_date_reason ?? prev.retirementDateReason,
-        maritalStatus: data.marital_status ?? prev.maritalStatus,
-        divorced: data.divorced ?? prev.divorced,
-        kids: data.kids ?? prev.kids,
-        homePaidOff: data.home_paid_off ?? prev.homePaidOff,
-        workingIncome: data.working_income ?? prev.workingIncome,
-        netWorth: data.net_worth ?? prev.netWorth,
-        avatarId: data.avatar_id ?? prev.avatarId,
-        age: data.age != null ? String(data.age) : prev.age,
-        yearsInOccupation:
-          data.years_in_occupation != null
-            ? String(data.years_in_occupation)
-            : prev.yearsInOccupation,
-        avatarUrl: data.avatar_id ? "" : (a0.picture ?? prev.avatarUrl),
-      };
-    }
+    ensureProfile(a0.sub ?? "");
+    ensureProgress(a0.sub ?? "");
+  }, [auth0User, ensureProfile, ensureProgress]);
 
-    async function loadProfile() {
-      const data = await fetchProfile(a0.sub ?? "");
-      if (!data) {
-        await createUser(a0.sub ?? "", a0.email ?? "");
-        return;
-      }
-      setUser((prev) => applySupabaseFields(prev, data));
-      setNotificationsEmail(data.notifications_email);
+  useEffect(() => {
+    if (!auth0User || profileStatus !== "loaded") return;
+    if (!storedProfile) {
+      createUser(auth0User.sub ?? "", auth0User.email ?? "")
+        .then(() => {
+          invalidateProfile();
+          ensureProfile(auth0User.sub ?? "");
+        })
+        .catch(() => setInitError(true));
+      return;
     }
+    setUser((prev) => applySupabaseFields(prev, storedProfile, auth0User.picture));
+    setNotificationsEmail(storedProfile.notifications_email);
+  }, [auth0User, storedProfile, profileStatus, invalidateProfile, ensureProfile]);
 
-    setUser(applyAuth0Fields);
-    loadProfile().catch(() => setInitError(true));
-    fetchUserProgress(a0.sub ?? "").then(setProgress).catch(() => {});
-  }, [auth0User]);
-  const [initError, setInitError] = useState(false);
+  useEffect(() => {
+    if (profileStatus === "error") setInitError(true);
+  }, [profileStatus]);
+
   const [editing, setEditing] = useState(false);
   const [pickingAvatar, setPickingAvatar] = useState(false);
   const [saved, triggerSaved] = useSubmitFeedback(2000);
@@ -299,6 +316,11 @@ export default function ProfilePage() {
     };
     await persistProfile(withLocation);
     setUser(withLocation);
+    // upsertProfile doesn't hand back the canonical row -- invalidate so the
+    // next ensureProfile call (this refetch, plus NavBar/backpack on their
+    // next mount) picks up what was just saved instead of a stale cache.
+    invalidateProfile();
+    if (auth0User?.sub) ensureProfile(auth0User.sub);
     triggerSaved();
     trackEvent("profile_saved");
   }
@@ -306,6 +328,7 @@ export default function ProfilePage() {
   function handleAvatarSelect(id: string) {
     const updated = { ...user, avatarId: id, avatarUrl: "" };
     setUser(updated);
+    if (storedProfile) setStoredProfile({ ...storedProfile, avatar_id: id });
     persistProfile(updated);
     trackEvent("avatar_changed", { avatarId: id });
   }

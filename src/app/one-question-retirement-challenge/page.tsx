@@ -15,9 +15,9 @@ import {
   saveOneQuestionAnswers,
   markOneQuestionComplete,
 } from "../../lib/oneQuestionApi";
-import { fetchProfile } from "../../lib/profileApi";
 import { isProfileComplete } from "../../lib/profileCompleteness";
 import { trackEvent } from "../../lib/analyticsApi";
+import { useUserDataStore } from "../../lib/stores/userDataStore";
 import "./one-question.css";
 
 export default function OneQuestionRetirementChallengePage() {
@@ -38,6 +38,7 @@ export default function OneQuestionRetirementChallengePage() {
   // Gen X research design needs (#66) -- optimistic `true` default avoids
   // flashing the gate before the profile fetch resolves.
   const [profileComplete, setProfileComplete] = useState(true);
+  const ensureProfile = useUserDataStore((state) => state.ensureProfile);
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -50,11 +51,11 @@ export default function OneQuestionRetirementChallengePage() {
     const userId = user.sub;
     async function load() {
       try {
-        const [qs, profile] = await Promise.all([
+        const [qs] = await Promise.all([
           fetchOneQuestions(),
-          fetchProfile(userId),
+          ensureProfile(userId),
         ]);
-        setProfileComplete(isProfileComplete(profile));
+        setProfileComplete(isProfileComplete(useUserDataStore.getState().profile));
         const [saved, done] = await Promise.all([
           fetchOneQuestionAnswers(userId, qs.length),
           fetchOneQuestionCompleted(userId),
@@ -76,7 +77,7 @@ export default function OneQuestionRetirementChallengePage() {
       }
     }
     load();
-  }, [isAuthenticated, user]);
+  }, [isAuthenticated, user, ensureProfile]);
 
   const total = questions.length;
   const answeredCount = answers.filter((a) => a.trim() !== "").length;

@@ -5,12 +5,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useRouter } from "next/navigation";
 import NavBar from "../../components/NavBarDynamic";
 import BackpackContent from "./BackpackContent";
-import { fetchUserProgress } from "../../lib/sevenStepApi";
-import type { UserProgress } from "../../lib/sevenStepApi";
-import { fetchUserBadges } from "../../lib/badgesApi";
-import type { EarnedBadge } from "../../lib/badgesApi";
-import { fetchProfile } from "../../lib/profileApi";
-import type { Tables } from "../../types/supabase";
+import { useUserDataStore } from "../../lib/stores/userDataStore";
 import "./backpack.css";
 
 export default function BackpackPage() {
@@ -18,9 +13,12 @@ export default function BackpackPage() {
   const userId = user?.sub ?? "";
   const router = useRouter();
 
-  const [progress, setProgress] = useState<UserProgress | null>(null);
-  const [badges, setBadges] = useState<EarnedBadge[]>([]);
-  const [profile, setProfile] = useState<Tables<"users"> | null>(null);
+  const progress = useUserDataStore((state) => state.progress);
+  const badges = useUserDataStore((state) => state.badges);
+  const profile = useUserDataStore((state) => state.profile);
+  const ensureProgress = useUserDataStore((state) => state.ensureProgress);
+  const ensureBadges = useUserDataStore((state) => state.ensureBadges);
+  const ensureProfile = useUserDataStore((state) => state.ensureProfile);
   const [loading, setLoading] = useState(true);
   const [loadError] = useState(false);
 
@@ -36,10 +34,10 @@ export default function BackpackPage() {
 
   useEffect(() => {
     if (!userId) return;
-    fetchUserProgress(userId).then(setProgress).catch(() => {});
-    fetchUserBadges().then(setBadges).catch(() => {});
-    fetchProfile(userId).then(setProfile).catch(() => {});
-  }, [userId]);
+    ensureProgress(userId);
+    ensureBadges();
+    ensureProfile(userId);
+  }, [userId, ensureProgress, ensureBadges, ensureProfile]);
 
   return (
     <>

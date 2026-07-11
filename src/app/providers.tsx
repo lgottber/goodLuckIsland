@@ -6,6 +6,7 @@ import { AuthTokenSync } from "../components/AuthTokenSync";
 import { BlockedGuard } from "../components/BlockedGuard";
 import { PendingDeletionNotice } from "../components/PendingDeletionNotice";
 import SessionGuard from "../components/SessionGuard";
+import { UserDataSync } from "../components/UserDataSync";
 import { AUTH0_DOMAIN, AUTH0_CLIENT_ID } from "../lib/auth0";
 
 // @auth0/auth0-spa-js contains browser-only module chunks that webpack cannot
@@ -39,6 +40,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       }}
     >
       <AuthTokenSync />
+      <UserDataSync />
       <SessionGuard />
       <PendingDeletionNotice>
         <BlockedGuard>{children}</BlockedGuard>
