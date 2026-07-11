@@ -11,7 +11,6 @@ export default function PlaylistBody({ playlist, userId, savedEpisodeIds }: Prop
   return (
     <>
       <div className="playlist-detail-header">
-        <span className="articles-header-eyebrow">Playlist</span>
         <h2>{playlist.name}</h2>
         <p className="playlist-detail-desc">{playlist.description}</p>
       </div>
