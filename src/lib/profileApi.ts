@@ -8,6 +8,9 @@ export type ProfileUpdate = {
   lastName: Tables<"users">["last_name"];
   username: Tables<"users">["username"];
   location: Tables<"users">["location"];
+  zipCode: Tables<"users">["zip_code"];
+  city: Tables<"users">["city"];
+  state: Tables<"users">["state"];
   bio: Tables<"users">["bio"];
   mantra: Tables<"users">["mantra"];
   interests: Tables<"users">["interests"];

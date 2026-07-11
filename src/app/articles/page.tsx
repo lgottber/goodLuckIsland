@@ -99,7 +99,6 @@ export default function ArticlesPage() {
 
       <div className="articles-page">
         <div className="articles-header">
-          <span className="articles-header-eyebrow">Member Content</span>
           <h1>Membership Content</h1>
           <p>
             Articles, podcast episodes, videos, and curated playlists for Gen X

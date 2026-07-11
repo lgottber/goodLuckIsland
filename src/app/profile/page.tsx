@@ -41,6 +41,9 @@ const INITIAL_USER = {
   username: "",
   email: "",
   location: "",
+  zipCode: "",
+  city: "",
+  state: "",
   address: "",
   avatarUrl: "",
   avatarId: "",
@@ -107,6 +110,9 @@ export default function ProfilePage() {
         email: data.email ?? prev.email,
         username: data.username ?? prev.username,
         location: data.location ?? prev.location,
+        zipCode: data.zip_code ?? prev.zipCode,
+        city: data.city ?? prev.city,
+        state: data.state ?? prev.state,
         bio: data.bio ?? prev.bio,
         mantra: data.mantra ?? prev.mantra,
         interests: data.interests ?? prev.interests,
@@ -282,8 +288,15 @@ export default function ProfilePage() {
 
   async function handleSave(updated: typeof INITIAL_USER) {
     setEditing(false);
-    await persistProfile(updated);
-    setUser(updated);
+    // Keep `location` ("City, State") in sync with the structured
+    // city/state fields so the existing profile display, admin panel, and
+    // CSV export -- which all still read `location` -- don't need to change.
+    const withLocation = {
+      ...updated,
+      location: [updated.city, updated.state].filter(Boolean).join(", "),
+    };
+    await persistProfile(withLocation);
+    setUser(withLocation);
     triggerSaved();
     trackEvent("profile_saved");
   }
