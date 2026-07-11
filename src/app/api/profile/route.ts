@@ -29,6 +29,7 @@ interface UserRow {
   education: string | null;
   retired: string | null;
   retirement_date: string | null;
+  retirement_date_reason: string | null;
   marital_status: string | null;
   divorced: string | null;
   kids: string | null;
@@ -60,6 +61,7 @@ interface ProfilePutPayload {
   education?: string | null;
   retired?: string | null;
   retirementDate?: string | null;
+  retirementDateReason?: string | null;
   maritalStatus?: string | null;
   divorced?: string | null;
   kids?: string | null;
@@ -121,9 +123,9 @@ export async function PUT(request: NextRequest) {
       `INSERT INTO users (
          id, email, first_name, last_name, username, location, zip_code, city, state, bio, mantra, interests,
          age, occupation, years_in_occupation, education, retired, retirement_date,
-         marital_status, divorced, kids, home_paid_off, working_income, net_worth,
-         avatar_id, updated_at
-       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         retirement_date_reason, marital_status, divorced, kids, home_paid_off,
+         working_income, net_worth, avatar_id, updated_at
+       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
        ON CONFLICT(id) DO UPDATE SET
          email = excluded.email,
          first_name = excluded.first_name,
@@ -142,6 +144,7 @@ export async function PUT(request: NextRequest) {
          education = excluded.education,
          retired = excluded.retired,
          retirement_date = excluded.retirement_date,
+         retirement_date_reason = excluded.retirement_date_reason,
          marital_status = excluded.marital_status,
          divorced = excluded.divorced,
          kids = excluded.kids,
@@ -175,6 +178,7 @@ export async function PUT(request: NextRequest) {
       updated.education ?? null,
       updated.retired ?? null,
       updated.retirementDate ?? null,
+      updated.retirementDateReason ?? null,
       updated.maritalStatus ?? null,
       updated.divorced ?? null,
       updated.kids ?? null,
