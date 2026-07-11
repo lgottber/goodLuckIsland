@@ -11,6 +11,11 @@ export default function CallbackPage() {
   useEffect(() => {
     if (isLoading || error) return;
     if (!user) return;
+    if (!user.email_verified) {
+      trackEvent("auth_email_unverified");
+      router.replace("/auth/verify-email");
+      return;
+    }
     trackEvent("auth_completed");
     router.replace("/");
   }, [isLoading, error, user, router]);
