@@ -9,6 +9,8 @@ import { fetchUserProgress } from "../../lib/sevenStepApi";
 import type { UserProgress } from "../../lib/sevenStepApi";
 import { fetchUserBadges } from "../../lib/badgesApi";
 import type { EarnedBadge } from "../../lib/badgesApi";
+import { fetchProfile } from "../../lib/profileApi";
+import type { Tables } from "../../types/supabase";
 import "./backpack.css";
 
 export default function BackpackPage() {
@@ -18,6 +20,7 @@ export default function BackpackPage() {
 
   const [progress, setProgress] = useState<UserProgress | null>(null);
   const [badges, setBadges] = useState<EarnedBadge[]>([]);
+  const [profile, setProfile] = useState<Tables<"users"> | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadError] = useState(false);
 
@@ -35,6 +38,7 @@ export default function BackpackPage() {
     if (!userId) return;
     fetchUserProgress(userId).then(setProgress).catch(() => {});
     fetchUserBadges().then(setBadges).catch(() => {});
+    fetchProfile(userId).then(setProfile).catch(() => {});
   }, [userId]);
 
   return (
@@ -60,7 +64,7 @@ export default function BackpackPage() {
         )}
 
         {!loading && !loadError && (
-          <BackpackContent progress={progress} badges={badges} />
+          <BackpackContent progress={progress} badges={badges} profile={profile} />
         )}
       </div>
     </>

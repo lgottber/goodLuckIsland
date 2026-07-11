@@ -9,6 +9,7 @@ import BackpackBadgesTab from "./BackpackBadgesTab";
 import BackpackWatchHistoryTab from "./BackpackWatchHistoryTab";
 import type { UserProgress } from "../../lib/sevenStepApi";
 import type { EarnedBadge } from "../../lib/badgesApi";
+import type { Tables } from "../../types/supabase";
 
 type Tab = "journey" | "assessments" | "saved" | "badges" | "watch-history";
 
@@ -33,9 +34,10 @@ function isTab(v: string): v is Tab {
 interface Props {
   progress: UserProgress | null;
   badges: EarnedBadge[];
+  profile: Tables<"users"> | null;
 }
 
-export default function BackpackContent({ progress, badges }: Props) {
+export default function BackpackContent({ progress, badges, profile }: Props) {
   const [activeTab, setActiveTab] = useState<Tab>("journey");
 
   return (
@@ -50,7 +52,7 @@ export default function BackpackContent({ progress, badges }: Props) {
 
       <div className="backpack-content">
         {activeTab === "journey" && (
-          <BackpackJourneyTab progress={progress} />
+          <BackpackJourneyTab progress={progress} profile={profile} />
         )}
         {activeTab === "assessments" && <BackpackAssessmentsTab progress={progress} />}
         {activeTab === "saved" && <BackpackSavedTab />}
