@@ -20,6 +20,7 @@ export type ProfileUpdate = {
   education: Tables<"users">["education"];
   retired: Tables<"users">["retired"];
   retirementDate: Tables<"users">["retirement_date"];
+  retirementDateReason: Tables<"users">["retirement_date_reason"];
   maritalStatus: Tables<"users">["marital_status"];
   divorced: Tables<"users">["divorced"];
   kids: Tables<"users">["kids"];

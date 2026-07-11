@@ -4,7 +4,7 @@ import type { ProfileForm, SetField } from "./types";
 
 const RETIRED = "Yes, I'm retired";
 
-export default function RetirementTab({ form, set }: { form: Pick<ProfileForm, "retired" | "retirementDate">; set: SetField }) {
+export default function RetirementTab({ form, set }: { form: Pick<ProfileForm, "retired" | "retirementDate" | "retirementDateReason">; set: SetField }) {
 
   return (
     <div className="edit-modal-body">
