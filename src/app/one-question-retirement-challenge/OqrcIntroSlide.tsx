@@ -1,6 +1,17 @@
 export default function OqrcIntroSlide() {
   return (
     <div className="oqrc-intro">
+      <div className="oqrc-welcome">
+        <img
+          src="/good_luck_island_logo_small.png"
+          alt="Good Luck Island"
+          className="oqrc-welcome-logo"
+        />
+        <p className="oqrc-welcome-greeting">Greetings from Good Luck Island</p>
+        <h2 className="oqrc-welcome-title">
+          The One Question Retirement Challenge (1QRC)
+        </h2>
+      </div>
       <p className="oqrc-intro-p">
         Imagine this: You&apos;re meeting a financial planner for the first
         time. You&apos;ve been escorted into their high rise office by a

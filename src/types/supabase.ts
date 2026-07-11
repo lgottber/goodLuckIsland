@@ -646,6 +646,7 @@ export type Database = {
           avatar_id: string | null;
           bio: string | null;
           blocked_at: string | null;
+          city: string | null;
           created_at: string | null;
           divorced: string | null;
           education: string | null;
@@ -666,16 +667,19 @@ export type Database = {
           occupation: string | null;
           retired: string | null;
           retirement_date: string | null;
+          state: string | null;
           unsubscribed_at: string | null;
           updated_at: string | null;
           username: string | null;
           working_income: string | null;
           years_in_occupation: number | null;
+          zip_code: string | null;
         };
         Insert: {
           age?: number | null;
           avatar_id?: string | null;
           bio?: string | null;
+          city?: string | null;
           created_at?: string | null;
           divorced?: string | null;
           education?: string | null;
@@ -696,16 +700,19 @@ export type Database = {
           occupation?: string | null;
           retired?: string | null;
           retirement_date?: string | null;
+          state?: string | null;
           unsubscribed_at?: string | null;
           updated_at?: string | null;
           username?: string | null;
           working_income?: string | null;
           years_in_occupation?: number | null;
+          zip_code?: string | null;
         };
         Update: {
           age?: number | null;
           avatar_id?: string | null;
           bio?: string | null;
+          city?: string | null;
           created_at?: string | null;
           divorced?: string | null;
           education?: string | null;
@@ -726,11 +733,13 @@ export type Database = {
           occupation?: string | null;
           retired?: string | null;
           retirement_date?: string | null;
+          state?: string | null;
           unsubscribed_at?: string | null;
           updated_at?: string | null;
           username?: string | null;
           working_income?: string | null;
           years_in_occupation?: number | null;
+          zip_code?: string | null;
         };
         Relationships: [];
       };

@@ -803,6 +803,16 @@ body {
   background: var(--coral-dk);
 }
 
+.btn-save:disabled {
+  background: var(--cream-dk);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+.field-error {
+  color: var(--coral-dk);
+}
+
 .btn-cancel {
   background: transparent;
   color: var(--navy);
