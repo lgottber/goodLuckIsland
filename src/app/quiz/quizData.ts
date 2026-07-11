@@ -14,6 +14,7 @@ export type QuizAnswer = {
 export type QuizQuestion = {
   id: number;
   scene: string;
+  image: string;
   question: string;
   answers: QuizAnswer[];
 };
@@ -130,7 +131,8 @@ export const ARCHETYPES: Record<ArchetypeId, Archetype> = {
 export const QUIZ_QUESTIONS: QuizQuestion[] = [
   {
     id: 1,
-    scene: "🌴 You've just landed on the island...",
+    scene: "You've just landed on the island...",
+    image: "/quiz/q1.png",
     question: "What's your very first move?",
     answers: [
       {
@@ -153,7 +155,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 2,
-    scene: "☀️ The afternoon is wide open...",
+    scene: "The afternoon is wide open...",
+    image: "/quiz/q2.png",
     question: "How do you spend your ideal free afternoon?",
     answers: [
       {
@@ -180,7 +183,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 3,
-    scene: "💰 An unexpected windfall arrives...",
+    scene: "An unexpected windfall arrives...",
+    image: "/quiz/q3.png",
     question: "What do you do with it?",
     answers: [
       {
@@ -207,7 +211,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 4,
-    scene: "👥 You're part of a new group...",
+    scene: "You're part of a new group...",
+    image: "/quiz/q4.png",
     question: "What role do you naturally take on?",
     answers: [
       {
@@ -234,7 +239,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 5,
-    scene: "🌅 You're picturing retirement...",
+    scene: "You're picturing retirement...",
+    image: "/quiz/q5.png",
     question: "What does it look like for you?",
     answers: [
       {
@@ -261,7 +267,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 6,
-    scene: "🤔 A big decision is in front of you...",
+    scene: "A big decision is in front of you...",
+    image: "/quiz/q6.png",
     question: "How do you typically make it?",
     answers: [
       {
@@ -288,7 +295,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 7,
-    scene: "🗣️ Be honest...",
+    scene: "Be honest...",
+    image: "/quiz/q7.png",
     question: "How would your closest friends describe you?",
     answers: [
       {
@@ -315,7 +323,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 8,
-    scene: "✈️ You're booking a trip...",
+    scene: "You're booking a trip...",
+    image: "/quiz/q8.png",
     question: "What does your ideal vacation look like?",
     answers: [
       {
@@ -342,7 +351,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 9,
-    scene: "⛈️ Things go sideways...",
+    scene: "Things go sideways...",
+    image: "/quiz/q9.png",
     question: "The plan just fell apart. What do you do?",
     answers: [
       {
@@ -369,7 +379,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 10,
-    scene: "💭 Looking further ahead...",
+    scene: "Looking further ahead...",
+    image: "/quiz/q10.png",
     question: "What legacy matters most to you?",
     answers: [
       {
@@ -396,7 +407,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 11,
-    scene: "📈 Let's talk about risk...",
+    scene: "Let's talk about risk...",
+    image: "/quiz/q11.png",
     question: "How do you relate to it?",
     answers: [
       {
@@ -423,7 +435,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 12,
-    scene: "🤝 Someone new joins the community...",
+    scene: "Someone new joins the community...",
+    image: "/quiz/q12.png",
     question: "What do you naturally do?",
     answers: [
       {
@@ -450,7 +463,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 13,
-    scene: "📚 You sit down to read something...",
+    scene: "You sit down to read something...",
+    image: "/quiz/q13.png",
     question: "What do you actually gravitate toward?",
     answers: [
       {
@@ -481,7 +495,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 14,
-    scene: "🌅 Sunset on the island...",
+    scene: "Sunset on the island...",
+    image: "/quiz/q14.png",
     question: "Where do you find yourself?",
     answers: [
       {
@@ -512,7 +527,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 15,
-    scene: "🔭 One last question...",
+    scene: "One last question...",
+    image: "/quiz/q15.png",
     question: "How does the chapter ahead feel?",
     answers: [
       {

@@ -100,6 +100,18 @@
   margin: 0 0 0.5rem;
 }
 
+.quiz-scene-image-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.quiz-scene-image {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+}
+
 .quiz-scene {
   font-family: var(--sans);
   font-size: 0.9rem;
