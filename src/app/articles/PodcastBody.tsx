@@ -1,5 +1,6 @@
 import FeaturedEpisode from "./FeaturedEpisode";
 import ListenButton from "./ListenButton";
+import { parseSpotifyEpisodeId } from "../../lib/spotifyEmbed";
 import EpisodeCard from "./EpisodeCard";
 import BookmarkButton from "./BookmarkButton";
 import FilterTabs from "../../components/FilterTabs";
@@ -73,7 +74,7 @@ export default function PodcastBody({
                 {featured.duration}
               </div>
               <div className="featured-actions">
-                {featured.podcastUrl && <ListenButton url={featured.podcastUrl} />}
+                {featured.podcastUrl && !parseSpotifyEpisodeId(featured.podcastUrl) && <ListenButton url={featured.podcastUrl} />}
                 {userId && (
                   <BookmarkButton
                     userId={userId}
