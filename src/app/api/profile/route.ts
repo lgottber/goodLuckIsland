@@ -17,6 +17,9 @@ interface UserRow {
   last_name: string | null;
   username: string | null;
   location: string | null;
+  zip_code: string | null;
+  city: string | null;
+  state: string | null;
   bio: string | null;
   mantra: string | null;
   interests: string | null;
@@ -45,6 +48,9 @@ interface ProfilePutPayload {
   lastName?: string | null;
   username?: string | null;
   location?: string | null;
+  zipCode?: string | null;
+  city?: string | null;
+  state?: string | null;
   bio?: string | null;
   mantra?: string | null;
   interests?: string[] | null;
@@ -113,17 +119,20 @@ export async function PUT(request: NextRequest) {
   await db
     .prepare(
       `INSERT INTO users (
-         id, email, first_name, last_name, username, location, bio, mantra, interests,
+         id, email, first_name, last_name, username, location, zip_code, city, state, bio, mantra, interests,
          age, occupation, years_in_occupation, education, retired, retirement_date,
          marital_status, divorced, kids, home_paid_off, working_income, net_worth,
          avatar_id, updated_at
-       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
        ON CONFLICT(id) DO UPDATE SET
          email = excluded.email,
          first_name = excluded.first_name,
          last_name = excluded.last_name,
          username = excluded.username,
          location = excluded.location,
+         zip_code = excluded.zip_code,
+         city = excluded.city,
+         state = excluded.state,
          bio = excluded.bio,
          mantra = excluded.mantra,
          interests = excluded.interests,
@@ -149,6 +158,9 @@ export async function PUT(request: NextRequest) {
       updated.lastName ?? null,
       updated.username ?? null,
       updated.location ?? null,
+      updated.zipCode ?? null,
+      updated.city ?? null,
+      updated.state ?? null,
       updated.bio ?? null,
       updated.mantra ?? null,
       toJson(updated.interests ?? null),

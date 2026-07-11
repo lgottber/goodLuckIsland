@@ -39,6 +39,7 @@ export default function EditModal({ user, onSave, onClose }: { user: ProfileForm
     );
 
   const tabIdx = MODAL_TABS.indexOf(activeTab);
+  const zipValid = /^\d{5}$/.test(form.zipCode ?? "");
 
   return (
     <Modal
@@ -101,7 +102,11 @@ export default function EditModal({ user, onSave, onClose }: { user: ProfileForm
           <button type="button" className="btn-cancel" onClick={onClose}>
             Cancel
           </button>
-          <ModalActionButton label="Save Changes" onClick={() => onSave(form)} />
+          <ModalActionButton
+            label="Save Changes"
+            onClick={() => onSave(form)}
+            disabled={!zipValid}
+          />
           {tabIdx < MODAL_TABS.length - 1 && (
             <ModalActionButton
               label="Next →"

@@ -1,7 +1,14 @@
-import { KeyboardEvent } from "react";
+import { KeyboardEvent, useEffect, useState } from "react";
 import Field from "./Field";
 import InterestTagList from "./InterestTagList";
+import { useDebounce } from "../../hooks/useDebounce";
 import type { ProfileForm, SetField } from "./types";
+
+const ZIP_PATTERN = /^\d{5}$/;
+
+interface ZipLookupResponse {
+  places?: { "place name": string; "state abbreviation": string }[];
+}
 
 export default function BasicInfoTab({
   form,
@@ -11,13 +18,61 @@ export default function BasicInfoTab({
   addInterest,
   removeInterest,
 }: {
-  form: Pick<ProfileForm, "firstName" | "lastName" | "username" | "age" | "email" | "location" | "address" | "bio" | "mantra" | "interests">;
+  form: Pick<ProfileForm, "firstName" | "lastName" | "username" | "age" | "email" | "zipCode" | "city" | "state" | "address" | "bio" | "mantra" | "interests">;
   set: SetField;
   interestInput: string;
   setInterestInput: (v: string) => void;
   addInterest: (e: KeyboardEvent<HTMLInputElement>) => void;
   removeInterest: (tag: string) => void;
 }) {
+  const [zipStatus, setZipStatus] = useState<"idle" | "loading" | "found" | "not_found" | "error">("idle");
+  const debouncedZip = useDebounce(form.zipCode, 400);
+
+  // Auto-populate city/state from the ZIP -- both stay editable afterward,
+  // so this only overwrites what the lookup actually returns.
+  useEffect(() => {
+    if (!ZIP_PATTERN.test(debouncedZip ?? "")) {
+      setZipStatus("idle");
+      return;
+    }
+    const controller = new AbortController();
+    setZipStatus("loading");
+    async function lookupZip(): Promise<ZipLookupResponse> {
+      const res = await fetch(`https://api.zippopotam.us/us/${debouncedZip}`, { signal: controller.signal });
+      if (!res.ok) return Promise.reject(res.status);
+      return res.json();
+    }
+    lookupZip()
+      .then((data) => {
+        const place = data.places?.[0];
+        if (!place) {
+          setZipStatus("not_found");
+          return;
+        }
+        set("city", place["place name"]);
+        set("state", place["state abbreviation"]);
+        setZipStatus("found");
+      })
+      .catch((err) => {
+        if (err instanceof DOMException && err.name === "AbortError") return;
+        if (err === 404) setZipStatus("not_found");
+        else setZipStatus("error");
+      });
+    return () => controller.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- only re-run on the debounced zip changing
+  }, [debouncedZip]);
+
+  const zipHint =
+    zipStatus === "loading"
+      ? "Looking up city & state…"
+      : zipStatus === "not_found"
+      ? "ZIP code not found — you can still fill in city/state manually"
+      : zipStatus === "error"
+      ? "Couldn't look up that ZIP — you can still fill in city/state manually"
+      : "5-digit US ZIP, required — auto-fills city & state below";
+  const zipTouched = (form.zipCode?.length ?? 0) > 0;
+  const zipError = zipTouched && !ZIP_PATTERN.test(form.zipCode ?? "") ? "Enter a valid 5-digit ZIP code" : null;
+
   return (
     <div className="edit-modal-body">
       <div className="modal-section-label">Identity</div>
@@ -67,14 +122,34 @@ export default function BasicInfoTab({
       <div className="modal-section-label modal-section-label--spaced">
         Location
       </div>
-      <Field label="City / State">
-        <input
-          type="text"
-          value={form.location}
-          onChange={(e) => set("location", e.target.value)}
-          placeholder="City, State"
-        />
-      </Field>
+      <div className="field-row">
+        <Field label="Zip Code" hint={zipError ?? zipHint} error={!!zipError}>
+          <input
+            type="text"
+            inputMode="numeric"
+            value={form.zipCode}
+            onChange={(e) => set("zipCode", e.target.value.replace(/[^0-9]/g, "").slice(0, 5))}
+            placeholder="e.g. 90210"
+            maxLength={5}
+          />
+        </Field>
+        <Field label="City (optional)">
+          <input
+            type="text"
+            value={form.city}
+            onChange={(e) => set("city", e.target.value)}
+            placeholder="City"
+          />
+        </Field>
+        <Field label="State (optional)">
+          <input
+            type="text"
+            value={form.state}
+            onChange={(e) => set("state", e.target.value)}
+            placeholder="State"
+          />
+        </Field>
+      </div>
       <Field label="Mailing Address" hint="So we can send you gifts 🎁">
         <input
           type="text"
