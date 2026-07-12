@@ -2,11 +2,21 @@
 
 import { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { setAuthTokenGetter } from "../lib/apiClient";
+import { setAuthTokenGetter, setUnauthorizedHandler } from "../lib/apiClient";
 
 export function AuthTokenSync() {
   const { getIdTokenClaims, getAccessTokenSilently, isAuthenticated, isLoading, loginWithRedirect } =
     useAuth0();
+
+  useEffect(() => {
+    setUnauthorizedHandler(() => {
+      loginWithRedirect({
+        appState: {
+          returnTo: window.location.pathname + window.location.search,
+        },
+      });
+    });
+  }, [loginWithRedirect]);
 
   useEffect(() => {
     // While Auth0 is still doing its initial session check, isAuthenticated

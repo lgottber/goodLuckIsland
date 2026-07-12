@@ -18,6 +18,19 @@ export function setAuthTokenGetter(fn: () => Promise<string | null>) {
   getToken = fn;
   resolveReady?.();
   resolveReady = null;
+  // A new getter means the auth state just changed (login, logout, or a
+  // fresh silent-refresh cycle) -- allow the next expired-token 401 to
+  // trigger a redirect again.
+  unauthorizedTriggered = false;
+}
+
+// AuthTokenSync registers this so a 401 caused by an expired/invalid token
+// can send the user back through login, not just surface as a failed request.
+let onUnauthorized: (() => void) | null = null;
+let unauthorizedTriggered = false;
+
+export function setUnauthorizedHandler(fn: () => void) {
+  onUnauthorized = fn;
 }
 
 export class ApiError extends Error {
@@ -39,6 +52,15 @@ async function request(path: string, init: RequestInit): Promise<Response> {
 
   const res = await fetch(`/api${path}`, { ...init, headers });
   if (!res.ok) {
+    // A 401 on a request that carried a token means the server rejected it
+    // as invalid/expired (see verifyMember in auth.server.ts) -- silent
+    // refresh either isn't possible (refresh token also expired) or hasn't
+    // caught up yet, so send the user back through login. Guarded so a burst
+    // of parallel requests doesn't fire loginWithRedirect more than once.
+    if (res.status === 401 && token && !unauthorizedTriggered) {
+      unauthorizedTriggered = true;
+      onUnauthorized?.();
+    }
     const body = await res.json<{ error?: string }>().catch(() => null);
     throw new ApiError(
       typeof body?.error === "string"
