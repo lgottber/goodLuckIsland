@@ -17,6 +17,7 @@ function getJwks() {
 
 export interface VerifiedMember {
   sub: string;
+  emailVerified: boolean;
 }
 
 // Replaces Postgres RLS (`auth.jwt() ->> 'sub' = user_id`) as the access
@@ -38,7 +39,11 @@ export async function verifyMember(
       issuer: `https://${AUTH0_DOMAIN}/`,
       audience: AUTH0_CLIENT_ID,
     });
-    return typeof payload.sub === "string" ? { sub: payload.sub } : null;
+    if (typeof payload.sub !== "string") return null;
+    // Reject unverified email accounts — Auth0 sets this false on database
+    // connections until the user clicks the verification link.
+    if (payload.email_verified === false) return null;
+    return { sub: payload.sub, emailVerified: true };
   } catch {
     return null;
   }

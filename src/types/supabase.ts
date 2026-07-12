@@ -667,6 +667,7 @@ export type Database = {
           occupation: string | null;
           retired: string | null;
           retirement_date: string | null;
+          retirement_date_reason: string | null;
           state: string | null;
           unsubscribed_at: string | null;
           updated_at: string | null;
@@ -700,6 +701,7 @@ export type Database = {
           occupation?: string | null;
           retired?: string | null;
           retirement_date?: string | null;
+          retirement_date_reason?: string | null;
           state?: string | null;
           unsubscribed_at?: string | null;
           updated_at?: string | null;
@@ -733,6 +735,7 @@ export type Database = {
           occupation?: string | null;
           retired?: string | null;
           retirement_date?: string | null;
+          retirement_date_reason?: string | null;
           state?: string | null;
           unsubscribed_at?: string | null;
           updated_at?: string | null;
