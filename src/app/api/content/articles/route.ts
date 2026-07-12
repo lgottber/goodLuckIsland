@@ -13,6 +13,7 @@ interface ArticleRow {
   image: string | null;
   featured: number;
   score: number;
+  is_members_only: number;
 }
 
 function mapArticle(a: ArticleRow) {
@@ -26,6 +27,7 @@ function mapArticle(a: ArticleRow) {
     image: a.image,
     featured: toBool(a.featured),
     score: a.score,
+    isMembersOnly: toBool(a.is_members_only),
   };
 }
 

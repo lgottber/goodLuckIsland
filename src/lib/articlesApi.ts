@@ -11,6 +11,7 @@ export type Episode = {
   podcastUrl: string | null;
   thumbnail: string | null;
   score: number;
+  isMembersOnly?: boolean;
 };
 
 export type Article = {
@@ -24,6 +25,7 @@ export type Article = {
   featured: boolean;
   body?: string | null;
   score: number;
+  isMembersOnly?: boolean;
 };
 
 const cachedEpisodes = createCachedFetcher<Episode[]>();

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDb } from "../../../../lib/db.server";
 import NavBarDynamic from "../../../../components/NavBarDynamic";
+import VideoEmbedGate from "./VideoEmbedGate";
 import "../../[id]/article-detail.css";
 
 export const runtime = "edge";
@@ -17,12 +18,13 @@ interface VideoRow {
   duration: string | null;
   youtube_id: string | null;
   thumbnail: string | null;
+  is_members_only: number;
 }
 
 const fetchVideo = cache(async (id: number): Promise<VideoRow | null> => {
   const db = getDb();
   return db
-    .prepare("SELECT id, num, title, description, date, duration, youtube_id, thumbnail FROM videos WHERE id = ?")
+    .prepare("SELECT id, num, title, description, date, duration, youtube_id, thumbnail, is_members_only FROM videos WHERE id = ?")
     .bind(id)
     .first<VideoRow>();
 });
@@ -70,31 +72,11 @@ export default async function VideoDetailPage({ params }: Props) {
     <p className="content-detail-num">{video.num}</p>
   ) : null;
 
-  const embed = video.youtube_id ? (
-    <div className="content-detail-embed">
-      <iframe
-        src={`https://www.youtube.com/embed/${video.youtube_id}`}
-        title={video.title}
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-      />
-    </div>
-  ) : null;
-
   const description = video.description ? (
     <p className="content-detail-excerpt">{video.description}</p>
   ) : null;
 
-  const youtubeLink = video.youtube_id ? (
-    <a
-      href={`https://www.youtube.com/watch?v=${video.youtube_id}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="content-detail-listen-btn"
-    >
-      ▶ Watch on YouTube
-    </a>
-  ) : null;
+  const isMembersOnly = Boolean(video.is_members_only);
 
   return (
     <>
@@ -115,9 +97,13 @@ export default async function VideoDetailPage({ params }: Props) {
             {video.date && video.duration && <span className="content-detail-dot" />}
             {video.duration && <span>{video.duration}</span>}
           </div>
-          {embed}
+          <VideoEmbedGate
+            videoId={video.id}
+            youtubeId={isMembersOnly ? null : video.youtube_id}
+            title={video.title}
+            isMembersOnly={isMembersOnly}
+          />
           {description}
-          {youtubeLink}
           <Link href="/articles?tab=videos" className="content-detail-cta">
             Browse all videos →
           </Link>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import DOMPurify from "dompurify";
 import { apiFetch } from "../../../lib/apiClient";
 
 interface Props {
@@ -41,7 +42,7 @@ export default function ArticleFullBody({ articleId, teaserHtml }: Props) {
     return (
       <div
         className="article-detail-content"
-        dangerouslySetInnerHTML={{ __html: fullBody }}
+        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(fullBody) }}
       />
     );
   }
@@ -50,7 +51,7 @@ export default function ArticleFullBody({ articleId, teaserHtml }: Props) {
     <>
       <div
         className="article-detail-content"
-        dangerouslySetInnerHTML={{ __html: teaserHtml }}
+        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(teaserHtml) }}
       />
       <p className="article-detail-gate">
         <a href="/signup">Sign up</a> or <a href="/auth/login">log in</a> to

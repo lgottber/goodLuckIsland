@@ -43,6 +43,7 @@ export default function EpisodeCard({ ep, userId, isSaved }: Props) {
         <div className="episode-body-meta">
           <span className="episode-body-num">{ep.num}</span>
           <span className="episode-body-date">{ep.date}</span>
+          {ep.isMembersOnly && <span className="members-only-badge">Members</span>}
         </div>
         <h3 className="episode-body-title">{ep.title}</h3>
         <p className="episode-body-desc">{ep.desc}</p>

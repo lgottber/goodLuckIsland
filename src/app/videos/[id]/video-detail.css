@@ -102,6 +102,23 @@ body {
   margin-top: 0.5rem;
 }
 
+.video-detail-gate {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.7;
+  padding: 2rem 0;
+}
+
+.video-detail-gate a {
+  color: var(--teal);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.video-detail-gate a:hover {
+  text-decoration: underline;
+}
+
 .video-detail-status {
   text-align: center;
   color: var(--muted);

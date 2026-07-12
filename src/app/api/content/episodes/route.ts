@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb, publicCacheHeaders } from "../../../../lib/db.server";
+import { getDb, publicCacheHeaders, toBool } from "../../../../lib/db.server";
 
 export const runtime = "edge";
 
@@ -13,6 +13,7 @@ interface EpisodeRow {
   podcast_url: string | null;
   thumbnail: string | null;
   score: number;
+  is_members_only: number;
 }
 
 // Matches the shape src/lib/articlesApi.ts's fetchEpisodes/
@@ -20,6 +21,7 @@ interface EpisodeRow {
 // deliberately not exposed here since no current consumer reads them from
 // this endpoint.
 function mapEpisode(ep: EpisodeRow) {
+  const isMembersOnly = toBool(ep.is_members_only);
   return {
     id: ep.id,
     num: ep.num,
@@ -27,9 +29,10 @@ function mapEpisode(ep: EpisodeRow) {
     desc: ep.description,
     date: ep.date,
     duration: ep.duration,
-    podcastUrl: ep.podcast_url,
+    podcastUrl: isMembersOnly ? null : ep.podcast_url,
     thumbnail: ep.thumbnail,
     score: ep.score,
+    isMembersOnly,
   };
 }
 

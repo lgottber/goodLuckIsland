@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { getDb } from "../../../../lib/db.server";
 import NavBarDynamic from "../../../../components/NavBarDynamic";
 import PictureImage from "../../../../components/PictureImage";
+import EpisodeListenGate from "./EpisodeListenGate";
 import "../../[id]/article-detail.css";
 
 export const runtime = "edge";
@@ -18,12 +19,13 @@ interface EpisodeRow {
   duration: string | null;
   podcast_url: string | null;
   thumbnail: string | null;
+  is_members_only: number;
 }
 
 const fetchEpisode = cache(async (id: number): Promise<EpisodeRow | null> => {
   const db = getDb();
   return db
-    .prepare("SELECT id, num, title, description, date, duration, podcast_url, thumbnail FROM episodes WHERE id = ?")
+    .prepare("SELECT id, num, title, description, date, duration, podcast_url, thumbnail, is_members_only FROM episodes WHERE id = ?")
     .bind(id)
     .first<EpisodeRow>();
 });
@@ -80,16 +82,7 @@ export default async function EpisodeDetailPage({ params }: Props) {
     <p className="content-detail-excerpt">{episode.description}</p>
   ) : null;
 
-  const listenBtn = episode.podcast_url ? (
-    <a
-      href={episode.podcast_url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="content-detail-listen-btn"
-    >
-      🎧 Listen to Episode
-    </a>
-  ) : null;
+  const isMembersOnly = Boolean(episode.is_members_only);
 
   return (
     <>
@@ -113,7 +106,11 @@ export default async function EpisodeDetailPage({ params }: Props) {
             {episode.duration && <span>{episode.duration}</span>}
           </div>
           {description}
-          {listenBtn}
+          <EpisodeListenGate
+            episodeId={episode.id}
+            podcastUrl={isMembersOnly ? null : episode.podcast_url}
+            isMembersOnly={isMembersOnly}
+          />
           <Link href="/articles?tab=podcast" className="content-detail-cta">
             Browse all episodes →
           </Link>

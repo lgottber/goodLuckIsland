@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb, publicCacheHeaders } from "../../../../lib/db.server";
+import { getDb, publicCacheHeaders, toBool } from "../../../../lib/db.server";
 
 export const runtime = "edge";
 
@@ -12,11 +12,13 @@ interface VideoRow {
   duration: string | null;
   youtube_id: string | null;
   thumbnail: string | null;
+  is_members_only: number;
 }
 
 // CMS-only columns (tags, status, etc.) are deliberately not exposed
 // here since no current consumer reads them from this endpoint.
 function mapVideo(v: VideoRow) {
+  const isMembersOnly = toBool(v.is_members_only);
   return {
     id: v.id,
     num: v.num,
@@ -24,8 +26,9 @@ function mapVideo(v: VideoRow) {
     desc: v.description,
     date: v.date,
     duration: v.duration,
-    youtubeId: v.youtube_id,
+    youtubeId: isMembersOnly ? null : v.youtube_id,
     thumbnail: v.thumbnail,
+    isMembersOnly,
   };
 }
 

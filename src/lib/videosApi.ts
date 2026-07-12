@@ -10,6 +10,7 @@ export type Video = {
   duration: string | null;
   youtubeId: string | null;
   thumbnail: string | null;
+  isMembersOnly?: boolean;
 };
 
 const cachedVideos = createCachedFetcher<Video[]>();

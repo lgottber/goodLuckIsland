@@ -43,6 +43,7 @@ export default function VideoCard({ video, userId, isSaved }: Props) {
         <div className="episode-body-meta">
           <span className="episode-body-num">{video.num}</span>
           <span className="episode-body-date">{video.date}</span>
+          {video.isMembersOnly && <span className="members-only-badge">Members</span>}
         </div>
         <h3 className="episode-body-title">{video.title}</h3>
         <p className="episode-body-desc">{video.desc}</p>

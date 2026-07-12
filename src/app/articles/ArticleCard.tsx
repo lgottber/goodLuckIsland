@@ -20,6 +20,7 @@ export default function ArticleCard({ article, userId, isSaved }: Props) {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         <span className="article-card-tag">{article.category}</span>
+        {article.isMembersOnly && <span className="members-only-badge">Members</span>}
         {userId && (
           <BookmarkButton
             userId={userId}
