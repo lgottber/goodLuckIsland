@@ -18,7 +18,7 @@ export default function OqrcIntroSlide() {
         friendly assistant, and now you&apos;re seated across from the advisor.
       </p>
       <img
-        src="/financialPlannerSecretary.png"
+        src="/financial_planner_secretary.png"
         alt="Rathburn Financial Planning receptionist"
         className="oqrc-intro-img"
       />
@@ -30,7 +30,7 @@ export default function OqrcIntroSlide() {
         a large coffee mug that says &ldquo;World&apos;s Best Dad.&rdquo;
       </p>
       <img
-        src="/FinPlannerWaitingRoom.png"
+        src="/fin_planner_waiting_room.png"
         alt="Rathburn Financial waiting room"
         className="oqrc-intro-img"
       />
@@ -48,7 +48,7 @@ export default function OqrcIntroSlide() {
         slightly, becoming more personal, and they say:
       </p>
       <img
-        src="/financialPlanner.png"
+        src="/financial_planner.png"
         alt="Financial planner at their desk"
         className="oqrc-intro-img"
       />
