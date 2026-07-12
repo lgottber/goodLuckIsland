@@ -5,10 +5,16 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { setAuthTokenGetter } from "../lib/apiClient";
 
 export function AuthTokenSync() {
-  const { getIdTokenClaims, getAccessTokenSilently, isAuthenticated, loginWithRedirect } =
+  const { getIdTokenClaims, getAccessTokenSilently, isAuthenticated, isLoading, loginWithRedirect } =
     useAuth0();
 
   useEffect(() => {
+    // While Auth0 is still doing its initial session check, isAuthenticated
+    // is always false -- installing a getter now would tell apiClient a
+    // logged-in user is anonymous. Leave apiClient waiting (see `ready` in
+    // apiClient.ts) until this resolves one way or the other.
+    if (isLoading) return;
+
     const getToken = async () => {
       // Anonymous visitors have no session to refresh -- apiFetch calls
       // (e.g. page-view tracking, newsletter signup) fire on every page
@@ -33,7 +39,7 @@ export function AuthTokenSync() {
       }
     };
     setAuthTokenGetter(getToken);
-  }, [getIdTokenClaims, getAccessTokenSilently, isAuthenticated, loginWithRedirect]);
+  }, [isLoading, isAuthenticated, getIdTokenClaims, getAccessTokenSilently, loginWithRedirect]);
 
   return null;
 }

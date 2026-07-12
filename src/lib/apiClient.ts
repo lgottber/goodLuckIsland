@@ -1,7 +1,23 @@
 let getToken: () => Promise<string | null> = () => Promise.resolve(null);
 
+// AuthTokenSync doesn't install the real getter until Auth0 has finished its
+// initial session check. Without this gate, any apiFetch that fires during
+// that window (page load, a fast client-side nav) races ahead of it and goes
+// out with the no-op getter above, silently unauthenticated.
+let resolveReady: (() => void) | null = null;
+const ready = new Promise<void>((resolve) => {
+  resolveReady = resolve;
+});
+// Safety net so a stuck/failed Auth0 init doesn't hang every request forever.
+const readyOrTimeout = Promise.race([
+  ready,
+  new Promise<void>((resolve) => setTimeout(resolve, 5000)),
+]);
+
 export function setAuthTokenGetter(fn: () => Promise<string | null>) {
   getToken = fn;
+  resolveReady?.();
+  resolveReady = null;
 }
 
 export class ApiError extends Error {
@@ -13,6 +29,7 @@ export class ApiError extends Error {
 }
 
 async function request(path: string, init: RequestInit): Promise<Response> {
+  if (typeof window !== "undefined") await readyOrTimeout;
   const token = typeof window !== "undefined" ? await getToken() : null;
   const headers = new Headers(init.headers);
   if (init.body !== undefined && !headers.has("Content-Type")) {
