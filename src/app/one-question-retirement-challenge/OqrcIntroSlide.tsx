@@ -17,6 +17,11 @@ export default function OqrcIntroSlide() {
         time. You&apos;ve been escorted into their high rise office by a
         friendly assistant, and now you&apos;re seated across from the advisor.
       </p>
+      <img
+        src="/financialPlannerSecretary.png"
+        alt="Rathburn Financial Planning receptionist"
+        className="oqrc-intro-img"
+      />
       <p className="oqrc-intro-p">
         The space feels very professional but has that 90&apos;s wood trim and
         panel vibe — family photos line the shelves, diplomas and awards hang on
@@ -24,6 +29,11 @@ export default function OqrcIntroSlide() {
         covered with charts, spreadsheets, reports, a calculator, brochures, and
         a large coffee mug that says &ldquo;World&apos;s Best Dad.&rdquo;
       </p>
+      <img
+        src="/FinPlannerWaitingRoom.png"
+        alt="Rathburn Financial waiting room"
+        className="oqrc-intro-img"
+      />
       <p className="oqrc-intro-p">
         You&apos;ve brought most of your financial life with you in a folder and
         share it with them — account statements, benefits, and everything else
@@ -37,6 +47,11 @@ export default function OqrcIntroSlide() {
         bit, and look at you with a focused expression. Their tone shifts
         slightly, becoming more personal, and they say:
       </p>
+      <img
+        src="/financialPlanner.png"
+        alt="Financial planner at their desk"
+        className="oqrc-intro-img"
+      />
       <blockquote className="oqrc-intro-quote">
         <p>
           &ldquo;OK, thank you for sharing all of this with me. It&apos;s clear

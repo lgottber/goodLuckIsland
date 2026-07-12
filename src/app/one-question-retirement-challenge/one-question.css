@@ -165,6 +165,14 @@
   color: var(--navy);
 }
 
+.oqrc-intro-img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin: 0.25rem 0 1.5rem;
+  display: block;
+}
+
 .oqrc-intro-quote {
   margin: 1.75rem 0 1.75rem;
   padding: 1.25rem 1.5rem;
