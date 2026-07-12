@@ -40,10 +40,7 @@ export async function verifyMember(
       audience: AUTH0_CLIENT_ID,
     });
     if (typeof payload.sub !== "string") return null;
-    // Reject unverified email accounts — Auth0 sets this false on database
-    // connections until the user clicks the verification link.
-    if (payload.email_verified === false) return null;
-    return { sub: payload.sub, emailVerified: true };
+    return { sub: payload.sub, emailVerified: payload.email_verified === true };
   } catch {
     return null;
   }

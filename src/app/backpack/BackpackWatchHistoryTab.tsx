@@ -1,29 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Icon from "../../components/Icon";
 import WatchHistoryItem from "./WatchHistoryItem";
-import { fetchVideoWatchHistory } from "../../lib/videoProgressApi";
-import type { VideoWatchHistoryEntry } from "../../lib/videoProgressApi";
-import { fetchVideosByIds } from "../../lib/videosApi";
-import type { Video } from "../../lib/videosApi";
+import { useUserDataStore } from "../../lib/stores/userDataStore";
 
 export default function BackpackWatchHistoryTab() {
-  const [history, setHistory] = useState<VideoWatchHistoryEntry[]>([]);
-  const [videos, setVideos] = useState<Video[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const history = useUserDataStore((state) => state.watchHistory.entries);
+  const videos = useUserDataStore((state) => state.watchHistory.videos);
+  const status = useUserDataStore((state) => state.watchHistoryStatus);
+  const ensureWatchHistory = useUserDataStore((state) => state.ensureWatchHistory);
 
   useEffect(() => {
-    fetchVideoWatchHistory()
-      .then((entries) => {
-        setHistory(entries);
-        return fetchVideosByIds(entries.map((entry) => entry.videoId));
-      })
-      .then(setVideos)
-      .catch(() => setError(true))
-      .finally(() => setLoading(false));
-  }, []);
+    ensureWatchHistory();
+  }, [ensureWatchHistory]);
+
+  const loading = status === "idle" || status === "loading";
+  const error = status === "error";
 
   if (loading) {
     return <p className="watch-history-loading">Loading…</p>;

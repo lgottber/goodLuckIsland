@@ -8,21 +8,20 @@ import StepContent from "./StepContent";
 import { fetchBackpackSectionBySlug } from "../../../lib/backpackApi";
 import type { BackpackSection } from "../../../lib/backpackApi";
 import { fetchStepReflections } from "../../../lib/reflectionsApi";
-import {
-  fetchUserProgress,
-  markStepComplete,
-  SLUG_TO_STEP,
-} from "../../../lib/sevenStepApi";
+import { markStepComplete, SLUG_TO_STEP } from "../../../lib/sevenStepApi";
 import { trackEvent } from "../../../lib/analyticsApi";
+import { useUserDataStore } from "../../../lib/stores/userDataStore";
 import "./step.css";
 
 export default function StepClientPage({ slug }: { slug: string }) {
   const { user } = useAuth0();
   const userId = user?.sub ?? "";
+  const progress = useUserDataStore((state) => state.progress);
+  const ensureProgress = useUserDataStore((state) => state.ensureProgress);
+  const setProgress = useUserDataStore((state) => state.setProgress);
 
   const [section, setSection] = useState<BackpackSection | null>(null);
   const [reflections, setReflections] = useState<string[]>([]);
-  const [isComplete, setIsComplete] = useState(false);
   const [completing, setCompleting] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -39,28 +38,24 @@ export default function StepClientPage({ slug }: { slug: string }) {
 
   useEffect(() => {
     if (!userId) return;
-    const stepKey = SLUG_TO_STEP[slug];
-    if (!stepKey) return;
-    fetchUserProgress(userId).then((progress) => {
-      if (progress) setIsComplete(progress[stepKey]);
-    }).catch(() => {});
-  }, [userId, slug]);
+    ensureProgress(userId);
+  }, [userId, ensureProgress]);
+
+  const stepKey = SLUG_TO_STEP[slug];
+  const isComplete = stepKey ? (progress?.[stepKey] ?? false) : false;
 
   async function handleMarkComplete() {
-    const stepKey = SLUG_TO_STEP[slug];
     if (!stepKey || !userId) return;
     setCompleting(true);
     try {
       await markStepComplete(userId, stepKey);
-      setIsComplete(true);
+      if (progress) setProgress({ ...progress, [stepKey]: true });
       setShowCelebration(true);
       trackEvent("step_completed", { step: stepKey });
     } finally {
       setCompleting(false);
     }
   }
-
-  const stepKey = SLUG_TO_STEP[slug];
 
   return (
     <>

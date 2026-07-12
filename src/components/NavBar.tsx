@@ -11,7 +11,7 @@ import MobileContentLink from "./MobileContentLink";
 import MobileUserSection from "./MobileUserSection";
 import MobileGuestAuth from "./MobileGuestAuth";
 import { useClickOutside } from "../hooks/useClickOutside";
-import { fetchProfile } from "../lib/profileApi";
+import { useUserDataStore } from "../lib/stores/userDataStore";
 import NotificationBell from "./NotificationBell";
 import { CONTENT_NAV_KEYS } from "../lib/contentNavLinks";
 import "./NavBar.css";
@@ -32,24 +32,18 @@ export default function NavBar({
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showGate, setShowGate] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [fetchedAvatarId, setFetchedAvatarId] = useState<string | undefined>(undefined);
-  const [avatarError, setAvatarError] = useState<Error | null>(null);
+  const fetchedAvatarId = useUserDataStore((state) => state.profile?.avatar_id ?? undefined);
+  const profileStatus = useUserDataStore((state) => state.profileStatus);
+  const ensureProfile = useUserDataStore((state) => state.ensureProfile);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
     if (avatarIdProp !== undefined) return;
     if (!user?.sub) return;
-    const sub = user.sub;
-    async function loadAvatar() {
-      const data = await fetchProfile(sub);
-      if (data?.avatar_id) setFetchedAvatarId(data.avatar_id);
-    }
-    loadAvatar().catch((e) =>
-      setAvatarError(e instanceof Error ? e : new Error(String(e)))
-    );
-  }, [user, avatarIdProp]);
+    ensureProfile(user.sub);
+  }, [user, avatarIdProp, ensureProfile]);
 
-  const avatarId = avatarError ? undefined : (avatarIdProp ?? fetchedAvatarId);
+  const avatarId = profileStatus === "error" ? undefined : (avatarIdProp ?? fetchedAvatarId);
 
   useEffect(() => {
     const onScroll = () => setScrolled(globalThis.scrollY > 40);
