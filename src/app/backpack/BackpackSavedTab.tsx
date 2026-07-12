@@ -1,42 +1,33 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import BookmarkRow from "./BookmarkRow";
-import { fetchSavedContent, removeSaved } from "../../lib/savedApi";
+import { removeSaved } from "../../lib/savedApi";
 import type { SavedItemData } from "../saved/SavedItem";
+import { useUserDataStore } from "../../lib/stores/userDataStore";
 
 export default function BackpackSavedTab() {
   const { user } = useAuth0();
   const userId = user?.sub ?? "";
-  const [items, setItems] = useState<SavedItemData[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [fetchError, setFetchError] = useState(false);
+  const items = useUserDataStore((state) => state.saved);
+  const status = useUserDataStore((state) => state.savedStatus);
+  const ensureSaved = useUserDataStore((state) => state.ensureSaved);
+  const removeSavedItem = useUserDataStore((state) => state.removeSavedItem);
+  const restoreSavedItem = useUserDataStore((state) => state.restoreSavedItem);
 
   useEffect(() => {
-    if (!userId) {
-      setLoading(false);
-      return;
-    }
-    setFetchError(false);
-    fetchSavedContent(userId)
-      .then(setItems)
-      .catch(() => setFetchError(true))
-      .finally(() => setLoading(false));
-  }, [userId]);
+    if (!userId) return;
+    ensureSaved(userId);
+  }, [userId, ensureSaved]);
+
+  const loading = status === "idle" || status === "loading";
+  const fetchError = status === "error";
 
   function handleRemove(item: SavedItemData) {
-    setItems((prev) => {
-      const idx = prev.findIndex((i) => i.id === item.id);
-      if (idx === -1) return prev;
-      return [...prev.slice(0, idx), ...prev.slice(idx + 1)];
-    });
+    removeSavedItem(item.id);
     removeSaved(item.itemType, item.numericId).catch(() => {
-      setItems((prev) => {
-        const idx = prev.findIndex((i) => i.id === item.id);
-        if (idx !== -1) return prev;
-        return [...prev, item];
-      });
+      restoreSavedItem(item);
     });
   }
 

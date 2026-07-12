@@ -1,15 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { fetchProfile } from "../lib/profileApi";
-import { ApiError } from "../lib/apiClient";
+import { useUserDataStore } from "../lib/stores/userDataStore";
 import styles from "./BlockedGuard.module.css";
 
 export function BlockedGuard({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, user, logout } = useAuth0();
-  const [isBlocked, setIsBlocked] = useState(false);
-  const [fetchError, setFetchError] = useState(false);
+  const isBlocked = useUserDataStore((state) => !!state.profile?.blocked_at);
+  const fetchError = useUserDataStore((state) => state.profileStatus === "error");
+  const ensureProfile = useUserDataStore((state) => state.ensureProfile);
 
   function handleSignOut() {
     logout({ logoutParams: { returnTo: window.location.origin } });
@@ -17,23 +17,8 @@ export function BlockedGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!isAuthenticated || !user?.sub) return;
-    const sub = user.sub;
-    async function checkBlocked() {
-      try {
-        const profile = await fetchProfile(sub);
-        if (profile?.blocked_at) setIsBlocked(true);
-      } catch (err) {
-        // A 401 here means the token was rejected on a technicality (e.g.
-        // an unverified email, see verifyMember in auth.server.ts) rather
-        // than a real fetch failure -- CallbackPage already routes those
-        // users to /auth/verify-email, so don't stomp on that with a
-        // full-page error (this component wraps every route).
-        if (err instanceof ApiError && err.status === 401) return;
-        setFetchError(true);
-      }
-    }
-    checkBlocked();
-  }, [isAuthenticated, user]);
+    ensureProfile(user.sub);
+  }, [isAuthenticated, user, ensureProfile]);
 
   if (fetchError) {
     return (
