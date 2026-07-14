@@ -5,10 +5,19 @@ import BasicInfoTab from "./BasicInfoTab";
 import LifeCareerTab from "./LifeCareerTab";
 import RetirementTab from "./RetirementTab";
 import FinancesTab from "./FinancesTab";
+import WellnessTab from "./WellnessTab";
+import RetirementIdentityTab from "./RetirementIdentityTab";
 import ModalActionButton from "./ModalActionButton";
 import type { ProfileForm, SetField } from "./types";
 
-const MODAL_TABS = ["Basic Info", "Life & Career", "Retirement", "Finances"];
+const MODAL_TABS = [
+  "Basic Info",
+  "Life & Career",
+  "Retirement",
+  "Wellness",
+  "Retirement Identity",
+  "Finances",
+];
 
 export default function EditModal({ user, onSave, onClose }: { user: ProfileForm; onSave: (form: ProfileForm) => void | Promise<void>; onClose: () => void }) {
   const [form, setForm] = useState<ProfileForm>({ ...user });
@@ -83,6 +92,8 @@ export default function EditModal({ user, onSave, onClose }: { user: ProfileForm
       )}
       {activeTab === "Life & Career" && <LifeCareerTab form={form} set={set} />}
       {activeTab === "Retirement" && <RetirementTab form={form} set={set} />}
+      {activeTab === "Wellness" && <WellnessTab form={form} set={set} />}
+      {activeTab === "Retirement Identity" && <RetirementIdentityTab form={form} set={set} />}
       {activeTab === "Finances" && <FinancesTab form={form} set={set} />}
 
       {/* Footer */}

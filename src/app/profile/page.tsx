@@ -69,6 +69,23 @@ const INITIAL_USER = {
   homePaidOff: "",
   workingIncome: "",
   netWorth: "",
+  gender: "",
+  householdComposition: "",
+  geoClassifier: "",
+  employmentStatus: "",
+  industry: "",
+  yearsUntilRetirement: "",
+  retirementConfidence: "",
+  lifeSatisfaction: "",
+  senseOfPurpose: "",
+  stressLevel: "",
+  optimism: "",
+  lonelinessConnection: "",
+  retirementIdentity: "",
+  retirementVisionClarity: "",
+  retirementMotivations: new Array<string>(),
+  retirementConcerns: new Array<string>(),
+  idealRetirementDay: "",
 };
 
 
@@ -122,6 +139,30 @@ export default function ProfilePage() {
           ? String(data.years_in_occupation)
           : prev.yearsInOccupation,
       avatarUrl: data.avatar_id ? "" : (picture ?? prev.avatarUrl),
+      gender: data.gender ?? prev.gender,
+      householdComposition: data.household_composition ?? prev.householdComposition,
+      geoClassifier: data.geo_classifier ?? prev.geoClassifier,
+      employmentStatus: data.employment_status ?? prev.employmentStatus,
+      industry: data.industry ?? prev.industry,
+      yearsUntilRetirement: data.years_until_retirement ?? prev.yearsUntilRetirement,
+      retirementConfidence:
+        data.retirement_confidence != null ? String(data.retirement_confidence) : prev.retirementConfidence,
+      lifeSatisfaction:
+        data.life_satisfaction != null ? String(data.life_satisfaction) : prev.lifeSatisfaction,
+      senseOfPurpose:
+        data.sense_of_purpose != null ? String(data.sense_of_purpose) : prev.senseOfPurpose,
+      stressLevel: data.stress_level != null ? String(data.stress_level) : prev.stressLevel,
+      optimism: data.optimism != null ? String(data.optimism) : prev.optimism,
+      lonelinessConnection:
+        data.loneliness_connection != null ? String(data.loneliness_connection) : prev.lonelinessConnection,
+      retirementIdentity: data.retirement_identity ?? prev.retirementIdentity,
+      retirementVisionClarity:
+        data.retirement_vision_clarity != null
+          ? String(data.retirement_vision_clarity)
+          : prev.retirementVisionClarity,
+      retirementMotivations: data.retirement_motivations ?? prev.retirementMotivations,
+      retirementConcerns: data.retirement_concerns ?? prev.retirementConcerns,
+      idealRetirementDay: data.ideal_retirement_day ?? prev.idealRetirementDay,
     };
   }
 
