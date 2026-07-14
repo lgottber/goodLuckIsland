@@ -10,6 +10,7 @@ export type Playlist = {
 
 export type PlaylistDetail = Playlist & {
   episodes: Episode[];
+  spotifyUrl: string | null;
 };
 
 const cachedPlaylists = createCachedFetcher<Playlist[]>();

@@ -7,6 +7,7 @@ interface PlaylistRow {
   id: string;
   name: string;
   description: string;
+  spotify_url: string | null;
 }
 
 interface PlaylistItemRow {
@@ -84,6 +85,7 @@ export async function GET(
       id: playlist.id,
       name: playlist.name,
       description: playlist.description,
+      spotifyUrl: playlist.spotify_url,
       episodes,
     },
     { headers: publicCacheHeaders(300, 3600) },

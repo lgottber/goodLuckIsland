@@ -1,4 +1,5 @@
 import EpisodeCard from "./EpisodeCard";
+import PlaylistSpotifyLink from "./PlaylistSpotifyLink";
 import type { PlaylistDetail } from "../../lib/playlistsApi";
 
 interface Props {
@@ -13,6 +14,9 @@ export default function PlaylistBody({ playlist, userId, savedEpisodeIds }: Prop
       <div className="playlist-detail-header">
         <h2>{playlist.name}</h2>
         <p className="playlist-detail-desc">{playlist.description}</p>
+        {playlist.spotifyUrl && (
+          <PlaylistSpotifyLink playlistId={playlist.id} spotifyUrl={playlist.spotifyUrl} />
+        )}
       </div>
 
       <div className="episodes-grid">
