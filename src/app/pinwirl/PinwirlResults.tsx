@@ -5,7 +5,7 @@ import type { DimensionScores } from "../../lib/pinwirlScoring";
 import { DIMENSIONS, scoreBand } from "../../lib/pinwirlScoring";
 import { fetchRecommendations } from "./recommendations";
 import type { RecommendationsMap } from "./recommendations";
-import { fetchPinwirlHistory } from "../../lib/pinwirlHistoryApi";
+import { fetchPinwirlHistory, isDueForRetake } from "../../lib/pinwirlHistoryApi";
 import type { PinwirlResult } from "../../lib/pinwirlHistoryApi";
 import DimensionRow from "./DimensionRow";
 import PinwirlHistory from "./PinwirlHistory";
@@ -47,6 +47,7 @@ export default function PinwirlResults({ scores, userId, onRetake }: Props) {
   );
 
   const pastResults = history.slice(1);
+  const dueForRetake = isDueForRetake(history);
 
   return (
     <div className="pw-results" ref={captureRef}>
@@ -78,6 +79,14 @@ export default function PinwirlResults({ scores, userId, onRetake }: Props) {
           />
         ))}
       </div>
+
+      {dueForRetake && (
+        <p className="pw-retake-banner">
+          It&apos;s been a while since your last Wayfinder assessment —
+          consider retaking it to see how your lifestyle balance has
+          changed.
+        </p>
+      )}
 
       <div className="pw-results-actions">
         <button
