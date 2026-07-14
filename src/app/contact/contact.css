@@ -87,10 +87,18 @@ body {
 }
 
 /* ── FORM ── */
-.contact-form-wrap {
+.contact-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+.contact-form-success {
+  justify-content: center;
+  align-items: flex-start;
+  font-family: var(--serif);
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  color: var(--navy);
 }
 
 .contact-form-row {
@@ -140,6 +148,16 @@ body {
 
 .contact-submit:hover {
   background: var(--teal);
+}
+
+.contact-submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.contact-form-error {
+  font-size: 0.8rem;
+  color: var(--coral-dk);
 }
 
 @media (max-width: 56.25rem) {
