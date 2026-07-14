@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { fetchJournalEntry, saveJournalEntry } from "../lib/journalApi";
 import { trackEvent } from "../lib/analyticsApi";
 import { useDebounce } from "../hooks/useDebounce";
+import JournalHistory from "./JournalHistory";
 import "./journal-entry.css";
 
 interface Props {
@@ -69,6 +70,7 @@ export default function JournalEntry({ userId, stepSlug }: Props) {
         {status === "saved" && "Saved"}
         {status === "error" && "Failed to save. Please try again."}
       </span>
+      <JournalHistory stepSlug={stepSlug} />
     </div>
   );
 }

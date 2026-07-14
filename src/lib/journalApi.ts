@@ -30,6 +30,20 @@ export async function saveJournalEntry(
   });
 }
 
+export type JournalHistoryEntry = {
+  id: string;
+  body: string;
+  created_at: string;
+};
+
+export async function fetchJournalHistory(
+  stepSlug: string,
+): Promise<JournalHistoryEntry[]> {
+  return apiFetch<JournalHistoryEntry[]>(
+    `/journal/history?stepSlug=${encodeURIComponent(stepSlug)}`,
+  );
+}
+
 export type PastPersonQuestion = {
   key: string;
   text: string;
