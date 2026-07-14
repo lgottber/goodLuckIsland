@@ -4,9 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import NavBar from "../../components/NavBarDynamic";
 import Icon from "../../components/Icon";
-import { useSubmitFeedback } from "../../hooks/useSubmitFeedback";
 import { trackEvent } from "../../lib/analyticsApi";
-import SubmitLabel from "../about/SubmitLabel";
+import { submitTestimonial } from "../../lib/testimonialsApi";
+import { ApiError } from "../../lib/apiClient";
+import ContactForm from "../about/ContactForm";
+import ContactFormSuccess from "../about/ContactFormSuccess";
 import "./contact.css";
 
 export default function ContactPage() {
@@ -16,13 +18,28 @@ export default function ContactPage() {
     email: "",
     message: "",
   });
-  const [submitted, triggerSubmitted] = useSubmitFeedback(3500);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit() {
-    if (!formData.email || !formData.message) return;
-    trackEvent("contact_form_submitted");
-    triggerSubmitted();
-    setFormData({ firstName: "", lastName: "", email: "", message: "" });
+  async function handleSubmit() {
+    if (!formData.email || !formData.message || submitting) return;
+    setSubmitting(true);
+    setError("");
+    try {
+      await submitTestimonial(formData);
+      trackEvent("contact_form_submitted");
+      setSubmitted(true);
+      setFormData({ firstName: "", lastName: "", email: "", message: "" });
+    } catch (err) {
+      setError(
+        err instanceof ApiError && err.status === 429
+          ? "You've submitted a few of these already — please try again later."
+          : "Something went wrong sending your message. Please try again.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -74,51 +91,17 @@ export default function ContactPage() {
             </div>
           </div>
 
-          <div className="contact-form-wrap">
-            <div className="contact-form-row">
-              <input
-                className="contact-input"
-                placeholder="First name"
-                value={formData.firstName}
-                onChange={(e) =>
-                  setFormData({ ...formData, firstName: e.target.value })
-                }
-              />
-              <input
-                className="contact-input"
-                placeholder="Last name"
-                value={formData.lastName}
-                onChange={(e) =>
-                  setFormData({ ...formData, lastName: e.target.value })
-                }
-              />
-            </div>
-            <input
-              className="contact-input"
-              type="email"
-              placeholder="Email address"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
+          {submitted ? (
+            <ContactFormSuccess />
+          ) : (
+            <ContactForm
+              formData={formData}
+              onChange={setFormData}
+              submitting={submitting}
+              error={error}
+              onSubmit={handleSubmit}
             />
-            <textarea
-              className="contact-textarea"
-              placeholder="Your message..."
-              rows={6}
-              value={formData.message}
-              onChange={(e) =>
-                setFormData({ ...formData, message: e.target.value })
-              }
-            />
-            <button
-              type="button"
-              className="contact-submit"
-              onClick={handleSubmit}
-            >
-              <SubmitLabel submitted={submitted} />
-            </button>
-          </div>
+          )}
         </div>
       </div>
     </>
