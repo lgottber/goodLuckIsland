@@ -212,6 +212,58 @@ body {
   text-decoration: underline;
 }
 
+.assigned-assessments-section {
+  grid-column: 1 / -1;
+  margin-top: 0.5rem;
+}
+
+.assigned-assessments-scroll {
+  max-height: 20rem;
+  overflow-y: auto;
+  overflow-x: auto;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(30, 45, 90, 0.07);
+  background: #fff;
+}
+
+.assigned-assessments-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.assigned-assessments-table th,
+.assigned-assessments-table td {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  white-space: nowrap;
+}
+
+.assigned-assessments-table thead {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  box-shadow: 0 1px 0 rgba(30, 45, 90, 0.08);
+}
+
+.assigned-assessments-table th {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+
+.assigned-assessments-table tbody tr:not(:last-child) td {
+  border-bottom: 1px solid rgba(30, 45, 90, 0.06);
+}
+
+.assigned-assessments-coming-soon {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  font-style: italic;
+}
+
 /* ── Saved tab ── */
 .backpack-saved-tab {
   margin-top: 1rem;
