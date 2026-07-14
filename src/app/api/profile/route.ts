@@ -38,6 +38,7 @@ interface UserRow {
   net_worth: string | null;
   avatar_id: string | null;
   notifications_email: number;
+  notifications_in_app: number;
   is_deleted: number;
   created_at: string;
   updated_at: string | null;
@@ -76,6 +77,7 @@ function mapUser(row: UserRow) {
     ...row,
     interests: parseJson<string[] | null>(row.interests, null),
     notifications_email: toBool(row.notifications_email),
+    notifications_in_app: toBool(row.notifications_in_app),
     is_deleted: toBool(row.is_deleted),
   };
 }

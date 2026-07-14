@@ -64,6 +64,16 @@ export async function updateNotificationPrefs(
   });
 }
 
+export async function updateInAppNotificationPrefs(
+  userId: string,
+  inAppEnabled: boolean,
+): Promise<void> {
+  await apiFetchVoid("/profile/notifications", {
+    method: "PATCH",
+    body: JSON.stringify({ inAppEnabled }),
+  });
+}
+
 // Soft delete -- the account isn't removed immediately, see
 // POST /api/delete-account. Logging back in before the nightly purge
 // runs cancels it (GET /api/profile resets the flag).
