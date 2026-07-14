@@ -13,7 +13,7 @@ import BioDisplay from "./BioDisplay";
 import BioEmpty from "./BioEmpty";
 import InterestsList from "./InterestsList";
 import InterestsEmpty from "./InterestsEmpty";
-import { createUser, upsertProfile, updateNotificationPrefs, deleteAccount } from "../../lib/profileApi";
+import { createUser, upsertProfile, updateNotificationPrefs, updateInAppNotificationPrefs, deleteAccount } from "../../lib/profileApi";
 import BackpackDashboardSection from "./BackpackDashboardSection";
 import { useUserDataStore } from "../../lib/stores/userDataStore";
 import { setPendingAccountDeletion } from "../../lib/pendingAccountDeletion";
@@ -77,6 +77,7 @@ export default function ProfilePage() {
   const { user: auth0User, logout } = useAuth0User();
   const [user, setUser] = useState(INITIAL_USER);
   const [notificationsEmail, setNotificationsEmail] = useState(true);
+  const [notificationsInApp, setNotificationsInApp] = useState(true);
   const progress = useUserDataStore((state) => state.progress);
   const storedProfile = useUserDataStore((state) => state.profile);
   const profileStatus = useUserDataStore((state) => state.profileStatus);
@@ -164,6 +165,7 @@ export default function ProfilePage() {
     }
     setUser((prev) => applySupabaseFields(prev, storedProfile, auth0User.picture));
     setNotificationsEmail(storedProfile.notifications_email);
+    setNotificationsInApp(storedProfile.notifications_in_app);
   }, [auth0User, storedProfile, profileStatus, invalidateProfile, ensureProfile]);
 
   useEffect(() => {
@@ -289,6 +291,18 @@ export default function ProfilePage() {
     }
   }
 
+  async function handleToggleInApp(enabled: boolean) {
+    if (!auth0User?.sub) return;
+    setNotifSaving(true);
+    try {
+      await updateInAppNotificationPrefs(auth0User.sub, enabled);
+      setNotificationsInApp(enabled);
+      trackEvent("notification_prefs_changed", { inAppEnabled: enabled });
+    } finally {
+      setNotifSaving(false);
+    }
+  }
+
   async function handleDeleteAccount() {
     if (!auth0User?.sub) return;
     setDeleting(true);
@@ -352,8 +366,10 @@ export default function ProfilePage() {
       {showNotifPrefs && (
         <NotificationPrefsModal
           emailEnabled={notificationsEmail}
+          inAppEnabled={notificationsInApp}
           saving={notifSaving}
           onToggleEmail={handleToggleEmail}
+          onToggleInApp={handleToggleInApp}
           onClose={() => setShowNotifPrefs(false)}
         />
       )}

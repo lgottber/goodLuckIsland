@@ -42,6 +42,7 @@ function makeProfile(overrides: Partial<Tables<"users">> = {}): Tables<"users"> 
     marital_status: null,
     net_worth: null,
     notifications_email: true,
+    notifications_in_app: true,
     occupation: null,
     retired: null,
     retirement_date: null,
