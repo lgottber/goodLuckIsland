@@ -4,9 +4,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDb } from "../../../../lib/db.server";
 import NavBarDynamic from "../../../../components/NavBarDynamic";
+import TrackedYouTubeEmbed from "../../../../components/TrackedYouTubeEmbed";
+import VideoDetailActions from "./VideoDetailActions";
+import RelatedVideos from "./RelatedVideos";
+import type { Video } from "../../../../lib/videosApi";
 import "../../[id]/article-detail.css";
+import "./video-detail-extra.css";
 
 export const runtime = "edge";
+
+const RELATED_LIMIT = 4;
 
 interface VideoRow {
   id: number;
@@ -19,12 +26,36 @@ interface VideoRow {
   thumbnail: string | null;
 }
 
+function toVideo(row: VideoRow): Video {
+  return {
+    id: row.id,
+    num: row.num,
+    title: row.title,
+    desc: row.description,
+    date: row.date,
+    duration: row.duration,
+    youtubeId: row.youtube_id,
+    thumbnail: row.thumbnail,
+  };
+}
+
 const fetchVideo = cache(async (id: number): Promise<VideoRow | null> => {
   const db = getDb();
   return db
     .prepare("SELECT id, num, title, description, date, duration, youtube_id, thumbnail FROM videos WHERE id = ?")
     .bind(id)
     .first<VideoRow>();
+});
+
+const fetchRelatedVideos = cache(async (excludeId: number): Promise<VideoRow[]> => {
+  const db = getDb();
+  const { results } = await db
+    .prepare(
+      "SELECT id, num, title, description, date, duration, youtube_id, thumbnail FROM videos WHERE status = 'published' AND id != ? ORDER BY sort_order LIMIT ?",
+    )
+    .bind(excludeId, RELATED_LIMIT)
+    .all<VideoRow>();
+  return results ?? [];
 });
 
 interface Props {
@@ -65,6 +96,7 @@ export default async function VideoDetailPage({ params }: Props) {
   if (!Number.isFinite(numId)) notFound();
   const video = await fetchVideo(numId);
   if (!video) notFound();
+  const relatedRows = await fetchRelatedVideos(numId);
 
   const videoNum = video.num ? (
     <p className="content-detail-num">{video.num}</p>
@@ -72,11 +104,11 @@ export default async function VideoDetailPage({ params }: Props) {
 
   const embed = video.youtube_id ? (
     <div className="content-detail-embed">
-      <iframe
-        src={`https://www.youtube.com/embed/${video.youtube_id}`}
+      <TrackedYouTubeEmbed
+        videoId={video.id}
+        youtubeId={video.youtube_id}
         title={video.title}
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
+        autoplay={false}
       />
     </div>
   ) : null;
@@ -116,11 +148,13 @@ export default async function VideoDetailPage({ params }: Props) {
             {video.duration && <span>{video.duration}</span>}
           </div>
           {embed}
+          <VideoDetailActions videoId={video.id} />
           {description}
           {youtubeLink}
           <Link href="/articles?tab=videos" className="content-detail-cta">
             Browse all videos →
           </Link>
+          <RelatedVideos videos={relatedRows.map(toVideo)} />
         </div>
       </div>
     </>
