@@ -1,5 +1,6 @@
 import FeaturedVideoPlayer from "./FeaturedVideoPlayer";
 import VideoCard from "./VideoCard";
+import ContinueWatchingRow from "./ContinueWatchingRow";
 import BookmarkButton from "./BookmarkButton";
 import FilterTabs from "../../components/FilterTabs";
 import Pagination from "../../components/Pagination";
@@ -95,6 +96,8 @@ export default function VideosBody({
             </div>
           </div>
         </div>
+
+        <ContinueWatchingRow userId={userId} savedVideoIds={savedVideoIds} />
 
         <div>
           <div className="episodes-section-header">
