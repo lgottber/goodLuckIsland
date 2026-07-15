@@ -103,3 +103,21 @@
   opacity: 0.8;
   max-width: 60ch;
 }
+
+.playlist-spotify-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+  background: var(--teal);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 50px;
+  text-decoration: none;
+}
+
+.playlist-spotify-link:hover {
+  background: #267060;
+}

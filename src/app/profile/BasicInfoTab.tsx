@@ -1,8 +1,20 @@
 import { KeyboardEvent, useEffect, useState } from "react";
 import Field from "./Field";
 import InterestTagList from "./InterestTagList";
+import PillGroup from "./PillGroup";
+import GenderField from "./GenderField";
 import { useDebounce } from "../../hooks/useDebounce";
 import type { ProfileForm, SetField } from "./types";
+
+const HOUSEHOLD_COMPOSITION_OPTIONS = [
+  "Empty nest",
+  "Adult children at home",
+  "Caregiver for parents",
+  "Multigenerational household",
+  "Living alone",
+];
+
+const GEO_CLASSIFIER_OPTIONS = ["Urban", "Suburban", "Rural"];
 
 const ZIP_PATTERN = /^\d{5}$/;
 
@@ -18,7 +30,7 @@ export default function BasicInfoTab({
   addInterest,
   removeInterest,
 }: {
-  form: Pick<ProfileForm, "firstName" | "lastName" | "username" | "age" | "email" | "zipCode" | "city" | "state" | "address" | "bio" | "mantra" | "interests">;
+  form: Pick<ProfileForm, "firstName" | "lastName" | "username" | "age" | "email" | "zipCode" | "city" | "state" | "address" | "bio" | "mantra" | "interests" | "gender" | "householdComposition" | "geoClassifier">;
   set: SetField;
   interestInput: string;
   setInterestInput: (v: string) => void;
@@ -156,6 +168,27 @@ export default function BasicInfoTab({
           value={form.address}
           onChange={(e) => set("address", e.target.value)}
           placeholder="Street, City, State, ZIP"
+        />
+      </Field>
+      <Field label="Area Type">
+        <PillGroup
+          options={GEO_CLASSIFIER_OPTIONS}
+          value={form.geoClassifier}
+          onChange={(v) => set("geoClassifier", v)}
+        />
+      </Field>
+
+      <div className="modal-section-label modal-section-label--spaced">
+        Demographics
+      </div>
+      <Field label="Gender">
+        <GenderField value={form.gender} onChange={(v) => set("gender", v)} />
+      </Field>
+      <Field label="Household Composition">
+        <PillGroup
+          options={HOUSEHOLD_COMPOSITION_OPTIONS}
+          value={form.householdComposition}
+          onChange={(v) => set("householdComposition", v)}
         />
       </Field>
 

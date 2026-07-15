@@ -13,7 +13,7 @@ import BioDisplay from "./BioDisplay";
 import BioEmpty from "./BioEmpty";
 import InterestsList from "./InterestsList";
 import InterestsEmpty from "./InterestsEmpty";
-import { createUser, upsertProfile, updateNotificationPrefs, deleteAccount } from "../../lib/profileApi";
+import { createUser, upsertProfile, updateNotificationPrefs, updateInAppNotificationPrefs, deleteAccount } from "../../lib/profileApi";
 import BackpackDashboardSection from "./BackpackDashboardSection";
 import { useUserDataStore } from "../../lib/stores/userDataStore";
 import { setPendingAccountDeletion } from "../../lib/pendingAccountDeletion";
@@ -69,6 +69,23 @@ const INITIAL_USER = {
   homePaidOff: "",
   workingIncome: "",
   netWorth: "",
+  gender: "",
+  householdComposition: "",
+  geoClassifier: "",
+  employmentStatus: "",
+  industry: "",
+  yearsUntilRetirement: "",
+  retirementConfidence: "",
+  lifeSatisfaction: "",
+  senseOfPurpose: "",
+  stressLevel: "",
+  optimism: "",
+  lonelinessConnection: "",
+  retirementIdentity: "",
+  retirementVisionClarity: "",
+  retirementMotivations: new Array<string>(),
+  retirementConcerns: new Array<string>(),
+  idealRetirementDay: "",
 };
 
 
@@ -77,6 +94,7 @@ export default function ProfilePage() {
   const { user: auth0User, logout } = useAuth0User();
   const [user, setUser] = useState(INITIAL_USER);
   const [notificationsEmail, setNotificationsEmail] = useState(true);
+  const [notificationsInApp, setNotificationsInApp] = useState(true);
   const progress = useUserDataStore((state) => state.progress);
   const storedProfile = useUserDataStore((state) => state.profile);
   const profileStatus = useUserDataStore((state) => state.profileStatus);
@@ -122,6 +140,30 @@ export default function ProfilePage() {
           ? String(data.years_in_occupation)
           : prev.yearsInOccupation,
       avatarUrl: data.avatar_id ? "" : (picture ?? prev.avatarUrl),
+      gender: data.gender ?? prev.gender,
+      householdComposition: data.household_composition ?? prev.householdComposition,
+      geoClassifier: data.geo_classifier ?? prev.geoClassifier,
+      employmentStatus: data.employment_status ?? prev.employmentStatus,
+      industry: data.industry ?? prev.industry,
+      yearsUntilRetirement: data.years_until_retirement ?? prev.yearsUntilRetirement,
+      retirementConfidence:
+        data.retirement_confidence != null ? String(data.retirement_confidence) : prev.retirementConfidence,
+      lifeSatisfaction:
+        data.life_satisfaction != null ? String(data.life_satisfaction) : prev.lifeSatisfaction,
+      senseOfPurpose:
+        data.sense_of_purpose != null ? String(data.sense_of_purpose) : prev.senseOfPurpose,
+      stressLevel: data.stress_level != null ? String(data.stress_level) : prev.stressLevel,
+      optimism: data.optimism != null ? String(data.optimism) : prev.optimism,
+      lonelinessConnection:
+        data.loneliness_connection != null ? String(data.loneliness_connection) : prev.lonelinessConnection,
+      retirementIdentity: data.retirement_identity ?? prev.retirementIdentity,
+      retirementVisionClarity:
+        data.retirement_vision_clarity != null
+          ? String(data.retirement_vision_clarity)
+          : prev.retirementVisionClarity,
+      retirementMotivations: data.retirement_motivations ?? prev.retirementMotivations,
+      retirementConcerns: data.retirement_concerns ?? prev.retirementConcerns,
+      idealRetirementDay: data.ideal_retirement_day ?? prev.idealRetirementDay,
     };
   }
 
@@ -164,6 +206,7 @@ export default function ProfilePage() {
     }
     setUser((prev) => applySupabaseFields(prev, storedProfile, auth0User.picture));
     setNotificationsEmail(storedProfile.notifications_email);
+    setNotificationsInApp(storedProfile.notifications_in_app);
   }, [auth0User, storedProfile, profileStatus, invalidateProfile, ensureProfile]);
 
   useEffect(() => {
@@ -289,6 +332,18 @@ export default function ProfilePage() {
     }
   }
 
+  async function handleToggleInApp(enabled: boolean) {
+    if (!auth0User?.sub) return;
+    setNotifSaving(true);
+    try {
+      await updateInAppNotificationPrefs(auth0User.sub, enabled);
+      setNotificationsInApp(enabled);
+      trackEvent("notification_prefs_changed", { inAppEnabled: enabled });
+    } finally {
+      setNotifSaving(false);
+    }
+  }
+
   async function handleDeleteAccount() {
     if (!auth0User?.sub) return;
     setDeleting(true);
@@ -352,8 +407,10 @@ export default function ProfilePage() {
       {showNotifPrefs && (
         <NotificationPrefsModal
           emailEnabled={notificationsEmail}
+          inAppEnabled={notificationsInApp}
           saving={notifSaving}
           onToggleEmail={handleToggleEmail}
+          onToggleInApp={handleToggleInApp}
           onClose={() => setShowNotifPrefs(false)}
         />
       )}

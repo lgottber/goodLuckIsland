@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { UserProgress } from "../../lib/sevenStepApi";
+import AssignedAssessmentsTable from "./AssignedAssessmentsTable";
 
 interface Props {
   progress: UserProgress | null;
@@ -32,6 +33,8 @@ export default function BackpackAssessmentsTab({ progress }: Props) {
           {pinwirlDone ? "View Results" : "Take Assessment →"}
         </Link>
       </div>
+
+      <AssignedAssessmentsTable />
     </div>
   );
 }

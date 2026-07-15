@@ -919,6 +919,88 @@ body {
   border-color: var(--navy);
 }
 
+.gender-self-describe-input {
+  margin-top: 0.5rem;
+}
+
+/* ── SCALE FIELD (1-10) ── */
+.scale-field-btn {
+  padding: 0.45rem 0.7rem;
+  min-width: 2.25rem;
+}
+
+.scale-field-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 0.4rem;
+}
+
+/* ── TOP-THREE CHECKLIST ── */
+.top-three-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.top-three-option {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--navy);
+  cursor: pointer;
+}
+
+.top-three-option input[type="checkbox"] {
+  width: auto;
+  padding: 0;
+  border: none;
+}
+
+.top-three-option--disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* ── RADIO LIST (long-text single-select) ── */
+.radio-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.radio-list-option {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--navy);
+  cursor: pointer;
+  padding: 0.6rem 0.8rem;
+  border: 1.5px solid #d8d0c4;
+  border-radius: 12px;
+}
+
+.radio-list-option:has(input:checked) {
+  border-color: var(--navy);
+  background: rgba(30, 45, 90, 0.04);
+}
+
+.radio-list-option input[type="radio"] {
+  width: auto;
+  padding: 0;
+  border: none;
+  flex-shrink: 0;
+}
+
 /* ── PRIVACY NOTE ── */
 .modal-privacy-note {
   background: rgba(46, 139, 122, 0.08);
