@@ -28,6 +28,24 @@ export type ProfileUpdate = {
   workingIncome: Tables<"users">["working_income"];
   netWorth: Tables<"users">["net_worth"];
   avatarId: Tables<"users">["avatar_id"];
+  // Gen X wellness research fields (#72)
+  gender: Tables<"users">["gender"];
+  householdComposition: Tables<"users">["household_composition"];
+  geoClassifier: Tables<"users">["geo_classifier"];
+  employmentStatus: Tables<"users">["employment_status"];
+  industry: Tables<"users">["industry"];
+  yearsUntilRetirement: Tables<"users">["years_until_retirement"];
+  retirementConfidence: string;
+  lifeSatisfaction: string;
+  senseOfPurpose: string;
+  stressLevel: string;
+  optimism: string;
+  lonelinessConnection: string;
+  retirementIdentity: Tables<"users">["retirement_identity"];
+  retirementVisionClarity: string;
+  retirementMotivations: Tables<"users">["retirement_motivations"];
+  retirementConcerns: Tables<"users">["retirement_concerns"];
+  idealRetirementDay: Tables<"users">["ideal_retirement_day"];
 };
 
 // userId kept in the signature for call-site compatibility, but the
