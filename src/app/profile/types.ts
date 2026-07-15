@@ -14,6 +14,7 @@ export type ProfileForm = {
   avatarUrl: string;
   address: string;
   memberSince: string;
+  interests: string[];
   stats: {
     articlesRead: number | null;
     podcastsListened: number | null;
