@@ -8,6 +8,7 @@ import FinancesTab from "./FinancesTab";
 import WellnessTab from "./WellnessTab";
 import RetirementIdentityTab from "./RetirementIdentityTab";
 import ModalActionButton from "./ModalActionButton";
+import { isValidZip } from "../../lib/zip";
 import type { ProfileForm, SetField } from "./types";
 
 const MODAL_TABS = [
@@ -48,7 +49,7 @@ export default function EditModal({ user, onSave, onClose }: { user: ProfileForm
     );
 
   const tabIdx = MODAL_TABS.indexOf(activeTab);
-  const zipValid = /^\d{5}$/.test(form.zipCode ?? "");
+  const zipValid = isValidZip(form.zipCode);
 
   return (
     <Modal

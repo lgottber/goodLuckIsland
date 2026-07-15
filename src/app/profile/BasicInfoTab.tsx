@@ -4,6 +4,7 @@ import InterestTagList from "./InterestTagList";
 import PillGroup from "./PillGroup";
 import GenderField from "./GenderField";
 import { useDebounce } from "../../hooks/useDebounce";
+import { isValidZip } from "../../lib/zip";
 import type { ProfileForm, SetField } from "./types";
 
 const HOUSEHOLD_COMPOSITION_OPTIONS = [
@@ -15,8 +16,6 @@ const HOUSEHOLD_COMPOSITION_OPTIONS = [
 ];
 
 const GEO_CLASSIFIER_OPTIONS = ["Urban", "Suburban", "Rural"];
-
-const ZIP_PATTERN = /^\d{5}$/;
 
 interface ZipLookupResponse {
   places?: { "place name": string; "state abbreviation": string }[];
@@ -43,7 +42,7 @@ export default function BasicInfoTab({
   // Auto-populate city/state from the ZIP -- both stay editable afterward,
   // so this only overwrites what the lookup actually returns.
   useEffect(() => {
-    if (!ZIP_PATTERN.test(debouncedZip ?? "")) {
+    if (!isValidZip(debouncedZip)) {
       setZipStatus("idle");
       return;
     }
@@ -83,7 +82,7 @@ export default function BasicInfoTab({
       ? "Couldn't look up that ZIP — you can still fill in city/state manually"
       : "5-digit US ZIP, required — auto-fills city & state below";
   const zipTouched = (form.zipCode?.length ?? 0) > 0;
-  const zipError = zipTouched && !ZIP_PATTERN.test(form.zipCode ?? "") ? "Enter a valid 5-digit ZIP code" : null;
+  const zipError = zipTouched && !isValidZip(form.zipCode) ? "Enter a valid 5-digit ZIP code" : null;
 
   return (
     <div className="edit-modal-body">

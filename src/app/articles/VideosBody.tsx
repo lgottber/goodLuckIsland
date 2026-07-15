@@ -7,13 +7,7 @@ import Pagination from "../../components/Pagination";
 import { ClockIcon } from "../../components/Icons";
 import Icon from "../../components/Icon";
 import type { Video } from "../../lib/videosApi";
-
-const DURATION_FILTERS = [
-  { label: "All", value: "all" },
-  { label: "Under 30 min", value: "short" },
-  { label: "30–60 min", value: "medium" },
-  { label: "Over 60 min", value: "long" },
-];
+import { DURATION_FILTERS } from "../../lib/durationFilter";
 
 interface Props {
   featured: Video;
