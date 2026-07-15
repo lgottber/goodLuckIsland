@@ -15,6 +15,7 @@ import InterestsList from "./InterestsList";
 import InterestsEmpty from "./InterestsEmpty";
 import { createUser, upsertProfile, updateNotificationPrefs, updateInAppNotificationPrefs, deleteAccount } from "../../lib/profileApi";
 import BackpackDashboardSection from "./BackpackDashboardSection";
+import ForYouSection from "./ForYouSection";
 import { useUserDataStore } from "../../lib/stores/userDataStore";
 import { setPendingAccountDeletion } from "../../lib/pendingAccountDeletion";
 import NotificationPrefsModal from "./NotificationPrefsModal";
@@ -551,6 +552,8 @@ export default function ProfilePage() {
           <QuizNudgeCard />
 
           <BackpackDashboardSection progress={progress} />
+
+          {auth0User?.sub && <ForYouSection userId={auth0User.sub} />}
 
           {/* About & Interests row */}
           <div className="overview-two-col">

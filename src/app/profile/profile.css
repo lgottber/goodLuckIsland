@@ -441,6 +441,32 @@ body {
   gap: 1.5rem;
 }
 
+/* ── FOR YOU ── */
+.for-you-title {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid rgba(30, 45, 90, 0.1);
+}
+.for-you-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+@media (max-width: 60rem) {
+  .for-you-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 37.5rem) {
+  .for-you-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ── PROFILE CARD ── */
 .profile-card {
   background: #fff;
