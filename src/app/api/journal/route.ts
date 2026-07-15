@@ -33,6 +33,10 @@ export async function GET(request: NextRequest) {
   return NextResponse.json(row ?? null);
 }
 
+function isSameDay(a: string, b: string): boolean {
+  return a.slice(0, 10) === b.slice(0, 10);
+}
+
 export async function POST(request: NextRequest) {
   const member = await verifyMember(request);
   if (!member)
@@ -48,14 +52,38 @@ export async function POST(request: NextRequest) {
   }
 
   const db = getDb();
-  await db
-    .prepare(
-      `INSERT INTO journal_entries (id, user_id, step_slug, body, updated_at)
-       VALUES (?, ?, ?, ?, ?)
-       ON CONFLICT(user_id, step_slug) DO UPDATE SET body = excluded.body, updated_at = excluded.updated_at`,
-    )
-    .bind(newId(), member.sub, stepSlug, body, nowIso())
-    .run();
+  const now = nowIso();
+
+  // Snapshot the previous body into history once per calendar day it was
+  // last saved on, rather than on every autosave tick -- one history row
+  // per journaling session, not one per 500ms debounce.
+  const existing = await db
+    .prepare("SELECT body, updated_at FROM journal_entries WHERE user_id = ? AND step_slug = ?")
+    .bind(member.sub, stepSlug)
+    .first<{ body: string; updated_at: string }>();
+  const shouldSnapshot =
+    existing && existing.body !== body && !isSameDay(existing.updated_at, now);
+
+  const statements = [];
+  if (shouldSnapshot) {
+    statements.push(
+      db
+        .prepare(
+          "INSERT INTO journal_entry_history (id, user_id, step_slug, body, created_at) VALUES (?, ?, ?, ?, ?)",
+        )
+        .bind(newId(), member.sub, stepSlug, existing.body, existing.updated_at),
+    );
+  }
+  statements.push(
+    db
+      .prepare(
+        `INSERT INTO journal_entries (id, user_id, step_slug, body, updated_at)
+         VALUES (?, ?, ?, ?, ?)
+         ON CONFLICT(user_id, step_slug) DO UPDATE SET body = excluded.body, updated_at = excluded.updated_at`,
+      )
+      .bind(newId(), member.sub, stepSlug, body, now),
+  );
+  await db.batch(statements);
 
   return new NextResponse(null, { status: 204 });
 }
