@@ -799,6 +799,12 @@ body {
   color: var(--muted);
 }
 
+.field-required {
+  font-size: 0.68rem;
+  font-style: italic;
+  color: var(--coral-dk);
+}
+
 .btn-save {
   background: var(--coral);
   color: #fff;
