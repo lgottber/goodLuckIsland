@@ -15,9 +15,9 @@ export type ProfileForm = {
   address: string;
   memberSince: string;
   stats: {
-    articlesRead: number;
-    podcastsListened: number;
-    savedItems: number;
-    daysActive: number;
+    articlesRead: number | null;
+    podcastsListened: number | null;
+    savedItems: number | null;
+    daysActive: number | null;
   };
 };

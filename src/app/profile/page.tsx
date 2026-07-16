@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useSubmitFeedback } from "../../hooks/useSubmitFeedback";
 import { useAuth0 as useAuth0User } from "@auth0/auth0-react";
 import NavBar from "../../components/NavBarDynamic";
@@ -20,6 +21,7 @@ import { setPendingAccountDeletion } from "../../lib/pendingAccountDeletion";
 import NotificationPrefsModal from "./NotificationPrefsModal";
 import DeleteAccountModal from "./DeleteAccountModal";
 import QuizNudgeCard from "../quiz/QuizNudgeCard";
+import type { Tables } from "../../types/supabase";
 import { downloadProfileDataCsv } from "../../lib/exportUtils";
 import { trackEvent } from "../../lib/analyticsApi";
 import type { ResetStatus } from "./types";
@@ -31,8 +33,67 @@ import ContactForm, { ContactFormData } from "../about/ContactForm";
 import ContactFormSuccess from "../about/ContactFormSuccess";
 import { ApiError } from "../../lib/apiClient";
 import { submitTestimonial } from "../../lib/testimonialsApi";
-import { applySupabaseFields, INITIAL_USER } from "./profileUser";
+import { formatMemberSince } from "./memberSince";
+import { fetchProfileStats } from "../../lib/profileStatsApi";
 import "./profile.css";
+
+function unresolvedStat(): number | null {
+  return null;
+}
+
+const INITIAL_USER = {
+  firstName: "",
+  lastName: "",
+  username: "",
+  email: "",
+  location: "",
+  zipCode: "",
+  city: "",
+  state: "",
+  address: "",
+  avatarUrl: "",
+  avatarId: "",
+  bio: "",
+  mantra: "Peace of mind, planned for.",
+  memberSince: "",
+  stats: {
+    articlesRead: unresolvedStat(),
+    podcastsListened: unresolvedStat(),
+    savedItems: unresolvedStat(),
+    daysActive: unresolvedStat(),
+  },
+  age: "",
+  occupation: "",
+  yearsInOccupation: "",
+  education: "",
+  retired: "",
+  retirementDate: "",
+  retirementDateReason: "",
+  maritalStatus: "",
+  divorced: "",
+  kids: "",
+  homePaidOff: "",
+  workingIncome: "",
+  netWorth: "",
+  gender: "",
+  householdComposition: "",
+  geoClassifier: "",
+  employmentStatus: "",
+  industry: "",
+  yearsUntilRetirement: "",
+  retirementConfidence: "",
+  lifeSatisfaction: "",
+  senseOfPurpose: "",
+  stressLevel: "",
+  optimism: "",
+  lonelinessConnection: "",
+  retirementIdentity: "",
+  retirementVisionClarity: "",
+  retirementMotivations: new Array<string>(),
+  retirementConcerns: new Array<string>(),
+  idealRetirementDay: "",
+};
+
 
 // ─── Main Profile Page ────────────────────────────────────────────────────────
 export default function ProfilePage() {
@@ -47,7 +108,73 @@ export default function ProfilePage() {
   const ensureProgress = useUserDataStore((state) => state.ensureProgress);
   const invalidateProfile = useUserDataStore((state) => state.invalidateProfile);
   const setStoredProfile = useUserDataStore((state) => state.setProfile);
+  const savedItems = useUserDataStore((state) => state.saved);
+  const savedStatus = useUserDataStore((state) => state.savedStatus);
+  const ensureSaved = useUserDataStore((state) => state.ensureSaved);
   const [initError, setInitError] = useState(false);
+
+  function applySupabaseFields(
+    prev: typeof INITIAL_USER,
+    data: Tables<"users">,
+    picture: string | undefined,
+  ) {
+    return {
+      ...prev,
+      firstName: data.first_name ?? prev.firstName,
+      lastName: data.last_name ?? prev.lastName,
+      email: data.email ?? prev.email,
+      username: data.username ?? prev.username,
+      location: data.location ?? prev.location,
+      zipCode: data.zip_code ?? prev.zipCode,
+      city: data.city ?? prev.city,
+      state: data.state ?? prev.state,
+      bio: data.bio ?? prev.bio,
+      mantra: data.mantra ?? prev.mantra,
+      occupation: data.occupation ?? prev.occupation,
+      education: data.education ?? prev.education,
+      retired: data.retired ?? prev.retired,
+      retirementDate: data.retirement_date ?? prev.retirementDate,
+      retirementDateReason: data.retirement_date_reason ?? prev.retirementDateReason,
+      maritalStatus: data.marital_status ?? prev.maritalStatus,
+      divorced: data.divorced ?? prev.divorced,
+      kids: data.kids ?? prev.kids,
+      homePaidOff: data.home_paid_off ?? prev.homePaidOff,
+      workingIncome: data.working_income ?? prev.workingIncome,
+      netWorth: data.net_worth ?? prev.netWorth,
+      avatarId: data.avatar_id ?? prev.avatarId,
+      age: data.age != null ? String(data.age) : prev.age,
+      yearsInOccupation:
+        data.years_in_occupation != null
+          ? String(data.years_in_occupation)
+          : prev.yearsInOccupation,
+      avatarUrl: data.avatar_id ? "" : (picture ?? prev.avatarUrl),
+      gender: data.gender ?? prev.gender,
+      householdComposition: data.household_composition ?? prev.householdComposition,
+      geoClassifier: data.geo_classifier ?? prev.geoClassifier,
+      employmentStatus: data.employment_status ?? prev.employmentStatus,
+      industry: data.industry ?? prev.industry,
+      yearsUntilRetirement: data.years_until_retirement ?? prev.yearsUntilRetirement,
+      retirementConfidence:
+        data.retirement_confidence != null ? String(data.retirement_confidence) : prev.retirementConfidence,
+      lifeSatisfaction:
+        data.life_satisfaction != null ? String(data.life_satisfaction) : prev.lifeSatisfaction,
+      senseOfPurpose:
+        data.sense_of_purpose != null ? String(data.sense_of_purpose) : prev.senseOfPurpose,
+      stressLevel: data.stress_level != null ? String(data.stress_level) : prev.stressLevel,
+      optimism: data.optimism != null ? String(data.optimism) : prev.optimism,
+      lonelinessConnection:
+        data.loneliness_connection != null ? String(data.loneliness_connection) : prev.lonelinessConnection,
+      retirementIdentity: data.retirement_identity ?? prev.retirementIdentity,
+      retirementVisionClarity:
+        data.retirement_vision_clarity != null
+          ? String(data.retirement_vision_clarity)
+          : prev.retirementVisionClarity,
+      retirementMotivations: data.retirement_motivations ?? prev.retirementMotivations,
+      retirementConcerns: data.retirement_concerns ?? prev.retirementConcerns,
+      idealRetirementDay: data.ideal_retirement_day ?? prev.idealRetirementDay,
+      memberSince: formatMemberSince(data.created_at) || prev.memberSince,
+    };
+  }
 
   // Seed from Auth0 immediately, then trigger the shared profile/progress
   // fetch (skipped if another consumer -- e.g. NavBar -- already loaded it
@@ -73,7 +200,27 @@ export default function ProfilePage() {
 
     ensureProfile(a0.sub ?? "");
     ensureProgress(a0.sub ?? "");
-  }, [auth0User, ensureProfile, ensureProgress]);
+    ensureSaved(a0.sub ?? "");
+  }, [auth0User, ensureProfile, ensureProgress, ensureSaved]);
+
+  // Saved-items count comes from the shared store (same source as the
+  // Backpack "Saved" tab); the other three stats come from Analytics Engine.
+  useEffect(() => {
+    if (savedStatus !== "loaded") return;
+    setUser((prev) => ({
+      ...prev,
+      stats: { ...prev.stats, savedItems: savedItems.length },
+    }));
+  }, [savedItems, savedStatus]);
+
+  useEffect(() => {
+    if (!auth0User?.sub) return;
+    fetchProfileStats()
+      .then((stats) =>
+        setUser((prev) => ({ ...prev, stats: { ...prev.stats, ...stats } })),
+      )
+      .catch(() => {});
+  }, [auth0User?.sub]);
 
   useEffect(() => {
     if (!auth0User || profileStatus !== "loaded") return;
@@ -397,22 +544,22 @@ export default function ProfilePage() {
         {/* ── STATS STRIP ── */}
         <div className="profile-stats-wrap">
           <div className="profile-stats-row">
-            <div className="profile-stat">
-              <div className="profile-stat-num">{user.stats.articlesRead}</div>
+            <Link href="/articles?tab=articles" className="profile-stat profile-stat--link">
+              <div className="profile-stat-num">{user.stats.articlesRead ?? "—"}</div>
               <div className="profile-stat-label">Articles Read</div>
-            </div>
-            <div className="profile-stat">
+            </Link>
+            <Link href="/articles?tab=podcast" className="profile-stat profile-stat--link">
               <div className="profile-stat-num">
-                {user.stats.podcastsListened}
+                {user.stats.podcastsListened ?? "—"}
               </div>
               <div className="profile-stat-label">Podcasts</div>
-            </div>
-            <div className="profile-stat">
-              <div className="profile-stat-num">{user.stats.savedItems}</div>
+            </Link>
+            <Link href="/backpack?tab=saved" className="profile-stat profile-stat--link">
+              <div className="profile-stat-num">{user.stats.savedItems ?? "—"}</div>
               <div className="profile-stat-label">Saved Items</div>
-            </div>
+            </Link>
             <div className="profile-stat">
-              <div className="profile-stat-num">{user.stats.daysActive}</div>
+              <div className="profile-stat-num">{user.stats.daysActive ?? "—"}</div>
               <div className="profile-stat-label">Days Active</div>
             </div>
           </div>

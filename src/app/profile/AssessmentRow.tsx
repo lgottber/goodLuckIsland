@@ -2,7 +2,7 @@ import Link from "next/link";
 
 interface Props {
   title: string;
-  href: string;
+  href?: string;
   step: string;
   completed: boolean;
 }
@@ -14,12 +14,16 @@ export default function AssessmentRow({ title, href, step, completed }: Props) {
         ? <span className="assess-check">✓</span>
         : <span className="assess-step">{step}</span>}
       <span className="assess-title">{title}</span>
-      <Link
-        href={href}
-        className={completed ? "assess-action assess-action--review" : "assess-action"}
-      >
-        {completed ? "Review" : "Start Now →"}
-      </Link>
+      {href ? (
+        <Link
+          href={href}
+          className={completed ? "assess-action assess-action--review" : "assess-action"}
+        >
+          {completed ? "Review" : "Start Now →"}
+        </Link>
+      ) : (
+        <span className="assess-action assess-action--soon">Coming soon</span>
+      )}
     </li>
   );
 }

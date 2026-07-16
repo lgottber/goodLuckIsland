@@ -1,4 +1,8 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import type { UserProgress } from "../../lib/sevenStepApi";
+import { fetchAssignedAssessments, type AssignedAssessment } from "../../lib/assessmentsApi";
 import AssessmentRow from "./AssessmentRow";
 
 interface Props {
@@ -28,19 +32,33 @@ const ASSESSMENTS: AssessmentEntry[] = [
 ];
 
 export default function BackpackDashboardSection({ progress }: Props) {
+  const [assigned, setAssigned] = useState<AssignedAssessment[]>([]);
+
+  useEffect(() => {
+    fetchAssignedAssessments().then(setAssigned).catch(() => {});
+  }, []);
+
   const todo = ASSESSMENTS.filter((a) => !progress?.[a.key]);
   const done = ASSESSMENTS.filter((a) => !!progress?.[a.key]);
+  // Generic (assessment-builder) assessments have no member-facing taking
+  // flow yet -- AssessmentRow renders them without an href, same "Coming
+  // soon" treatment AssignedAssessmentRow already uses in the Backpack tab.
+  const assignedTodo = assigned.filter((a) => a.status !== "completed");
+  const assignedDone = assigned.filter((a) => a.status === "completed");
 
   return (
     <>
       <div className="profile-card profile-card--assess-table">
         <h3>To Do</h3>
-        {todo.length === 0 ? (
+        {todo.length === 0 && assignedTodo.length === 0 ? (
           <p className="assess-empty">All assessments complete!</p>
         ) : (
           <ul className="assess-list">
             {todo.map((a) => (
               <AssessmentRow key={a.key} title={a.title} href={a.href} step={a.step} completed={false} />
+            ))}
+            {assignedTodo.map((a) => (
+              <AssessmentRow key={a.assessmentId} title={a.title} step="Assigned" completed={false} />
             ))}
           </ul>
         )}
@@ -48,12 +66,15 @@ export default function BackpackDashboardSection({ progress }: Props) {
 
       <div className="profile-card profile-card--assess-table">
         <h3>Backpack</h3>
-        {done.length === 0 ? (
+        {done.length === 0 && assignedDone.length === 0 ? (
           <p className="assess-empty">No completed assessments yet.</p>
         ) : (
           <ul className="assess-list">
             {done.map((a) => (
               <AssessmentRow key={a.key} title={a.title} href={a.href} step={a.step} completed={true} />
+            ))}
+            {assignedDone.map((a) => (
+              <AssessmentRow key={a.assessmentId} title={a.title} step="Assigned" completed={true} />
             ))}
           </ul>
         )}

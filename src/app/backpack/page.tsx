@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import NavBar from "../../components/NavBarDynamic";
-import BackpackContent from "./BackpackContent";
+import BackpackContent, { isTab } from "./BackpackContent";
 import { useUserDataStore } from "../../lib/stores/userDataStore";
 import "./backpack.css";
 
@@ -12,6 +12,9 @@ export default function BackpackPage() {
   const { user, isAuthenticated, isLoading: authLoading } = useAuth0();
   const userId = user?.sub ?? "";
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get("tab");
+  const initialTab = tabParam && isTab(tabParam) ? tabParam : "journey";
 
   const progress = useUserDataStore((state) => state.progress);
   const badges = useUserDataStore((state) => state.badges);
@@ -62,7 +65,12 @@ export default function BackpackPage() {
         )}
 
         {!loading && !loadError && (
-          <BackpackContent progress={progress} badges={badges} profile={profile} />
+          <BackpackContent
+            progress={progress}
+            badges={badges}
+            profile={profile}
+            initialTab={initialTab}
+          />
         )}
       </div>
     </>
