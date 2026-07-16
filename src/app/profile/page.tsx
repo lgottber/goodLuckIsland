@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useSubmitFeedback } from "../../hooks/useSubmitFeedback";
 import { useAuth0 as useAuth0User } from "@auth0/auth0-react";
 import NavBar from "../../components/NavBarDynamic";
@@ -32,7 +33,13 @@ import ContactForm, { ContactFormData } from "../about/ContactForm";
 import ContactFormSuccess from "../about/ContactFormSuccess";
 import { ApiError } from "../../lib/apiClient";
 import { submitTestimonial } from "../../lib/testimonialsApi";
+import { formatMemberSince } from "./memberSince";
+import { fetchProfileStats } from "../../lib/profileStatsApi";
 import "./profile.css";
+
+function unresolvedStat(): number | null {
+  return null;
+}
 
 const INITIAL_USER = {
   firstName: "",
@@ -51,10 +58,10 @@ const INITIAL_USER = {
   memberSince: "",
   interests: new Array<string>(),
   stats: {
-    articlesRead: 0,
-    podcastsListened: 0,
-    savedItems: 0,
-    daysActive: 0,
+    articlesRead: unresolvedStat(),
+    podcastsListened: unresolvedStat(),
+    savedItems: unresolvedStat(),
+    daysActive: unresolvedStat(),
   },
   age: "",
   occupation: "",
@@ -102,6 +109,9 @@ export default function ProfilePage() {
   const ensureProgress = useUserDataStore((state) => state.ensureProgress);
   const invalidateProfile = useUserDataStore((state) => state.invalidateProfile);
   const setStoredProfile = useUserDataStore((state) => state.setProfile);
+  const savedItems = useUserDataStore((state) => state.saved);
+  const savedStatus = useUserDataStore((state) => state.savedStatus);
+  const ensureSaved = useUserDataStore((state) => state.ensureSaved);
   const [initError, setInitError] = useState(false);
 
   function applySupabaseFields(
@@ -164,6 +174,7 @@ export default function ProfilePage() {
       retirementMotivations: data.retirement_motivations ?? prev.retirementMotivations,
       retirementConcerns: data.retirement_concerns ?? prev.retirementConcerns,
       idealRetirementDay: data.ideal_retirement_day ?? prev.idealRetirementDay,
+      memberSince: formatMemberSince(data.created_at) || prev.memberSince,
     };
   }
 
@@ -191,7 +202,27 @@ export default function ProfilePage() {
 
     ensureProfile(a0.sub ?? "");
     ensureProgress(a0.sub ?? "");
-  }, [auth0User, ensureProfile, ensureProgress]);
+    ensureSaved(a0.sub ?? "");
+  }, [auth0User, ensureProfile, ensureProgress, ensureSaved]);
+
+  // Saved-items count comes from the shared store (same source as the
+  // Backpack "Saved" tab); the other three stats come from Analytics Engine.
+  useEffect(() => {
+    if (savedStatus !== "loaded") return;
+    setUser((prev) => ({
+      ...prev,
+      stats: { ...prev.stats, savedItems: savedItems.length },
+    }));
+  }, [savedItems, savedStatus]);
+
+  useEffect(() => {
+    if (!auth0User?.sub) return;
+    fetchProfileStats()
+      .then((stats) =>
+        setUser((prev) => ({ ...prev, stats: { ...prev.stats, ...stats } })),
+      )
+      .catch(() => {});
+  }, [auth0User?.sub]);
 
   useEffect(() => {
     if (!auth0User || profileStatus !== "loaded") return;
@@ -515,22 +546,22 @@ export default function ProfilePage() {
         {/* ── STATS STRIP ── */}
         <div className="profile-stats-wrap">
           <div className="profile-stats-row">
-            <div className="profile-stat">
-              <div className="profile-stat-num">{user.stats.articlesRead}</div>
+            <Link href="/articles?tab=articles" className="profile-stat profile-stat--link">
+              <div className="profile-stat-num">{user.stats.articlesRead ?? "—"}</div>
               <div className="profile-stat-label">Articles Read</div>
-            </div>
-            <div className="profile-stat">
+            </Link>
+            <Link href="/articles?tab=podcast" className="profile-stat profile-stat--link">
               <div className="profile-stat-num">
-                {user.stats.podcastsListened}
+                {user.stats.podcastsListened ?? "—"}
               </div>
               <div className="profile-stat-label">Podcasts</div>
-            </div>
-            <div className="profile-stat">
-              <div className="profile-stat-num">{user.stats.savedItems}</div>
+            </Link>
+            <Link href="/backpack?tab=saved" className="profile-stat profile-stat--link">
+              <div className="profile-stat-num">{user.stats.savedItems ?? "—"}</div>
               <div className="profile-stat-label">Saved Items</div>
-            </div>
+            </Link>
             <div className="profile-stat">
-              <div className="profile-stat-num">{user.stats.daysActive}</div>
+              <div className="profile-stat-num">{user.stats.daysActive ?? "—"}</div>
               <div className="profile-stat-label">Days Active</div>
             </div>
           </div>

@@ -91,3 +91,81 @@ export async function getVideoWatchHistory(
       updatedAt,
     }));
 }
+
+export interface ContentViewCounts {
+  articlesRead: number;
+  podcastsListened: number;
+}
+
+// Powers the profile dashboard's "Articles Read"/"Podcasts" stats. Mirrors
+// goodLuckAdmin's getContentViewCounts pattern (lib/analytics.server.ts),
+// scoped to one member via blob3 and using SUM(_sample_interval) rather
+// than a raw row count since Analytics Engine samples events.
+export async function getContentViewCounts(
+  env: CloudflareEnv,
+  userSub: string,
+): Promise<ContentViewCounts> {
+  const result = await queryAnalytics(
+    env,
+    `SELECT blob2 AS properties, SUM(_sample_interval) AS count
+     FROM good_luck_island_events
+     WHERE timestamp > NOW() - INTERVAL '90' DAY
+       AND blob1 = 'content_viewed'
+       AND blob3 = '${escapeSqlLiteral(userSub)}'
+     GROUP BY properties`,
+  );
+
+  let articlesRead = 0;
+  let podcastsListened = 0;
+  for (const row of result.data) {
+    let parsed: { contentType?: unknown };
+    try {
+      parsed = JSON.parse(String(row.properties));
+    } catch {
+      continue;
+    }
+    if (parsed.contentType === "article") articlesRead += Number(row.count);
+    else if (parsed.contentType === "episode") podcastsListened += Number(row.count);
+  }
+
+  return { articlesRead, podcastsListened };
+}
+
+// Walks a descending list of "YYYY-MM-DD" day strings and counts the
+// consecutive-day streak ending at today (or yesterday, so a user who was
+// active yesterday but hasn't opened the app yet today doesn't see their
+// streak drop to zero).
+function computeStreak(sortedDaysDesc: string[]): number {
+  if (sortedDaysDesc.length === 0) return 0;
+
+  const oneDayMs = 86_400_000;
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const yesterdayStr = new Date(Date.now() - oneDayMs).toISOString().slice(0, 10);
+  const mostRecent = sortedDaysDesc[0].slice(0, 10);
+  if (mostRecent !== todayStr && mostRecent !== yesterdayStr) return 0;
+
+  let streak = 1;
+  for (let i = 1; i < sortedDaysDesc.length; i++) {
+    const prev = new Date(`${sortedDaysDesc[i - 1].slice(0, 10)}T00:00:00Z`).getTime();
+    const cur = new Date(`${sortedDaysDesc[i].slice(0, 10)}T00:00:00Z`).getTime();
+    if (prev - cur === oneDayMs) streak++;
+    else break;
+  }
+  return streak;
+}
+
+// Powers the profile dashboard's "Days Active" stat: the member's current
+// consecutive-day activity streak, from any event type (blob3 = member sub).
+export async function getActiveDayStreak(env: CloudflareEnv, userSub: string): Promise<number> {
+  const result = await queryAnalytics(
+    env,
+    `SELECT toDate(timestamp) AS day, SUM(_sample_interval) AS count
+     FROM good_luck_island_events
+     WHERE timestamp > NOW() - INTERVAL '90' DAY
+       AND blob3 = '${escapeSqlLiteral(userSub)}'
+     GROUP BY day
+     ORDER BY day DESC`,
+  );
+
+  return computeStreak(result.data.map((row) => String(row.day)));
+}

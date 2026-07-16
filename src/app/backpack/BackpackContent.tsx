@@ -11,7 +11,7 @@ import type { UserProgress } from "../../lib/sevenStepApi";
 import type { EarnedBadge } from "../../lib/badgesApi";
 import type { Tables } from "../../types/supabase";
 
-type Tab = "journey" | "assessments" | "saved" | "badges" | "watch-history";
+export type Tab = "journey" | "assessments" | "saved" | "badges" | "watch-history";
 
 const TABS: { label: string; value: Tab }[] = [
   { label: "My Journey", value: "journey" },
@@ -21,7 +21,7 @@ const TABS: { label: string; value: Tab }[] = [
   { label: "Watch History", value: "watch-history" },
 ];
 
-function isTab(v: string): v is Tab {
+export function isTab(v: string): v is Tab {
   return (
     v === "journey" ||
     v === "assessments" ||
@@ -35,10 +35,11 @@ interface Props {
   progress: UserProgress | null;
   badges: EarnedBadge[];
   profile: Tables<"users"> | null;
+  initialTab?: Tab;
 }
 
-export default function BackpackContent({ progress, badges, profile }: Props) {
-  const [activeTab, setActiveTab] = useState<Tab>("journey");
+export default function BackpackContent({ progress, badges, profile, initialTab }: Props) {
+  const [activeTab, setActiveTab] = useState<Tab>(initialTab ?? "journey");
 
   return (
     <>
