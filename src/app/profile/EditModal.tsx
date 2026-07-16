@@ -8,7 +8,6 @@ import FinancesTab from "./FinancesTab";
 import WellnessTab from "./WellnessTab";
 import RetirementIdentityTab from "./RetirementIdentityTab";
 import ModalActionButton from "./ModalActionButton";
-import { isValidZip } from "../../lib/zip";
 import type { ProfileForm, SetField } from "./types";
 
 const MODAL_TABS = [
@@ -19,6 +18,20 @@ const MODAL_TABS = [
   "Retirement Identity",
   "Finances",
 ];
+
+type StringFieldKey = {
+  [K in keyof ProfileForm]: ProfileForm[K] extends string | string[] ? K : never;
+}[keyof ProfileForm];
+
+// Only Basic Info has fields marked required in the UI (Identity fields + Zip Code);
+// every other tab's fields are optional, so they never block Save.
+const REQUIRED_FIELDS_BY_TAB: Partial<Record<string, StringFieldKey[]>> = {
+  "Basic Info": ["firstName", "lastName", "username", "age", "email", "zipCode"],
+};
+
+function isFieldEmpty(value: string | string[]): boolean {
+  return Array.isArray(value) ? value.length === 0 : value.trim().length === 0;
+}
 
 export default function EditModal({ user, onSave, onClose }: { user: ProfileForm; onSave: (form: ProfileForm) => void | Promise<void>; onClose: () => void }) {
   const [form, setForm] = useState<ProfileForm>({ ...user });
@@ -33,7 +46,11 @@ export default function EditModal({ user, onSave, onClose }: { user: ProfileForm
   };
 
   const tabIdx = MODAL_TABS.indexOf(activeTab);
-  const zipValid = isValidZip(form.zipCode);
+  const zipValid = /^\d{5}$/.test(form.zipCode ?? "");
+  const requiredFields = REQUIRED_FIELDS_BY_TAB[activeTab] ?? [];
+  const hasEmptyRequiredField = requiredFields.some((key) => isFieldEmpty(form[key]));
+  const saveDisabled =
+    hasEmptyRequiredField || (activeTab === "Basic Info" && !zipValid);
 
   return (
     <Modal
@@ -92,7 +109,7 @@ export default function EditModal({ user, onSave, onClose }: { user: ProfileForm
           <ModalActionButton
             label="Save Changes"
             onClick={() => onSave(form)}
-            disabled={!zipValid}
+            disabled={saveDisabled}
           />
           {tabIdx < MODAL_TABS.length - 1 && (
             <ModalActionButton
