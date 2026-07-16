@@ -4,7 +4,7 @@ import Link from "next/link";
 import NavBar from "../../components/NavBarDynamic";
 import "./privacy-policy.css";
 
-const LAST_UPDATED = "June 29, 2026";
+const LAST_UPDATED = "June 1, 2025";
 
 export default function PrivacyPolicyPage() {
   return (
@@ -23,10 +23,11 @@ export default function PrivacyPolicyPage() {
             <h2>1. Who We Are</h2>
             <p>
               Good Luck Island Collective (&ldquo;GLIC,&rdquo; &ldquo;we,&rdquo; &ldquo;us,&rdquo; or
-              &ldquo;our&rdquo;) operates the platform at goodluckislandcollective.com. We
-              are a self-help education platform focused on helping Gen X
-              professionals prepare for retirement through reflection, assessment,
-              and community.
+              &ldquo;our&rdquo;) is operated by Sovran Wealth Academy, LLC and operates
+              the platform at goodluckislandcollective.com. We are a self-help
+              education platform focused on helping Gen X professionals
+              prepare for retirement through reflection, assessment, and
+              community.
             </p>
             <p>
               If you have questions about this policy, contact us at{" "}
