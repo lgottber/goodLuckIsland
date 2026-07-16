@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDb, newId, nowIso } from "../../../../lib/db.server";
 import { verifyMember } from "../../../../lib/auth.server";
+import { parseAnswerTotal } from "../../../../lib/oneQuestionTotal";
 
 export const runtime = "edge";
 
@@ -9,8 +10,7 @@ export async function GET(request: NextRequest) {
   if (!member)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const totalParam = request.nextUrl.searchParams.get("total");
-  const total = totalParam ? parseInt(totalParam, 10) : 0;
+  const total = parseAnswerTotal(request.nextUrl.searchParams.get("total"));
 
   const db = getDb();
   const { results } = await db

@@ -407,6 +407,18 @@ body {
   border-right: none;
 }
 
+.profile-stat--link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.profile-stat--link:hover {
+  background: var(--cream-dk);
+}
+
 .profile-stat-num {
   font-family: var(--serif);
   font-size: 2.2rem;
@@ -1776,6 +1788,14 @@ body {
 
 .assess-action--review {
   color: var(--teal);
+}
+
+.assess-action--soon {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+  font-style: italic;
+  white-space: nowrap;
 }
 
 .assess-empty {

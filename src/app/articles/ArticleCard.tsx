@@ -1,6 +1,7 @@
 import Link from "next/link";
 import PictureImage from "../../components/PictureImage";
 import BookmarkButton from "./BookmarkButton";
+import TagPills from "../../components/TagPills";
 import type { Article } from "../../lib/articlesApi";
 import { trackEvent } from "../../lib/analyticsApi";
 
@@ -36,11 +37,18 @@ export default function ArticleCard({ article, userId, isSaved }: Props) {
           <span>{article.readTime}</span>
         </div>
         <h3 className="article-card-title">{article.title}</h3>
+        <TagPills tags={article.tags} />
         <p className="article-card-excerpt">{article.excerpt}</p>
         <Link
           href={`/articles/${article.id}`}
           className="article-card-read"
-          onClick={() => trackEvent("content_viewed", { contentType: "article", contentId: article.id })}
+          onClick={() =>
+            trackEvent("content_viewed", {
+              contentType: "article",
+              contentId: article.id,
+              tags: article.tagIds,
+            })
+          }
         >
           Read More
         </Link>

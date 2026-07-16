@@ -1,4 +1,4 @@
-import { useState, KeyboardEvent } from "react";
+import { useState } from "react";
 import Modal from "../../components/Modal";
 import Icon from "./Icon";
 import BasicInfoTab from "./BasicInfoTab";
@@ -36,7 +36,6 @@ function isFieldEmpty(value: string | string[]): boolean {
 export default function EditModal({ user, onSave, onClose }: { user: ProfileForm; onSave: (form: ProfileForm) => void | Promise<void>; onClose: () => void }) {
   const [form, setForm] = useState<ProfileForm>({ ...user });
   const [activeTab, setActiveTab] = useState("Basic Info");
-  const [interestInput, setInterestInput] = useState("");
 
   const set: SetField = <K extends keyof ProfileForm>(key: K, val: ProfileForm[K]) => {
     setForm((prev) => {
@@ -45,21 +44,6 @@ export default function EditModal({ user, onSave, onClose }: { user: ProfileForm
       return next;
     });
   };
-
-  const addInterest = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && interestInput.trim()) {
-      e.preventDefault();
-      if (!form.interests.includes(interestInput.trim())) {
-        set("interests", [...form.interests, interestInput.trim()]);
-      }
-      setInterestInput("");
-    }
-  };
-  const removeInterest = (tag: string) =>
-    set(
-      "interests",
-      form.interests.filter((t: string) => t !== tag),
-    );
 
   const tabIdx = MODAL_TABS.indexOf(activeTab);
   const zipValid = /^\d{5}$/.test(form.zipCode ?? "");
@@ -98,16 +82,7 @@ export default function EditModal({ user, onSave, onClose }: { user: ProfileForm
         ))}
       </div>
 
-      {activeTab === "Basic Info" && (
-        <BasicInfoTab
-          form={form}
-          set={set}
-          interestInput={interestInput}
-          setInterestInput={setInterestInput}
-          addInterest={addInterest}
-          removeInterest={removeInterest}
-        />
-      )}
+      {activeTab === "Basic Info" && <BasicInfoTab form={form} set={set} />}
       {activeTab === "Life & Career" && <LifeCareerTab form={form} set={set} />}
       {activeTab === "Retirement" && <RetirementTab form={form} set={set} />}
       {activeTab === "Wellness" && <WellnessTab form={form} set={set} />}

@@ -5,6 +5,7 @@ import ShieldPillarNode from "./ShieldPillarNode";
 import PillarSection from "./PillarSection";
 import OneQuestionDrawer from "./OneQuestionDrawer";
 import PinwirlDrawer from "./PinwirlDrawer";
+import PurposeDrawer from "./PurposeDrawer";
 import type { UserProgress } from "../../lib/sevenStepApi";
 import { SLUG_TO_STEP } from "../../lib/sevenStepApi";
 import type { PillarId } from "./PillarLogo";
@@ -84,7 +85,7 @@ const PILLARS: Pillar[] = [
   },
 ];
 
-const ACTIVE_PILLAR_IDS = new Set(["one-question", "pinwirl"]);
+const ACTIVE_PILLAR_IDS = new Set(["one-question", "pinwirl", "purpose"]);
 
 function pillarIsComplete(pillarId: string, progress: UserProgress | null): boolean {
   const stepKey = SLUG_TO_STEP[pillarId];
@@ -132,6 +133,7 @@ export default function SevenShieldPillars({ progress }: { progress: UserProgres
   const customDrawers: Record<string, ReactNode> = {
     "one-question": <OneQuestionDrawer />,
     "pinwirl": <PinwirlDrawer canEdit={allComplete} />,
+    "purpose": <PurposeDrawer />,
   };
 
   const completedPillars = PILLARS.filter((p) => pillarIsComplete(p.id, progress));

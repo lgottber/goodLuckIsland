@@ -2,6 +2,7 @@ import Link from "next/link";
 import { PlayIcon } from "../../components/Icons";
 import PictureImage from "../../components/PictureImage";
 import BookmarkButton from "./BookmarkButton";
+import TagPills from "../../components/TagPills";
 import type { Video } from "../../lib/videosApi";
 import { trackEvent } from "../../lib/analyticsApi";
 
@@ -16,7 +17,9 @@ export default function VideoCard({ video, userId, isSaved }: Props) {
     <Link
       href={`/articles/videos/${video.id}`}
       className="episode-card"
-      onClick={() => trackEvent("content_viewed", { contentType: "video", contentId: video.id })}
+      onClick={() =>
+        trackEvent("content_viewed", { contentType: "video", contentId: video.id, tags: video.tagIds })
+      }
     >
       <div className="episode-thumb">
         <PictureImage
@@ -45,6 +48,7 @@ export default function VideoCard({ video, userId, isSaved }: Props) {
           <span className="episode-body-date">{video.date}</span>
         </div>
         <h3 className="episode-body-title">{video.title}</h3>
+        <TagPills tags={video.tags} />
         <p className="episode-body-desc">{video.desc}</p>
         <div className="episode-body-watch">
           <PlayIcon size={12} /> Watch Video

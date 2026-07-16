@@ -2,9 +2,12 @@ import { cache } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getDb } from "../../../../lib/db.server";
+import { getDb, parseJson } from "../../../../lib/db.server";
+import { fetchTagLabelMap } from "../../../../lib/tags.server";
+import { resolveTagLabels } from "../../../../lib/tags";
 import NavBarDynamic from "../../../../components/NavBarDynamic";
 import TrackedYouTubeEmbed from "../../../../components/TrackedYouTubeEmbed";
+import TagPills from "../../../../components/TagPills";
 import VideoDetailActions from "./VideoDetailActions";
 import RelatedVideos from "./RelatedVideos";
 import type { Video } from "../../../../lib/videosApi";
@@ -24,9 +27,11 @@ interface VideoRow {
   duration: string | null;
   youtube_id: string | null;
   thumbnail: string | null;
+  tags: string;
 }
 
-function toVideo(row: VideoRow): Video {
+function toVideo(row: VideoRow, tagLabelMap: Map<number, string>): Video {
+  const tagIds = parseJson<number[]>(row.tags, []);
   return {
     id: row.id,
     num: row.num,
@@ -36,13 +41,15 @@ function toVideo(row: VideoRow): Video {
     duration: row.duration,
     youtubeId: row.youtube_id,
     thumbnail: row.thumbnail,
+    tagIds,
+    tags: resolveTagLabels(tagIds, tagLabelMap),
   };
 }
 
 const fetchVideo = cache(async (id: number): Promise<VideoRow | null> => {
   const db = getDb();
   return db
-    .prepare("SELECT id, num, title, description, date, duration, youtube_id, thumbnail FROM videos WHERE id = ?")
+    .prepare("SELECT id, num, title, description, date, duration, youtube_id, thumbnail, tags FROM videos WHERE id = ?")
     .bind(id)
     .first<VideoRow>();
 });
@@ -51,7 +58,7 @@ const fetchRelatedVideos = cache(async (excludeId: number): Promise<VideoRow[]> 
   const db = getDb();
   const { results } = await db
     .prepare(
-      "SELECT id, num, title, description, date, duration, youtube_id, thumbnail FROM videos WHERE status = 'published' AND id != ? ORDER BY sort_order LIMIT ?",
+      "SELECT id, num, title, description, date, duration, youtube_id, thumbnail, tags FROM videos WHERE status = 'published' AND id != ? ORDER BY sort_order LIMIT ?",
     )
     .bind(excludeId, RELATED_LIMIT)
     .all<VideoRow>();
@@ -97,6 +104,8 @@ export default async function VideoDetailPage({ params }: Props) {
   const video = await fetchVideo(numId);
   if (!video) notFound();
   const relatedRows = await fetchRelatedVideos(numId);
+  const tagLabelMap = await fetchTagLabelMap();
+  const videoTags = resolveTagLabels(parseJson<number[]>(video.tags, []), tagLabelMap);
 
   const videoNum = video.num ? (
     <p className="content-detail-num">{video.num}</p>
@@ -142,6 +151,7 @@ export default async function VideoDetailPage({ params }: Props) {
           <span className="content-detail-tag">Video</span>
           {videoNum}
           <h1 className="content-detail-title">{video.title}</h1>
+          <TagPills tags={videoTags} />
           <div className="content-detail-meta">
             {video.date && <span>{video.date}</span>}
             {video.date && video.duration && <span className="content-detail-dot" />}
@@ -154,7 +164,7 @@ export default async function VideoDetailPage({ params }: Props) {
           <Link href="/articles?tab=videos" className="content-detail-cta">
             Browse all videos →
           </Link>
-          <RelatedVideos videos={relatedRows.map(toVideo)} />
+          <RelatedVideos videos={relatedRows.map((row) => toVideo(row, tagLabelMap))} />
         </div>
       </div>
     </>
