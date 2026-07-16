@@ -113,6 +113,7 @@ body {
 /* ── Dashboard tabs ── */
 .backpack-tabs {
   display: flex;
+  justify-content: center;
   gap: 0.25rem;
   max-width: 68.75rem;
   margin: 0 auto;
