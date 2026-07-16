@@ -2,6 +2,7 @@ import Link from "next/link";
 import Icon from "../../components/Icon";
 import PictureImage from "../../components/PictureImage";
 import BookmarkButton from "./BookmarkButton";
+import TagPills from "../../components/TagPills";
 import type { Episode } from "../../lib/articlesApi";
 import { trackEvent } from "../../lib/analyticsApi";
 
@@ -16,7 +17,9 @@ export default function EpisodeCard({ ep, userId, isSaved }: Props) {
     <Link
       href={`/articles/podcast/${ep.id}`}
       className="episode-card"
-      onClick={() => trackEvent("content_viewed", { contentType: "episode", contentId: ep.id })}
+      onClick={() =>
+        trackEvent("content_viewed", { contentType: "episode", contentId: ep.id, tags: ep.tagIds })
+      }
     >
       <div className="episode-thumb">
         <PictureImage
@@ -45,6 +48,7 @@ export default function EpisodeCard({ ep, userId, isSaved }: Props) {
           <span className="episode-body-date">{ep.date}</span>
         </div>
         <h3 className="episode-body-title">{ep.title}</h3>
+        <TagPills tags={ep.tags} />
         <p className="episode-body-desc">{ep.desc}</p>
         <div className="episode-body-watch">
           <Icon name="headphones" size={12} /> Listen to Episode

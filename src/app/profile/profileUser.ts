@@ -15,7 +15,6 @@ export const INITIAL_USER = {
   bio: "",
   mantra: "Peace of mind, planned for.",
   memberSince: "",
-  interests: new Array<string>(),
   stats: {
     articlesRead: 0,
     podcastsListened: 0,
@@ -73,7 +72,6 @@ export function applySupabaseFields(
     state: data.state ?? prev.state,
     bio: data.bio ?? prev.bio,
     mantra: data.mantra ?? prev.mantra,
-    interests: data.interests ?? prev.interests,
     occupation: data.occupation ?? prev.occupation,
     education: data.education ?? prev.education,
     retired: data.retired ?? prev.retired,

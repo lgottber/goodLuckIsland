@@ -2,9 +2,12 @@ import { cache } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getDb } from "../../../../lib/db.server";
+import { getDb, parseJson } from "../../../../lib/db.server";
+import { fetchTagLabelMap } from "../../../../lib/tags.server";
+import { resolveTagLabels } from "../../../../lib/tags";
 import NavBarDynamic from "../../../../components/NavBarDynamic";
 import PictureImage from "../../../../components/PictureImage";
+import TagPills from "../../../../components/TagPills";
 import "../../[id]/article-detail.css";
 
 export const runtime = "edge";
@@ -18,12 +21,15 @@ interface EpisodeRow {
   duration: string | null;
   podcast_url: string | null;
   thumbnail: string | null;
+  tags: string;
 }
 
 const fetchEpisode = cache(async (id: number): Promise<EpisodeRow | null> => {
   const db = getDb();
   return db
-    .prepare("SELECT id, num, title, description, date, duration, podcast_url, thumbnail FROM episodes WHERE id = ?")
+    .prepare(
+      "SELECT id, num, title, description, date, duration, podcast_url, thumbnail, tags FROM episodes WHERE id = ?",
+    )
     .bind(id)
     .first<EpisodeRow>();
 });
@@ -61,6 +67,8 @@ export default async function EpisodeDetailPage({ params }: Props) {
   if (!Number.isFinite(numId)) notFound();
   const episode = await fetchEpisode(numId);
   if (!episode) notFound();
+  const tagLabelMap = await fetchTagLabelMap();
+  const episodeTags = resolveTagLabels(parseJson<number[]>(episode.tags, []), tagLabelMap);
 
   const heroImage = episode.thumbnail ? (
     <div className="content-detail-hero">
@@ -107,6 +115,7 @@ export default async function EpisodeDetailPage({ params }: Props) {
           <span className="content-detail-tag">Podcast</span>
           {episodeNum}
           <h1 className="content-detail-title">{episode.title}</h1>
+          <TagPills tags={episodeTags} />
           <div className="content-detail-meta">
             {episode.date && <span>{episode.date}</span>}
             {episode.date && episode.duration && <span className="content-detail-dot" />}

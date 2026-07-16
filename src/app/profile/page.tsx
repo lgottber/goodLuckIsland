@@ -11,8 +11,8 @@ import Icon from "./Icon";
 import FlashMessage from "./FlashMessage";
 import BioDisplay from "./BioDisplay";
 import BioEmpty from "./BioEmpty";
-import InterestsList from "./InterestsList";
-import InterestsEmpty from "./InterestsEmpty";
+import InterestsSection from "./InterestsSection";
+import RecommendationsTable from "./RecommendationsTable";
 import { createUser, upsertProfile, updateNotificationPrefs, updateInAppNotificationPrefs, deleteAccount } from "../../lib/profileApi";
 import BackpackDashboardSection from "./BackpackDashboardSection";
 import { useUserDataStore } from "../../lib/stores/userDataStore";
@@ -469,13 +469,11 @@ export default function ProfilePage() {
             {/* Interests */}
             <div className="profile-card">
               <h3>Interests</h3>
-              {user.interests.length > 0 ? (
-                <InterestsList interests={user.interests} />
-              ) : (
-                <InterestsEmpty onEditClick={() => setEditing(true)} />
-              )}
+              <InterestsSection />
             </div>
           </div>
+
+          <RecommendationsTable />
 
           {/* Contact Nick card */}
           <div className="profile-card profile-card--contact">
