@@ -10,4 +10,8 @@ interface CloudflareEnv extends Record<string, unknown> {
   // must never leave the Pages Functions runtime.
   CF_ACCOUNT_ID: string;
   CF_AE_API_TOKEN: string;
+  // Secrets Store binding for the iCal calendar URL set via the admin panel.
+  // Only available in the Pages Functions runtime (API routes), not in the
+  // static client bundle — never reference via NEXT_PUBLIC_.
+  ICAL_URL: { get(): Promise<string | null> };
 }

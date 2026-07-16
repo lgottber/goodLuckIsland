@@ -1633,6 +1633,71 @@ body {
   cursor: not-allowed;
 }
 
+/* ── UPCOMING EVENTS ── */
+.events-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.events-row {
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--cream-dk);
+}
+
+.events-row:last-child {
+  border-bottom: none;
+}
+
+.events-row-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.events-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--navy);
+  text-decoration: none;
+}
+
+a.events-title:hover {
+  color: var(--coral);
+  text-decoration: underline;
+}
+
+.events-date {
+  font-size: 0.75rem;
+  color: var(--teal);
+  font-weight: 600;
+}
+
+.events-location {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.events-empty {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.events-subscribe {
+  display: inline-block;
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--teal);
+  text-decoration: none;
+  letter-spacing: 0.03em;
+}
+
+.events-subscribe:hover {
+  text-decoration: underline;
+}
+
 /* ── CONTACT NICK FORM ── */
 .profile-card--contact p {
   font-size: 0.85rem;

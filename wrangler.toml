@@ -30,3 +30,12 @@ database_id = "b8a212cf-be15-4baa-a2f2-b9c86a3908e0"
 [[kv_namespaces]]
 binding = "RATE_LIMIT_KV"
 id = "4568eeb8482b4a288b38f87b16baa66c"
+
+# iCal URL for the Upcoming Events section on the member dashboard. Stored in
+# the same Cloudflare Secrets Store as the admin's settings (store id shared
+# with goodLuckAdmin). Set via the admin Settings panel → Events Calendar.
+# Falls back to the ICAL_URL environment variable in local dev (set in .env.local).
+[[secrets_store_secrets]]
+binding = "ICAL_URL"
+store_id = "3e4c95c7f56a47ed857879349d18d650"
+secret_name = "ical_url"
