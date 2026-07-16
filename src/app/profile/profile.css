@@ -1778,6 +1778,14 @@ body {
   color: var(--teal);
 }
 
+.assess-action--soon {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+  font-style: italic;
+  white-space: nowrap;
+}
+
 .assess-empty {
   font-size: 0.85rem;
   color: var(--muted);
