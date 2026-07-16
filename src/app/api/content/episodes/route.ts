@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb, publicCacheHeaders } from "../../../../lib/db.server";
+import { getDb, publicCacheHeaders, parseJson } from "../../../../lib/db.server";
+import { fetchTagLabelMap } from "../../../../lib/tags.server";
+import { resolveTagLabels } from "../../../../lib/tags";
 
 export const runtime = "edge";
 
@@ -13,13 +15,15 @@ interface EpisodeRow {
   podcast_url: string | null;
   thumbnail: string | null;
   score: number;
+  tags: string;
 }
 
 // Matches the shape src/lib/articlesApi.ts's fetchEpisodes/
-// fetchEpisodesByIds expect -- CMS-only columns (tags, status, etc.) are
-// deliberately not exposed here since no current consumer reads them from
-// this endpoint.
-function mapEpisode(ep: EpisodeRow) {
+// fetchEpisodesByIds expect -- other CMS-only columns (status, etc.) are
+// still deliberately not exposed here since no current consumer reads them
+// from this endpoint.
+function mapEpisode(ep: EpisodeRow, tagLabelMap: Map<number, string>) {
+  const tagIds = parseJson<number[]>(ep.tags, []);
   return {
     id: ep.id,
     num: ep.num,
@@ -30,6 +34,8 @@ function mapEpisode(ep: EpisodeRow) {
     podcastUrl: ep.podcast_url,
     thumbnail: ep.thumbnail,
     score: ep.score,
+    tagIds,
+    tags: resolveTagLabels(tagIds, tagLabelMap),
   };
 }
 
@@ -38,6 +44,7 @@ function mapEpisode(ep: EpisodeRow) {
 export async function GET(request: NextRequest) {
   const db = getDb();
   const idsParam = request.nextUrl.searchParams.get("ids");
+  const tagLabelMap = await fetchTagLabelMap();
 
   if (idsParam) {
     const ids = idsParam
@@ -50,7 +57,7 @@ export async function GET(request: NextRequest) {
       .prepare(`SELECT * FROM episodes WHERE id IN (${placeholders})`)
       .bind(...ids)
       .all<EpisodeRow>();
-    return NextResponse.json((results ?? []).map(mapEpisode), {
+    return NextResponse.json((results ?? []).map((ep) => mapEpisode(ep, tagLabelMap)), {
       headers: publicCacheHeaders(300, 3600),
     });
   }
@@ -58,7 +65,7 @@ export async function GET(request: NextRequest) {
   const { results } = await db
     .prepare("SELECT * FROM episodes ORDER BY sort_order")
     .all<EpisodeRow>();
-  return NextResponse.json((results ?? []).map(mapEpisode), {
+  return NextResponse.json((results ?? []).map((ep) => mapEpisode(ep, tagLabelMap)), {
     headers: publicCacheHeaders(300, 3600),
   });
 }

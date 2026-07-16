@@ -22,7 +22,6 @@ interface UserRow {
   state: string | null;
   bio: string | null;
   mantra: string | null;
-  interests: string | null;
   age: number | null;
   occupation: string | null;
   years_in_occupation: number | null;
@@ -72,7 +71,6 @@ interface ProfilePutPayload {
   state?: string | null;
   bio?: string | null;
   mantra?: string | null;
-  interests?: string[] | null;
   age?: string;
   occupation?: string | null;
   yearsInOccupation?: string;
@@ -113,7 +111,6 @@ function toIntOrNull(value: string | undefined): number | null {
 function mapUser(row: UserRow) {
   return {
     ...row,
-    interests: parseJson<string[] | null>(row.interests, null),
     notifications_email: toBool(row.notifications_email),
     notifications_in_app: toBool(row.notifications_in_app),
     is_deleted: toBool(row.is_deleted),
@@ -163,7 +160,7 @@ export async function PUT(request: NextRequest) {
   await db
     .prepare(
       `INSERT INTO users (
-         id, email, first_name, last_name, username, location, zip_code, city, state, bio, mantra, interests,
+         id, email, first_name, last_name, username, location, zip_code, city, state, bio, mantra,
          age, occupation, years_in_occupation, education, retired, retirement_date,
          retirement_date_reason, marital_status, divorced, kids, home_paid_off,
          working_income, net_worth, avatar_id,
@@ -172,7 +169,7 @@ export async function PUT(request: NextRequest) {
          stress_level, optimism, loneliness_connection, retirement_identity,
          retirement_vision_clarity, retirement_motivations, retirement_concerns,
          ideal_retirement_day, updated_at
-       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
        ON CONFLICT(id) DO UPDATE SET
          email = excluded.email,
          first_name = excluded.first_name,
@@ -184,7 +181,6 @@ export async function PUT(request: NextRequest) {
          state = excluded.state,
          bio = excluded.bio,
          mantra = excluded.mantra,
-         interests = excluded.interests,
          age = excluded.age,
          occupation = excluded.occupation,
          years_in_occupation = excluded.years_in_occupation,
@@ -230,7 +226,6 @@ export async function PUT(request: NextRequest) {
       updated.state ?? null,
       updated.bio ?? null,
       updated.mantra ?? null,
-      toJson(updated.interests ?? null),
       toIntOrNull(updated.age),
       updated.occupation ?? null,
       toIntOrNull(updated.yearsInOccupation),

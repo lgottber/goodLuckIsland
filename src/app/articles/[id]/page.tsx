@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getDb } from "../../../lib/db.server";
+import { getDb, parseJson } from "../../../lib/db.server";
+import { fetchTagLabelMap } from "../../../lib/tags.server";
+import { resolveTagLabels } from "../../../lib/tags";
 import { buildArticleTeaser } from "../../../lib/articleTeaser";
 import ArticleCoverImage from "./ArticleCoverImage";
 import ArticleFullBody from "./ArticleFullBody";
+import TagPills from "../../../components/TagPills";
 import "../articles.css";
 import "./article-detail.css";
 
@@ -20,6 +23,7 @@ interface ArticleRow {
   date: string | null;
   read_time: string | null;
   image: string | null;
+  tags: string;
 }
 
 async function getArticle(id: string): Promise<ArticleRow | null> {
@@ -67,6 +71,8 @@ export default async function ArticlePage(
   if (!article) notFound();
 
   const { teaserHtml } = buildArticleTeaser(article.body);
+  const tagLabelMap = await fetchTagLabelMap();
+  const articleTags = resolveTagLabels(parseJson<number[]>(article.tags, []), tagLabelMap);
 
   return (
     <div className="articles-page article-detail-page">
@@ -75,6 +81,7 @@ export default async function ArticlePage(
         <div className="article-detail-body">
           <span className="article-detail-tag">{article.category}</span>
           <h1 className="article-detail-title">{article.title}</h1>
+          <TagPills tags={articleTags} />
           <div className="article-detail-meta">
             <span>{article.date}</span>
             <span className="article-detail-meta-dot" />

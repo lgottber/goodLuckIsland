@@ -124,6 +124,7 @@ export type Database = {
           read_time: string | null;
           sort_order: number;
           title: string;
+          tags: number[];
         };
         Insert: {
           category?: string;
@@ -136,6 +137,7 @@ export type Database = {
           read_time?: string | null;
           sort_order?: number;
           title: string;
+          tags?: number[];
         };
         Update: {
           category?: string;
@@ -148,6 +150,22 @@ export type Database = {
           read_time?: string | null;
           sort_order?: number;
           title?: string;
+          tags?: number[];
+        };
+        Relationships: [];
+      };
+      tags: {
+        Row: {
+          id: number;
+          label: string;
+        };
+        Insert: {
+          id?: number;
+          label: string;
+        };
+        Update: {
+          id?: number;
+          label?: string;
         };
         Relationships: [];
       };
@@ -613,6 +631,7 @@ export type Database = {
           thumbnail: string | null;
           title: string;
           youtube_id: string | null;
+          tags: number[];
         };
         Insert: {
           created_at?: string | null;
@@ -625,6 +644,7 @@ export type Database = {
           thumbnail?: string | null;
           title: string;
           youtube_id?: string | null;
+          tags?: number[];
         };
         Update: {
           created_at?: string | null;
@@ -637,6 +657,7 @@ export type Database = {
           thumbnail?: string | null;
           title?: string;
           youtube_id?: string | null;
+          tags?: number[];
         };
         Relationships: [];
       };

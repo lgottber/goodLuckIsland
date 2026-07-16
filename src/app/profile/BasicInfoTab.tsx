@@ -1,9 +1,9 @@
-import { KeyboardEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Field from "./Field";
-import InterestTagList from "./InterestTagList";
 import PillGroup from "./PillGroup";
 import GenderField from "./GenderField";
 import { useDebounce } from "../../hooks/useDebounce";
+import { isValidZip } from "../../lib/zip";
 import type { ProfileForm, SetField } from "./types";
 
 const HOUSEHOLD_COMPOSITION_OPTIONS = [
@@ -16,8 +16,6 @@ const HOUSEHOLD_COMPOSITION_OPTIONS = [
 
 const GEO_CLASSIFIER_OPTIONS = ["Urban", "Suburban", "Rural"];
 
-const ZIP_PATTERN = /^\d{5}$/;
-
 interface ZipLookupResponse {
   places?: { "place name": string; "state abbreviation": string }[];
 }
@@ -25,17 +23,9 @@ interface ZipLookupResponse {
 export default function BasicInfoTab({
   form,
   set,
-  interestInput,
-  setInterestInput,
-  addInterest,
-  removeInterest,
 }: {
-  form: Pick<ProfileForm, "firstName" | "lastName" | "username" | "age" | "email" | "zipCode" | "city" | "state" | "address" | "bio" | "mantra" | "interests" | "gender" | "householdComposition" | "geoClassifier">;
+  form: Pick<ProfileForm, "firstName" | "lastName" | "username" | "age" | "email" | "zipCode" | "city" | "state" | "address" | "bio" | "mantra" | "gender" | "householdComposition" | "geoClassifier">;
   set: SetField;
-  interestInput: string;
-  setInterestInput: (v: string) => void;
-  addInterest: (e: KeyboardEvent<HTMLInputElement>) => void;
-  removeInterest: (tag: string) => void;
 }) {
   const [zipStatus, setZipStatus] = useState<"idle" | "loading" | "found" | "not_found" | "error">("idle");
   const debouncedZip = useDebounce(form.zipCode, 400);
@@ -43,7 +33,7 @@ export default function BasicInfoTab({
   // Auto-populate city/state from the ZIP -- both stay editable afterward,
   // so this only overwrites what the lookup actually returns.
   useEffect(() => {
-    if (!ZIP_PATTERN.test(debouncedZip ?? "")) {
+    if (!isValidZip(debouncedZip)) {
       setZipStatus("idle");
       return;
     }
@@ -83,7 +73,7 @@ export default function BasicInfoTab({
       ? "Couldn't look up that ZIP — you can still fill in city/state manually"
       : "5-digit US ZIP, required — auto-fills city & state below";
   const zipTouched = (form.zipCode?.length ?? 0) > 0;
-  const zipError = zipTouched && !ZIP_PATTERN.test(form.zipCode ?? "") ? "Enter a valid 5-digit ZIP code" : null;
+  const zipError = zipTouched && !isValidZip(form.zipCode) ? "Enter a valid 5-digit ZIP code" : null;
 
   return (
     <div className="edit-modal-body">
@@ -211,18 +201,6 @@ export default function BasicInfoTab({
           placeholder="Tell the collective about yourself..."
           maxLength={300}
         />
-      </Field>
-      <Field label="Interests" hint="Press Enter to add each interest">
-        <input
-          type="text"
-          value={interestInput}
-          onChange={(e) => setInterestInput(e.target.value)}
-          onKeyDown={addInterest}
-          placeholder="e.g. Travel, Golf, Cooking..."
-        />
-        {form.interests.length > 0 && (
-          <InterestTagList tags={form.interests} onRemove={removeInterest} />
-        )}
       </Field>
     </div>
   );

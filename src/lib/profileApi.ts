@@ -13,7 +13,6 @@ export type ProfileUpdate = {
   state: Tables<"users">["state"];
   bio: Tables<"users">["bio"];
   mantra: Tables<"users">["mantra"];
-  interests: Tables<"users">["interests"];
   age: string;
   occupation: Tables<"users">["occupation"];
   yearsInOccupation: string;

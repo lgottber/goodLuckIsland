@@ -10,6 +10,8 @@ export type Video = {
   duration: string | null;
   youtubeId: string | null;
   thumbnail: string | null;
+  tagIds: number[];
+  tags: string[];
 };
 
 const cachedVideos = createCachedFetcher<Video[]>();

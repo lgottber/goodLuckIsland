@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb, publicCacheHeaders, toBool } from "../../../../lib/db.server";
+import { getDb, publicCacheHeaders, toBool, parseJson } from "../../../../lib/db.server";
+import { fetchTagLabelMap } from "../../../../lib/tags.server";
+import { resolveTagLabels } from "../../../../lib/tags";
 
 export const runtime = "edge";
 
@@ -13,9 +15,11 @@ interface ArticleRow {
   image: string | null;
   featured: number;
   score: number;
+  tags: string;
 }
 
-function mapArticle(a: ArticleRow) {
+function mapArticle(a: ArticleRow, tagLabelMap: Map<number, string>) {
+  const tagIds = parseJson<number[]>(a.tags, []);
   return {
     id: a.id,
     category: a.category,
@@ -26,6 +30,8 @@ function mapArticle(a: ArticleRow) {
     image: a.image,
     featured: toBool(a.featured),
     score: a.score,
+    tagIds,
+    tags: resolveTagLabels(tagIds, tagLabelMap),
   };
 }
 
@@ -33,6 +39,7 @@ function mapArticle(a: ArticleRow) {
 export async function GET(request: NextRequest) {
   const db = getDb();
   const idsParam = request.nextUrl.searchParams.get("ids");
+  const tagLabelMap = await fetchTagLabelMap();
 
   if (idsParam) {
     const ids = idsParam
@@ -45,7 +52,7 @@ export async function GET(request: NextRequest) {
       .prepare(`SELECT * FROM articles WHERE id IN (${placeholders})`)
       .bind(...ids)
       .all<ArticleRow>();
-    return NextResponse.json((results ?? []).map(mapArticle), {
+    return NextResponse.json((results ?? []).map((a) => mapArticle(a, tagLabelMap)), {
       headers: publicCacheHeaders(300, 3600),
     });
   }
@@ -53,7 +60,7 @@ export async function GET(request: NextRequest) {
   const { results } = await db
     .prepare("SELECT * FROM articles ORDER BY sort_order")
     .all<ArticleRow>();
-  return NextResponse.json((results ?? []).map(mapArticle), {
+  return NextResponse.json((results ?? []).map((a) => mapArticle(a, tagLabelMap)), {
     headers: publicCacheHeaders(300, 3600),
   });
 }

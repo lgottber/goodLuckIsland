@@ -1,3 +1,5 @@
+import { parseContentViewedTagIds } from "./tags";
+
 interface AERow {
   [key: string]: string | number;
 }
@@ -168,4 +170,34 @@ export async function getActiveDayStreak(env: CloudflareEnv, userSub: string): P
   );
 
   return computeStreak(result.data.map((row) => String(row.day)));
+}
+
+// Powers the dashboard "Interests" section (#110): the member's top 5 most-
+// viewed tags, derived from content_viewed events rather than manually
+// entered. An item tagged with N tags credits all N tags in full for that
+// view, not a 1/N split -- same convention as goodLuckAdmin's
+// getTagViewCounts (lib/analytics.server.ts).
+export async function getTopTagsForUser(env: CloudflareEnv, userSub: string): Promise<number[]> {
+  const result = await queryAnalytics(
+    env,
+    `SELECT blob2 AS properties, SUM(_sample_interval) AS count
+     FROM good_luck_island_events
+     WHERE timestamp > NOW() - INTERVAL '90' DAY
+       AND blob1 = 'content_viewed'
+       AND blob3 = '${escapeSqlLiteral(userSub)}'
+     GROUP BY properties`,
+  );
+
+  const counts = new Map<number, number>();
+  for (const row of result.data) {
+    const rowCount = Number(row.count);
+    for (const tagId of parseContentViewedTagIds(row.properties)) {
+      counts.set(tagId, (counts.get(tagId) ?? 0) + rowCount);
+    }
+  }
+
+  return [...counts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([tagId]) => tagId);
 }
