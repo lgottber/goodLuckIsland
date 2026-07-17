@@ -8,6 +8,7 @@ import { getUpcomingEvents, type CalendarEvent } from "../src/lib/ical";
 // ICAL_URL secret never has to be fetched from the browser at runtime.
 const OUTPUT_PATH = path.join(__dirname, "../src/data/upcomingEvents.json");
 const EVENT_COUNT = 3;
+const FETCH_TIMEOUT_MS = 10_000;
 
 type UpcomingEventsData = {
   subscribeUrl: string | null;
@@ -22,7 +23,7 @@ async function fetchUpcomingEvents(): Promise<UpcomingEventsData> {
   }
 
   try {
-    const res = await fetch(icalUrl);
+    const res = await fetch(icalUrl, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
     if (!res.ok) throw new Error(`request failed with status ${res.status}`);
     const text = await res.text();
     return { subscribeUrl: icalUrl, events: getUpcomingEvents(text, EVENT_COUNT) };

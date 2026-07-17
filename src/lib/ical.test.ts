@@ -63,6 +63,43 @@ describe("parseIcs", () => {
   it("ignores malformed input without throwing", () => {
     expect(parseIcs("not an ics file at all")).toEqual([]);
   });
+
+  it("parses an all-day event (DTSTART;VALUE=DATE)", () => {
+    const ics = [
+      "BEGIN:VCALENDAR",
+      "BEGIN:VEVENT",
+      "DTSTART;VALUE=DATE:20990615",
+      "UID:all-day@horaro.org",
+      "SUMMARY:All-day fundraiser",
+      "END:VEVENT",
+      "END:VCALENDAR",
+    ].join("\n");
+    const events = parseIcs(ics);
+    expect(events).toEqual([
+      {
+        uid: "all-day@horaro.org",
+        summary: "All-day fundraiser",
+        start: "2099-06-15T00:00:00.000Z",
+        location: null,
+      },
+    ]);
+  });
+
+  it("unescapes RFC 5545 text escape sequences in SUMMARY and LOCATION", () => {
+    const ics = [
+      "BEGIN:VCALENDAR",
+      "BEGIN:VEVENT",
+      "DTSTART:20990101T120000Z",
+      "UID:escaped@horaro.org",
+      "SUMMARY:Meetup\\, Q&A\\; snacks provided",
+      "LOCATION:Main Hall\\, Room 2",
+      "END:VEVENT",
+      "END:VCALENDAR",
+    ].join("\n");
+    const [event] = parseIcs(ics);
+    expect(event.summary).toBe("Meetup, Q&A; snacks provided");
+    expect(event.location).toBe("Main Hall, Room 2");
+  });
 });
 
 describe("getUpcomingEvents", () => {
