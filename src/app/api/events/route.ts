@@ -7,15 +7,23 @@ export const runtime = "edge";
 async function getICalUrl(): Promise<string | null> {
   try {
     const { env } = getRequestContext<CloudflareEnv>();
-    const binding = env.ICAL_URL;
-    if (binding && typeof binding.get === "function") {
-      const value = await binding.get();
-      if (value) return value;
+    // Successfully in CF Workers environment — only use the binding, never process.env
+    // (next-on-pages proxies bindings through process.env, so the fallback would
+    // return the same binding object rather than a plain string).
+    try {
+      const binding = env.ICAL_URL;
+      if (binding && typeof binding.get === "function") {
+        const value = await binding.get();
+        if (typeof value === "string" && value) return value;
+      }
+    } catch {
+      // Local wrangler simulation of secrets store doesn't support .get()
     }
+    return null;
   } catch {
-    // Falls through to env var fallback below (local dev).
+    // Not in CF Workers (standard Next.js dev server) — env var fallback is safe.
+    return process.env.ICAL_URL ?? null;
   }
-  return process.env.ICAL_URL ?? null;
 }
 
 export async function GET() {

@@ -1,49 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-interface EventItem {
-  summary: string;
-  start: string;
-  end: string | null;
-  url: string | null;
-  location: string | null;
-}
+import EventRow, { type EventItem } from "./EventRow";
 
 interface EventsResponse {
   events: EventItem[];
   subscribeUrl: string | null;
   error?: string;
-}
-
-function formatEventDate(isoStart: string, isoEnd: string | null): string {
-  const start = new Date(isoStart);
-  const dateStr = start.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-  const timeStr = start.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  });
-
-  if (!isoEnd) return `${dateStr} · ${timeStr}`;
-
-  const end = new Date(isoEnd);
-  const endTimeStr = end.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  });
-
-  // Same day — show "Jan 1, 2025 · 12:00 PM – 1:00 PM"
-  if (start.toDateString() === end.toDateString()) {
-    return `${dateStr} · ${timeStr} – ${endTimeStr}`;
-  }
-
-  return `${dateStr} · ${timeStr}`;
 }
 
 export default function UpcomingEvents() {
@@ -52,8 +15,11 @@ export default function UpcomingEvents() {
   const [fetchError, setFetchError] = useState(false);
 
   useEffect(() => {
-    fetch("/api/events")
-      .then((r) => r.json() as Promise<EventsResponse>)
+    async function loadEvents(): Promise<EventsResponse> {
+      const res = await fetch("/api/events");
+      return res.json();
+    }
+    loadEvents()
       .then(setData)
       .catch(() => setFetchError(true))
       .finally(() => setLoading(false));
@@ -71,26 +37,7 @@ export default function UpcomingEvents() {
       ) : (
         <ul className="events-list">
           {data.events.map((event) => (
-            <li key={`${event.start}-${event.summary}`} className="events-row">
-              <div className="events-row-main">
-                {event.url ? (
-                  <a
-                    href={event.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="events-title"
-                  >
-                    {event.summary}
-                  </a>
-                ) : (
-                  <span className="events-title">{event.summary}</span>
-                )}
-                <span className="events-date">{formatEventDate(event.start, event.end)}</span>
-                {event.location && (
-                  <span className="events-location">{event.location}</span>
-                )}
-              </div>
-            </li>
+            <EventRow key={`${event.start}-${event.summary}`} event={event} />
           ))}
         </ul>
       )}
