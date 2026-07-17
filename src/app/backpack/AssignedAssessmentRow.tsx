@@ -8,16 +8,22 @@ const STATUS_LABELS: Record<AssignedAssessmentStatus, string> = {
   completed: "Completed",
 };
 
-// Only Wayfinder (pinwirl) and the One Question Challenge have a live
-// taking-flow today -- assessments built via the newer assessment builder
-// have no member-facing submission flow wired up yet (see docs/HANDOFF.md).
+// Wayfinder (pinwirl) and the One Question Challenge predate the generic
+// assessment builder and keep their own standalone routes/tables (see
+// StepLinkAction.tsx). source='generic' assessments (e.g. Values and
+// Beliefs) are taken via /assessment/[id] instead.
 const SOURCE_HREF: Record<string, string> = {
   pinwirl: "/pinwirl",
   one_question: "/one-question-retirement-challenge",
 };
 
+function resolveAssignedAssessmentHref(assessment: AssignedAssessment): string | null {
+  if (assessment.source === "generic") return `/assessment/${assessment.assessmentId}`;
+  return SOURCE_HREF[assessment.source] ?? null;
+}
+
 export default function AssignedAssessmentRow({ assessment }: { assessment: AssignedAssessment }) {
-  const href = SOURCE_HREF[assessment.source];
+  const href = resolveAssignedAssessmentHref(assessment);
 
   return (
     <tr>
