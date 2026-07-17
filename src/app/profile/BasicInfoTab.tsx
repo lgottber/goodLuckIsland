@@ -71,14 +71,14 @@ export default function BasicInfoTab({
       ? "ZIP code not found — you can still fill in city/state manually"
       : zipStatus === "error"
       ? "Couldn't look up that ZIP — you can still fill in city/state manually"
-      : "5-digit US ZIP, required — auto-fills city & state below";
+      : "5-digit US ZIP — auto-fills city & state below";
   const zipTouched = (form.zipCode?.length ?? 0) > 0;
   const zipError = zipTouched && !isValidZip(form.zipCode) ? "Enter a valid 5-digit ZIP code" : null;
 
   return (
     <div className="edit-modal-body">
       <div className="modal-section-label">Identity</div>
-      <Field label="First Name">
+      <Field label="First Name" required>
         <input
           type="text"
           value={form.firstName}
@@ -86,7 +86,7 @@ export default function BasicInfoTab({
           placeholder="First name"
         />
       </Field>
-      <Field label="Last Name">
+      <Field label="Last Name" required>
         <input
           type="text"
           value={form.lastName}
@@ -102,7 +102,7 @@ export default function BasicInfoTab({
           placeholder="@username"
         />
       </Field>
-      <Field label="Age">
+      <Field label="Age" required>
         <input
           type="number"
           value={form.age}
@@ -125,7 +125,7 @@ export default function BasicInfoTab({
         Location
       </div>
       <div className="field-row">
-        <Field label="Zip Code" hint={zipError ?? zipHint} error={!!zipError}>
+        <Field label="Zip Code" hint={zipError ?? zipHint} error={!!zipError} required>
           <input
             type="text"
             inputMode="numeric"
