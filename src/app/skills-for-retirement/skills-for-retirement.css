@@ -1,0 +1,117 @@
+.skills-page {
+  background: #2e8b7a;
+  min-height: 100vh;
+  color: white;
+  padding-top: var(--nav-height);
+}
+
+.skills-content {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 60px 32px 80px;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────────── */
+
+.skills-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  opacity: 0.65;
+  margin: 0 0 16px;
+}
+
+.skills-content h1 {
+  font-family: var(--serif);
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0 0 36px;
+}
+
+/* ── Sections ────────────────────────────────────────────────────────────────── */
+
+.skills-section {
+  margin-bottom: 48px;
+}
+
+.skills-section h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* ── Nested lists ────────────────────────────────────────────────────────────── */
+
+.skills-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.skills-list > li {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  opacity: 0.95;
+  padding-left: 26px;
+  position: relative;
+}
+
+.skills-list > li::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 0.65em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.skills-list .skills-list {
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.skills-list .skills-list > li {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  opacity: 0.85;
+  padding-left: 22px;
+}
+
+.skills-list .skills-list > li::before {
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.skills-list .skills-list .skills-list > li {
+  font-size: 0.88rem;
+  opacity: 0.75;
+}
+
+.skills-list .skills-list .skills-list .skills-list > li {
+  font-size: 0.85rem;
+  opacity: 0.68;
+}
+
+@media (max-width: 600px) {
+  .skills-content {
+    padding: 40px 20px 60px;
+  }
+
+  .skills-content h1 {
+    font-size: 1.9rem;
+  }
+
+  .skills-list > li {
+    font-size: 1rem;
+  }
+}
