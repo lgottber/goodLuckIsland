@@ -6,6 +6,7 @@ import { resolveTagLabels } from "../../../lib/tags";
 import { buildArticleTeaser } from "../../../lib/articleTeaser";
 import ArticleCoverImage from "./ArticleCoverImage";
 import ArticleFullBody from "./ArticleFullBody";
+import NavBarDynamic from "../../../components/NavBarDynamic";
 import TagPills from "../../../components/TagPills";
 import "../articles.css";
 import "./article-detail.css";
@@ -76,6 +77,7 @@ export default async function ArticlePage(
 
   return (
     <div className="articles-page article-detail-page">
+      <NavBarDynamic activePage="articles" largeAvatar />
       <article className="article-detail">
         <ArticleCoverImage image={article.image} title={article.title} />
         <div className="article-detail-body">
