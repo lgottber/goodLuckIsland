@@ -3,10 +3,7 @@
 import { useState, useEffect, useRef, type ReactNode } from "react";
 import ShieldPillarNode from "./ShieldPillarNode";
 import PillarSection from "./PillarSection";
-import OneQuestionDrawer from "./OneQuestionDrawer";
-import PinwirlDrawer from "./PinwirlDrawer";
-import PurposeDrawer from "./PurposeDrawer";
-import TogetherDrawer from "./TogetherDrawer";
+import StepLinksDrawer from "./StepLinksDrawer";
 import type { UserProgress } from "../../lib/sevenStepApi";
 import { SLUG_TO_STEP } from "../../lib/sevenStepApi";
 import type { PillarId } from "./PillarLogo";
@@ -86,7 +83,10 @@ const PILLARS: Pillar[] = [
   },
 ];
 
-const ACTIVE_PILLAR_IDS = new Set(["one-question", "pinwirl", "purpose", "together"]);
+// All 7 pillars are DB-driven now (#103) -- an empty link list renders
+// StepLinksDrawer's own "no links yet" state rather than a hardcoded
+// "Coming Soon" badge, so every pillar is active.
+const ACTIVE_PILLAR_IDS = new Set(PILLARS.map((p) => p.id));
 
 function pillarIsComplete(pillarId: string, progress: UserProgress | null): boolean {
   const stepKey = SLUG_TO_STEP[pillarId];
@@ -126,17 +126,18 @@ export default function SevenShieldPillars({ progress }: { progress: UserProgres
     setOpenId((prev) => (prev === id ? null : id));
   }
 
-  const allComplete =
-    progress !== null &&
-    Object.values(progress).length === 7 &&
-    Object.values(progress).every(Boolean);
-
-  const customDrawers: Record<string, ReactNode> = {
-    "one-question": <OneQuestionDrawer />,
-    "pinwirl": <PinwirlDrawer canEdit={allComplete} />,
-    "purpose": <PurposeDrawer />,
-    "together": <TogetherDrawer />,
-  };
+  const customDrawers: Record<string, ReactNode> = Object.fromEntries(
+    PILLARS.map((pillar) => [
+      pillar.id,
+      <StepLinksDrawer
+        key={pillar.id}
+        stepKey={SLUG_TO_STEP[pillar.id]}
+        definition={pillar.definition}
+        chapter={pillar.chapter}
+        isComplete={pillarIsComplete(pillar.id, progress)}
+      />,
+    ]),
+  );
 
   const completedPillars = PILLARS.filter((p) => pillarIsComplete(p.id, progress));
   const todoPillars = PILLARS.filter((p) => !pillarIsComplete(p.id, progress));
