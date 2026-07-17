@@ -147,12 +147,14 @@ describe("applySupabaseFields", () => {
     expect(result.avatarUrl).toBe("https://prev.example/pic.jpg");
   });
 
-  it("overlays array fields (retirement motivations/concerns) when present", () => {
+  it("overlays array fields (interests, retirement motivations/concerns) when present", () => {
     const result = applySupabaseFields(INITIAL_USER, {
       ...BLANK_ROW,
+      interests: ["Golf", "Travel"],
       retirement_motivations: ["Family"],
       retirement_concerns: ["Health"],
     }, undefined);
+    expect(result.interests).toEqual(["Golf", "Travel"]);
     expect(result.retirementMotivations).toEqual(["Family"]);
     expect(result.retirementConcerns).toEqual(["Health"]);
   });

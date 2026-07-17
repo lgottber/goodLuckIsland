@@ -94,13 +94,22 @@
   cursor: pointer;
 }
 
+.playlist-tab-wrapper {
+  background: var(--navy);
+  margin-top: 2rem;
+}
+
 .playlist-detail-header {
   margin-bottom: 2rem;
 }
+.playlist-detail-header h2 {
+  font-family: var(--serif);
+  color: #fff;
+  margin: 0 0 0.5rem;
+}
 .playlist-detail-desc {
   font-family: var(--sans);
-  color: var(--navy);
-  opacity: 0.8;
+  color: rgba(255, 255, 255, 0.75);
   max-width: 60ch;
 }
 

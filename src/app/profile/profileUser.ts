@@ -1,4 +1,9 @@
 import type { Tables } from "../../types/supabase";
+import { formatMemberSince } from "./memberSince";
+
+function nullStat(): number | null {
+  return null;
+}
 
 export const INITIAL_USER = {
   firstName: "",
@@ -15,11 +20,12 @@ export const INITIAL_USER = {
   bio: "",
   mantra: "Peace of mind, planned for.",
   memberSince: "",
+  interests: new Array<string>(),
   stats: {
-    articlesRead: 0,
-    podcastsListened: 0,
-    savedItems: 0,
-    daysActive: 0,
+    articlesRead: nullStat(),
+    podcastsListened: nullStat(),
+    savedItems: nullStat(),
+    daysActive: nullStat(),
   },
   age: "",
   occupation: "",
@@ -72,6 +78,7 @@ export function applySupabaseFields(
     state: data.state ?? prev.state,
     bio: data.bio ?? prev.bio,
     mantra: data.mantra ?? prev.mantra,
+    interests: data.interests ?? prev.interests,
     occupation: data.occupation ?? prev.occupation,
     education: data.education ?? prev.education,
     retired: data.retired ?? prev.retired,
@@ -114,5 +121,6 @@ export function applySupabaseFields(
     retirementMotivations: data.retirement_motivations ?? prev.retirementMotivations,
     retirementConcerns: data.retirement_concerns ?? prev.retirementConcerns,
     idealRetirementDay: data.ideal_retirement_day ?? prev.idealRetirementDay,
+    memberSince: formatMemberSince(data.created_at) || prev.memberSince,
   };
 }
