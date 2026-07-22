@@ -146,6 +146,14 @@ web_modules/
 out
 .open-next
 
+# Regenerated before every build by scripts/fetch-upcoming-events.ts (see
+# package.json's "predev"/"prebuild"/"prebuild:cf") -- not committed so a
+# local build never leaves stale/time-sensitive calendar data as a tracked
+# diff. A build from a fresh checkout with no local copy still works: the
+# prebuild hook writes a fallback {"subscribeUrl":null,"events":[]} before
+# Next.js ever reads it.
+src/data/upcomingEvents.json
+
 # Nuxt.js build / generate output
 .nuxt
 dist

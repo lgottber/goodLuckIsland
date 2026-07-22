@@ -34,6 +34,8 @@ import { ApiError } from "../../lib/apiClient";
 import { submitTestimonial } from "../../lib/testimonialsApi";
 import { fetchProfileStats } from "../../lib/profileStatsApi";
 import { applySupabaseFields, INITIAL_USER } from "./profileUser";
+import UpcomingEventsSection from "./UpcomingEventsSection";
+import upcomingEventsData from "../../data/upcomingEvents.json";
 import "./profile.css";
 
 // ─── Main Profile Page ────────────────────────────────────────────────────────
@@ -500,24 +502,31 @@ export default function ProfilePage() {
 
           <RecommendationsTable />
 
-          {/* Contact Nick card */}
-          <div className="profile-card profile-card--contact">
-            <h3>Send Nick a Message</h3>
-            <p>
-              Have a question, an idea, or just want to say hello? Drop Nick a
-              message below.
-            </p>
-            {contactSubmitted ? (
-              <ContactFormSuccess />
-            ) : (
-              <ContactForm
-                formData={contactForm}
-                onChange={setContactForm}
-                submitting={contactSubmitting}
-                error={contactError}
-                onSubmit={handleContactSubmit}
-              />
-            )}
+          {/* Upcoming Events & Contact Nick row */}
+          <div className="overview-two-col">
+            <UpcomingEventsSection
+              events={upcomingEventsData.events}
+              subscribeUrl={upcomingEventsData.subscribeUrl}
+            />
+
+            <div className="profile-card profile-card--contact">
+              <h3>Send Nick a Message</h3>
+              <p>
+                Have a question, an idea, or just want to say hello? Drop Nick a
+                message below.
+              </p>
+              {contactSubmitted ? (
+                <ContactFormSuccess />
+              ) : (
+                <ContactForm
+                  formData={contactForm}
+                  onChange={setContactForm}
+                  submitting={contactSubmitting}
+                  error={contactError}
+                  onSubmit={handleContactSubmit}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>

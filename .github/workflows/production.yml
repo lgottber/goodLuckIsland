@@ -52,6 +52,7 @@ jobs:
           NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN: ${{ secrets.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN }}
           NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN: ${{ secrets.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN }}
           NEXT_PUBLIC_SHOPIFY_COLLECTION_ID: ${{ secrets.NEXT_PUBLIC_SHOPIFY_COLLECTION_ID }}
+          ICAL_URL: ${{ secrets.ICAL_URL }}
 
       # TODO(d1-migration): the D1 binding in wrangler.toml still has a
       # placeholder database_id (needs `wrangler d1 create good-luck-db`

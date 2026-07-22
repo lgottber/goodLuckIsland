@@ -1639,6 +1639,88 @@ body {
   cursor: not-allowed;
 }
 
+/* ── UPCOMING EVENTS ── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.upcoming-events-empty {
+  font-size: 0.875rem;
+  color: var(--muted);
+  font-style: italic;
+  padding: 0.5rem 0 1rem;
+}
+
+.upcoming-events-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.upcoming-event-row {
+  border-bottom: 1px solid var(--cream);
+}
+
+.upcoming-event-row:last-child {
+  border-bottom: none;
+}
+
+.upcoming-event-when,
+.upcoming-event-summary {
+  padding: 0.75rem 0;
+  text-align: left;
+  vertical-align: top;
+  font-size: 0.875rem;
+}
+
+.upcoming-event-when {
+  color: var(--teal);
+  font-weight: 600;
+  white-space: nowrap;
+  padding-right: 1.25rem;
+}
+
+.upcoming-event-summary {
+  color: var(--navy);
+  font-weight: 500;
+}
+
+.upcoming-event-location {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 400;
+  margin-top: 0.15rem;
+}
+
+.upcoming-events-subscribe {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+  color: var(--coral);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.upcoming-events-subscribe:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 40em) {
+  .upcoming-event-when {
+    white-space: normal;
+    padding-right: 0.75rem;
+  }
+}
+
 /* ── CONTACT NICK FORM ── */
 .profile-card--contact p {
   font-size: 0.85rem;
