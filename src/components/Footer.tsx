@@ -1,4 +1,5 @@
 import Link from "next/link";
+import FooterPatreonLink from "./FooterPatreonLink";
 import "./Footer.css";
 
 export default function Footer() {
@@ -10,6 +11,7 @@ export default function Footer() {
           alt="We will never sell your personal information — The Goodluck Island Collective"
           className="footer-seal"
         />
+        <FooterPatreonLink />
       </div>
       <div className="site-footer-links">
         <Link href="/privacy-policy">Privacy Policy</Link>
