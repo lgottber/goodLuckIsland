@@ -7,6 +7,7 @@ import StepLinksDrawer from "./StepLinksDrawer";
 import type { UserProgress } from "../../lib/sevenStepApi";
 import { SLUG_TO_STEP } from "../../lib/sevenStepApi";
 import type { PillarId } from "./PillarLogo";
+import { downloadJourneyReport } from "./JourneyReportPdf";
 
 type Pillar = {
   id: PillarId;
@@ -96,6 +97,20 @@ function pillarIsComplete(pillarId: string, progress: UserProgress | null): bool
 export default function SevenShieldPillars({ progress }: { progress: UserProgress | null }) {
   const [openId, setOpenId] = useState<string | null>(null);
   const scrollTargetRef = useRef<string | null>(null);
+  const [downloading, setDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState(false);
+
+  async function handleDownloadReport() {
+    setDownloading(true);
+    setDownloadError(false);
+    try {
+      await downloadJourneyReport();
+    } catch {
+      setDownloadError(true);
+    } finally {
+      setDownloading(false);
+    }
+  }
 
   useEffect(() => {
     function handleHash() {
@@ -171,6 +186,31 @@ export default function SevenShieldPillars({ progress }: { progress: UserProgres
 
       {todoPillars.length > 0 && (
         <PillarSection {...sectionProps} label="To Do" variant="todo" pillars={todoPillars} sectionIsComplete={false} />
+      )}
+
+      {completedPillars.length === PILLARS.length && (
+        <div className="journey-report-banner">
+          <div className="journey-report-banner-content">
+            <p className="journey-report-eyebrow">Journey Complete</p>
+            <h3 className="journey-report-title">Share Your Journey with Your Retirement Expert</h3>
+            <p className="journey-report-body">
+              Download a personalized summary of your 7SHieLD journey — your answers, Wayfinder
+              scores, reflections, and interests — ready to hand to your retirement advisor.
+            </p>
+            <button
+              className="journey-report-btn"
+              onClick={handleDownloadReport}
+              disabled={downloading}
+            >
+              {downloading ? "Preparing PDF…" : "Download Journey Report (PDF)"}
+            </button>
+            {downloadError && (
+              <p className="journey-report-error">
+                Something went wrong. Please try again.
+              </p>
+            )}
+          </div>
+        </div>
       )}
     </section>
   );
