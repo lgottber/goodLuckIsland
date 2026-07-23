@@ -1,8 +1,17 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import FooterPatreonLink from "./FooterPatreonLink";
 import "./Footer.css";
 
 export default function Footer() {
+  // The landing page (src/app/page.tsx) has its own full footer (nav links,
+  // social icons, copyright) -- rendering this sitewide footer there too
+  // produced two stacked footers.
+  const pathname = usePathname();
+  if (pathname === "/") return null;
+
   return (
     <footer className="site-footer">
       <div className="site-footer-inner">
