@@ -4,6 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Link from "next/link";
 import NavBar from "../components/NavBarDynamic";
 import PictureImage from "../components/PictureImage";
+import FooterPatreonLink from "../components/FooterPatreonLink";
 import { FacebookIcon, InstagramIcon, YoutubeIcon } from "../components/Icons";
 import Icon from "../components/Icon";
 import HeroCtaUser from "./HeroCtaUser";
@@ -248,12 +249,13 @@ export default function HomePage() {
           <div className="footer-inner">
             <div className="footer-brand">
               <PictureImage
-                name="/good_luck_island_logo_small.png"
-                alt="Good Luck Island Collective logo"
+                name="/promise_footer.png"
+                alt="We will never sell your personal information — The Goodluck Island Collective"
                 className="footer-brand-logo"
                 sizes="120px"
               />
               <span>Curating calm clarity for the next chapter of life.</span>
+              <FooterPatreonLink />
             </div>
           </div>
           <nav className="footer-nav-row" aria-label="Footer navigation">
